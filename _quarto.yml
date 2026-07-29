@@ -1,0 +1,25 @@
+# DRAFT — 로컬에서 quarto render로 검증 후 확정할 것 (SPEC 5장)
+project:
+  type: book
+  output-dir: _book
+book:
+  title: "알고리즘 · Algorithms"
+  subtitle: "강의노트에서 만든 웹 교재"
+  author: "Hyuck Han"
+  search: true
+  page-navigation: true
+  repo-url: https://github.com/HyuckHan/algorithms-book
+  chapters:
+    - index.qmd
+    # chapters/03-sorting.qmd   # M1 파일럿에서 파일 생성 후 등록. 그때까지 목차에서 제외(M0: 빈 책만 검증).
+format:
+  html:
+    theme: [cosmo, assets/theme.scss]
+    toc: true
+    code-copy: true
+    include-in-header: assets/mathjax-macros.html
+    css: assets/pseudocode/pseudocode.css
+  pdf:
+    documentclass: scrreport
+    include-in-header: assets/pdf-preamble.tex
+lang: ko

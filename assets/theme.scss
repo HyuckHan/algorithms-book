@@ -1,0 +1,8 @@
+/*-- scss:defaults --*/
+// 강의노트 팔레트 (SPEC 1장). 텍스트 강조엔 AlgoOrangeText만 사용.
+$primary:   #102A43;   // AlgoBlue
+$body-color:#102A43;
+$link-color:#B45309;   // AlgoOrangeText (대비 5.02:1)
+$code-block-bg: #0d2136;
+/*-- scss:rules --*/
+.callout { border-left-color: #F08C46; }  // 배경/테두리 강조엔 AlgoOrange 허용

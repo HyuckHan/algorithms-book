@@ -1,0 +1,10 @@
+_book/
+.quarto/
+figures/.cache/
+*.aux
+*.log
+*.class
+__pycache__/
+
+/.quarto/
+**/*.quarto_ipynb
