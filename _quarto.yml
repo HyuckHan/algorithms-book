@@ -20,6 +20,11 @@ book:
 format:
   html:
     theme: [cosmo, assets/theme.scss]
+    # assets/theme.scss sets $code-block-bg to a dark navy; the default
+    # highlight-style is tuned for a light background, so most tokens
+    # (comments, strings, most identifiers) were low-contrast-to-invisible
+    # against it -- only numbers/keywords happened to still show up.
+    highlight-style: github-dark
     toc: true
     code-copy: true
     include-in-header:

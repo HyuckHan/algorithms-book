@@ -17,3 +17,10 @@ $code-bg:    #F5F7FA;  // AlgoLight
 $code-color: #102A43;  // AlgoBlue (~13.6:1 on AlgoLight)
 /*-- scss:rules --*/
 .callout { border-left-color: #F08C46; }  // 배경/테두리 강조엔 AlgoOrange 허용
+// highlight-style: github-dark (_quarto.yml)'s comment color (#6a737d) was
+// designed against its own lighter background (#24292e) and only measures
+// ~3:1 there already; against our darker $code-block-bg (#0d2136) it drops
+// to ~3.4:1. Every other token class from that theme clears 4.5:1 on our
+// background (verified via scripts/qa/browser_check.mjs's per-token scan),
+// so only this one needs a targeted override rather than switching themes.
+code.sourceCode span.co { color: #98a4b3; }  // ~5.0:1 on #0d2136
