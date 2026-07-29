@@ -245,7 +245,6 @@ project:
   output-dir: _book
 book:
   title: "알고리즘 · Algorithms"
-  subtitle: "강의노트에서 만든 웹 교재"
   author: "Hyuck Han"
   chapters:
     - index.qmd
