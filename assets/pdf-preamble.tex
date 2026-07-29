@@ -1,2 +1,5 @@
-% kotex 등 PDF 출력용 프리앰블 (로컬에서 확정)
-% \usepackage{kotex}
+% kotex 등 PDF 출력용 프리앰블.
+% M1에서 활성화: 비활성 상태로는 lualatex가 한글 glyph를 조용히 누락시켜(에러 없이
+% 빈 칸으로 렌더링), 본문의 절반 이상을 차지하는 한국어 텍스트가 PDF에서 통째로
+% 사라졌었다(§QUALITY_ASSURANCE 6 위반 사례로 기록).
+\usepackage{kotex}
