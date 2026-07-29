@@ -40,7 +40,28 @@ function contrastRatio(fgCss, bgCss) {
 // section by the heading's slug id and inspects only code inside it -- a
 // whole-page check can't tell "3 languages present somewhere on the page"
 // from "3 languages present in *this* algorithm's section".
-const SECTION_CHECKS = [{ id: "selection-sort", languages: ["python", "java", "c"] }];
+const SECTION_CHECKS = [
+  "selection-sort", "bubble-sort", "insertion-sort", "merge-sort",
+  "quick-sort", "heapsort", "counting-sort", "radix-sort",
+].map((id) => ({ id, languages: ["python", "java", "c"] }));
+
+// Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)
+// must never leak into reader-facing prose -- a correction belongs in the
+// chapter on its own merits, not cited back to an internal tracking doc.
+// Matched against the rendered page's visible body text with word
+// boundaries so e.g. "spec" as an ordinary English word wouldn't false-positive.
+const INTERNAL_DOC_PATTERNS = [
+  /\bSPEC\b/,
+  /\bPER_LECTURE_NOTES\b/,
+  /\bCODE_INVENTORY\b/,
+  /\bDECISIONS\.md\b/,
+  /\bMIGRATION_STRATEGY\b/,
+  /\bQUALITY_ASSURANCE\b/,
+  /\bCONTENT_MODEL\b/,
+  /\bAGENT_WORKFLOW\b/,
+  /\bAGENTS\.md\b/,
+  /\bMILESTONES\.md\b/,
+];
 
 const url = process.argv[2];
 const browser = await chromium.launch();
@@ -57,9 +78,10 @@ await page.goto(url, { waitUntil: "networkidle", timeout: 60000 });
 // (see assets/pseudocode/pseudocode-init.html); wait past that plus margin.
 await page.waitForTimeout(9000);
 
-const domFacts = await page.evaluate((sectionChecks) => {
+const domFacts = await page.evaluate(({ sectionChecks, internalDocPatternSources }) => {
   const bodyText = document.body.innerText;
   const hasRawMath = /\$\$|\\Theta|\\Omega|\\log_|\\frac/.test(bodyText);
+  const internalDocRefs = internalDocPatternSources.filter((src) => new RegExp(src).test(bodyText));
 
   const renderedPseudocodeCount = document.querySelectorAll(".ps-root").length;
   const unrenderedPseudocodeCount = document.querySelectorAll("pre.pseudocode").length;
@@ -145,6 +167,7 @@ const domFacts = await page.evaluate((sectionChecks) => {
 
   return {
     hasRawMath,
+    internalDocRefs,
     renderedPseudocodeCount,
     unrenderedPseudocodeCount,
     totalImgs: imgs.length,
@@ -156,7 +179,7 @@ const domFacts = await page.evaluate((sectionChecks) => {
     sectionFacts,
     horizontalOverflow: scrollWidth > clientWidth + 2,
   };
-}, SECTION_CHECKS);
+}, { sectionChecks: SECTION_CHECKS, internalDocPatternSources: INTERNAL_DOC_PATTERNS.map((re) => re.source) });
 
 const inlineCodeWithContrast = domFacts.inlineCode.map((c) => ({
   ...c,
@@ -189,6 +212,7 @@ console.log(JSON.stringify({
   consoleErrors,
   failedRequests,
   hasRawMath: domFacts.hasRawMath,
+  internalDocRefs: domFacts.internalDocRefs,
   renderedPseudocodeCount: domFacts.renderedPseudocodeCount,
   unrenderedPseudocodeCount: domFacts.unrenderedPseudocodeCount,
   totalImgs: domFacts.totalImgs,

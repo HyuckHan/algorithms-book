@@ -32,6 +32,11 @@ Currently implements:
     (delegating to run_examples.py's own ALGORITHM_CONFIG pass rather than
     re-implementing compilation) that the 3 languages actually
     compiled/ran and their outputs agree.
+  - Internal doc-name leak check: fails if the rendered page's visible body
+    text contains an internal repo document name (SPEC, PER_LECTURE_NOTES,
+    CODE_INVENTORY, DECISIONS.md, etc.) -- a correction belongs in the
+    chapter on its own merits, not cited back to the internal tracking doc
+    it came from.
 
 Gates 1/2/5/7 from docs/QUALITY_ASSURANCE.md are NOT implemented here yet
 (tracked for M2 per docs/MILESTONES.md); this script does not claim to check
@@ -64,22 +69,55 @@ LECTURE_CHAPTER = {
     "03": {"lecture_notes_dir": "lecture03", "chapter_html": "chapters/03-sorting.html"},
 }
 
+# Per-language identifiers for every from-scratch sort with its own section
+# (used to build each section's "forbidden" list below: every OTHER
+# algorithm's identifiers, since finding them inside this algorithm's
+# section means the tabset is showing more than just its own code).
+ALGO_IDENTIFIERS = {
+    "selection-sort": ["selection_sort", "SelectionSort", "selectionSort"],
+    "bubble-sort": ["bubble_sort", "BubbleSort", "bubbleSort"],
+    "insertion-sort": ["insertion_sort", "InsertionSort", "insertionSort"],
+    "merge-sort": ["merge_sort", "MergeSort", "mergeSort"],
+    "quick-sort": ["quick_sort", "QuickSort", "quickSort", "partition"],
+    "heap-sort": [
+        "heap_sort", "HeapSort", "heapSort",
+        "max_heapify", "MaxHeapify", "maxHeapify",
+        "build_max_heap", "BuildMaxHeap", "buildMaxHeap",
+    ],
+    "counting-sort": ["counting_sort", "CountingSort", "countingSort"],
+    "radix-sort": ["radix_sort", "RadixSort", "radixSort"],
+}
+
+# algorithm name (matches run_examples.py's ALGORITHM_CONFIG keys) -> the
+# rendered <section id="..."> slug Quarto derives from that H3's heading text
+# (mostly identical, except Heapsort's heading has no space/dash).
+SECTION_ID = {
+    "selection-sort": "selection-sort",
+    "bubble-sort": "bubble-sort",
+    "insertion-sort": "insertion-sort",
+    "merge-sort": "merge-sort",
+    "quick-sort": "quick-sort",
+    "heap-sort": "heapsort",
+    "counting-sort": "counting-sort",
+    "radix-sort": "radix-sort",
+}
+
 # Algorithms with their own isolated C/Java/Python section (panel-tabset),
-# per ADR-004 / run_examples.py's ALGORITHM_CONFIG. "forbidden" lists the
-# other from-scratch sorts' identifiers -- any of these appearing inside this
-# algorithm's section means the tabset is showing more than just its own code.
+# per ADR-004 / run_examples.py's ALGORITHM_CONFIG.
 SECTION_GATES = {
     "03": [
         {
-            "section_id": "selection-sort",
-            "algorithm": "selection-sort",
+            "section_id": SECTION_ID[algo],
+            "algorithm": algo,
             "languages": ["python", "java", "c"],
             "forbidden": [
-                "insertion_sort", "InsertionSort", "insertionSort",
-                "bubble_sort", "BubbleSort", "bubbleSort",
-                "merge_sort", "MergeSort", "mergeSort",
+                ident
+                for other, idents in ALGO_IDENTIFIERS.items()
+                if other != algo
+                for ident in idents
             ],
-        },
+        }
+        for algo in ALGO_IDENTIFIERS
     ],
 }
 
@@ -194,6 +232,16 @@ def main():
           % (expected, rendered, unrendered, "PASS" if gate3_pass else "FAIL"))
     ok = ok and gate3_pass
 
+    # Internal doc-name leak check: SPEC.md/PER_LECTURE_NOTES.md/etc. must
+    # never be cited in reader-facing prose (a correction stands on its own
+    # merits; the internal tracking doc it came from is not the reader's
+    # business). Scoped to the rendered page's visible body text.
+    internal_refs = facts.get("internalDocRefs", [])
+    internal_ok = len(internal_refs) == 0
+    print("  internal doc-name references: %s -> %s"
+          % (internal_refs if internal_refs else "none", "PASS" if internal_ok else "FAIL"))
+    ok = ok and internal_ok
+
     # Gate 6: inline code contrast >= 4.5:1.
     samples = facts.get("inlineCodeSamples", [])
     if not samples:
@@ -271,7 +319,13 @@ def main():
         ok = ok and langs_pass
 
         full_text = sf.get("fullText", "")
-        contamination = [term for term in gate_cfg["forbidden"] if term in full_text]
+        # Word-boundary match, not substring: radix sort's own
+        # `counting_sort_by_digit` helper legitimately contains
+        # "counting_sort" as a substring without being that section's code.
+        contamination = [
+            term for term in gate_cfg["forbidden"]
+            if re.search(r"\b%s\b" % re.escape(term), full_text)
+        ]
         contam_pass = len(contamination) == 0
         print("  %s: no other-algorithm code -> %s%s"
               % (label, "PASS" if contam_pass else "FAIL",
