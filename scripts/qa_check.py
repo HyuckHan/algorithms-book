@@ -12,13 +12,19 @@ Currently implements:
     (not the source SCSS values, which can differ once Bootstrap/Quarto's
     own cascade rules -- e.g. the $code-bg == $gray-100 fallback -- are
     applied).
+  - Gate 4 (일부): every fenced code block (div.sourceCode, whether a plain
+    block or a panel-tabset pane, active or not) must have non-empty
+    rendered content. Catches `{.lang include="path"}` code-fence attributes
+    that Quarto/Pandoc silently treats as an inert data-include passthrough
+    (never actually inlining the file) instead of the working
+    `{{< include path >}}` shortcode placed *inside* the fence.
 
-Gates 1/2/4/5/7 from docs/QUALITY_ASSURANCE.md are NOT implemented here yet
+Gates 1/2/5/7 from docs/QUALITY_ASSURANCE.md are NOT implemented here yet
 (tracked for M2 per docs/MILESTONES.md); this script does not claim to check
 them. It also reports raw-math leakage, broken images, missing alt text, and
 console/request errors as a side effect of the same page load, since the
-browser_check.mjs pass already collects them, but only gates 3 and 6 affect
-the exit code.
+browser_check.mjs pass already collects them, but only gates 3, 4, and 6
+affect the exit code.
 
 Requires Node.js + the Playwright browser (see scripts/qa/package.json):
     cd scripts/qa && npm install && npx playwright install chromium
@@ -153,6 +159,19 @@ def main():
                   % (s["text"], s["color"], s["backgroundColor"],
                      ("%.2f:1" % c) if c is not None else "unknown", status))
         ok = ok and gate6_pass
+
+    # Gate 4: no empty fenced code blocks (the include="path" attribute bug).
+    code_blocks = facts.get("codeBlocks", [])
+    if not code_blocks:
+        print("  gate 4 (empty code blocks): no fenced code blocks found on page -> PASS (vacuous)")
+    else:
+        empty = [b for b in code_blocks if b["length"] == 0]
+        gate4_pass = len(empty) == 0
+        print("  gate 4 (empty code blocks): %d code block(s) checked, %d empty -> %s"
+              % (len(code_blocks), len(empty), "PASS" if gate4_pass else "FAIL"))
+        for b in empty:
+            print("    EMPTY: id=%s lang=%s" % (b["id"], b["lang"]))
+        ok = ok and gate4_pass
 
     # Side-effect reporting (not gated on yet, see module docstring).
     if facts["hasRawMath"]:

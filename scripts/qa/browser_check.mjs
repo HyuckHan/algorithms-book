@@ -66,6 +66,17 @@ const domFacts = await page.evaluate(() => {
     return { text: el.textContent.slice(0, 60), color: cs.color, backgroundColor: cs.backgroundColor };
   });
 
+  // Fenced code blocks (Quarto/Pandoc wrap each one in a div.sourceCode,
+  // whether or not it's inside a panel-tabset). Use textContent, not
+  // innerText: inactive (not-currently-selected) tabset panes are
+  // display:none, and innerText returns "" for anything not visible, which
+  // would misreport a perfectly-populated-but-inactive tab as empty.
+  const codeBlocks = Array.from(document.querySelectorAll("div.sourceCode")).map((div) => {
+    const codeEl = div.querySelector("code");
+    const text = codeEl ? codeEl.textContent : "";
+    return { id: div.id || null, lang: codeEl ? codeEl.className : null, length: text.trim().length };
+  });
+
   const scrollWidth = document.documentElement.scrollWidth;
   const clientWidth = document.documentElement.clientWidth;
 
@@ -77,6 +88,7 @@ const domFacts = await page.evaluate(() => {
     brokenImgs,
     missingAltImgs,
     inlineCode,
+    codeBlocks,
     horizontalOverflow: scrollWidth > clientWidth + 2,
   };
 });
@@ -107,6 +119,7 @@ console.log(JSON.stringify({
   missingAltImgs: domFacts.missingAltImgs,
   horizontalOverflow: domFacts.horizontalOverflow,
   inlineCodeSamples: uniqueInlineCode,
+  codeBlocks: domFacts.codeBlocks,
 }, null, 2));
 
 await browser.close();
