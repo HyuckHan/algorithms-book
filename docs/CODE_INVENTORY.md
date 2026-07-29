@@ -44,28 +44,27 @@ from-scratch 알고리즘이 아니므로 코드 대상에서 제외.
 | Blob(연결 요소) 세기 | `10_blob.tex` | 없음 | ❌ 신규 | ❌ 신규 |
 | Power Set | `11_power_set.tex` | 확인 필요(lstlisting 2개 존재) | ❌ 신규 | ❌ 신규 |
 
-## Lecture 03 · 정렬 (파일럿, 완료 — 정책 확정 이전)
+## Lecture 03 · 정렬 (완료 — 3언어 정책 정합 완료)
 
 ::: 참고
-M1에서 먼저 완료됨. **정책과 불일치하는 알려진 예외**(ADR-004에도 기록): Python
-(`code/03-sorting/python/sorting.py`)은 Selection/Insertion/Merge Sort의 from-scratch 구현이고,
-C/Java(`code/03-sorting/{c,java}/`)는 `lecture-notes/code/lecture03/`에서 그대로 가져온
-Comparator·qsort API 안전성 데모라서 **서로 다른 알고리즘/데이터**를 다룬다. 아래 표는 "정책대로
-라면 무엇이 필요한가"를 보여주며, 실제 정합 작업(Bubble/Quick/Heap/Counting의 Java·C from-scratch
-구현 추가, 혹은 Selection/Insertion/Merge의 Java·C 추가)은 별도 후속 작업이다.
+M1에서 Selection Sort로 3언어 파이프라인을 먼저 검증한 뒤, 나머지 7개 알고리즘(Bubble/Insertion/
+Merge/Quick/Heap/Counting/Radix)을 같은 방식으로 채웠다. `lecture-notes/code/lecture03/`에는
+from-scratch 구현이 전혀 없었으므로(Comparator·qsort API 안전성 데모만 존재) C/Java 전부 신규
+작성했고, Python은 기존 `sorting.py`(Selection/Insertion/Merge)에 Bubble/Quick을 추가하고
+Heap/Counting/Radix는 파일을 분리했다. Radix Sort는 강의에 formal 의사코드가 없어(prose만 존재)
+직접 구조를 정했다.
 :::
 
 | 알고리즘 | 소스 | Java | C | Python |
 |---|---|---|---|---|
-| SelectionSort | `03_selection.tex` | ❌ 신규 | ❌ 신규 | ✅ `sorting.py` |
-| BubbleSort | `04_bubble.tex` | ❌ 신규 | ❌ 신규 | ❌ 신규 |
-| InsertionSort | `05_insertion.tex` | ❌ 신규 | ❌ 신규 | ✅ `sorting.py` |
-| MergeSort / Merge | `07_merge_sort.tex` | ❌ 신규 | ❌ 신규 | ✅ `sorting.py` |
-| QuickSort / Partition | `08_quick_sort.tex` | ❌ 신규 | ❌ 신규 | ❌ 신규 |
-| MaxHeapify | `11_heapify.tex` | ❌ 신규 | ❌ 신규 | ❌ 신규 |
-| BuildMaxHeap | `12_build_heap.tex` | ❌ 신규 | ❌ 신규 | ❌ 신규 |
-| HeapSort | `13_heap_sort.tex` | ❌ 신규 | ❌ 신규 | ❌ 신규 |
-| CountingSort | `14_counting_sort.tex` | ❌ 신규 | ❌ 신규 | ❌ 신규 |
+| SelectionSort | `03_selection.tex` | ✅ `SelectionSort.java` | ✅ `selection_sort.c` | ✅ `sorting.py` |
+| BubbleSort | `04_bubble.tex` | ✅ `BubbleSort.java` | ✅ `bubble_sort.c` | ✅ `sorting.py` |
+| InsertionSort | `05_insertion.tex` | ✅ `InsertionSort.java` | ✅ `insertion_sort.c` | ✅ `sorting.py` |
+| MergeSort / Merge | `07_merge_sort.tex` | ✅ `MergeSort.java` | ✅ `merge_sort.c` | ✅ `sorting.py` |
+| QuickSort / Partition | `08_quick_sort.tex` | ✅ `QuickSort.java` | ✅ `quick_sort.c` | ✅ `sorting.py` |
+| MaxHeapify / BuildMaxHeap / HeapSort | `11_heapify.tex`, `12_build_heap.tex`, `13_heap_sort.tex` | ✅ `HeapSort.java` | ✅ `heap_sort.c` | ✅ `heap_sort.py` |
+| CountingSort | `14_counting_sort.tex` | ✅ `CountingSort.java` | ✅ `counting_sort.c` | ✅ `counting_sort.py` |
+| RadixSort | `15_radix_sort.tex`(prose만, formal 의사코드 없음) | ✅ `RadixSort.java` | ✅ `radix_sort.c` | ✅ `radix_sort.py` |
 | (Comparator/qsort API 안전성 데모) | `17_java_sorting.tex`, `18_c_sorting.tex` | ✅ `FruitSorting.java` | ✅ `qsort_examples.c` | ✅ `comparator_demo.py` |
 
 ## Lecture 04 · 선택과 순서통계량
