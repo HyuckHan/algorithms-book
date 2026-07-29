@@ -52,6 +52,41 @@ ALGORITHM_CONFIG = {
                 "java": {"file": "SelectionSort.java", "class": "SelectionSort"},
                 "python": {"file": "selection_sort_demo.py"},
             },
+            "bubble-sort": {
+                "c": {"file": "bubble_sort.c", "bin": "bubble_sort"},
+                "java": {"file": "BubbleSort.java", "class": "BubbleSort"},
+                "python": {"file": "bubble_sort_demo.py"},
+            },
+            "insertion-sort": {
+                "c": {"file": "insertion_sort.c", "bin": "insertion_sort"},
+                "java": {"file": "InsertionSort.java", "class": "InsertionSort"},
+                "python": {"file": "insertion_sort_demo.py"},
+            },
+            "merge-sort": {
+                "c": {"file": "merge_sort.c", "bin": "merge_sort"},
+                "java": {"file": "MergeSort.java", "class": "MergeSort"},
+                "python": {"file": "merge_sort_demo.py"},
+            },
+            "quick-sort": {
+                "c": {"file": "quick_sort.c", "bin": "quick_sort"},
+                "java": {"file": "QuickSort.java", "class": "QuickSort"},
+                "python": {"file": "quick_sort_demo.py"},
+            },
+            "heap-sort": {
+                "c": {"file": "heap_sort.c", "bin": "heap_sort"},
+                "java": {"file": "HeapSort.java", "class": "HeapSort"},
+                "python": {"file": "heap_sort.py"},
+            },
+            "counting-sort": {
+                "c": {"file": "counting_sort.c", "bin": "counting_sort"},
+                "java": {"file": "CountingSort.java", "class": "CountingSort"},
+                "python": {"file": "counting_sort.py"},
+            },
+            "radix-sort": {
+                "c": {"file": "radix_sort.c", "bin": "radix_sort"},
+                "java": {"file": "RadixSort.java", "class": "RadixSort"},
+                "python": {"file": "radix_sort.py"},
+            },
         },
     },
 }

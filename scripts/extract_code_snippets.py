@@ -38,6 +38,41 @@ SNIPPET_CONFIG = {
                 ("java/SelectionSort.java", "java"),
                 ("c/selection_sort.c", "c"),
             ],
+            "bubble-sort": [
+                ("python/sorting.py", "py"),
+                ("java/BubbleSort.java", "java"),
+                ("c/bubble_sort.c", "c"),
+            ],
+            "insertion-sort": [
+                ("python/sorting.py", "py"),
+                ("java/InsertionSort.java", "java"),
+                ("c/insertion_sort.c", "c"),
+            ],
+            "merge-sort": [
+                ("python/sorting.py", "py"),
+                ("java/MergeSort.java", "java"),
+                ("c/merge_sort.c", "c"),
+            ],
+            "quick-sort": [
+                ("python/sorting.py", "py"),
+                ("java/QuickSort.java", "java"),
+                ("c/quick_sort.c", "c"),
+            ],
+            "heap-sort": [
+                ("python/heap_sort.py", "py"),
+                ("java/HeapSort.java", "java"),
+                ("c/heap_sort.c", "c"),
+            ],
+            "counting-sort": [
+                ("python/counting_sort.py", "py"),
+                ("java/CountingSort.java", "java"),
+                ("c/counting_sort.c", "c"),
+            ],
+            "radix-sort": [
+                ("python/radix_sort.py", "py"),
+                ("java/RadixSort.java", "java"),
+                ("c/radix_sort.c", "c"),
+            ],
         },
     },
 }
