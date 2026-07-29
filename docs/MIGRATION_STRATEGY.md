@@ -24,7 +24,11 @@ L01–10 Beamer 자료를 Quarto 웹북으로 변환하되 content map의 교정
 (3) 접근 가능한 HTML/CSS, (4) 선별적 인터랙티브. 화면 캡처는 금지(임시도 지양).
 
 **E. 코드 연결** — `code/`가 canonical. 테스트 통과 코드만 노출. 긴 파일은 marker로 일부 추출. 다운로드는 전체 파일.
-Python은 신규 작성(§CONTENT_MODEL 5).
+**from-scratch 알고리즘은 전 강의에서 C/Java/Python 3언어로 제공한다**(ADR-004). Java·C는
+`lecture-notes/code/lectureNN/`에 있으면 재사용, 없으면 신규 작성 — 강의마다 커버리지가 다르므로
+"Python만 신규"라고 가정하지 말고 시작 전 `docs/CODE_INVENTORY.md`로 그 강의의 재고를 확인한다.
+Python은 모든 강의에서 항상 신규 작성. 각 언어 구현은 해당 의사코드와 일치, 예제 입력은 본문
+trace와 일치(§CONTENT_MODEL 5).
 
 **F. 검증** — content map↔페이지 매핑, 수식·알고리즘 결과 검산, 코드 빌드/실행(3버전 출력 일치), 링크·접근성, status 갱신.
 

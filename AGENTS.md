@@ -10,6 +10,8 @@
 5. `docs/CONTENT_MODEL.md` — qmd 작성 규약과 status 워크플로
 6. 변환 대상 강의의 `lecture-notes/docs/lectureNN_content_map.md`(교정 원장)
 7. `docs/PER_LECTURE_NOTES.md` — 강의별 정확성 주의점
+8. `docs/CODE_INVENTORY.md` — 강의별 코드 재고(어떤 알고리즘이 Java/C가 이미 있고 무엇을 신규
+   작성해야 하는지; ADR-004 — from-scratch 알고리즘은 전 강의 C/Java/Python 3언어 필수)
 
 핵심 원칙(어기지 말 것):
 1. 손으로 다시 타이핑하지 않는다 — 의사코드·수식·코드·다이어그램은 소스에서 자동 생성.

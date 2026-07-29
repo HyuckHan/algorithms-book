@@ -71,13 +71,27 @@ last_verified: "2026-07-28"
   load factor 가정 시 기대 O(1), 최악 O(n)." 상한 `O`, 하한 `Ω`, tight `Θ`. average/expected/amortized 구분.
   그래프는 표현·자료구조 명시.
 
-## 5. 코드 규칙 (3버전)
+## 5. 코드 규칙 (3버전 필수)
 
-- canonical은 `lecture-notes/code/NN/{java,c}`에서 가져온다. Python은 신규 작성(같은 알고리즘·같은 예제 입력).
-- 웹에는 파일 **주입**(`include=`)으로 노출. HTML에 코드를 박지 않는다.
+- **from-scratch 알고리즘은 전 강의에서 C/Java/Python 3언어로 제공한다**(ADR-004, 2026-07-29 갱신).
+  `lecture-notes/code/lectureNN/{java,c}`에 해당 언어 구현이 이미 있으면 재사용(복사)하고, 없으면
+  신규 작성한다 — Java·C도 강의별로 커버리지가 다르므로("Python만 없다"고 가정하지 말 것)
+  강의를 시작하기 전 `docs/CODE_INVENTORY.md`에서 그 강의의 재고를 확인한다. **Python은 모든
+  강의에서 항상 신규 작성 대상이다.**
+- 각 언어 구현은 해당 섹션의 pseudocode.js 의사코드가 표현하는 알고리즘과 일치해야 하고, 예제
+  입력은 본문의 실행 추적(trace)에 쓰인 값과 맞춘다 — 코드와 본문이 서로 다른 이야기를 하지 않는다.
+- 웹에는 파일 **주입**으로 노출하되, Quarto의 코드펜스 `include="path"` 속성은 실제로 동작하지
+  않는다(Pandoc이 인식하지 못해 빈 `data-include` 속성만 남기고 내용이 비어버린다 — 2026-07
+  L03에서 발견된 버그). 대신 코드펜스 **안에** `{{< include path >}}` 쇼트코드를 둔다:
+  ````
+  ```{.python}
+  {{< include ../code/03-sorting/python/sorting.py >}}
+  ```
+  ````
+  HTML에 코드를 직접 박지 않는다.
 - 코드블록에 언어·파일명 표시. 복잡 예제는 실행 명령·예상 결과 제공.
 - C/Java의 indexing·API 차이는 본문 명시. 컴파일 안 되는 의사코드를 실제 코드처럼 표시 금지.
-- **세 언어의 예제 출력 일치**를 CI에서 검증(§QUALITY_ASSURANCE).
+- **세 언어의 예제 출력 일치**를 CI에서 검증(§QUALITY_ASSURANCE 게이트 4).
 
 ## 6. 수식 규칙
 

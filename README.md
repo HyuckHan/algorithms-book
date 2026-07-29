@@ -12,10 +12,11 @@
 5. `docs/CONTENT_MODEL.md` — qmd 작성 규약·status 워크플로
 6. `docs/MIGRATION_STRATEGY.md` — 변환 단계·파이프라인·강의 순서
 7. `docs/PER_LECTURE_NOTES.md` — 강의별 정확성 주의점(교정 원장 요약)
-8. `docs/AGENT_WORKFLOW.md` — 작업 규칙·검증·커밋·HANDOFF
-9. `docs/MILESTONES.md` — 마일스톤 M0–M5(완료/금지)
-10. `docs/QUALITY_ASSURANCE.md` — 품질 게이트·검사
-11. `docs/DECISIONS.md` — ADR(왜 Quarto·왜 SVG 변환 등)
+8. `docs/CODE_INVENTORY.md` — 강의별 코드 재고(Java/C 기존 여부, 신규 작성 대상)
+9. `docs/AGENT_WORKFLOW.md` — 작업 규칙·검증·커밋·HANDOFF
+10. `docs/MILESTONES.md` — 마일스톤 M0–M5(완료/금지)
+11. `docs/QUALITY_ASSURANCE.md` — 품질 게이트·검사
+12. `docs/DECISIONS.md` — ADR(왜 Quarto·왜 SVG 변환 등)
 
 ## 시작
 ```bash

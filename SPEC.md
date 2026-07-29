@@ -5,8 +5,9 @@
 
 > **동반 문서(하이브리드 세트):** 이 SPEC은 기술 사양의 진실의 원천이고, 아래가 이를 보완한다.
 > `AGENTS.md`(진입점) · `docs/PRODUCT_VISION.md` · `docs/ARCHITECTURE.md` · `docs/CONTENT_MODEL.md`(status 워크플로) ·
-> `docs/MIGRATION_STRATEGY.md` · `docs/PER_LECTURE_NOTES.md`(강의별 교정) · `docs/AGENT_WORKFLOW.md` ·
-> `docs/MILESTONES.md` · `docs/QUALITY_ASSURANCE.md` · `docs/DECISIONS.md`(ADR). 충돌 시 SPEC과 DECISIONS가 우선한다.
+> `docs/MIGRATION_STRATEGY.md` · `docs/PER_LECTURE_NOTES.md`(강의별 교정) · `docs/CODE_INVENTORY.md`(강의별 코드 재고) ·
+> `docs/AGENT_WORKFLOW.md` · `docs/MILESTONES.md` · `docs/QUALITY_ASSURANCE.md` · `docs/DECISIONS.md`(ADR).
+> 충돌 시 SPEC과 DECISIONS가 우선한다.
 
 > 이 사양은 로컬 툴체인이 없는 환경에서 작성되었다. Quarto·TeX·dvisvgm이 실제로 설치된
 > 로컬(또는 CI)에서 **반드시 렌더 검증**하며 진행한다. "검증되지 않은 산출물을 완성으로 간주하지 않는다."
@@ -210,28 +211,45 @@ pseudocode.js가 먹는 `\begin{algorithmic}` 스니펫으로 감싸고, 해당 
 
 **주의:** L06은 TikZ 55개로 가장 무겁다. 캐시와 병렬 컴파일(`scripts` 내 멀티프로세스)로 빌드시간 관리.
 
-### 4.5 코드 3버전 (C / Java / Python)
+### 4.5 코드 3버전 (C / Java / Python, 전 강의 필수)
 
-- **Java·C:** `lecture-notes/code/lectureNN/{java,c}/`에 이미 존재 → `code/NN-*/`로 복사(또는 빌드 시 참조).
+**from-scratch 알고리즘 구현은 전 강의에서 C/Java/Python 3언어로 제공한다**(ADR-004, 2026-07-29
+갱신). L03 파일럿 때는 "Java·C는 있고 Python만 없다"고 가정했지만, 나머지 강의를 조사해보니
+Java/C 커버리지 자체가 강의마다 다르다(예: L06은 Java만 있고 C가 없음, L04는 Java에
+DeterministicSelect가 빠져 있음) — 강의를 시작하기 전 반드시 `docs/CODE_INVENTORY.md`에서 그
+강의의 실제 재고를 확인한다.
+
+- **Java·C:** `lecture-notes/code/lectureNN/{java,c}/`에 해당 알고리즘 구현이 **있으면** →
+  `code/NN-*/`로 복사(또는 빌드 시 참조). **없으면** Python과 마찬가지로 신규 작성한다.
   전량은 아니고 챕터가 다루는 핵심 알고리즘에 해당하는 파일만 노출.
-- **Python:** **신규 작성.** `code/NN-*/python/`에 Java/C와 **동일한 알고리즘·동일한 예제 입력**으로 작성.
+- **Python:** 모든 강의에서 **항상 신규 작성.** `code/NN-*/python/`에 다른 언어와 **동일한
+  알고리즘·동일한 예제 입력**으로 작성한다.
+- 세 언어 구현 모두 해당 섹션의 pseudocode.js 의사코드가 표현하는 알고리즘과 일치해야 하고,
+  예제 입력은 본문의 실행 추적(trace)에 쓰인 값과 맞춘다.
 - 웹 표기는 panel-tabset:
   ````
   ::: {.panel-tabset}
   ## Python
-  ```{.python include="../code/03-sorting/python/sorting.py"}
+  ```{.python}
+  {{< include ../code/03-sorting/python/sorting.py >}}
   ```
   ## Java
-  ```{.java include="../code/03-sorting/java/FruitSorting.java"}
+  ```{.java}
+  {{< include ../code/03-sorting/java/FruitSorting.java >}}
   ```
   ## C
-  ```{.c include="../code/03-sorting/c/qsort_examples.c"}
+  ```{.c}
+  {{< include ../code/03-sorting/c/qsort_examples.c >}}
   ```
   :::
   ````
-  `include=`로 **파일에서 주입**한다(HTML에 코드를 박지 않는다).
+  **주의**: 코드펜스 attribute로 `{.python include="path"}`처럼 쓰면 안 된다 — Quarto/Pandoc이
+  `include=`를 인식하지 못해 빈 `data-include` 속성만 남기고 코드가 통째로 비어버린다(2026-07
+  L03에서 실제로 발견된 렌더링 버그). 반드시 `{{< include path >}}` 쇼트코드를 코드펜스 **안에**
+  둬서 파일 내용을 주입한다(HTML에 코드를 직접 박지 않는다).
 - **실행 결과 삽입:** `scripts/run_examples.py`가 세 언어를 실제 컴파일·실행(`gcc`, `javac/java`, `python3`)해
-  stdout을 `figures/NN/out-<lang>.txt`로 저장 → qmd에 include. **세 언어 출력이 일치**하는지 CI에서 대조.
+  stdout을 `figures/NN/out-<lang>.txt`로 저장 → qmd에 `{{< include >}}`로 삽입. **같은 알고리즘의
+  세 언어 출력이 일치**하는지 CI에서 대조(§QUALITY_ASSURANCE 게이트 4).
   (Quarto의 코드셀 실행 기능을 Python에 직접 써도 되지만, 3언어 일관성을 위해 스크립트 캡처를 권장.)
 - (선택) Python은 **Pyodide**로 브라우저 내 실행 위젯을 붙일 수 있음. C/Java는 참조·대조용.
 

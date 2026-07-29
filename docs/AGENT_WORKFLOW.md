@@ -9,7 +9,8 @@ Claude Code가 저장소를 안정적으로 수정하도록 읽기 순서·작�
 1. 루트 `AGENTS.md`
 2. `SPEC.md`
 3. 현재 `docs/MILESTONES.md`의 해당 마일스톤
-4. `docs/CONTENT_MODEL.md`, 변환 대상의 `lecture-notes/docs/lectureNN_content_map.md`, `docs/PER_LECTURE_NOTES.md`
+4. `docs/CONTENT_MODEL.md`, 변환 대상의 `lecture-notes/docs/lectureNN_content_map.md`, `docs/PER_LECTURE_NOTES.md`,
+   `docs/CODE_INVENTORY.md`(그 강의의 Java/C 기존 여부·신규 작성 대상 — "Python만 신규"라고 가정하지 말 것)
 5. 수정 대상 디렉터리의 기존 코드·스크립트
 
 ## 3. 세션 시작 명령

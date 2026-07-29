@@ -25,11 +25,25 @@
 - **대안(기각)**: 11종 React 시각화 컴포넌트 재구현 — 막대한 작업량과 원본 불일치 위험.
 - **비고**: 인터랙티브 조작 학습이 핵심으로 판명되는 특정 그림만 선별적으로 위젯화(파일럿 이후).
 
-## ADR-004 · 코드 3버전(C/Java/Python) 탭 + 파일 주입 + 실행 검증
-- **맥락**: 사용자 요구. 강의노트에 Java·C는 있으나 Python은 없음.
-- **결정**: `panel-tabset` + `include=`로 파일 주입. Python 신규 작성. CI에서 3언어 컴파일·실행,
-  예제 stdout 일치 검증.
-- **근거**: 출력 위조 방지, 원본 코드와 웹 표시 불일치 방지.
+## ADR-004 · from-scratch 알고리즘은 전 강의 C/Java/Python 3언어 제공 (2026-07-29 갱신)
+- **맥락**: L03 파일럿 때는 "Java·C는 있으나 Python은 없음"을 전제로 Python만 신규 작성했다.
+  이후 강의(L01·L02·L04–L10)를 조사해보니 강의별로 Java/C 커버리지가 들쭉날쭉하다 — 예를 들어
+  L06(검색 트리)은 Java만 있고 C가 전혀 없고, L04는 Java에 DeterministicSelect 구현이 빠져 있다.
+  Python 부재만 전제하면 이런 기존 격차를 놓친다(§docs/CODE_INVENTORY.md).
+- **결정**: **from-scratch 알고리즘 구현은 전 강의에서 C/Java/Python 3언어로 제공한다.**
+  `lecture-notes/code/lectureNN/`에 해당 언어 구현이 있으면 재사용(복사)하고, 없으면 신규 작성한다
+  (Python은 모든 강의에서 항상 신규 작성 대상). 각 구현은 해당 섹션의 pseudocode.js 의사코드와
+  일치해야 하고, 예제 입력은 본문의 실행 추적(trace)과 맞춰야 한다. `panel-tabset` + Quarto
+  `{{< include path >}}` 쇼트코드(코드펜스 attribute `include=`가 아니라 펜스 **안**에 두는 형태 —
+  `include=`는 실제로는 동작하지 않는 코드펜스 속성이었다, 2026-07 L03 버그 수정 참조)로 파일을
+  주입한다. CI에서 3언어 컴파일·실행, 같은 알고리즘의 예제 stdout 일치를 검증한다
+  (§QUALITY_ASSURANCE 게이트 4).
+- **근거**: 출력 위조 방지, 원본 코드와 웹 표시 불일치 방지. 강의마다 다른 언어 커버리지를
+  그대로 두면 독자가 강의별로 다른 언어 조합만 보게 되어 "3버전 코드"라는 제품 원칙이 강의마다
+  다르게 지켜지는 문제를 없앤다.
+- **알려진 예외**: L03은 이 정책 확정 이전에 작성되어, Python(Selection/Insertion/Merge Sort의
+  from-scratch 구현)과 C/Java(Comparator/qsort API 안전성 데모)가 서로 다른 내용을 다룬다
+  (§docs/CODE_INVENTORY.md에 기록). 정책과 불일치하므로 향후 정합 작업이 필요하다.
 
 ## ADR-005 · 의사코드는 pseudocode.js 자동변환 (손 타이핑 금지)
 - **맥락**: 프로토타입에서 의사코드를 손으로 HTML에 넣어 줄바꿈·들여쓰기가 깨짐.
