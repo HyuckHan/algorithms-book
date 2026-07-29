@@ -1,0 +1,32 @@
+# DRAFT — SPEC 6장. 로컬 파이프라인 확정 후 튜닝.
+name: build-and-deploy
+on:
+  push: { branches: [main] }
+  workflow_dispatch:
+permissions: { contents: read, pages: write, id-token: write }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: recursive }
+      - name: TeX Live (metropolis, kotex, pgfplots, algorithmicx, dvisvgm)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-full dvisvgm fonts-noto-cjk
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - run: sudo apt-get install -y gcc
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - name: Build
+        run: bash scripts/build.sh
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: _book }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages }
+    steps:
+      - uses: actions/deploy-pages@v4
