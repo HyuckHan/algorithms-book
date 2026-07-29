@@ -159,6 +159,40 @@ $$\langle a_1,\dots,a_n\rangle \longmapsto \langle a'_1,\dots,a'_n\rangle,\qquad
 
 **복잡도**: 조기 종료 구현은 best $\Theta(n)$(이미 정렬된 입력), average/worst $\Theta(n^2)$다. $A[i]>A[i+1]$일 때만 swap하므로 같은 key는 서로 지나치지 않아 **stable**이다.
 
+**구현**: 세 언어 모두 같은 예제 입력 `[29, 10, 14, 37, 13, 5, 21, 8]`을 쓴다(Selection Sort와 동일). 의사코드는 1-based 인덱스를 쓰지만 C/Java/Python 배열은 모두 0-based다 — `last`, `i` 모두 언어마다 1칸씩 어긋나지만 비교 범위($A[i]$와 $A[i+1]$)의 모양은 그대로다(코드 주석 참고).
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/03-sorting/snippet-bubble-sort.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/03-sorting/snippet-bubble-sort.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/03-sorting/snippet-bubble-sort.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/03-sorting/out-bubble-sort-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/03-sorting/out-bubble-sort-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/03-sorting/out-bubble-sort-c.txt >}}
+```
+:::
+
 ### Insertion Sort
 
 ::: {.callout-tip title="Mission과 Invariant"}
@@ -173,6 +207,40 @@ $A[1..i-1]$가 정렬되었다고 믿고 $A[i]$를 올바른 위치에 삽입한
 **왜 맞는가 (proof-sketch)**: while 루프는 $A[j]>key$인 동안만 오른쪽으로 shift하므로, 종료 시 $A[j+1]$은 key가 들어갈 정확한 위치다. $A[j]>key$가 strict 조건이라 같은 key는 서로 지나치지 않으므로 **stable**이다.
 
 **복잡도**: $\text{inversion}=\#\{(i,j): i<j \land A[i]>A[j]\}$라 하면 element shift 수는 정확히 inversion 수 $I$와 같아 $T(n,I)=\Theta(n+I)$다. best $I=0 \Rightarrow \Theta(n)$(adaptive), worst $I=\Theta(n^2) \Rightarrow \Theta(n^2)$.
+
+**구현**: 세 언어 모두 같은 예제 입력 `[29, 10, 14, 37, 13, 5, 21, 8]`을 쓴다. 의사코드는 1-based 인덱스를 쓰지만 C/Java/Python 배열은 모두 0-based다 — $i$는 1..n-1, $j$는 i-1 downto 0로 각각 한 칸씩 어긋난다(코드 주석 참고).
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/03-sorting/snippet-insertion-sort.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/03-sorting/snippet-insertion-sort.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/03-sorting/snippet-insertion-sort.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/03-sorting/out-insertion-sort-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/03-sorting/out-insertion-sort-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/03-sorting/out-insertion-sort-c.txt >}}
+```
+:::
 
 ::: {.callout-caution collapse="true" title="확인 문제: 단순 정렬 Checkpoint"}
 $A=[5,2_a,4,2_b]$에 대해 답하라.
@@ -202,7 +270,7 @@ Merge Sort와 Quick Sort는 모두 divide-conquer-combine 구조를 따르지만
 {{< include ../figures/03-sorting/pseudocode-merge-sort.qmd >}}
 
 ::: {.callout-warning title="흔한 실수: overflow-safe midpoint"}
-`mid = low + (high - low) / 2`처럼 **뺄셈 뒤 더하는** 형태를 써야 한다. `mid = (low + high) / 2`는 `low + high`가 정수 overflow를 일으킬 수 있어 위험하다(PER_LECTURE_NOTES L03 교정 항목).
+`mid = low + (high - low) / 2`처럼 **뺄셈 뒤 더하는** 형태를 써야 한다. `mid = (low + high) / 2`는 `low + high`가 정수 overflow를 일으킬 수 있어 위험하다.
 :::
 
 Merge는 정렬된 두 구간 $A[low..mid]$, $A[mid+1..high]$를 $A[low..high]$에 안정적으로 합친다.
@@ -219,6 +287,40 @@ Merge는 정렬된 두 구간 $A[low..mid]$, $A[mid+1..high]$를 $A[low..high]$�
 ![병합 비용의 재귀 트리: 각 level 합은 Θ(n), level 수는 Θ(log n)이다.](../figures/03-sorting/07-merge-recursion-tree.svg){fig-alt="루트 n에서 시작해 n/2, n/4로 절반씩 줄어드는 이진 재귀 트리" width="55%"}
 
 배열 구현은 보통 $\Theta(n)$ buffer와 $\Theta(\log n)$ recursion stack을 쓰며 buffer가 지배한다. linked list와 external sorting에 특히 자연스럽다 — 예측 가능한 시간과 stability를 얻는 대신 추가 공간을 쓰는 trade-off다.
+
+**구현**: 세 언어 모두 같은 예제 입력 `[29, 10, 14, 37, 13, 5, 21, 8]`을 쓴다. `low`, `high`는 0-based inclusive 경계로, 처음 호출은 `merge_sort(A, 0, n-1)`이다 — 의사코드의 `MergeSort(A,1,n)`과 같은 모양의 재귀이며, overflow-safe한 `mid = low + (high-low)/2` 형태를 그대로 쓴다(코드 주석 참고).
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/03-sorting/snippet-merge-sort.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/03-sorting/snippet-merge-sort.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/03-sorting/snippet-merge-sort.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/03-sorting/out-merge-sort-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/03-sorting/out-merge-sort-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/03-sorting/out-merge-sort-c.txt >}}
+```
+:::
 
 ### Quick Sort
 
@@ -240,6 +342,40 @@ Lomuto partition은 scan invariant를 유지한다: $A[low..i]\le pivot$, $A[i+1
 현재 Lomuto의 $A[j]\le pivot$ 조건은 같은 key가 많을 때 한쪽으로 몰릴 수 있다 — 이 경우 3-way partition $(<,=,>)$이 효과적이다. random pivot이나 median-of-three는 adversarial 패턴을 확률적으로 피하는 데 도움이 된다. cache locality가 좋고 expected time이 $\Theta(n\log n)$이지만, worst-case 보장이 필요하면 Heap/Merge 또는 introspective sort를 고려한다.
 :::
 
+**구현**: 세 언어 모두 이 섹션의 partition trace와 같은 예제 입력 `[31, 8, 48, 73, 11, 3, 20, 29, 65, 15]`(pivot=15)을 쓴다. `low`, `high`는 0-based inclusive 경계이며 Lomuto partition의 인덱스 모양은 의사코드와 동일하다(코드 주석 참고).
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/03-sorting/snippet-quick-sort.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/03-sorting/snippet-quick-sort.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/03-sorting/snippet-quick-sort.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/03-sorting/out-quick-sort-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/03-sorting/out-quick-sort-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/03-sorting/out-quick-sort-c.txt >}}
+```
+:::
+
 ### 비교 정렬의 하한
 
 표준 결정 트리 증명은 $n$개의 key가 모두 서로 다르고, 알고리즘이 "$a_i<a_j$인가?"의 답만 얻는 경우를 본다. 한 비교는 yes/no 두 갈래이고, 실행은 decision tree의 root-to-leaf path이며, 서로 다른 permutation은 서로 다른 leaf에 도달해야 한다.
@@ -247,7 +383,7 @@ Lomuto partition은 scan invariant를 유지한다: $A[low..i]\le pivot$, $A[i+1
 ![n=3일 때의 완전한 decision tree: 6개의 leaf가 3!=6개의 permutation과 정확히 대응한다.](../figures/03-sorting/09-decision-tree.svg){fig-alt="a<b?로 시작해 b<c?, a<c? 순으로 분기하여 6개의 leaf(a<b<c부터 c<b<a까지)에 도달하는 이진 결정 트리" width="70%"}
 
 ::: {.callout-warning title="흔한 실수: 하한은 O가 아니라 Ω"}
-비교 정렬의 하한은 $O(n\log n)$이 **아니라 $\Omega(n\log n)$**이다(PER_LECTURE_NOTES L03 교정 항목 — $O$는 상한이므로 "적어도 이만큼 걸린다"는 하한 주장에는 맞지 않는다).
+비교 정렬의 하한은 $O(n\log n)$이 **아니라 $\Omega(n\log n)$**이다 — $O$는 상한이므로 "적어도 이만큼 걸린다"는 하한 주장에는 맞지 않는다.
 :::
 
 $n!$개의 입력 순서를 구별하려면 leaf가 적어도 $n!$개 필요하다. 높이 $h$인 binary tree의 leaf 수는 $\le 2^h$이므로 $2^h\ge n!$, 즉 $h\ge\log_2(n!)$이다. $n!\ge(n/2)^{n/2}$이므로 $\log_2(n!)=\Theta(n\log n)$이고, 따라서 어떤 comparison sort도 worst case에 $\Omega(n\log n)$ comparisons가 필요하다.
@@ -291,7 +427,7 @@ node $i$만 heap property를 어겼고 왼쪽·오른쪽 subtree는 이미 max-h
 ![아래에서 위로 5번의 HEAPIFY를 거쳐 max-heap을 완성한다.](../figures/03-sorting/12-build-heap-trace.svg){fig-alt="i=5부터 i=1까지 5단계에 걸쳐 배열이 점차 max-heap 16,14,10,8,7,9,3,2,4,1로 바뀌는 array/tree 상태" width="55%"}
 
 ::: {.callout-warning title="흔한 실수: BUILD-MAX-HEAP은 O(n log n)이 아니라 Θ(n)"}
-"$n/2$개의 node × 각 $O(\log n)$" 논증은 **느슨한 상한** $O(n\log n)$만 준다(PER_LECTURE_NOTES L03 교정 항목). 대부분의 node는 아래쪽에 있어 높이가 0 또는 1이므로 모두가 root 높이만큼 내려가지 않는다.
+"$n/2$개의 node × 각 $O(\log n)$" 논증은 **느슨한 상한** $O(n\log n)$만 준다. 대부분의 node는 아래쪽에 있어 높이가 0 또는 1이므로 모두가 root 높이만큼 내려가지 않는다.
 
 **정밀한 합**: 높이 $h$인 node 수는 최대 $n/2^{h+1}$개이므로
 
@@ -309,6 +445,40 @@ Heapsort의 아이디어는 세 단계다: (1) $\Theta(n)$에 max-heap을 만든
 ![max-heap에서 root를 반복 추출하며 active heap은 줄고 sorted suffix는 자란다.](../figures/03-sorting/13-heapsort-trace.svg){fig-alt="16을 시작으로 14, 10을 차례로 추출하여 배열 뒤쪽에 확정하고 나머지 동일한 extract+heapify를 반복해 최종적으로 1,2,3,4,7,8,9,10,14,16으로 정렬되는 5단계 상태" width="55%"}
 
 **복잡도**: $\underbrace{\Theta(n)}_{build}+\underbrace{(n-1)\Theta(\log n)}_{extract+heapify}=\Theta(n\log n)$이며 best = average = worst다. iterative MAX-HEAPIFY는 $\Theta(1)$ auxiliary space, recursive MAX-HEAPIFY는 worst-case $\Theta(\log n)$ call stack을 쓴다. 기본 구현은 **unstable**이며, random access가 필요해 locality는 Quick Sort보다 불리할 수 있다.
+
+**구현**: 세 언어 모두 이 섹션의 heap trace와 같은 예제 입력 `[16, 14, 10, 8, 7, 9, 3, 2, 4, 1]`(이미 max-heap 상태)을 쓴다. 이 단원은 heap 배열을 1-based로 쓰기로 정했으므로(Index convention 참고), 코드도 배열 index 0을 비워두고 1..n을 heap으로 써서 의사코드의 parent/left/right 공식을 그대로 재현한다(코드 주석 참고).
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/03-sorting/snippet-heap-sort.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/03-sorting/snippet-heap-sort.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/03-sorting/snippet-heap-sort.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/03-sorting/out-heap-sort-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/03-sorting/out-heap-sort-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/03-sorting/out-heap-sort-c.txt >}}
+```
+:::
 
 | | Merge | Quick | Heap |
 |---|---|---|---|
@@ -337,6 +507,40 @@ Heapsort의 아이디어는 세 단계다: (1) $\Theta(n)$에 max-heap을 만든
 
 **복잡도**: $T(n,k)=\Theta(n+k)$, $S(n,k)=\Theta(n+k)$. stable record version은 output $B$와 count $C$ 때문에 auxiliary $\Theta(n+k)$가 필요하다. $k=O(n)$이면 선형 시간이며, 이는 비교 정렬 하한과 모순되지 않는다 — key 범위라는 추가 구조를 쓰기 때문이다.
 
+**구현**: 세 언어 모두 이 섹션의 Count → Prefix → Place trace와 같은 예제 입력 `[4, 1, 3, 4, 3]`($k=4$)을 쓴다. 의사코드의 $A[1..n]$과 같은 모양을 유지하기 위해 내부적으로 1-based 작업 배열을 쓴다(코드 주석 참고).
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/03-sorting/snippet-counting-sort.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/03-sorting/snippet-counting-sort.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/03-sorting/snippet-counting-sort.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/03-sorting/out-counting-sort-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/03-sorting/out-counting-sort-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/03-sorting/out-counting-sort-c.txt >}}
+```
+:::
+
 ### Radix Sort
 
 가장 낮은 자리(LSD)부터 높은 자리로 이동하며 각 자리에서 stable sort를 수행한다: $\text{ones}\rightarrow\text{tens}\rightarrow\text{hundreds}$. 짧은 수는 leading zero로 본다($2\to002$).
@@ -348,6 +552,40 @@ tens 자리로 정렬할 때 ones 자리에서 만든 순서를 같은 tens grou
 :::
 
 **복잡도**: digit 수 $d$, 진법/버킷 수 $b$일 때 Counting Sort를 내부적으로 쓰면 $T(n)=\Theta(d(n+b))$다. 고정 길이 word에서 $d,b$를 상수로 다루면 $\Theta(n)$이지만, 일반적으로는 두 parameter를 포함한 전체 bound를 유지해야 한다. signed integer, variable length, locale string은 별도의 encoding/order 설계가 필요하다.
+
+**구현**: 세 언어 모두 이 섹션의 ones→tens→hundreds trace와 같은 예제 입력 `[170, 90, 802, 2, 24, 45, 75, 66]`을 쓴다. 이 섹션은 (본문에서 설명하듯) 별도 formal 의사코드가 없어, ones→tens→hundreds 각 자리마다 stable counting sort를 수행하는 형태로 직접 작성했다.
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/03-sorting/snippet-radix-sort.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/03-sorting/snippet-radix-sort.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/03-sorting/snippet-radix-sort.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/03-sorting/out-radix-sort-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/03-sorting/out-radix-sort-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/03-sorting/out-radix-sort-c.txt >}}
+```
+:::
 
 ### 알고리즘 선택 Checklist
 
@@ -361,13 +599,13 @@ tens 자리로 정렬할 때 ones 자리에서 만든 순서를 같은 tens grou
 Java는 표준 라이브러리부터 시작한다 — `Arrays.sort`(primitive/객체)와 `List.sort`가 기본이다. `Comparable`은 자연 순서 **한 가지**만 정의하지만, `Comparator`는 그 외의 정렬 기준을 자유롭게 정의하고 `thenComparing`으로 체이닝할 수 있다.
 
 ::: {.callout-warning title="흔한 실수: Comparator는 class extends가 아니라 interface"}
-`Comparator`를 별도 클래스로 `extends`하는 것은 오래된 오개념이다(PER_LECTURE_NOTES L03 교정 항목). `Comparator<T>`는 **functional interface**이므로 람다나 `Comparator.comparingInt(...).thenComparing(...)` 체이닝으로 작성한다.
+`Comparator`를 별도 클래스로 `extends`하는 것은 오래된 오개념이다. `Comparator<T>`는 **functional interface**이므로 람다나 `Comparator.comparingInt(...).thenComparing(...)` 체이닝으로 작성한다.
 :::
 
 C에서 함수 포인터는 callback이다 — `qsort`는 시그니처 `int compare(const void *a, const void *b)`의 비교 함수를 받는다.
 
 ::: {.callout-warning title="흔한 실수: comparator에 단순 뺄셈(a - b) 금지"}
-정수 comparator에서 `return a - b;`는 두 값이 충분히 멀면 **overflow**로 잘못된 부호를 반환할 수 있다(PER_LECTURE_NOTES L03 교정 항목). `(a > b) - (a < b)`처럼 **relational comparison**을 쓰거나 Java Comparator 방식을 따라야 한다.
+정수 comparator에서 `return a - b;`는 두 값이 충분히 멀면 **overflow**로 잘못된 부호를 반환할 수 있다. `(a > b) - (a < b)`처럼 **relational comparison**을 쓰거나 Java Comparator 방식을 따라야 한다.
 :::
 
 **구현** — Java `Comparator.thenComparing` 체이닝(중복 key 포함)과 C `qsort`의 relational comparator, 그리고 Python `key=` 관용구가 같은 두 성질(extreme value의 오름차순 정렬, 중복 key가 있는 다중 key 정렬의 stability)을 확인한다:
