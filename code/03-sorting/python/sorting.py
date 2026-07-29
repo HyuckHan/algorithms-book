@@ -1,5 +1,6 @@
 """정렬 3종 + 병합 정렬. Java/C 참조 구현과 동일한 예제 입력을 쓴다 (SPEC 4.5)."""
 
+# snippet:selection-sort:start
 def selection_sort(A):
     A = A[:]; n = len(A); comps = 0
     for last in range(n - 1, 0, -1):
@@ -10,6 +11,7 @@ def selection_sort(A):
                 m = i
         A[m], A[last] = A[last], A[m]
     return A, comps
+# snippet:selection-sort:end
 
 def insertion_sort(A):
     A = A[:]; shifts = 0
