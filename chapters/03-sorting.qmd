@@ -161,12 +161,14 @@ $A=[5,2_a,4,2_b]$에 대해 답하라.
 
 세 알고리즘 모두 Java/C 참조 구현과 같은 예제 입력 `[29, 10, 14, 37, 13, 5, 21, 8]`을 사용한다(Java/C 참조 코드는 이 강의에서 표준 라이브러리 API·comparator 안전성에 집중하므로, from-scratch 구현은 Python으로만 제공한다 — Part E 참조).
 
-```{.python include="../code/03-sorting/python/sorting.py"}
+```{.python}
+{{< include ../code/03-sorting/python/sorting.py >}}
 ```
 
 **실행 결과** (`python3 code/03-sorting/python/sorting.py`, 실제 실행 캡처):
 
-```{.default include="../figures/03-sorting/out-sorting.txt"}
+```{.default}
+{{< include ../figures/03-sorting/out-sorting.txt >}}
 ```
 
 ## Part C. Divide-and-Conquer와 비교 하한
@@ -352,13 +354,16 @@ C에서 함수 포인터는 callback이다 — `qsort`는 시그니처 `int comp
 
 ::: {.panel-tabset}
 ## Python
-```{.python include="../code/03-sorting/python/comparator_demo.py"}
+```{.python}
+{{< include ../code/03-sorting/python/comparator_demo.py >}}
 ```
 ## Java
-```{.java include="../code/03-sorting/java/FruitSorting.java"}
+```{.java}
+{{< include ../code/03-sorting/java/FruitSorting.java >}}
 ```
 ## C
-```{.c include="../code/03-sorting/c/qsort_examples.c"}
+```{.c}
+{{< include ../code/03-sorting/c/qsort_examples.c >}}
 ```
 :::
 
@@ -366,13 +371,16 @@ C에서 함수 포인터는 callback이다 — `qsort`는 시그니처 `int comp
 
 ::: {.panel-tabset}
 ## Python
-```{.default include="../figures/03-sorting/out-comparator_demo.txt"}
+```{.default}
+{{< include ../figures/03-sorting/out-comparator_demo.txt >}}
 ```
 ## Java
-```{.default include="../figures/03-sorting/out-java.txt"}
+```{.default}
+{{< include ../figures/03-sorting/out-java.txt >}}
 ```
 ## C
-```{.default include="../figures/03-sorting/out-c.txt"}
+```{.default}
+{{< include ../figures/03-sorting/out-c.txt >}}
 ```
 :::
 
