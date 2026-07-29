@@ -11,7 +11,12 @@ Currently implements:
     computed from the browser's actual resolved color/background-color
     (not the source SCSS values, which can differ once Bootstrap/Quarto's
     own cascade rules -- e.g. the $code-bg == $gray-100 fallback -- are
-    applied).
+    applied). Also covers every distinct syntax-highlighting token color
+    (one per Pandoc/Skylighting token class: comment, keyword, string, ...)
+    used inside fenced code blocks, against that code block's actual
+    background -- a highlight-style chosen for a *different* background
+    than $code-block-bg can leave specific token classes (observed:
+    comments) under 4.5:1 even when most tokens are fine.
   - Gate 4 (일부): every fenced code block (div.sourceCode, whether a plain
     block or a panel-tabset pane, active or not) must have non-empty
     rendered content. Catches `{.lang include="path"}` code-fence attributes
@@ -159,6 +164,30 @@ def main():
                   % (s["text"], s["color"], s["backgroundColor"],
                      ("%.2f:1" % c) if c is not None else "unknown", status))
         ok = ok and gate6_pass
+
+    # Gate 6 (continued): syntax-highlighting token contrast >= 4.5:1, one
+    # check per distinct (token class, color, background) combination
+    # actually present in the rendered code blocks (Python/Java/C tabs and
+    # everything else), including inactive tabset panes.
+    token_samples = facts.get("codeTokenSamples", [])
+    if not token_samples:
+        print("  gate 6 (code token contrast): no syntax-highlighted tokens found -> PASS (vacuous)")
+    else:
+        gate6b_pass = True
+        failing = []
+        for t in token_samples:
+            c = t.get("contrast")
+            if c is None or c < CONTRAST_MINIMUM:
+                gate6b_pass = False
+                failing.append(t)
+        print("  gate 6 (code token contrast): %d distinct token style(s) checked, %d below %.1f:1 -> %s"
+              % (len(token_samples), len(failing), CONTRAST_MINIMUM, "PASS" if gate6b_pass else "FAIL"))
+        for t in failing:
+            c = t.get("contrast")
+            print('    LOW CONTRAST: class=%s color=%s bg=%s contrast=%s sample=%r'
+                  % (t["cls"], t["color"], t["backgroundColor"],
+                     ("%.2f:1" % c) if c is not None else "unknown", t["sample"]))
+        ok = ok and gate6b_pass
 
     # Gate 4: no empty fenced code blocks (the include="path" attribute bug).
     code_blocks = facts.get("codeBlocks", [])

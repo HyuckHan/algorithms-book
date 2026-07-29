@@ -77,6 +77,44 @@ const domFacts = await page.evaluate(() => {
     return { id: div.id || null, lang: codeEl ? codeEl.className : null, length: text.trim().length };
   });
 
+  // Per-token-class syntax-highlighting colors (Pandoc/Skylighting emits one
+  // <span class="TOKENTYPE"> per token: "co" comment, "kw" keyword, "st"
+  // string, etc.) against the code block's actual background. A dark
+  // highlight-style tuned for a *different* dark background than this
+  // project's $code-block-bg can still leave specific token classes
+  // (observed: comments) under 4.5:1 even though most tokens are fine --
+  // getComputedStyle works on display:none (inactive tabset pane) elements
+  // in Chromium, since layout-independent style is still computed, so this
+  // covers hidden tabs the same as visible ones.
+  function effectiveBackground(el) {
+    let node = el;
+    while (node) {
+      const bg = getComputedStyle(node).backgroundColor;
+      const m = bg.match(/rgba?\(([^)]+)\)/);
+      if (m) {
+        const parts = m[1].split(",").map((s) => parseFloat(s));
+        if (parts.length < 4 || parts[3] > 0) return bg;
+      }
+      node = node.parentElement;
+    }
+    return "rgb(255, 255, 255)";
+  }
+  const codeTokens = [];
+  document.querySelectorAll("code.sourceCode").forEach((codeEl) => {
+    const bg = effectiveBackground(codeEl);
+    codeEl.querySelectorAll("span[class]").forEach((span) => {
+      if (span.children.length > 0) return; // only leaf token spans
+      const text = span.textContent;
+      if (!text || !text.trim()) return;
+      codeTokens.push({
+        cls: span.className,
+        color: getComputedStyle(span).color,
+        backgroundColor: bg,
+        sample: text.slice(0, 30),
+      });
+    });
+  });
+
   const scrollWidth = document.documentElement.scrollWidth;
   const clientWidth = document.documentElement.clientWidth;
 
@@ -89,6 +127,7 @@ const domFacts = await page.evaluate(() => {
     missingAltImgs,
     inlineCode,
     codeBlocks,
+    codeTokens,
     horizontalOverflow: scrollWidth > clientWidth + 2,
   };
 });
@@ -107,6 +146,18 @@ const uniqueInlineCode = inlineCodeWithContrast.filter((c) => {
   return true;
 });
 
+// de-duplicate token samples by (class, color, background) -- a single code
+// block repeats the same handful of token classes/colors many times.
+const seenTokens = new Set();
+const uniqueTokens = domFacts.codeTokens
+  .map((t) => ({ ...t, contrast: contrastRatio(t.color, t.backgroundColor) }))
+  .filter((t) => {
+    const key = t.cls + "|" + t.color + "|" + t.backgroundColor;
+    if (seenTokens.has(key)) return false;
+    seenTokens.add(key);
+    return true;
+  });
+
 console.log(JSON.stringify({
   url,
   consoleErrors,
@@ -120,6 +171,7 @@ console.log(JSON.stringify({
   horizontalOverflow: domFacts.horizontalOverflow,
   inlineCodeSamples: uniqueInlineCode,
   codeBlocks: domFacts.codeBlocks,
+  codeTokenSamples: uniqueTokens,
 }, null, 2));
 
 await browser.close();
