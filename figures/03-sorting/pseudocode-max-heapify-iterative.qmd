@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\While{true}\State $largest\gets$ largest of $i,2i,2i+1$ within heap\If{$largest=i$}\State \textbf{break}\EndIf\State \Call{Swap}{$A[i],A[largest]$}\State $i\gets largest$\EndWhile
+\end{algorithmic}
+</pre>
+```

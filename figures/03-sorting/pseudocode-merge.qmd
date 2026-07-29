@@ -1,0 +1,16 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Merge}{$A,low,mid,high$}
+\State $L\gets A[low..mid]$; $R\gets A[mid+1..high]$
+\State $i,j\gets1,1$; $k\gets low$
+\While{$i\le |L|$ and $j\le |R|$}
+\If{$L[i]\le R[j]$}\State $A[k]\gets L[i]$; $i\gets i+1$
+\Else\State $A[k]\gets R[j]$; $j\gets j+1$\EndIf
+\State $k\gets k+1$
+\EndWhile
+\State copy the remaining suffix of $L$ or $R$ into $A[k..high]$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

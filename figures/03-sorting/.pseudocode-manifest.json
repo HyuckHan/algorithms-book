@@ -1,0 +1,50 @@
+{
+  "bubble-sort": {
+    "index": 0,
+    "source": "04_bubble.tex"
+  },
+  "build-max-heap": {
+    "index": 0,
+    "source": "12_build_heap.tex"
+  },
+  "counting-sort": {
+    "index": 0,
+    "source": "14_counting_sort.tex"
+  },
+  "heap-sort": {
+    "index": 0,
+    "source": "13_heap_sort.tex"
+  },
+  "insertion-sort": {
+    "index": 0,
+    "source": "05_insertion.tex"
+  },
+  "max-heapify-iterative": {
+    "index": 1,
+    "source": "11_heapify.tex"
+  },
+  "max-heapify-recursive": {
+    "index": 0,
+    "source": "11_heapify.tex"
+  },
+  "merge": {
+    "index": 1,
+    "source": "07_merge_sort.tex"
+  },
+  "merge-sort": {
+    "index": 0,
+    "source": "07_merge_sort.tex"
+  },
+  "partition": {
+    "index": 1,
+    "source": "08_quick_sort.tex"
+  },
+  "quick-sort": {
+    "index": 0,
+    "source": "08_quick_sort.tex"
+  },
+  "selection-sort": {
+    "index": 0,
+    "source": "03_selection.tex"
+  }
+}

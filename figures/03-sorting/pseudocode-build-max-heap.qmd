@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BuildMaxHeap}{$A[1..n]$}\State $heapSize\gets n$\For{$i\gets\lfloor n/2\rfloor$ downto $1$}\State \Call{MaxHeapify}{$A,i,heapSize$}\EndFor\EndProcedure
+\end{algorithmic}
+</pre>
+```

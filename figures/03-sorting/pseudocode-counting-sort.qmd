@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{CountingSort}{$A[1..n],k$}\State initialize $C[0..k]\gets0$\For{$j\gets1$ to $n$}\State $C[key(A[j])]\gets C[key(A[j])]+1$\EndFor\For{$i\gets1$ to $k$}\State $C[i]\gets C[i]+C[i-1]$\EndFor\For{$j\gets n$ downto $1$}\State $B[C[key(A[j])]]\gets A[j]$\State $C[key(A[j])]\gets C[key(A[j])]-1$\EndFor\State \Return $B$\EndProcedure
+\end{algorithmic}
+</pre>
+```

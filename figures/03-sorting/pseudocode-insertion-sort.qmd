@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{InsertionSort}{$A[1..n]$}\For{$i\gets2$ to $n$}\State $key\gets A[i]$; $j\gets i-1$\While{$j\ge1$ and $A[j]&gt;key$}\State $A[j+1]\gets A[j]$; $j\gets j-1$\EndWhile\State $A[j+1]\gets key$\EndFor\EndProcedure
+\end{algorithmic}
+</pre>
+```

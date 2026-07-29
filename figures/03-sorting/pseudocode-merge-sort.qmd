@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{MergeSort}{$A,low,high$}\If{$low\ge high$}\State \Return\EndIf\State $mid\gets low+\left\lfloor\dfrac{high-low}{2}\right\rfloor$\State \Call{MergeSort}{$A,low,mid$}\State \Call{MergeSort}{$A,mid+1,high$}\State \Call{Merge}{$A,low,mid,high$}\EndProcedure
+\end{algorithmic}
+</pre>
+```

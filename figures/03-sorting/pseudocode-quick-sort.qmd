@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{QuickSort}{$A,low,high$}\If{$low&lt;high$}\State $p\gets$\Call{Partition}{$A,low,high$}\State \Call{QuickSort}{$A,low,p-1$}\State \Call{QuickSort}{$A,p+1,high$}\EndIf\EndProcedure
+\end{algorithmic}
+</pre>
+```

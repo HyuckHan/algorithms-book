@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{SelectionSort}{$A[1..n]$}\For{$last\gets n$ downto $2$}\State $max\gets1$\For{$i\gets2$ to $last$}\If{$A[i]&gt;A[max]$}\State $max\gets i$\EndIf\EndFor\State \Call{Swap}{$A[max],A[last]$}\EndFor\EndProcedure
+\end{algorithmic}
+</pre>
+```

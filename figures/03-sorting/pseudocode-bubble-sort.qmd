@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BubbleSort}{$A[1..n]$}\For{$last\gets n$ downto $2$}\State $swapped\gets\mathrm{false}$\For{$i\gets1$ to $last-1$}\If{$A[i]&gt;A[i+1]$}\State \Call{Swap}{$A[i],A[i+1]$}; $swapped\gets\mathrm{true}$\EndIf\EndFor\If{not $swapped$}\State \Return\EndIf\EndFor\EndProcedure
+\end{algorithmic}
+</pre>
+```

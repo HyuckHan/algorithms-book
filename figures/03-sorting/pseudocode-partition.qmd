@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Partition}{$A,low,high$}\State $pivot\gets A[high]$; $i\gets low-1$\For{$j\gets low$ to $high-1$}\If{$A[j]\le pivot$}\State $i\gets i+1$; \Call{Swap}{$A[i],A[j]$}\EndIf\EndFor\State \Call{Swap}{$A[i+1],A[high]$}\State \Return $i+1$\EndProcedure
+\end{algorithmic}
+</pre>
+```

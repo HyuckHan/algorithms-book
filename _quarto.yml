@@ -2,6 +2,12 @@
 project:
   type: book
   output-dir: _book
+  # pseudocode.js is only referenced dynamically (assets/pseudocode/pseudocode-init.html
+  # builds its <script src> at runtime from `quarto:offset`), so Quarto's static
+  # asset scan never sees a reference to it -- list it explicitly so it gets
+  # copied into _book/.
+  resources:
+    - assets/pseudocode/pseudocode.js
 book:
   title: "알고리즘 · Algorithms"
   author: "Hyuck Han"
@@ -10,13 +16,15 @@ book:
   repo-url: https://github.com/HyuckHan/algorithms-book
   chapters:
     - index.qmd
-    # chapters/03-sorting.qmd   # M1 파일럿에서 파일 생성 후 등록. 그때까지 목차에서 제외(M0: 빈 책만 검증).
+    - chapters/03-sorting.qmd
 format:
   html:
     theme: [cosmo, assets/theme.scss]
     toc: true
     code-copy: true
-    include-in-header: assets/mathjax-macros.html
+    include-in-header:
+      - assets/mathjax-macros.html
+      - assets/pseudocode/pseudocode-init.html
     css: assets/pseudocode/pseudocode.css
   pdf:
     documentclass: scrreport

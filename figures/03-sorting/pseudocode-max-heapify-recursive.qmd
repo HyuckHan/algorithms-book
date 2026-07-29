@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{MaxHeapify}{$A,i,heapSize$}\State $l\gets2i$; $r\gets2i+1$; $largest\gets i$\If{$l\le heapSize$ and $A[l]&gt;A[largest]$}\State $largest\gets l$\EndIf\If{$r\le heapSize$ and $A[r]&gt;A[largest]$}\State $largest\gets r$\EndIf\If{$largest\ne i$}\State \Call{Swap}{$A[i],A[largest]$}\State \Call{MaxHeapify}{$A,largest,heapSize$}\EndIf\EndProcedure
+\end{algorithmic}
+</pre>
+```

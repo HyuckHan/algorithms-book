@@ -1,0 +1,7 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{HeapSort}{$A[1..n]$}\State \Call{BuildMaxHeap}{$A$}\For{$last\gets n$ downto $2$}\State \Call{Swap}{$A[1],A[last]$}\State $heapSize\gets last-1$\State \Call{MaxHeapify}{$A,1,heapSize$}\EndFor\EndProcedure
+\end{algorithmic}
+</pre>
+```
