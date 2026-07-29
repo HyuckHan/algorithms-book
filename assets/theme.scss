@@ -23,4 +23,7 @@ $code-color: #102A43;  // AlgoBlue (~13.6:1 on AlgoLight)
 // to ~3.4:1. Every other token class from that theme clears 4.5:1 on our
 // background (verified via scripts/qa/browser_check.mjs's per-token scan),
 // so only this one needs a targeted override rather than switching themes.
-code.sourceCode span.co { color: #98a4b3; }  // ~5.0:1 on #0d2136
+// span.an (Skylighting "Annotation", e.g. Javadoc {@code ...} tags inside
+// comments) shares that same #6a737d and needs the same fix.
+code.sourceCode span.co,
+code.sourceCode span.an { color: #98a4b3; }  // ~5.0:1 on #0d2136

@@ -111,6 +111,40 @@ $$\langle a_1,\dots,a_n\rangle \longmapsto \langle a'_1,\dots,a'_n\rangle,\qquad
 
 **복잡도**: 비교 횟수는 입력의 기존 순서와 무관하게 항상 $\sum_{last=2}^{n}(last-1)=\frac{n(n-1)}{2}$ 이므로 best = average = worst $= \Theta(n^2)$. swap은 최대 $n-1$회뿐이라 write가 비싼 환경에서는 장점이다. 기본 구현은 **unstable**이다 — $[2_a,2_b,1]$에서 첫 최댓값 $2_a$를 끝과 swap하면 $[1,2_b,2_a]$가 되어 동등 record의 순서가 뒤집힌다.
 
+**구현**: 세 언어 모두 같은 예제 입력 `[29, 10, 14, 37, 13, 5, 21, 8]`을 쓴다. 의사코드는 1-based 인덱스를 쓰지만 C/Java/Python 배열은 모두 0-based다 — `last`가 가리키는 위치 자체는 언어마다 1칸 어긋나도 최댓값을 찾는 범위(`1..last`)는 그대로이므로 결과는 같다(코드 주석 참고).
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/03-sorting/snippet-selection-sort.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/03-sorting/snippet-selection-sort.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/03-sorting/snippet-selection-sort.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/03-sorting/out-selection-sort-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/03-sorting/out-selection-sort-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/03-sorting/out-selection-sort-c.txt >}}
+```
+:::
+
 ### Bubble Sort
 
 ::: {.callout-tip title="Mission과 Invariant"}
@@ -156,20 +190,6 @@ $A=[5,2_a,4,2_b]$에 대해 답하라.
 | worst | $\Theta(n^2)$ | $\Theta(n^2)$ | $\Theta(n^2)$ |
 | stable | No | Yes | Yes |
 | 핵심 이동 | 최종 swap | 인접 swap | shift + insert |
-
-### 구현 (Python)
-
-세 알고리즘 모두 Java/C 참조 구현과 같은 예제 입력 `[29, 10, 14, 37, 13, 5, 21, 8]`을 사용한다(Java/C 참조 코드는 이 강의에서 표준 라이브러리 API·comparator 안전성에 집중하므로, from-scratch 구현은 Python으로만 제공한다 — Part E 참조).
-
-```{.python}
-{{< include ../code/03-sorting/python/sorting.py >}}
-```
-
-**실행 결과** (`python3 code/03-sorting/python/sorting.py`, 실제 실행 캡처):
-
-```{.default}
-{{< include ../figures/03-sorting/out-sorting.txt >}}
-```
 
 ## Part C. Divide-and-Conquer와 비교 하한
 
