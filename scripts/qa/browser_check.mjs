@@ -34,6 +34,14 @@ function contrastRatio(fgCss, bgCss) {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
+// Section-scoped checks for algorithms that got their own isolated
+// C/Java/Python panel-tabset (ALGORITHM_CONFIG in run_examples.py). Quarto
+// wraps each heading's content in <section id="...">, so this looks up the
+// section by the heading's slug id and inspects only code inside it -- a
+// whole-page check can't tell "3 languages present somewhere on the page"
+// from "3 languages present in *this* algorithm's section".
+const SECTION_CHECKS = [{ id: "selection-sort", languages: ["python", "java", "c"] }];
+
 const url = process.argv[2];
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -49,7 +57,7 @@ await page.goto(url, { waitUntil: "networkidle", timeout: 60000 });
 // (see assets/pseudocode/pseudocode-init.html); wait past that plus margin.
 await page.waitForTimeout(9000);
 
-const domFacts = await page.evaluate(() => {
+const domFacts = await page.evaluate((sectionChecks) => {
   const bodyText = document.body.innerText;
   const hasRawMath = /\$\$|\\Theta|\\Omega|\\log_|\\frac/.test(bodyText);
 
@@ -118,6 +126,23 @@ const domFacts = await page.evaluate(() => {
   const scrollWidth = document.documentElement.scrollWidth;
   const clientWidth = document.documentElement.clientWidth;
 
+  // Per-section presence + contamination facts. textContent (not
+  // innerText) is used deliberately: inactive tabset panes are display:none
+  // and must still be inspected, same reasoning as codeBlocks above.
+  const sectionFacts = sectionChecks.map((cfg) => {
+    const section = document.getElementById(cfg.id);
+    if (!section) return { id: cfg.id, found: false };
+    const allCode = Array.from(section.querySelectorAll("code"));
+    const fullText = allCode.map((el) => el.textContent).join("\n");
+    const languages = {};
+    cfg.languages.forEach((lang) => {
+      const matches = allCode.filter((el) => el.classList.contains(lang));
+      const text = matches.map((el) => el.textContent).join("\n");
+      languages[lang] = { count: matches.length, length: text.trim().length };
+    });
+    return { id: cfg.id, found: true, languages, fullText };
+  });
+
   return {
     hasRawMath,
     renderedPseudocodeCount,
@@ -128,9 +153,10 @@ const domFacts = await page.evaluate(() => {
     inlineCode,
     codeBlocks,
     codeTokens,
+    sectionFacts,
     horizontalOverflow: scrollWidth > clientWidth + 2,
   };
-});
+}, SECTION_CHECKS);
 
 const inlineCodeWithContrast = domFacts.inlineCode.map((c) => ({
   ...c,
@@ -172,6 +198,7 @@ console.log(JSON.stringify({
   inlineCodeSamples: uniqueInlineCode,
   codeBlocks: domFacts.codeBlocks,
   codeTokenSamples: uniqueTokens,
+  sectionFacts: domFacts.sectionFacts,
 }, null, 2));
 
 await browser.close();

@@ -23,6 +23,15 @@ Currently implements:
     that Quarto/Pandoc silently treats as an inert data-include passthrough
     (never actually inlining the file) instead of the working
     `{{< include path >}}` shortcode placed *inside* the fence.
+  - Gate 4, section-scoped (SECTION_GATES): for an algorithm with its own
+    isolated section (e.g. 1.3.1 Selection Sort's C/Java/Python
+    panel-tabset), on top of the page-wide empty-block check above, this
+    also verifies -- scoped to *that section's* DOM subtree only -- that all
+    3 languages are present and non-empty, that none of another algorithm's
+    identifiers (insertion/bubble/merge sort names) leaked into it, and
+    (delegating to run_examples.py's own ALGORITHM_CONFIG pass rather than
+    re-implementing compilation) that the 3 languages actually
+    compiled/ran and their outputs agree.
 
 Gates 1/2/5/7 from docs/QUALITY_ASSURANCE.md are NOT implemented here yet
 (tracked for M2 per docs/MILESTONES.md); this script does not claim to check
@@ -54,6 +63,42 @@ CONTRAST_MINIMUM = 4.5
 LECTURE_CHAPTER = {
     "03": {"lecture_notes_dir": "lecture03", "chapter_html": "chapters/03-sorting.html"},
 }
+
+# Algorithms with their own isolated C/Java/Python section (panel-tabset),
+# per ADR-004 / run_examples.py's ALGORITHM_CONFIG. "forbidden" lists the
+# other from-scratch sorts' identifiers -- any of these appearing inside this
+# algorithm's section means the tabset is showing more than just its own code.
+SECTION_GATES = {
+    "03": [
+        {
+            "section_id": "selection-sort",
+            "algorithm": "selection-sort",
+            "languages": ["python", "java", "c"],
+            "forbidden": [
+                "insertion_sort", "InsertionSort", "insertionSort",
+                "bubble_sort", "BubbleSort", "bubbleSort",
+                "merge_sort", "MergeSort", "mergeSort",
+            ],
+        },
+    ],
+}
+
+
+def check_algorithm_pipeline(lecture, algo_name):
+    """Delegate to run_examples.py's own compile/run/output-match check for
+    one ALGORITHM_CONFIG entry, instead of re-implementing gcc/javac/python3
+    invocation here."""
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import run_examples as run_mod  # local import: scripts/ is not normally on sys.path
+
+    cfg = run_mod.ALGORITHM_CONFIG[lecture]
+    code_dir = REPO_ROOT / "code" / cfg["dir"]
+    out_dir = REPO_ROOT / "figures" / cfg["dir"]
+    build_dir = REPO_ROOT / "figures" / ".cache" / "run_examples" / lecture
+    build_dir.mkdir(parents=True, exist_ok=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    results = run_mod.process_algorithms(lecture, code_dir, out_dir, build_dir)
+    return results.get(algo_name)
 
 
 def source_algorithmic_count(lecture):
@@ -201,6 +246,49 @@ def main():
         for b in empty:
             print("    EMPTY: id=%s lang=%s" % (b["id"], b["lang"]))
         ok = ok and gate4_pass
+
+    # Gate 4, section-scoped: presence of all 3 languages, no cross-algorithm
+    # contamination, and (via run_examples.py) actual compile/run + output
+    # match, all scoped to one algorithm's own section.
+    section_facts = {f["id"]: f for f in facts.get("sectionFacts", [])}
+    for gate_cfg in SECTION_GATES.get(args.lecture, []):
+        sid = gate_cfg["section_id"]
+        label = "gate 4 (section #%s)" % sid
+        sf = section_facts.get(sid)
+
+        if sf is None or not sf.get("found"):
+            print("  %s: section not found on rendered page -> FAIL" % label)
+            ok = False
+            continue
+
+        missing_langs = [
+            lang for lang in gate_cfg["languages"]
+            if sf["languages"].get(lang, {}).get("length", 0) == 0
+        ]
+        langs_pass = len(missing_langs) == 0
+        print("  %s: languages=%s missing=%s -> %s"
+              % (label, gate_cfg["languages"], missing_langs, "PASS" if langs_pass else "FAIL"))
+        ok = ok and langs_pass
+
+        full_text = sf.get("fullText", "")
+        contamination = [term for term in gate_cfg["forbidden"] if term in full_text]
+        contam_pass = len(contamination) == 0
+        print("  %s: no other-algorithm code -> %s%s"
+              % (label, "PASS" if contam_pass else "FAIL",
+                 (" (found: %s)" % contamination) if contamination else ""))
+        ok = ok and contam_pass
+
+        pipeline = check_algorithm_pipeline(args.lecture, gate_cfg["algorithm"])
+        if pipeline is None:
+            print("  %s: no run_examples.py ALGORITHM_CONFIG entry for '%s' -> FAIL"
+                  % (label, gate_cfg["algorithm"]))
+            ok = False
+            continue
+        compile_run_pass = all(lang_ok for lang_ok, _ in pipeline["per_language"].values())
+        print("  %s: compile/run (c/java/python) -> %s" % (label, "PASS" if compile_run_pass else "FAIL"))
+        ok = ok and compile_run_pass
+        print("  %s: 3-language output match -> %s" % (label, "PASS" if pipeline["outputs_match"] else "FAIL"))
+        ok = ok and pipeline["outputs_match"]
 
     # Side-effect reporting (not gated on yet, see module docstring).
     if facts["hasRawMath"]:
