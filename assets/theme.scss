@@ -4,5 +4,16 @@ $primary:   #102A43;   // AlgoBlue
 $body-color:#102A43;
 $link-color:#B45309;   // AlgoOrangeText (대비 5.02:1)
 $code-block-bg: #0d2136;
+// Quarto's bootstrap rules give inline code (`code:not(.sourceCode)` in a
+// <p>/<li>/<td>) the *code-block* background whenever $code-bg is left at
+// its Bootstrap default ($gray-100) -- see _bootstrap-rules.scss's
+// `$code-bg == $gray-100 and variable-exists(code-block-bg-color)` check.
+// Since $code-block-bg above is dark, that left inline code on the same
+// dark navy background but with Bootstrap's default (light-background-
+// tuned) $code-color, at ~2:1 contrast -- unreadable. Overriding $code-bg
+// explicitly (to anything other than $gray-100) decouples inline code's
+// background from the code-block one.
+$code-bg:    #F5F7FA;  // AlgoLight
+$code-color: #102A43;  // AlgoBlue (~13.6:1 on AlgoLight)
 /*-- scss:rules --*/
 .callout { border-left-color: #F08C46; }  // 배경/테두리 강조엔 AlgoOrange 허용
