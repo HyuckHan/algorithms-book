@@ -1,0 +1,45 @@
+<script>
+// Quarto book chapters render at varying nesting depth (index.html at the
+// root, chapters/*.html one level down), and a plain <script src="assets/...">
+// only resolves correctly from the root -- Quarto path-adjusts its own
+// dependencies (site_libs, css:) for this, but not raw include-in-header
+// HTML. `quarto:offset` is the same root-relative offset Quarto's own
+// quarto-search.js reads at runtime, so reuse it here instead of hardcoding
+// a path that would 404 on nested chapter pages.
+(function () {
+  var offsetMeta = document.querySelector('meta[name="quarto:offset"]');
+  var offset = offsetMeta ? offsetMeta.content : "./";
+  var script = document.createElement("script");
+  script.src = offset + "assets/pseudocode/pseudocode.js";
+  script.onload = function () {
+    var render = function () {
+      pseudocode.renderClass("pseudocode", { lineNumber: true, noEnd: false });
+      // pseudocode.js only forces a MathJax re-typeset for MathJax <3 (see its
+      // own renderElement()); on MathJax 3/4 it relies on MathJax's initial
+      // page-load scan alone. That scan runs before pseudocode.js has swapped
+      // the <pre class="pseudocode"> placeholders for real math-bearing markup,
+      // so glyphs that appear *only* inside pseudocode blocks (observed: \gets)
+      // never get their per-glyph CSS generated and render as empty boxes.
+      // Forcing a typeset pass here, after pseudocode.js has run, fixes it.
+      // MathJax's own <script> tag (loaded from a CDN) may still be mid-flight
+      // at this point, so poll for `MathJax.startup.promise` rather than
+      // assuming it already exists -- calling typesetPromise() before MathJax
+      // finishes its own startup is a silent no-op.
+      var waitForMathJax = function (attemptsLeft) {
+        if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+          MathJax.startup.promise.then(function () { MathJax.typesetPromise(); });
+        } else if (attemptsLeft > 0) {
+          setTimeout(function () { waitForMathJax(attemptsLeft - 1); }, 200);
+        }
+      };
+      waitForMathJax(50);
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", render);
+    } else {
+      render();
+    }
+  };
+  document.head.appendChild(script);
+})();
+</script>
