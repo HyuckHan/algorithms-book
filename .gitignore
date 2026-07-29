@@ -5,6 +5,8 @@ figures/.cache/
 *.log
 *.class
 __pycache__/
+scripts/qa/node_modules/
+scripts/qa/package-lock.json
 
 /.quarto/
 **/*.quarto_ipynb

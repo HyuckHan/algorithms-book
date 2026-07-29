@@ -1,0 +1,8 @@
+{
+  "name": "algorithms-book-qa",
+  "private": true,
+  "description": "Headless-browser dependency for scripts/qa_check.py. Not part of the book itself.",
+  "dependencies": {
+    "playwright": "^1.55.0"
+  }
+}
