@@ -4,7 +4,7 @@ description: "단순 정렬 3종, 분할 정복(Merge/Quick), Heap, 비교 하�
 lecture: 3
 order: 3
 slug: "03-sorting"
-status: "review"
+status: "verified"
 objectives:
   - "permutation 보존과 ordered output으로 정렬 문제를 명세한다."
   - "stability, auxiliary space, in-place, adaptivity, worst-case 보장, key 제약으로 정렬 알고리즘을 비교한다."
@@ -36,7 +36,7 @@ source:
     - "lecture-notes/lecture03/sections/17_java_sorting.tex"
     - "lecture-notes/lecture03/sections/18_c_sorting.tex"
     - "lecture-notes/lecture03/sections/19_summary_quiz.tex"
-last_verified: "2026-07-29"
+last_verified: "2026-07-30"
 ---
 
 ## 🎯 학습목표
@@ -359,7 +359,7 @@ Lomuto partition은 scan invariant를 유지한다: $A[low..i]\le pivot$, $A[i+1
 ```
 :::
 
-**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`): 입력의 마지막 원소 15가 Lomuto pivot이 되어, 위 partition trace의 pivot=15와 일치한다.
 
 ::: {.panel-tabset}
 ## Python
@@ -553,6 +553,8 @@ tens 자리로 정렬할 때 ones 자리에서 만든 순서를 같은 tens grou
 
 **복잡도**: digit 수 $d$, 진법/버킷 수 $b$일 때 Counting Sort를 내부적으로 쓰면 $T(n)=\Theta(d(n+b))$다. 고정 길이 word에서 $d,b$를 상수로 다루면 $\Theta(n)$이지만, 일반적으로는 두 parameter를 포함한 전체 bound를 유지해야 한다. signed integer, variable length, locale string은 별도의 encoding/order 설계가 필요하다.
 
+ones→tens→hundreds 각 자리에서 실제로 수행하는 것은 1.6.1과 같은 아이디어의 stable Counting Sort다 — 다만 이 절의 코드는 감소 후 배치(decrement-then-place) 방식을, 1.6.1의 코드는 배치 후 감소(place-then-decrement) 방식을 쓴다는 인덱싱 스타일 차이만 있을 뿐 둘 다 stable하고 정확하다.
+
 **구현**: 세 언어 모두 이 섹션의 ones→tens→hundreds trace와 같은 예제 입력 `[170, 90, 802, 2, 24, 45, 75, 66]`을 쓴다. 이 섹션은 (본문에서 설명하듯) 별도 formal 의사코드가 없어, ones→tens→hundreds 각 자리마다 stable counting sort를 수행하는 형태로 직접 작성했다.
 
 ::: {.panel-tabset}
@@ -608,7 +610,7 @@ C에서 함수 포인터는 callback이다 — `qsort`는 시그니처 `int comp
 정수 comparator에서 `return a - b;`는 두 값이 충분히 멀면 **overflow**로 잘못된 부호를 반환할 수 있다. `(a > b) - (a < b)`처럼 **relational comparison**을 쓰거나 Java Comparator 방식을 따라야 한다.
 :::
 
-**구현** — Java `Comparator.thenComparing` 체이닝(중복 key 포함)과 C `qsort`의 relational comparator, 그리고 Python `key=` 관용구가 같은 두 성질(extreme value의 오름차순 정렬, 중복 key가 있는 다중 key 정렬의 stability)을 확인한다:
+**구현** — Java `Comparator.thenComparing` 체이닝(중복 key 포함)과 C `qsort`의 relational comparator, 그리고 Python `key=` 관용구가 같은 두 성질(extreme value의 오름차순 정렬, 중복 key가 있는 다중 key 정렬의 stability)을 확인한다. `Fruit`는 `Comparable`도 구현해 `compareTo`(name 기준)를 정의하지만 아래 `main`에서는 쓰지 않는다 — `compareTo`는 자연 순서(natural order) 한 가지를 정의하는 `Comparable`의 예시일 뿐이고, 실제 정렬 기준 선택은 그 위 문단에서 설명한 `Comparator`로 한다.
 
 ::: {.panel-tabset}
 ## Python
@@ -642,10 +644,6 @@ C에서 함수 포인터는 callback이다 — `qsort`는 시그니처 `int comp
 ```
 :::
 
-::: {.callout-note title="세 언어 결과 비교에 대한 정직한 한계"}
-`code/03-sorting/java/FruitSorting.java`와 `code/03-sorting/c/qsort_examples.c`는 `lecture-notes/code/lecture03/`에서 그대로 가져온 원본이며(읽기전용 소스), 서로 **다른 예제 데이터**를 쓴다. 그래서 바이트 단위로 세 출력을 비교하는 것은 의미가 없다. 대신 `scripts/run_examples.py`는 세 구현이 공통으로 보여주는 두 성질 — extreme-value 정수의 오름차순 정렬, 중복 key가 있는 다중 key 정렬의 stability — 을 Python `comparator_demo.py`가 동일하게 만족하는지, 그리고 세 프로그램 모두 자체 assertion을 통과해 성공적으로 종료하는지를 검증한다.
-:::
-
 ## 개념 지도
 
 ![Sorting 개념 전체를 한눈에: Properties, Comparison sorting(Simple/Efficient), Key-structure(Counting/Radix)로 정리한다.](../figures/03-sorting/19-concept-map.svg){fig-alt="Sorting을 중심으로 Properties, Comparison sorting, Key-structure/Non-comparison 세 갈래로 나뉘고 각각 세부 항목으로 이어지는 개념 지도" width="80%"}
@@ -668,7 +666,11 @@ $A=[5,2_a,4,2_b]$에 대해 답하라.
 2. Bubble의 왼쪽→오른쪽 첫 pass 결과는?
 3. Insertion에서 두 번째 2를 삽입할 때 어떤 원소가 shift되는가?
 
-**정답**: Selection $[2_b,2_a,4,5]$로 equal record가 역전될 수 있다(unstable). Bubble $[2_a,4,2_b,5]$. Insertion은 5와 4만 shift하고 $2_a$는 움직이지 않는다.
+**정답**
+
+1. Selection $[2_b,2_a,4,5]$ — equal record가 역전될 수 있다(unstable).
+2. Bubble $[2_a,4,2_b,5]$.
+3. Insertion은 5와 4만 shift하고 $2_a$는 움직이지 않는다.
 :::
 
 ::: {.callout-caution collapse="true" title="Hand Trace Quiz 2: Divide와 Heap"}
@@ -677,7 +679,12 @@ $A=[5,2_a,4,2_b]$에 대해 답하라.
 3. 1-based heap에서 index 4의 parent와 children index는?
 4. $[4,14,10,8,7,9,3,2,1,0]$을 index 1에서 MAX-HEAPIFY한 결과는?
 
-**정답**: 1. $2,3,5$. 2. pivot의 최종 index이며 왼쪽은 $\le pivot$, 오른쪽은 $>pivot$이다. 3. parent는 2, children은 8·9다. 4. $[14,8,10,4,7,9,3,2,1,0]$.
+**정답**
+
+1. $2,3,5$.
+2. pivot의 최종 index이며 왼쪽은 $\le pivot$, 오른쪽은 $>pivot$이다.
+3. parent는 2, children은 8·9다.
+4. $[14,8,10,4,7,9,3,2,1,0]$.
 :::
 
 ::: {.callout-caution collapse="true" title="복잡도·성질 Quiz"}
@@ -687,7 +694,13 @@ $A=[5,2_a,4,2_b]$에 대해 답하라.
 4. $k=\Theta(n)$일 때 Counting Sort 시간은?
 5. Counting과 LSD Radix가 요구하는 key 조건은?
 
-**정답**: 1. $\Omega(n\log n)$. 2. $\Theta(n)$. 3. Merge·Insertion. 4. $\Theta(n)$. 5. Counting은 작은 finite integer range, LSD Radix는 digit 표현과 stable pass가 필요하다.
+**정답**
+
+1. $\Omega(n\log n)$.
+2. $\Theta(n)$.
+3. Merge·Insertion.
+4. $\Theta(n)$.
+5. Counting은 작은 finite integer range, LSD Radix는 digit 표현과 stable pass가 필요하다.
 :::
 
 ::: {.callout-caution collapse="true" title="Java/C Code Quiz"}
@@ -702,7 +715,10 @@ Comparator<Fruit> c =
 ```
 동점일 때 name으로 정렬하려면 무엇을 이어 붙일까?
 
-**정답**: C는 relational comparison `(x>y)-(x<y)`로 바꿔야 한다(overflow 위험). Java는 `.thenComparing(f -> f.name)`을 이어 붙인다.
+**정답**
+
+1. C는 relational comparison `(x>y)-(x<y)`로 바꿔야 한다(overflow 위험).
+2. Java는 `.thenComparing(f -> f.name)`을 이어 붙인다.
 :::
 
 ## 요약
