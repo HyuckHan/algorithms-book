@@ -79,6 +79,24 @@
   // distinct `$...$` span via the *promise*-based `tex2chtmlPromise` (which
   // can await the async font load properly) before pseudocode.js's own
   // synchronous pass runs, so that pass hits no cache miss and never throws.
+  // Each individual tex2chtmlPromise call is also raced against a timeout:
+  // L08's 12 pseudocode blocks (far denser than L05's 9) showed this can
+  // otherwise hang outright on some inputs rather than reject -- and since
+  // Promise.all never settles until every one of its promises does, a
+  // single hung warm-up call silently blocked render() from *ever* running
+  // (0 of 12 blocks rendered, no console error, because the render() call
+  // that would throw one never happened). A per-call timeout guarantees
+  // Promise.all always settles; the outer call site below adds a second,
+  // whole-warm-up timeout as defense in depth.
+  var withTimeout = function (promise, ms) {
+    return new Promise(function (resolve) {
+      var done = false;
+      var finish = function (v) { if (!done) { done = true; resolve(v); } };
+      promise.then(finish, finish);
+      setTimeout(finish, ms);
+    });
+  };
+
   var warmUpMathJaxFonts = function () {
     if (!(window.MathJax && MathJax.tex2chtmlPromise)) return Promise.resolve();
     var mathSpans = new Set();
@@ -91,18 +109,30 @@
     });
     return Promise.all(
       Array.from(mathSpans).map(function (tex) {
-        return MathJax.tex2chtmlPromise(tex, { display: false }).catch(function () {});
+        return withTimeout(MathJax.tex2chtmlPromise(tex, { display: false }).catch(function () {}), 8000);
       })
     );
   };
 
   var render = function () {
-    try {
-      pseudocode.renderClass("pseudocode", { lineNumber: true, noEnd: false });
-    } catch (e) {
-      console.error("pseudocode-init: renderClass failed", e);
-      return;
-    }
+    // Render each block through its own try/catch instead of
+    // pseudocode.renderClass()'s single uncaught forEach over every block:
+    // renderClass aborts the *entire* batch on the first parse error (a
+    // malformed source construct, e.g. the \text{}/\Statex cases already
+    // fixed in convert_pseudocode.py -- or, empirically, a warm-up call
+    // that hasn't finished loading a glyph's font data on a slow/loaded
+    // machine even with the generous timeouts above), which silently
+    // leaves every block *after* the offending one unrendered too. Calling
+    // pseudocode.renderElement() per-block (the same function renderClass
+    // delegates to internally, per the vendored source) contains a failure
+    // to just that one block.
+    Array.from(document.getElementsByClassName("pseudocode")).forEach(function (el) {
+      try {
+        pseudocode.renderElement(el, { lineNumber: true, noEnd: false });
+      } catch (e) {
+        console.error("pseudocode-init: renderElement failed for one block", e);
+      }
+    });
     // A second typeset pass: MathJax's own initial page-scan runs before this
     // point, i.e. before pseudocode.js has swapped the <pre> placeholders for
     // real math-bearing markup, so glyphs that appear *only* inside
@@ -115,7 +145,9 @@
 
   var start = function () {
     loadPseudocode(function () {
-      mathJaxReady.then(warmUpMathJaxFonts).then(render);
+      mathJaxReady
+        .then(function () { return withTimeout(warmUpMathJaxFonts(), 15000); })
+        .then(render);
     });
   };
 

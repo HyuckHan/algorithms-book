@@ -15,18 +15,35 @@ onto pseudocode.js's grammar unchanged and case-insensitively (verified
 directly against the vendored library's Lexer.js/Parser.js and a Node smoke
 test during M1, not assumed from memory).
 
-Two normalizations are applied, both moving text rather than rewriting it
-(neither changes what the pseudocode says, only where pseudocode.js's
-stricter-than-algorithmicx grammar needs it to sit):
+Four normalizations are applied, all moving or renaming text rather than
+rewriting it (neither changes what the pseudocode says, only where or as
+what pseudocode.js's stricter-than-algorithmicx grammar needs it to appear):
 
 1. `\\Call{name}{args}` occasionally appears *inside* math delimiters in the
-   source (e.g. `$p\\gets\\Call{Partition}{A,low,high}$` in 08_quick_sort.tex)
-   even though `\\Call` is pseudocode.js/algorithmicx markup, not real math --
-   that fails to parse as math. Such spans are hoisted out of the
-   surrounding `$...$` (moving only the true math sub-parts back inside
-   `$...$`), matching how `\\Call` is written everywhere else in the lecture
-   notes.
-2. `\\Require`/`\\Ensure`/`\\Input`/`\\Output` are only valid, per the vendored
+   source (e.g. `$p\\gets\\Call{Partition}{A,low,high}$` in 08_quick_sort.tex,
+   or `\\(u\\gets\\Call{ExtractMin}{Q}\\)` throughout L08 -- pseudocode.js's
+   own lexer treats `$...$` and `\\(...\\)` as equivalent math delimiters,
+   so both need the same handling) even though `\\Call` is pseudocode.js/
+   algorithmicx markup, not real math -- that fails to parse as math. Such
+   spans are hoisted out of the surrounding math (moving only the true math
+   sub-parts back into freshly-opened `$...$`), matching how `\\Call` is
+   written everywhere else in the lecture notes. A single math span can
+   contain more than one `\\Call` (e.g. L05's
+   `$memo[n]\\gets\\Call{FibMemo}{n-1,memo}+\\Call{FibMemo}{n-2,memo}$`) --
+   each one is hoisted independently, alternating plain-math and bare-`\\Call`
+   segments.
+2. `\\text{...}` is a math-mode command with no meaning in pseudocode.js's
+   non-math grammar (unlike `\\textbf`/`\\textrm`/etc., which its Lexer does
+   recognize outside math). One bare occurrence outside any math span
+   (`06_topological_sort.tex`'s `\\Call{TopoVisit}{$v$}=\\text{CYCLE}`)
+   throws a parse error -- wrapped in `$...$` instead, since `\\text` is
+   valid there.
+3. `\\Statex` (algorithmicx's un-numbered continuation line) has no entry in
+   pseudocode.js's statement grammar at all -- one occurrence
+   (`06_topological_sort.tex`) throws `Expected `end` but received
+   `Statex``. Renamed to `\\State`, the closest supported equivalent (only
+   visible difference: a line-number prefix `\\Statex` omits).
+4. `\\Require`/`\\Ensure`/`\\Input`/`\\Output` are only valid, per the vendored
    parser, as top-level statements directly inside `\\begin{algorithmic}`,
    not nested inside a `\\Procedure{...}{...}...\\EndProcedure` body -- a
    nested `\\Require` throws `Expected endProcedure but received Require`
@@ -48,7 +65,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 LECTURE_NOTES = REPO_ROOT / "lecture-notes"
 
 ALGORITHMIC_RE = re.compile(r"\\begin\{algorithmic\}(\[[^\]]*\])?(.*?)\\end\{algorithmic\}", re.DOTALL)
-CALL_IN_MATH_RE = re.compile(r"\$([^${}]*)\\Call\{([^{}]*)\}\{([^{}]*)\}([^${}]*)\$")
+MATH_SPAN_RE = re.compile(r"\$([^$]*)\$|\\\(((?:(?!\\\)).)*)\\\)", re.DOTALL)
+CALL_RE = re.compile(r"\\Call\{([^{}]*)\}\{([^{}]*)\}")
+BARE_TEXT_CMD_RE = re.compile(r"\\text\{[^{}]*\}")
+STATEX_RE = re.compile(r"\\Statex\b")
 PROCEDURE_HEAD_RE = re.compile(r"\\Procedure\{[^{}]*\}\{[^{}]*\}")
 PRECONDITION_RE = re.compile(r"\\(?:Require|Ensure|Input|Output)\s*\{")
 
@@ -91,6 +111,24 @@ PSEUDOCODE_CONFIG = {
         ("07_lcs.tex", 1): "lcs-bottom-up",
         ("09_maximum_subarray.tex", 0): "max-subarray-brute-force",
     },
+    # See chapters/08.inventory §3. 04_dfs.tex idx0 contains two \Procedure
+    # calls (DFS, DFSVisit) inside one \begin{algorithmic} block -- that's
+    # still a single pseudocode.js snippet, matching how the source presents
+    # them together in one frame.
+    "08": {
+        ("03_bfs.tex", 0): "bfs",
+        ("04_dfs.tex", 0): "dfs",
+        ("04_dfs.tex", 1): "dfs-iterative",
+        ("05_cycle_detection.tex", 0): "has-cycle-dfs",
+        ("06_topological_sort.tex", 0): "topo-kahn",
+        ("06_topological_sort.tex", 1): "topo-dfs",
+        ("09_prim.tex", 0): "prim",
+        ("10_kruskal.tex", 0): "kruskal",
+        ("12_shortest_path_intro.tex", 0): "reconstruct-path",
+        ("13_unweighted_dag.tex", 0): "dag-shortest-paths",
+        ("14_dijkstra.tex", 0): "dijkstra",
+        ("15_bellman_ford.tex", 0): "bellman-ford",
+    },
 }
 
 
@@ -131,16 +169,72 @@ def hoist_precondition_before_procedure(body):
     return body[: proc_m.start()] + precondition + "\n" + body[proc_m.start() : pre_m.start()] + body[brace_end:]
 
 
-def hoist_call_out_of_math(body):
-    def repl(m):
-        before, name, args, after = m.groups()
-        out = ("$%s$" % before) if before else ""
-        out += "\\Call{%s}{$%s$}" % (name, args)
-        if after:
-            out += "$%s$" % after
-        return out
+def hoist_calls_from_span(content):
+    """Split one math span's inner content (no delimiters) into alternating
+    plain-math / bare-`\\Call` pieces, one `\\Call` at a time -- handles any
+    number of `\\Call`s in the same span, not just a single one."""
+    pieces = []
+    pos = 0
+    for m in CALL_RE.finditer(content):
+        before = content[pos : m.start()]
+        if before:
+            pieces.append("$%s$" % before)
+        pieces.append("\\Call{%s}{$%s$}" % (m.group(1), m.group(2)))
+        pos = m.end()
+    tail = content[pos:]
+    if tail:
+        pieces.append("$%s$" % tail)
+    return "".join(pieces)
 
-    return CALL_IN_MATH_RE.sub(repl, body)
+
+def hoist_call_out_of_math(body):
+    """Hoist every `\\Call{...}{...}` out of the math spans it appears in
+    (see module docstring point 1) -- covers both `$...$` and `\\(...\\)`
+    delimiters (pseudocode.js's own lexer treats them identically) and any
+    number of `\\Call`s within one span."""
+
+    def repl(m):
+        content = m.group(1) if m.group(1) is not None else m.group(2)
+        if "\\Call" not in content:
+            return m.group(0)
+        return hoist_calls_from_span(content)
+
+    return MATH_SPAN_RE.sub(repl, body)
+
+
+def wrap_bare_text_commands(body):
+    """`\\text{...}` is a math-mode command (valid only inside `$...$`/
+    `\\(...\\)`); pseudocode.js's grammar has no non-math meaning for it
+    (unlike `\\textbf`/`\\textrm`/etc., which its Lexer does recognize as
+    plain text-mode commands -- see the font-cmd token table in the vendored
+    library). One occurrence outside any math span
+    (`06_topological_sort.tex`'s `\\Call{TopoVisit}{$v$}=\\text{CYCLE}`)
+    throws a parse error that, like the `\\Call`-in-math case above, aborts
+    pseudocode.js's single uncaught forEach over every block on the page --
+    leaving every block *after* the offending one unrendered too. Fix:
+    wrap any `\\text{...}` found outside an existing math span in `$...$`,
+    leaving `\\text{...}` that's already properly inside math untouched."""
+    spans = [m.span() for m in MATH_SPAN_RE.finditer(body)]
+
+    def in_existing_math(pos):
+        return any(start <= pos < end for start, end in spans)
+
+    def repl(m):
+        return m.group(0) if in_existing_math(m.start()) else "$%s$" % m.group(0)
+
+    return BARE_TEXT_CMD_RE.sub(repl, body)
+
+
+def rename_statex_to_state(body):
+    """`\\Statex` (algorithmicx's un-numbered continuation-line command) has
+    no entry at all in pseudocode.js's statement grammar (only `\\State`/
+    `\\Print`/`\\Return` are recognized) -- one occurrence
+    (`06_topological_sort.tex`'s `\\Statex outer loop 후 ...`, describing
+    what happens after the outer loop closes) throws `Expected `end` but
+    received `Statex``. `\\State` is the closest supported equivalent; the
+    only visible difference is a line-number prefix `\\Statex` omits, which
+    doesn't change what the line says."""
+    return STATEX_RE.sub("\\\\State", body)
 
 
 def find_algorithmic_blocks(section_path):
@@ -150,7 +244,9 @@ def find_algorithmic_blocks(section_path):
 
 
 def to_pseudocode_snippet(body):
+    body = wrap_bare_text_commands(body)
     body = hoist_call_out_of_math(body)
+    body = rename_statex_to_state(body)
     body = hoist_precondition_before_procedure(body)
     return "\\begin{algorithmic}\n%s\n\\end{algorithmic}" % body
 
@@ -166,7 +262,10 @@ def to_html_fragment(snippet):
 
 
 def _lecture_slug(lecture):
-    names = {"01": "01-introduction", "03": "03-sorting", "05": "05-dynamic-programming"}
+    names = {
+        "01": "01-introduction", "03": "03-sorting",
+        "05": "05-dynamic-programming", "08": "08-graphs",
+    }
     return names.get(lecture, "lecture%s" % lecture)
 
 

@@ -4,7 +4,7 @@
 \Procedure{LCSLength}{$X,Y,m,n$}
 \If{$m=0$ \textbf{or} $n=0$}\State\Return 0\EndIf
 \If{$X[m-1]=Y[n-1]$}\State\Return $1+$\Call{LCSLength}{$X,Y,m-1,n-1$}\EndIf
-\State\Return $\max(\text{LCSLength}{X,Y,m-1,n},\text{LCSLength}{X,Y,m,n-1})$
+\State\Return $\max($\Call{LCSLength}{$X,Y,m-1,n$}$,$\Call{LCSLength}{$X,Y,m,n-1$}$)$
 \EndProcedure
 \end{algorithmic}
 </pre>
