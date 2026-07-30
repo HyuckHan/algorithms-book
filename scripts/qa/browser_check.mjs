@@ -56,6 +56,13 @@ const SECTION_CHECKS = [
   // so their code panel-tabset lives directly in that Part's own section id.
   "part-b.-재귀의-실행-호출-스택", "part-g.-재귀적으로-문제-설계하기", "part-h.-hanoi",
   "part-i.-미로-탐색maze과-backtracking", "part-k.-멱집합power-set",
+  // L04's SelectBySorting gets its own H3 (self-contained), while
+  // Quickselect/RandomizedSelect/DeterministicSelect each get a whole H2
+  // Part (see qa_check.py's SECTION_ID mapping -- ids confirmed against the
+  // actually-rendered chapter, not guessed from the .qmd headings).
+  "가장-단순한-해법-selectbysorting", "part-b.-quickselect",
+  "part-c.-randomized-selection의-성능",
+  "part-d.-deterministic-linear-selection-median-of-medians",
   // L05's four representative algorithms each get their own H3 subsection
   // (see qa_check.py's SECTION_ID mapping -- ids confirmed against the
   // actually-rendered chapter, not guessed from the .qmd headings).
@@ -129,6 +136,30 @@ const domFacts = await page.evaluate(({ sectionChecks, internalDocPatternSources
 
   const renderedPseudocodeCount = document.querySelectorAll(".ps-root").length;
   const unrenderedPseudocodeCount = document.querySelectorAll("pre.pseudocode").length;
+
+  // Raw pseudocode-macro leak check: a `.ps-root` is "rendered" in the sense
+  // that pseudocode.js produced *some* DOM for it (renderedPseudocodeCount
+  // above counts that), but a `\Call{name}{args}` (or similarly-shaped
+  // algorithmicx macro) left *inside* a `$...$`/`\(...\)` math span survives
+  // convert_pseudocode.py's hoist unfixed, MathJax doesn't know the `\Call`
+  // macro, and rather than throwing it typesets the literal control-word
+  // text -- so the block "renders" (a .ps-root exists) but shows raw LaTeX
+  // like "\Call{Partition}{A, p, r}" to the reader instead of formatted
+  // pseudocode (exactly the L05 bug convert_pseudocode.py's
+  // hoist_call_out_of_math was written to prevent). Gate 3 above only counts
+  // *whether* a .ps-root exists, not what's inside it, so it cannot catch
+  // this on its own -- scan each rendered block's own text for a literal
+  // backslash-macro name that should never survive to visible output.
+  const RAW_MACRO_NAMES = [
+    "Call", "Procedure", "EndProcedure", "Require", "Ensure", "Input", "Output",
+    "State", "Statex", "Return", "If", "ElsIf", "Else", "EndIf",
+    "For", "ForAll", "EndFor", "While", "EndWhile", "gets", "Comment",
+  ];
+  const RAW_MACRO_RE = new RegExp("\\\\(?:" + RAW_MACRO_NAMES.join("|") + ")\\b");
+  const rawPseudocodeMacroLeaks = Array.from(document.querySelectorAll(".ps-root"))
+    .map((el, i) => ({ index: i, text: el.textContent }))
+    .filter((r) => RAW_MACRO_RE.test(r.text))
+    .map((r) => ({ index: r.index, sample: r.text.slice(0, 120) }));
 
   // A `## heading` immediately followed by another block (e.g. an image)
   // with no blank line between them in the .qmd source doesn't get parsed
@@ -235,6 +266,7 @@ const domFacts = await page.evaluate(({ sectionChecks, internalDocPatternSources
     internalDocRefs,
     renderedPseudocodeCount,
     unrenderedPseudocodeCount,
+    rawPseudocodeMacroLeaks,
     totalImgs: imgs.length,
     brokenImgs,
     missingAltImgs,
@@ -282,6 +314,7 @@ console.log(JSON.stringify({
   internalDocRefs: domFacts.internalDocRefs,
   renderedPseudocodeCount: domFacts.renderedPseudocodeCount,
   unrenderedPseudocodeCount: domFacts.unrenderedPseudocodeCount,
+  rawPseudocodeMacroLeaks: domFacts.rawPseudocodeMacroLeaks,
   totalImgs: domFacts.totalImgs,
   brokenImgs: domFacts.brokenImgs,
   missingAltImgs: domFacts.missingAltImgs,

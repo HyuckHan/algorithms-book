@@ -76,6 +76,7 @@ LECTURE_CHAPTER = {
     "01": {"lecture_notes_dir": "lecture01", "chapter_html": "chapters/01-introduction.html"},
     "02": {"lecture_notes_dir": "lecture02", "chapter_html": "chapters/02-recursion.html"},
     "03": {"lecture_notes_dir": "lecture03", "chapter_html": "chapters/03-sorting.html"},
+    "04": {"lecture_notes_dir": "lecture04", "chapter_html": "chapters/04-selection.html"},
     "05": {"lecture_notes_dir": "lecture05", "chapter_html": "chapters/05-dynamic-programming.html"},
     "08": {"lecture_notes_dir": "lecture08", "chapter_html": "chapters/08-graphs.html"},
 }
@@ -111,6 +112,26 @@ ALGO_IDENTIFIERS = {
         "recursive-binary-search": ["bsearch"],
         "maze": ["find_path", "findPath"],
         "power-set": ["power_set", "powerSet", "PowerSet"],
+    },
+    # Part A's SelectBySorting gets its own H3 (L01/L03-style, self-contained,
+    # no further split), while Part B/C/D each dedicate a whole H2 Part to one
+    # algorithm (Quickselect/RandomizedSelect/DeterministicSelect, L02-style --
+    # see SECTION_ID below, ids confirmed against the actually-rendered
+    # _book/chapters/04-selection.html, not guessed from the .qmd headings).
+    # "partition3" is deliberately excluded: RandomizedSelect and
+    # DeterministicSelect each carry their own independent private copy of a
+    # 3-way partition helper (matching how lecture-notes/code/lecture04's own
+    # canonical C files duplicate it rather than share it) -- that's parallel
+    # structure, not cross-algorithm contamination, so listing it as an
+    # exclusive identifier for either would false-positive on the other.
+    "04": {
+        "select-by-sorting": ["select_by_sorting", "selectBySorting", "SelectBySorting"],
+        "fixed-quickselect": ["fixed_quickselect", "fixedQuickselect", "FixedQuickselect", "partition"],
+        "randomized-select": ["randomized_select", "randomizedSelect", "RandomizedSelect"],
+        "deterministic-select": [
+            "deterministic_select", "deterministicSelect", "DeterministicSelect",
+            "select_range", "selectRange",
+        ],
     },
     # L05's four representative algorithms each get their own H3 subsection,
     # but (unlike L01-03) that subsection can hold *two* ALGORITHM_CONFIG
@@ -199,6 +220,19 @@ SECTION_ID = {
         "recursive-binary-search": "part-g.-재귀적으로-문제-설계하기",
         "maze": "part-i.-미로-탐색maze과-backtracking",
         "power-set": "part-k.-멱집합power-set",
+    },
+    # Confirmed against the actually-rendered _book/chapters/04-selection.html
+    # section ids. Part B/C/D's ids are the whole H2 Part's own id (Quarto
+    # nests each Part's H3 subsections -- 실행-추적, 복잡도, etc. -- as child
+    # <section> elements inside it), since each Part's single algorithm's
+    # code panel lives in one of those H3 subsections rather than in a
+    # dedicated per-algorithm H3 of its own (matching L02's whole-Part
+    # pattern here, not L01/L03's per-algorithm-H3 pattern).
+    "04": {
+        "select-by-sorting": "가장-단순한-해법-selectbysorting",
+        "fixed-quickselect": "part-b.-quickselect",
+        "randomized-select": "part-c.-randomized-selection의-성능",
+        "deterministic-select": "part-d.-deterministic-linear-selection-median-of-medians",
     },
     # Confirmed against the actually-rendered _book/chapters/05-dynamic-programming.html
     # H3 ids (Quarto's Korean-safe slugger), not guessed from the .qmd headings.
@@ -388,6 +422,20 @@ def main():
     print("  gate 3 (pseudocode block count): source=%d rendered=%d unrendered=%d -> %s"
           % (expected, rendered, unrendered, "PASS" if gate3_pass else "FAIL"))
     ok = ok and gate3_pass
+
+    # Gate 3 (continued): a rendered .ps-root can still show raw, unrendered
+    # macro text (e.g. `\Call{name}{args}` left inside a math span, which
+    # MathJax doesn't know how to typeset and passes through literally --
+    # the L05 bug convert_pseudocode.py's hoist_call_out_of_math exists to
+    # prevent). Gate 3 above only counts *whether* a block rendered, not
+    # what's inside it, so this is a separate check on the same facts.
+    macro_leaks = facts.get("rawPseudocodeMacroLeaks", [])
+    macro_leak_ok = len(macro_leaks) == 0
+    print("  gate 3 (no raw pseudocode macro leaks in rendered blocks): -> %s"
+          % ("PASS" if macro_leak_ok else "FAIL"))
+    for leak in macro_leaks:
+        print("    LEAK in .ps-root[%d]: %r" % (leak["index"], leak["sample"]))
+    ok = ok and macro_leak_ok
 
     # Internal doc-name / production-jargon leak check: SPEC.md/
     # PER_LECTURE_NOTES.md/etc. must never be cited in reader-facing prose
