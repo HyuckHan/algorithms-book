@@ -125,6 +125,31 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    "04": {
+        "dir": "04-selection",
+        "snippets": {
+            "select-by-sorting": [
+                ("python/select_by_sorting.py", "py"),
+                ("java/SelectBySorting.java", "java"),
+                ("c/select_by_sorting.c", "c"),
+            ],
+            "fixed-quickselect": [
+                ("python/fixed_quickselect.py", "py"),
+                ("java/FixedQuickselect.java", "java"),
+                ("c/fixed_quickselect.c", "c"),
+            ],
+            "randomized-select": [
+                ("python/randomized_select.py", "py"),
+                ("java/RandomizedSelect.java", "java"),
+                ("c/randomized_select.c", "c"),
+            ],
+            "deterministic-select": [
+                ("python/deterministic_select.py", "py"),
+                ("java/DeterministicSelect.java", "java"),
+                ("c/deterministic_select.c", "c"),
+            ],
+        },
+    },
     "05": {
         "dir": "05-dynamic-programming",
         "snippets": {

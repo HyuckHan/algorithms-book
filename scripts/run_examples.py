@@ -141,6 +141,31 @@ ALGORITHM_CONFIG = {
             },
         },
     },
+    "04": {
+        "dir": "04-selection",
+        "algorithms": {
+            "select-by-sorting": {
+                "c": {"file": "select_by_sorting.c", "bin": "select_by_sorting"},
+                "java": {"file": "SelectBySorting.java", "class": "SelectBySorting"},
+                "python": {"file": "select_by_sorting.py"},
+            },
+            "fixed-quickselect": {
+                "c": {"file": "fixed_quickselect.c", "bin": "fixed_quickselect"},
+                "java": {"file": "FixedQuickselect.java", "class": "FixedQuickselect"},
+                "python": {"file": "fixed_quickselect.py"},
+            },
+            "randomized-select": {
+                "c": {"file": "randomized_select.c", "bin": "randomized_select"},
+                "java": {"file": "RandomizedSelect.java", "class": "RandomizedSelect"},
+                "python": {"file": "randomized_select.py"},
+            },
+            "deterministic-select": {
+                "c": {"file": "deterministic_select.c", "bin": "deterministic_select"},
+                "java": {"file": "DeterministicSelect.java", "class": "DeterministicSelect"},
+                "python": {"file": "deterministic_select.py"},
+            },
+        },
+    },
     "05": {
         "dir": "05-dynamic-programming",
         "algorithms": {

@@ -1,0 +1,14 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Require{$p\le r$ and $1\le i\le r-p+1$}
+\Procedure{RandomizedSelect}{$A,p,r,i$}
+\If{$p=r$}\State \Return $A[p]$\EndIf
+\State choose $s$ uniformly from $\{p,\dots,r\}$
+\State \Call{Swap}{$A[s],A[r]$}
+\State $q\gets$\Call{Partition}{$A,p,r$}; $k\gets q-p+1$
+\State follow exactly one branch with ranks $i$ or $i-k$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

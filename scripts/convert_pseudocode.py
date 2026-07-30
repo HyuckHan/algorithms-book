@@ -53,6 +53,20 @@ what pseudocode.js's stricter-than-algorithmicx grammar needs it to appear):
    uses `\\Require`/`\\Ensure`). Such statements are hoisted to just before
    the `\\Procedure{...}{...}` call so they parse as a top-level
    precondition/postcondition annotation instead.
+5. `\\Procedure{NAME}{args}`'s NAME cannot contain whitespace at all --
+   confirmed directly against the vendored parser with minimal repros: even
+   a plain two-English-word name (`\\Procedure{Binary Search}`) throws
+   `Expected an atom of close but received ordinary`, and a `~`/NBSP
+   stand-in for the space either parses but prints the literal `~` glyph or
+   still throws. This never surfaced before L04 because every prior
+   lecture's multi-word procedure names were already written concatenated
+   in the source (e.g. `BinarySearch`) -- L04's
+   `\\Procedure{DeterministicSelect (continued)}` is the first occurrence of
+   a documentation qualifier ("this procedure continues from an earlier
+   slide") written with a literal space. Squashing whitespace out of just
+   the NAME group (never the args group) fixes the parse without changing
+   which procedure it is; a name with no whitespace is left untouched, so
+   this is a no-op for every already-working lecture.
 """
 import argparse
 import html
@@ -70,6 +84,7 @@ CALL_RE = re.compile(r"\\Call\{([^{}]*)\}\{([^{}]*)\}")
 BARE_TEXT_CMD_RE = re.compile(r"\\text\{[^{}]*\}")
 STATEX_RE = re.compile(r"\\Statex\b")
 PROCEDURE_HEAD_RE = re.compile(r"\\Procedure\{[^{}]*\}\{[^{}]*\}")
+PROCEDURE_NAME_RE = re.compile(r"\\Procedure\{([^{}]*)\}")
 PRECONDITION_RE = re.compile(r"\\(?:Require|Ensure|Input|Output)\s*\{")
 
 # Lecture-specific slugs, keyed by (section filename, 0-based index of the
@@ -115,6 +130,19 @@ PSEUDOCODE_CONFIG = {
     # calls (DFS, DFSVisit) inside one \begin{algorithmic} block -- that's
     # still a single pseudocode.js snippet, matching how the source presents
     # them together in one frame.
+    # See chapters/04.inventory §3. The first three of \Call-in-math
+    # occurrences the L05 bug taught us to watch for live here too --
+    # 04_quickselect_idea.tex idx0 and both blocks of 10_group_of_five.tex --
+    # hoist_call_out_of_math (generalized during the L08 session) is expected
+    # to fix all three without further changes; verified by running this
+    # script and inspecting the output (no manual edits made).
+    "04": {
+        ("03_sort_then_select.tex", 0): "select-by-sorting",
+        ("04_quickselect_idea.tex", 0): "fixed-quickselect",
+        ("08_randomized_select.tex", 0): "randomized-select",
+        ("10_group_of_five.tex", 0): "deterministic-select-pivot",
+        ("10_group_of_five.tex", 1): "deterministic-select-partition",
+    },
     "08": {
         ("03_bfs.tex", 0): "bfs",
         ("04_dfs.tex", 0): "dfs",
@@ -225,6 +253,17 @@ def wrap_bare_text_commands(body):
     return BARE_TEXT_CMD_RE.sub(repl, body)
 
 
+def squash_procedure_name_whitespace(body):
+    """`\\Procedure{NAME}{args}`'s NAME cannot contain whitespace in
+    pseudocode.js's grammar at all (see module docstring point 5) -- strip
+    whitespace from just the NAME group, leaving the args group untouched."""
+
+    def repl(m):
+        return "\\Procedure{%s}" % re.sub(r"\s+", "", m.group(1))
+
+    return PROCEDURE_NAME_RE.sub(repl, body)
+
+
 def rename_statex_to_state(body):
     """`\\Statex` (algorithmicx's un-numbered continuation-line command) has
     no entry at all in pseudocode.js's statement grammar (only `\\State`/
@@ -246,6 +285,7 @@ def find_algorithmic_blocks(section_path):
 def to_pseudocode_snippet(body):
     body = wrap_bare_text_commands(body)
     body = hoist_call_out_of_math(body)
+    body = squash_procedure_name_whitespace(body)
     body = rename_statex_to_state(body)
     body = hoist_precondition_before_procedure(body)
     return "\\begin{algorithmic}\n%s\n\\end{algorithmic}" % body
@@ -263,7 +303,7 @@ def to_html_fragment(snippet):
 
 def _lecture_slug(lecture):
     names = {
-        "01": "01-introduction", "03": "03-sorting",
+        "01": "01-introduction", "03": "03-sorting", "04": "04-selection",
         "05": "05-dynamic-programming", "08": "08-graphs",
     }
     return names.get(lecture, "lecture%s" % lecture)

@@ -1,0 +1,22 @@
+{
+  "deterministic-select-partition": {
+    "index": 1,
+    "source": "10_group_of_five.tex"
+  },
+  "deterministic-select-pivot": {
+    "index": 0,
+    "source": "10_group_of_five.tex"
+  },
+  "fixed-quickselect": {
+    "index": 0,
+    "source": "04_quickselect_idea.tex"
+  },
+  "randomized-select": {
+    "index": 0,
+    "source": "08_randomized_select.tex"
+  },
+  "select-by-sorting": {
+    "index": 0,
+    "source": "03_sort_then_select.tex"
+  }
+}

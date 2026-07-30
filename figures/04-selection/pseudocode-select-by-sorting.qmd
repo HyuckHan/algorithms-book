@@ -1,0 +1,11 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Require{$p\le r$ and $1\le i\le r-p+1$}
+\Procedure{SelectBySorting}{$A,p,r,i$}
+\State \Call{ComparisonSort}{$A[p..r]$}
+\State \Return $A[p+i-1]$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

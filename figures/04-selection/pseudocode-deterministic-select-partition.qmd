@@ -1,0 +1,18 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{DeterministicSelect(continued)}{$A,p,r,i,M$}
+\State $(lt,gt)\gets$\Call{Partition3AroundValue}{$A,p,r,M$}
+\Comment{$M\in A[p..r]$}
+\State $L\gets lt-p$; $E\gets gt-lt+1$
+\If{$i\le L$}
+  \State \Return \Call{DeterministicSelect}{$A,p,lt-1,i$}
+\ElsIf{$i\le L+E$}
+  \State \Return $M$
+\Else
+  \State \Return \Call{DeterministicSelect}{$A,gt+1,r,i-L-E$}
+\EndIf
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

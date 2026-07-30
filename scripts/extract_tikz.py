@@ -157,6 +157,23 @@ FIGURE_CONFIG = {
         ("08_lcs_reconstruction.tex", 0): {"slug": "15-lcs-backtrack-trace"},
         ("11_summary_quiz.tex", 0): {"slug": "16-concept-map"},
     },
+    # See chapters/04.inventory §2 for the full index-by-index derivation.
+    "04": {
+        ("01_motivation.tex", 0): {"slug": "01-roadmap"},
+        ("02_order_statistics.tex", 0): {"slug": "02-rank-vs-index"},
+        ("03_sort_then_select.tex", 0): {"slug": "03-quicksort-vs-quickselect"},
+        ("04_quickselect_idea.tex", 0): {"slug": "04-pivot-subarray-rank"},
+        ("04_quickselect_idea.tex", 1): {"slug": "05-right-rank-reason"},
+        ("05_quickselect_trace.tex", 0): {"slug": "06-common-first-partition"},
+        ("05_quickselect_trace.tex", 1): {"slug": "07-fixed-pivot-trace", "mode": "sequence"},
+        ("05_quickselect_trace.tex", 2): {"slug": "08-randomized-trace", "mode": "sequence"},
+        ("07_quickselect_analysis.tex", 0): {"slug": "09-geometric-series"},
+        ("10_group_of_five.tex", 0): {"slug": "10-groups-of-five"},
+        ("10_group_of_five.tex", 1): {"slug": "11-median-of-medians-trace", "mode": "sequence"},
+        ("11_pivot_guarantee.tex", 0): {"slug": "12-median-half-guarantee"},
+        ("11_pivot_guarantee.tex", 1): {"slug": "13-group-three-guarantee"},
+        ("14_summary_quiz.tex", 0): {"slug": "14-concept-map"},
+    },
     # See chapters/08.inventory §2 for the full index-by-index derivation.
     # This lecture has the most sequence traces of any lecture so far (13,
     # 59 SVGs total) -- BFS queue, DFS recursion stack, Kahn zero-heap, DFS
@@ -569,7 +586,7 @@ def process_lecture(lecture, check_only, keep_build):
 def _lecture_slug(lecture):
     names = {
         "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
-        "05": "05-dynamic-programming", "08": "08-graphs",
+        "04": "04-selection", "05": "05-dynamic-programming", "08": "08-graphs",
     }
     return names.get(lecture, "lecture%s" % lecture)
 

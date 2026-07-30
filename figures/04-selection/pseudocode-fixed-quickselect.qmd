@@ -1,0 +1,15 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Require{$p\le r$ and $1\le i\le r-p+1$}
+\Procedure{FixedQuickselect}{$A,p,r,i$}
+\If{$p=r$}\State \Return $A[p]$\EndIf
+\State $q\gets$\Call{LomutoPartitionWithPivot}{$A,p,r,A[r]$}
+\State $k\gets q-p+1$
+\If{$i=k$}\State \Return $A[q]$
+\ElsIf{$i&lt;k$}\State \Return \Call{FixedQuickselect}{$A,p,q-1,i$}
+\Else\State \Return \Call{FixedQuickselect}{$A,q+1,r,i-k$}\EndIf
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

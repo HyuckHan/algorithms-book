@@ -1,0 +1,5 @@
+input: 31,8,48,73,11,3,20,29,65,15
+rank: 1
+result: 8
+rank: 6
+result: 31
