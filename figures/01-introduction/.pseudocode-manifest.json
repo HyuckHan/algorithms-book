@@ -1,0 +1,22 @@
+{
+  "binary-search": {
+    "index": 0,
+    "source": "07_binary_search.tex"
+  },
+  "linear-search": {
+    "index": 0,
+    "source": "06_linear_search.tex"
+  },
+  "maximum": {
+    "index": 0,
+    "source": "05_maximum.tex"
+  },
+  "pseudocode-if-else": {
+    "index": 0,
+    "source": "04_pseudocode.tex"
+  },
+  "pseudocode-while": {
+    "index": 1,
+    "source": "04_pseudocode.tex"
+  }
+}

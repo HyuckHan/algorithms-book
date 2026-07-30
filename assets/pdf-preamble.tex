@@ -3,3 +3,13 @@
 % 빈 칸으로 렌더링), 본문의 절반 이상을 차지하는 한국어 텍스트가 PDF에서 통째로
 % 사라졌었다(§QUALITY_ASSURANCE 6 위반 사례로 기록).
 \usepackage{kotex}
+
+% Same lecture-specific macros as assets/mathjax-macros.html (HTML), so PDF
+% and HTML render the same source without per-format substitution. \NotFound
+% is the only one actually used in chapter body text so far (L01's
+% NOT_FOUND sentinel); \Oh/\Om/\Th are defined for parity even though no
+% chapter currently uses the shorthand (they spell out \Theta/\Omega/O directly).
+\newcommand{\Oh}{\mathcal{O}}
+\newcommand{\Om}{\Omega}
+\newcommand{\Th}{\Theta}
+\newcommand{\NotFound}{\mathtt{NOT\_FOUND}}

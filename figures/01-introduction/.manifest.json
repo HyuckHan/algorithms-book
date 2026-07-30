@@ -1,0 +1,21 @@
+{
+  "01-coin-change": "3e1e2dff764d47f734745089a49db9b67b6fc568",
+  "02-scale-growth": "ca4091881fed9bb20894f6434033f68614e4a073",
+  "03-algorithm-io": "cd3e558855bfd93441828e214fab0ae06663f69f",
+  "04-spec-algorithm-program": "bbef8489363dd5d52275995a3da53541fb12aa12",
+  "05-design-steps": "f089e0c24ff2f6a4e22e1dbf22ecc43237afd501",
+  "06-maximum-trace": "7ce920de30cba7d11b4911a89ed0be95a3cdb2ed",
+  "07-linear-search-trace-step1": "a3b18ab8f6182fea30beaa3ac776d2aa23b8bd40",
+  "07-linear-search-trace-step2": "c5df5df2fb036975e837bd2655e1a9bd94e324d1",
+  "07-linear-search-trace-step3": "6145e9a7b76ce50d4e5d540e45a0258c4933576a",
+  "07-linear-search-trace-step4": "e38750c55631e1b18d19f27deae19bcd9e8e2a5e",
+  "08-binary-search-sorted": "52360925143d4ed1839f9b3f91248e88b9fdde00",
+  "09-binary-search-trace-step1": "51d09598fc7335758fc78b4c3c41ee331f1a190f",
+  "09-binary-search-trace-step2": "46bb77a460da75df44b1cc28d41cb81efeee54bf",
+  "09-binary-search-trace-step3": "261c352b5e1484d0421acdb5d801f473ea85abb5",
+  "09-binary-search-trace-step4": "997fdb131e760f85058c82cbd06931fca77d1a21",
+  "10-growth-curves": "3ddf51e4fe656f999042c04051987d906f04f081",
+  "11-bigo-intuition": "8b25e76a8451e77959e75b0bcca2f5ec90c26f7a",
+  "12-oh-omega-theta": "b31750ce8d57d411226799fa1e19cb1cf3dec885",
+  "13-concept-map": "9265045076969fe6ed2976076a7c5e3df62c2090"
+}

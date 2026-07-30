@@ -14,13 +14,15 @@ Two kinds of checks live here:
    after normalization (each demo's own print format can differ; this
    extracts the sequence of integers from stdout and compares that sequence,
    not the raw text).
-2. Legacy lecture03 checks (LECTURE_CONFIG): the pre-existing
-   FruitSorting.java/qsort_examples.c comparator-safety demos (copied
-   unchanged from lecture-notes/code/lecture03) and the still-combined
-   sorting.py/comparator_demo.py runs. Honest scope note: FruitSorting.java
-   and qsort_examples.c use *different* example data from each other, so a
-   byte-for-byte stdout diff between C and Java is not meaningful there --
-   see the comments below.
+2. Legacy per-lecture checks (LECTURE_CONFIG, currently only lecture03): the
+   pre-existing FruitSorting.java/qsort_examples.c comparator-safety demos
+   (copied unchanged from lecture-notes/code/lecture03) and the
+   still-combined sorting.py/comparator_demo.py runs. Honest scope note:
+   FruitSorting.java and qsort_examples.c use *different* example data from
+   each other, so a byte-for-byte stdout diff between C and Java is not
+   meaningful there -- see the comments below. Lectures with no such legacy
+   demo (e.g. lecture01, which only ever had ALGORITHM_CONFIG entries) skip
+   this section entirely.
 """
 import argparse
 import re
@@ -86,6 +88,21 @@ ALGORITHM_CONFIG = {
                 "c": {"file": "radix_sort.c", "bin": "radix_sort"},
                 "java": {"file": "RadixSort.java", "class": "RadixSort"},
                 "python": {"file": "radix_sort.py"},
+            },
+        },
+    },
+    "01": {
+        "dir": "01-introduction",
+        "algorithms": {
+            "linear-search": {
+                "c": {"file": "linear_search.c", "bin": "linear_search"},
+                "java": {"file": "LinearSearch.java", "class": "LinearSearch"},
+                "python": {"file": "linear_search.py"},
+            },
+            "binary-search": {
+                "c": {"file": "binary_search.c", "bin": "binary_search"},
+                "java": {"file": "BinarySearch.java", "class": "BinarySearch"},
+                "python": {"file": "binary_search.py"},
             },
         },
     },
@@ -161,15 +178,28 @@ def process_algorithms(lecture, code_dir, out_dir, build_dir):
 
 
 def process_lecture(lecture):
-    cfg = LECTURE_CONFIG[lecture]
-    code_dir = REPO_ROOT / "code" / cfg["dir"]
-    out_dir = REPO_ROOT / "figures" / cfg["dir"]
+    legacy_cfg = LECTURE_CONFIG.get(lecture)
+    algo_cfg = ALGORITHM_CONFIG.get(lecture, {})
+    dir_name = (legacy_cfg or algo_cfg).get("dir")
+    if dir_name is None:
+        raise ValueError("no ALGORITHM_CONFIG or LECTURE_CONFIG entry for lecture %s" % lecture)
+
+    code_dir = REPO_ROOT / "code" / dir_name
+    out_dir = REPO_ROOT / "figures" / dir_name
     build_dir = REPO_ROOT / "figures" / ".cache" / "run_examples" / lecture
     build_dir.mkdir(parents=True, exist_ok=True)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     algorithm_results = process_algorithms(lecture, code_dir, out_dir, build_dir)
+    all_ok = all(r["outputs_match"] for r in algorithm_results.values())
 
+    # Lectures with no legacy (pre-ALGORITHM_CONFIG) per-lecture demo -- e.g.
+    # L01, which only ever had the per-algorithm Linear/Binary Search demos --
+    # skip this whole section; there is nothing "legacy" to cross-check.
+    if legacy_cfg is None:
+        return all_ok, {}, None, algorithm_results
+
+    cfg = legacy_cfg
     results = {}
     ok_c, out_c = compile_and_run_c(code_dir / "c", build_dir, cfg["c_file"], cfg["c_bin"])
     results["c"] = (ok_c, out_c)
@@ -185,8 +215,7 @@ def process_lecture(lecture):
         results[key] = (ok_py, out_py)
         (out_dir / ("out-%s.txt" % Path(py_file).stem)).write_text(out_py, encoding="utf-8")
 
-    all_ok = all(ok for ok, _ in results.values())
-    all_ok = all_ok and all(r["outputs_match"] for r in algorithm_results.values())
+    all_ok = all_ok and all(ok for ok, _ in results.values())
 
     # Cross-check: the three from-scratch sort functions in sorting.py must
     # agree with each other on the shared example input (printed as their
@@ -205,7 +234,7 @@ def main():
     parser.add_argument("--lecture", default="03", help="lecture number, e.g. 03 (default: 03)")
     args = parser.parse_args()
 
-    if args.lecture not in LECTURE_CONFIG:
+    if args.lecture not in LECTURE_CONFIG and args.lecture not in ALGORITHM_CONFIG:
         print("no run_examples config for lecture %s" % args.lecture)
         sys.exit(1)
 
@@ -223,13 +252,14 @@ def main():
         print("  %-20s normalized=%s -> %s"
               % (algo_name + " outputs match", r["normalized"], "PASS" if r["outputs_match"] else "FAIL"))
 
-    print("  --- legacy lecture03 checks ---")
-    for key, (ok, out) in results.items():
-        status = "PASS" if ok else "FAIL"
-        print("  %-20s %s" % (key, status))
-        if not ok:
-            print("    " + "\n    ".join(out.splitlines()[-15:]))
-    print("  selection/insertion/merge agree: %s" % algorithms_agree)
+    if results:
+        print("  --- legacy lecture%s checks ---" % args.lecture)
+        for key, (ok, out) in results.items():
+            status = "PASS" if ok else "FAIL"
+            print("  %-20s %s" % (key, status))
+            if not ok:
+                print("    " + "\n    ".join(out.splitlines()[-15:]))
+        print("  selection/insertion/merge agree: %s" % algorithms_agree)
 
     sys.exit(0 if all_ok else 1)
 

@@ -1,0 +1,17 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Require{$n\ge 1$}
+\Procedure{Maximum}{$A[1..n]$}
+      
+      \State $v \gets A[1]$ \Comment{지금까지 본 원소의 최댓값}
+      \For{$i \gets 2$ \textbf{to} $n$}
+        \If{$A[i] &gt; v$}
+          \State $v \gets A[i]$
+        \EndIf
+      \EndFor
+      \State \Return $v$
+    \EndProcedure
+\end{algorithmic}
+</pre>
+```

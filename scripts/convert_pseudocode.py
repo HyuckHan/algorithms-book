@@ -15,13 +15,27 @@ onto pseudocode.js's grammar unchanged and case-insensitively (verified
 directly against the vendored library's Lexer.js/Parser.js and a Node smoke
 test during M1, not assumed from memory).
 
-One normalization is applied: `\\Call{name}{args}` occasionally appears
-*inside* math delimiters in the source (e.g. `$p\\gets\\Call{Partition}{A,low,high}$`
-in 08_quick_sort.tex) even though `\\Call` is pseudocode.js/algorithmicx
-markup, not real math -- that fails to parse as math. Such spans are hoisted
-out of the surrounding `$...$` (moving only the true math sub-parts back
-inside `$...$`), matching how `\\Call` is written everywhere else in the
-lecture notes.
+Two normalizations are applied, both moving text rather than rewriting it
+(neither changes what the pseudocode says, only where pseudocode.js's
+stricter-than-algorithmicx grammar needs it to sit):
+
+1. `\\Call{name}{args}` occasionally appears *inside* math delimiters in the
+   source (e.g. `$p\\gets\\Call{Partition}{A,low,high}$` in 08_quick_sort.tex)
+   even though `\\Call` is pseudocode.js/algorithmicx markup, not real math --
+   that fails to parse as math. Such spans are hoisted out of the
+   surrounding `$...$` (moving only the true math sub-parts back inside
+   `$...$`), matching how `\\Call` is written everywhere else in the lecture
+   notes.
+2. `\\Require`/`\\Ensure`/`\\Input`/`\\Output` are only valid, per the vendored
+   parser, as top-level statements directly inside `\\begin{algorithmic}`,
+   not nested inside a `\\Procedure{...}{...}...\\EndProcedure` body -- a
+   nested `\\Require` throws `Expected endProcedure but received Require`
+   (confirmed directly against the parser; L01's Maximum places `\\Require`
+   as the procedure's first body statement, which is valid algorithmicx but
+   not valid pseudocode.js, and never came up in L03 since nothing there
+   uses `\\Require`/`\\Ensure`). Such statements are hoisted to just before
+   the `\\Procedure{...}{...}` call so they parse as a top-level
+   precondition/postcondition annotation instead.
 """
 import argparse
 import html
@@ -35,6 +49,8 @@ LECTURE_NOTES = REPO_ROOT / "lecture-notes"
 
 ALGORITHMIC_RE = re.compile(r"\\begin\{algorithmic\}(\[[^\]]*\])?(.*?)\\end\{algorithmic\}", re.DOTALL)
 CALL_IN_MATH_RE = re.compile(r"\$([^${}]*)\\Call\{([^{}]*)\}\{([^{}]*)\}([^${}]*)\$")
+PROCEDURE_HEAD_RE = re.compile(r"\\Procedure\{[^{}]*\}\{[^{}]*\}")
+PRECONDITION_RE = re.compile(r"\\(?:Require|Ensure|Input|Output)\s*\{")
 
 # Lecture-specific slugs, keyed by (section filename, 0-based index of the
 # algorithmic block within that file, in document order).
@@ -53,7 +69,51 @@ PSEUDOCODE_CONFIG = {
         ("13_heap_sort.tex", 0): "heap-sort",
         ("14_counting_sort.tex", 0): "counting-sort",
     },
+    "01": {
+        ("04_pseudocode.tex", 0): "pseudocode-if-else",
+        ("04_pseudocode.tex", 1): "pseudocode-while",
+        ("05_maximum.tex", 0): "maximum",
+        ("06_linear_search.tex", 0): "linear-search",
+        ("07_binary_search.tex", 0): "binary-search",
+    },
 }
+
+
+def find_brace_block(text, open_pos):
+    """Given the index of a '{' in text, return (start, end) of the matching
+    '}' (end exclusive one past it), brace-balanced."""
+    assert text[open_pos] == "{"
+    depth = 0
+    i = open_pos
+    while i < len(text):
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return open_pos, i + 1
+        i += 1
+    raise ValueError("unbalanced braces starting at %d" % open_pos)
+
+
+def hoist_precondition_before_procedure(body):
+    """Move a `\\Require{...}`/`\\Ensure{...}`/`\\Input{...}`/`\\Output{...}`
+    that appears as a `\\Procedure{...}{...}` body's first statement to just
+    before that `\\Procedure` call, since pseudocode.js only accepts those
+    as top-level algorithmic-scope statements (see module docstring)."""
+    proc_m = PROCEDURE_HEAD_RE.search(body)
+    if not proc_m:
+        return body
+    pos = proc_m.end()
+    while pos < len(body) and body[pos].isspace():
+        pos += 1
+    pre_m = PRECONDITION_RE.match(body, pos)
+    if not pre_m:
+        return body
+    brace_start = pre_m.end() - 1
+    _, brace_end = find_brace_block(body, brace_start)
+    precondition = body[pre_m.start():brace_end]
+    return body[: proc_m.start()] + precondition + "\n" + body[proc_m.start() : pre_m.start()] + body[brace_end:]
 
 
 def hoist_call_out_of_math(body):
@@ -76,6 +136,7 @@ def find_algorithmic_blocks(section_path):
 
 def to_pseudocode_snippet(body):
     body = hoist_call_out_of_math(body)
+    body = hoist_precondition_before_procedure(body)
     return "\\begin{algorithmic}\n%s\n\\end{algorithmic}" % body
 
 
@@ -90,7 +151,7 @@ def to_html_fragment(snippet):
 
 
 def _lecture_slug(lecture):
-    names = {"03": "03-sorting"}
+    names = {"01": "01-introduction", "03": "03-sorting"}
     return names.get(lecture, "lecture%s" % lecture)
 
 

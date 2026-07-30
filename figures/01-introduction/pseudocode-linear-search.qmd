@@ -1,0 +1,14 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{LinearSearch}{$A[1..n],x$}
+      \For{$i \gets 1$ \textbf{to} $n$}
+        \If{$A[i]=x$}
+          \State \Return $i$
+        \EndIf
+      \EndFor
+      \State \Return $\NotFound$
+    \EndProcedure
+\end{algorithmic}
+</pre>
+```

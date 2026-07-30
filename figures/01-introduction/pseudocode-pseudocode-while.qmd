@@ -1,0 +1,9 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\While{$condition$}
+        \State $statement$
+      \EndWhile
+\end{algorithmic}
+</pre>
+```

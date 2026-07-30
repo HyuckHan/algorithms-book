@@ -75,6 +75,21 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    "01": {
+        "dir": "01-introduction",
+        "snippets": {
+            "linear-search": [
+                ("python/linear_search.py", "py"),
+                ("java/LinearSearch.java", "java"),
+                ("c/linear_search.c", "c"),
+            ],
+            "binary-search": [
+                ("python/binary_search.py", "py"),
+                ("java/BinarySearch.java", "java"),
+                ("c/binary_search.c", "c"),
+            ],
+        },
+    },
 }
 
 

@@ -1,0 +1,11 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\If{$condition$}
+        \State $statement_1$
+      \Else
+        \State $statement_2$
+      \EndIf
+\end{algorithmic}
+</pre>
+```

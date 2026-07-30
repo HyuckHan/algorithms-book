@@ -1,0 +1,17 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BinarySearch}{$A[1..n],x$}
+      \State $low\gets1,\; high\gets n$
+      \While{$low\le high$}
+        \State $mid\gets low+\lfloor(high-low)/2\rfloor$
+        \If{$A[mid]=x$} \State \Return $mid$
+        \ElsIf{$A[mid]&lt;x$} \State $low\gets mid+1$
+        \Else \State $high\gets mid-1$
+        \EndIf
+      \EndWhile
+      \State \Return $\NotFound$
+    \EndProcedure
+\end{algorithmic}
+</pre>
+```

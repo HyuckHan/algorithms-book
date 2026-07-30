@@ -2,9 +2,9 @@
 """Extract TikZ/pgfplots figures from lecture-notes sections into standalone SVGs.
 
 Pipeline (SPEC 4.4): for each lecture, scan lecture-notes/lectureNN/sections/*.tex
-for `tikzpicture` blocks, compile each as a standalone document (lualatex) reusing
-the lecture's own TikZ styles via `\\input{lectureNN/common.tex}`, convert to SVG
-with dvisvgm, and cache by content hash so unchanged figures are not recompiled.
+for `tikzpicture`/`axis` (pgfplots) blocks, compile each as a standalone document
+(lualatex) reusing the lecture's own TikZ styles, convert to SVG with dvisvgm,
+and cache by content hash so unchanged figures are not recompiled.
 
 `\\only<N>` overlays are flattened to their final state by default. A small,
 lecture-specific FIGURE_CONFIG can mark specific figures as "sequence" instead,
@@ -17,8 +17,11 @@ calls `\\usetheme{metropolis}`, `\\setbeamercolor`, etc. -- all beamer-only
 commands -- so it cannot be \\usepackage'd into a `standalone`-class document.
 Only its `\\definecolor` lines (the actual palette the TikZ styles reference)
 are reproduced below; everything else (TikZ styles, Korean font handling via
-kotex) is pulled in unmodified via `\\input{lectureNN/common.tex}`, which is
-the real source of truth for those styles.
+kotex) comes from `lecture_common_block()`: lectures that keep their
+`\\tikzset{...}` in a dedicated `lectureNN/common.tex` (e.g. L03) get it via
+`\\input`; lectures that define it inline in `lectureNN.tex`'s own preamble
+instead (e.g. L01, which has no common.tex at all) get those tikzset/newcommand
+blocks extracted and reproduced literally.
 """
 import argparse
 import hashlib
@@ -36,6 +39,7 @@ CACHE_DIR = REPO_ROOT / "figures" / ".cache" / "tikz-build"
 TIKZ_RE = re.compile(r"\\begin\{tikzpicture\}.*?\\end\{tikzpicture\}", re.DOTALL)
 AXIS_RE = re.compile(r"\\begin\{axis\}.*?\\end\{axis\}", re.DOTALL)
 ONLY_HEAD_RE = re.compile(r"\\only<([^>]*)>")
+ALT_HEAD_RE = re.compile(r"\\alt<([^>]*)>")
 
 PREAMBLE = r"""\documentclass[border=4pt]{standalone}
 \usepackage{kotex}
@@ -55,7 +59,7 @@ PREAMBLE = r"""\documentclass[border=4pt]{standalone}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows.meta,positioning,calc,fit,trees,patterns,decorations.pathreplacing,matrix}
-\input{%(common_tex)s}
+%(common_block)s
 \begin{document}
 %(body)s
 \end{document}
@@ -85,6 +89,23 @@ FIGURE_CONFIG = {
         ("14_counting_sort.tex", 0): {"slug": "14-counting-sort-trace"},
         ("15_radix_sort.tex", 0): {"slug": "15-radix-trace"},
         ("19_summary_quiz.tex", 0): {"slug": "19-concept-map"},
+    },
+    "01": {
+        ("01_motivation.tex", 0): {"slug": "01-coin-change"},
+        ("01_motivation.tex", 1): {"slug": "02-scale-growth"},
+        ("02_algorithm_program.tex", 0): {"slug": "03-algorithm-io"},
+        ("02_algorithm_program.tex", 1): {"slug": "04-spec-algorithm-program"},
+        ("02_algorithm_program.tex", 2): {"slug": "05-design-steps"},
+        ("05_maximum.tex", 0): {"slug": "06-maximum-trace"},
+        ("06_linear_search.tex", 0): {"slug": "07-linear-search-trace", "mode": "sequence"},
+        ("07_binary_search.tex", 0): {"slug": "08-binary-search-sorted"},
+        ("07_binary_search.tex", 1): {"slug": "09-binary-search-trace", "mode": "sequence"},
+        # pgfplots (nested inside an outer tikzpicture in the source; find_figures()
+        # de-duplicates the redundant inner axis span, see its docstring).
+        ("09_orders_of_growth.tex", 0): {"slug": "10-growth-curves"},
+        ("10_asymptotic_notation.tex", 0): {"slug": "11-bigo-intuition"},
+        ("10_asymptotic_notation.tex", 1): {"slug": "12-oh-omega-theta"},
+        ("12_summary_quiz.tex", 0): {"slug": "13-concept-map"},
     },
 }
 
@@ -135,8 +156,15 @@ def find_only_blocks(text):
 
 
 def parse_spec(spec):
-    """Parse a beamer overlay spec ("3", "1-3", "2-", "-3") to an (lo, hi) range."""
-    spec = spec.strip()
+    """Parse a beamer overlay spec ("3", "1-3", "2-", "-3") to an (lo, hi) range.
+
+    A spec may carry a trailing "|handout:N" mode-conditional override (e.g.
+    "4-|handout:1", used throughout L01's Linear/Binary Search overlay
+    figures) that picks a different overlay number specifically for
+    handout-mode PDFs. These SVGs are for the web, not a handout PDF, so
+    only the base spec before "|" is used.
+    """
+    spec = spec.split("|", 1)[0].strip()
     if "-" in spec:
         lo_s, hi_s = spec.split("-", 1)
         lo = int(lo_s) if lo_s else float("-inf")
@@ -159,10 +187,66 @@ def render_only_at(text, target):
     return result
 
 
+def find_alt_blocks(text):
+    """Find top-level \\alt<SPEC>{TRUE-BODY}{FALSE-BODY} occurrences, brace-balanced
+    (used by L01's Binary Search trace to grey out discarded cells from overlay 2
+    onward -- \\alt has no `\\only`-style single-branch equivalent, so it needs its
+    own extraction/resolution, mirroring find_only_blocks/render_only_at above).
+    """
+    blocks = []
+    pos = 0
+    while True:
+        m = ALT_HEAD_RE.search(text, pos)
+        if not m:
+            break
+        spec = m.group(1)
+        true_start = m.end()
+        if true_start >= len(text) or text[true_start] != "{":
+            pos = m.end()
+            continue
+        _, true_end = find_brace_block(text, true_start)
+        false_start = true_end
+        if false_start >= len(text) or text[false_start] != "{":
+            pos = m.end()
+            continue
+        _, false_end = find_brace_block(text, false_start)
+        true_body = text[true_start + 1 : true_end - 1]
+        false_body = text[false_start + 1 : false_end - 1]
+        blocks.append((m.start(), false_end, spec, true_body, false_body))
+        pos = false_end
+    return blocks
+
+
+def render_alt_at(text, target):
+    """Render `text` with every \\alt<SPEC>{TRUE}{FALSE} resolved for overlay
+    `target`: TRUE survives if target is inside SPEC's range, else FALSE."""
+    blocks = find_alt_blocks(text)
+    result = text
+    for start, end, spec, true_body, false_body in reversed(blocks):
+        lo, hi = parse_spec(spec)
+        replacement = true_body if lo <= target <= hi else false_body
+        result = result[:start] + replacement + result[end:]
+    return result
+
+
+def render_overlay_at(text, target):
+    """Resolve both \\alt<...>{...}{...} and \\only<...>{...} for overlay `target`."""
+    text = render_alt_at(text, target)
+    text = render_only_at(text, target)
+    return text
+
+
 def overlay_steps(text):
-    """All distinct overlay numbers referenced by \\only<...> in `text`, sorted."""
+    """All distinct overlay numbers referenced by \\only<...>/\\alt<...> in `text`,
+    sorted."""
     steps = set()
     for _, _, spec, _ in find_only_blocks(text):
+        lo, hi = parse_spec(spec)
+        if lo != float("-inf"):
+            steps.add(lo)
+        if hi != float("inf"):
+            steps.add(hi)
+    for _, _, spec, _, _ in find_alt_blocks(text):
         lo, hi = parse_spec(spec)
         if lo != float("-inf"):
             steps.add(lo)
@@ -174,11 +258,25 @@ def overlay_steps(text):
 def find_figures(section_path):
     """Yield (index, kind, raw_text) for each tikzpicture/axis block in a section file, in order."""
     text = section_path.read_text(encoding="utf-8")
-    spans = [(m.start(), m.end(), "tikzpicture", m.group(0)) for m in TIKZ_RE.finditer(text)]
-    spans += [(m.start(), m.end(), "axis", m.group(0)) for m in AXIS_RE.finditer(text)]
-    spans.sort(key=lambda s: s[0])
-    # axis blocks are pgfplots content, which must live inside a tikzpicture in
-    # standalone mode; wrap bare `axis` blocks accordingly.
+    tikz_spans = [(m.start(), m.end(), "tikzpicture", m.group(0)) for m in TIKZ_RE.finditer(text)]
+    axis_spans = [(m.start(), m.end(), "axis", m.group(0)) for m in AXIS_RE.finditer(text)]
+    # pgfplots `axis` blocks are frequently written *inside* an existing
+    # `tikzpicture` (observed throughout L01's growth-curve figures, the
+    # first lecture with any pgfplots content -- L03 has none). When that's
+    # the case the tikzpicture span already contains the whole figure, so
+    # keep only that outer span and drop the redundant nested axis span --
+    # otherwise the same figure gets compiled twice (once via the outer
+    # tikzpicture, once via a synthetic tikzpicture wrapped around just the
+    # inner axis) and the figure-count quality gate (QUALITY_ASSURANCE gate
+    # 2) no longer matches the source.
+    axis_spans = [
+        (start, end, kind, raw)
+        for (start, end, kind, raw) in axis_spans
+        if not any(t_start <= start and end <= t_end for t_start, t_end, _, _ in tikz_spans)
+    ]
+    spans = sorted(tikz_spans + axis_spans, key=lambda s: s[0])
+    # Any remaining (non-nested) axis blocks are bare pgfplots content, which
+    # must live inside a tikzpicture in standalone mode; wrap those.
     for idx, (_, _, kind, raw) in enumerate(spans):
         if kind == "axis":
             raw = "\\begin{tikzpicture}\n%s\n\\end{tikzpicture}" % raw
@@ -189,13 +287,13 @@ def sha1(text):
     return hashlib.sha1(text.encode("utf-8")).hexdigest()
 
 
-def compile_svg(body_tex, common_tex_rel, out_svg, job_name):
+def compile_svg(body_tex, common_block, out_svg, job_name):
     build_dir = CACHE_DIR / job_name
     build_dir.mkdir(parents=True, exist_ok=True)
     job_tex = build_dir / "job.tex"
     job_pdf = build_dir / "job.pdf"
     job_log = build_dir / "job.log"
-    job_tex.write_text(PREAMBLE % {"common_tex": common_tex_rel, "body": body_tex}, encoding="utf-8")
+    job_tex.write_text(PREAMBLE % {"common_block": common_block, "body": body_tex}, encoding="utf-8")
 
     result = subprocess.run(
         [
@@ -243,14 +341,14 @@ def compile_svg(body_tex, common_tex_rel, out_svg, job_name):
 MAX_RENDER_ATTEMPTS = 3
 
 
-def compile_svg_verified(body_tex, common_tex_rel, out_svg, job_name):
+def compile_svg_verified(body_tex, common_block, out_svg, job_name):
     import collections
 
     counts = collections.Counter()
     svg_by_hash = {}
     for attempt in range(MAX_RENDER_ATTEMPTS):
         attempt_svg = out_svg.parent / (".attempt-%s.svg" % out_svg.stem)
-        ok, err = compile_svg(body_tex, common_tex_rel, attempt_svg, "%s-a%d" % (job_name, attempt))
+        ok, err = compile_svg(body_tex, common_block, attempt_svg, "%s-a%d" % (job_name, attempt))
         if not ok:
             return False, err
         data = attempt_svg.read_bytes()
@@ -269,6 +367,59 @@ def compile_svg_verified(body_tex, common_tex_rel, out_svg, job_name):
     )
 
 
+def find_macro_block(text, start_kw):
+    """Find the first `\\<start_kw>{...}` (brace-balanced) in `text` and return
+    its full source span, or None if absent."""
+    m = re.search(r"\\%s\s*\{" % re.escape(start_kw), text)
+    if not m:
+        return None
+    brace_start = m.end() - 1
+    _, brace_end = find_brace_block(text, brace_start)
+    return text[m.start():brace_end]
+
+
+def find_all_newcommands(text):
+    """All `\\newcommand{\\NAME}{...}` spans in `text`, brace-balanced, in order."""
+    out = []
+    for m in re.finditer(r"\\newcommand\{\\[A-Za-z]+\}\s*\{", text):
+        brace_start = m.end() - 1
+        _, brace_end = find_brace_block(text, brace_start)
+        out.append(text[m.start():brace_end])
+    return out
+
+
+def lecture_common_block(lecture):
+    """The standalone preamble's lecture-specific TikZ-style block.
+
+    L03 (and lectures with the same layout) keep their `\\tikzset{...}` and
+    any `\\newcommand`s in a dedicated `lectureNN/common.tex` -- reuse that
+    via `\\input`, same as before. L01 has no such file: its tikzset/newcommand
+    definitions are inline in `lecture01.tex`'s own preamble instead. Since a
+    `standalone`-class document can't \\input a full beamer .tex (it has its
+    own \\documentclass/\\begin{document}), extract just the tikzset/newcommand
+    blocks and reproduce them literally -- the same reasoning already used
+    above for pulling beamerthemealgorithms.sty's color \\definecolors by hand.
+    """
+    common_tex = LECTURE_NOTES / ("lecture%s" % lecture) / "common.tex"
+    if common_tex.exists():
+        return "\\input{lecture%s/common.tex}" % lecture
+
+    main_tex_path = LECTURE_NOTES / ("lecture%s" % lecture) / ("lecture%s.tex" % lecture)
+    main_tex = main_tex_path.read_text(encoding="utf-8")
+    preamble = main_tex.split("\\begin{document}", 1)[0]
+    pieces = find_all_newcommands(preamble)
+    tikzset = find_macro_block(preamble, "tikzset")
+    if tikzset:
+        pieces.append(tikzset)
+    if not pieces:
+        raise ValueError(
+            "no lecture%s/common.tex and no tikzset/newcommand found in %s -- "
+            "figures may rely on styles this script doesn't know how to reproduce"
+            % (lecture, main_tex_path)
+        )
+    return "\n".join(pieces)
+
+
 def load_manifest(out_dir):
     manifest_path = out_dir / ".manifest.json"
     if manifest_path.exists():
@@ -283,7 +434,7 @@ def save_manifest(out_dir, manifest):
 
 def process_lecture(lecture, check_only, keep_build):
     sections_dir = LECTURE_NOTES / ("lecture%s" % lecture) / "sections"
-    common_tex_rel = "lecture%s/common.tex" % lecture
+    common_block = lecture_common_block(lecture)
     out_dir = REPO_ROOT / "figures" / _lecture_slug(lecture)
     config = FIGURE_CONFIG.get(lecture, {})
 
@@ -306,7 +457,7 @@ def process_lecture(lecture, check_only, keep_build):
                 target_state = max(steps) if steps else None
                 targets = [(target_state, slug)]
             for target, out_slug in targets:
-                body_tex = render_only_at(raw, target) if target is not None else raw
+                body_tex = render_overlay_at(raw, target) if target is not None else raw
                 content_hash = sha1(body_tex)
                 out_svg = out_dir / ("%s.svg" % out_slug)
                 expected_files.add(out_svg.name)
@@ -319,7 +470,7 @@ def process_lecture(lecture, check_only, keep_build):
                     failed.append((out_slug, "not yet built (hash changed or missing)"))
                     continue
 
-                ok, err = compile_svg_verified(body_tex, common_tex_rel, out_svg, out_slug)
+                ok, err = compile_svg_verified(body_tex, common_block, out_svg, out_slug)
                 if ok:
                     manifest[out_slug] = content_hash
                     built.append(out_slug)
@@ -335,7 +486,7 @@ def process_lecture(lecture, check_only, keep_build):
 
 
 def _lecture_slug(lecture):
-    names = {"03": "03-sorting"}
+    names = {"01": "01-introduction", "03": "03-sorting"}
     return names.get(lecture, "lecture%s" % lecture)
 
 
