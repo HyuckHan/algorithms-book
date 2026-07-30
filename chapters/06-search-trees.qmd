@@ -640,12 +640,12 @@ B-Tree의 minimum degree가 $t\ge2$일 때, node당 최대 $2t-1$ key·internal 
 
 **Cost**: fixed minimum degree $t$와 occupancy invariant 아래 worst-case height와 page access는 $\Theta(\log_t n)$이다(root cache 제외). node 내부는 linear scan 또는 binary search가 가능하고, 큰 $t$는 height를 줄이지만 page 내부 comparison은 늘 수 있다.
 
-**SplitChild**: full child $y=[a\mid m\mid b]$를 내려가기 전에 median $m$을 parent로 promotion하고, left half는 $y$에 남기고 right half는 새 node $z$로 분리한다(leaf가 아니면 child pointer도 함께 분할).
+B-Tree의 삽입은 **세 procedure가 함께 구성하는 하나의 흐름**이다: `BTreeInsert`가 진입점으로서 root가 가득 찼는지만 확인하고(가득 찼으면 새 root를 만들어 그 밑에서 미리 한 번 분할한다), 실제 삽입은 `InsertNonFull`에 위임한다. `InsertNonFull`은 현재 node가 가득 차 있지 않다고 보장된 상태에서 시작해 적절한 leaf까지 재귀로 내려가며 key를 끼워 넣는데, 내려갈 child가 가득 차 있으면 그 전에 `SplitChild`를 불러 먼저 분할한다. `SplitChild` 자체는 형식적 의사코드 없이 아래 원리로만 설명한다 — full child $y=[a\mid m\mid b]$를 내려가기 전에 median $m$을 parent로 promotion하고, left half는 $y$에 남기고 right half는 새 node $z$로 분리한다(leaf가 아니면 child pointer도 함께 분할).
 
 {{< include ../figures/06-search-trees/pseudocode-btree-insert.qmd >}}
 
 ::: {.callout-tip title="Split-Before-Descend"}
-내려갈 child가 full이면 먼저 split하므로 leaf 도착 시 항상 여유가 있다.
+`InsertNonFull`이 내려갈 child가 full이면 `SplitChild`로 먼저 split하므로, leaf에 도착했을 때는 항상 삽입할 여유가 있다 — **"먼저 분할하고 나서 내려간다"**는 순서 자체가 이 알고리즘의 핵심이다.
 :::
 
 **Insert 10, 20, 5, 6**: 세 번째 삽입에서 root가 가득 차(5,10,20) split이 일어난다.
