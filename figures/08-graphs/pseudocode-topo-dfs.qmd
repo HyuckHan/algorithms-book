@@ -1,0 +1,11 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Function{TopoVisit}{$u$}\State \(color[u]\gets G\)
+\ForAll{$v\in Adj[u]$}\If{$color[v]=G$}\State\Return CYCLE\EndIf
+\If{$color[v]=W$ \textbf{ and } \Call{TopoVisit}{$v$}=$\text{CYCLE}$}\State\Return CYCLE\EndIf\EndFor
+\State \(color[u]\gets B\); append \(u\) to \(order\); \Return OK\EndFunction
+\State outer loop 후 \Call{Reverse}{$order$}
+\end{algorithmic}
+</pre>
+```

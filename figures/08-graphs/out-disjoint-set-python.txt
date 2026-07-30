@@ -1,0 +1,5 @@
+AB: accept
+CD: accept
+BC: accept
+AD: reject
+components: {A,B,C,D}

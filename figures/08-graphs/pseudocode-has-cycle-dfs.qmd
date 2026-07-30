@@ -1,0 +1,10 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Function{HasCycleDFS}{$u$}\State $color[u]\gets G$
+\ForAll{$v\in Adj[u]$}\If{$color[v]=G$}\State \Return true\EndIf
+\If{$color[v]=W$ \textbf{ and } \Call{HasCycleDFS}{$v$}}\State\Return true\EndIf\EndFor
+\State $color[u]\gets B$; \Return false\EndFunction
+\end{algorithmic}
+</pre>
+```

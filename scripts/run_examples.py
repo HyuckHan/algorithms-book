@@ -187,6 +187,78 @@ ALGORITHM_CONFIG = {
             },
         },
     },
+    "08": {
+        "dir": "08-graphs",
+        "algorithms": {
+            # gcc (unlike javac) does not auto-discover dependencies, so
+            # each C entry lists every .c file the binary needs: the shared
+            # graph.c, the algorithm's own library file, and its demo main().
+            "bfs": {
+                "c": {"files": ["graph.c", "traversal.c", "traversal_demo.c"], "bin": "traversal_demo"},
+                "java": {"file": "GraphTraversal.java", "class": "GraphTraversal"},
+                "python": {"file": "traversal.py"},
+            },
+            "dfs": {
+                "c": {"files": ["graph.c", "traversal.c", "traversal_demo.c"], "bin": "traversal_demo"},
+                "java": {"file": "GraphTraversal.java", "class": "GraphTraversal"},
+                "python": {"file": "traversal.py"},
+            },
+            "dfs-iterative": {
+                "c": {"files": ["graph.c", "dfs_iterative.c", "dfs_iterative_demo.c"], "bin": "dfs_iterative_demo"},
+                "java": {"file": "DfsIterative.java", "class": "DfsIterative"},
+                "python": {"file": "dfs_iterative.py"},
+            },
+            "topo-kahn": {
+                "c": {"files": ["graph.c", "topological_sort.c", "topological_sort_demo.c"], "bin": "topological_sort_demo"},
+                "java": {"file": "TopologicalSort.java", "class": "TopologicalSort"},
+                "python": {"file": "topological_sort.py"},
+            },
+            "topo-dfs": {
+                "c": {"files": ["graph.c", "topological_sort.c", "topological_sort_demo.c"], "bin": "topological_sort_demo"},
+                "java": {"file": "TopologicalSort.java", "class": "TopologicalSort"},
+                "python": {"file": "topological_sort.py"},
+            },
+            "disjoint-set": {
+                "c": {"files": ["disjoint_set.c", "disjoint_set_demo.c"], "bin": "disjoint_set_demo"},
+                "java": {"file": "DisjointSetDemo.java", "class": "DisjointSetDemo"},
+                "python": {"file": "disjoint_set.py"},
+            },
+            "prim": {
+                "c": {"files": ["graph.c", "disjoint_set.c", "mst.c", "mst_demo.c"], "bin": "mst_demo"},
+                "java": {"file": "MinimumSpanningTree.java", "class": "MinimumSpanningTree"},
+                "python": {"file": "mst.py"},
+            },
+            "kruskal": {
+                "c": {"files": ["graph.c", "disjoint_set.c", "mst.c", "mst_demo.c"], "bin": "mst_demo"},
+                "java": {"file": "MinimumSpanningTree.java", "class": "MinimumSpanningTree"},
+                "python": {"file": "mst.py"},
+            },
+            "dijkstra": {
+                "c": {"files": ["graph.c", "shortest_paths.c", "shortest_paths_demo.c"], "bin": "shortest_paths_demo"},
+                "java": {"file": "ShortestPaths.java", "class": "ShortestPaths"},
+                "python": {"file": "shortest_paths.py"},
+            },
+            "bellman-ford": {
+                "c": {"files": ["graph.c", "shortest_paths.c", "shortest_paths_demo.c"], "bin": "shortest_paths_demo"},
+                "java": {"file": "ShortestPaths.java", "class": "ShortestPaths"},
+                "python": {"file": "shortest_paths.py"},
+            },
+            "reconstruct-path": {
+                "c": {"files": ["graph.c", "shortest_paths.c", "shortest_paths_demo.c"], "bin": "shortest_paths_demo"},
+                "java": {"file": "ShortestPaths.java", "class": "ShortestPaths"},
+                "python": {"file": "shortest_paths.py"},
+            },
+            "dag-shortest-paths": {
+                "c": {
+                    "files": ["graph.c", "topological_sort.c", "shortest_paths.c",
+                              "dag_shortest_paths.c", "dag_shortest_paths_demo.c"],
+                    "bin": "dag_shortest_paths_demo",
+                },
+                "java": {"file": "DagShortestPaths.java", "class": "DagShortestPaths"},
+                "python": {"file": "dag_shortest_paths.py"},
+            },
+        },
+    },
 }
 
 
@@ -194,10 +266,16 @@ def run(cmd, cwd=None):
     return subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
 
-def compile_and_run_c(c_dir, build_dir, source_file, bin_name):
-    c_file = c_dir / source_file
+def compile_and_run_c(c_dir, build_dir, source_files, bin_name):
+    """`source_files` is one filename (str) or a list of filenames compiled
+    together into one binary -- L08's demos need multiple .c files (e.g.
+    graph.c + mst.c + mst_demo.c) since gcc, unlike javac, does not
+    auto-discover and compile dependencies on its own."""
+    if isinstance(source_files, str):
+        source_files = [source_files]
+    c_files = [str(c_dir / f) for f in source_files]
     bin_path = build_dir / bin_name
-    compile_result = run(["gcc", "-Wall", "-std=c17", "-o", str(bin_path), str(c_file)])
+    compile_result = run(["gcc", "-Wall", "-std=c17", "-o", str(bin_path)] + c_files)
     if compile_result.returncode != 0:
         return False, "gcc -Wall failed:\n" + compile_result.stdout
     if compile_result.stdout.strip():
@@ -207,8 +285,15 @@ def compile_and_run_c(c_dir, build_dir, source_file, bin_name):
 
 
 def compile_and_run_java(java_dir, build_dir, source_file, class_name):
-    java_file = java_dir / source_file
-    compile_result = run(["javac", "-d", str(build_dir), str(java_file)])
+    # javac's implicit-compilation sourcepath defaults to "." (the *process*
+    # cwd), not the compiled file's own directory -- L01-05 never needed
+    # cross-file dependencies within one lecture's java/ dir, but L08's
+    # Graph.java is shared by nearly every other class there. Running with
+    # cwd=java_dir and a bare filename (matching run_python_file's existing
+    # cwd=python_dir pattern) makes "." resolve to java_dir, so a class like
+    # ShortestPaths.java that references Graph auto-compiles it too instead
+    # of failing with "cannot find symbol: class Graph".
+    compile_result = run(["javac", "-d", str(build_dir), source_file], cwd=str(java_dir))
     if compile_result.returncode != 0:
         return False, "javac failed:\n" + compile_result.stdout
     run_result = run(["java", "-cp", str(build_dir), class_name])
@@ -247,7 +332,8 @@ def process_algorithms(lecture, code_dir, out_dir, build_dir):
     for algo_name, langs in cfg.items():
         algo_results = {}
 
-        ok_c, out_c = compile_and_run_c(code_dir / "c", build_dir, langs["c"]["file"], langs["c"]["bin"])
+        c_source = langs["c"].get("files", langs["c"].get("file"))
+        ok_c, out_c = compile_and_run_c(code_dir / "c", build_dir, c_source, langs["c"]["bin"])
         algo_results["c"] = (ok_c, out_c)
         (out_dir / ("out-%s-c.txt" % algo_name)).write_text(out_c, encoding="utf-8")
 

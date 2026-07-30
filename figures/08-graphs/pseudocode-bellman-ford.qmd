@@ -1,0 +1,13 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BellmanFord}{$G,s$}\State 모든 \(dist\gets\infty,parent\gets\NIL;\ dist[s]\gets0\)
+\For{$i\gets1$ to \(|V|-1\)}\State \(changed\gets false\)
+\ForAll{$(u,v,w)\in E$}\If{$dist[u]\ne\infty$ \textbf{ and } $dist[v]&gt;dist[u]+w$}
+\State update \(dist[v],parent[v]\); \(changed\gets true\)\EndIf\EndFor
+\If{\textbf{not} \(changed\)}\State\textbf{break}\EndIf\EndFor
+\ForAll{$(u,v,w)\in E$}\If{same relaxation is possible}\State\Return REACHABLE\_NEGATIVE\_CYCLE\EndIf\EndFor
+\State\Return \(dist,parent\)\EndProcedure
+\end{algorithmic}
+</pre>
+```

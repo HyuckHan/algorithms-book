@@ -1,0 +1,9 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{DAGShortestPaths}{$G,s$}\State $order\gets$\Call{TopologicalSort}{$G$}
+\State 모든 \(dist\gets\infty,\ parent\gets\NIL;\ dist[s]\gets0\)
+\ForAll{$u$ in \(order\)}\If{$dist[u]\ne\infty$}\ForAll{$(u,v,w)\in Adj[u]$}\State\Call{Relax}{$u,v,w$}\EndFor\EndIf\EndFor\EndProcedure
+\end{algorithmic}
+</pre>
+```

@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BFS}{$G,s$}\ForAll{$v\in V$}\State $color[v]\gets W,\ dist[v]\gets\infty,\ parent[v]\gets\NIL$\EndFor
+\State $color[s]\gets G,\ dist[s]\gets0$; \Call{Enqueue}{$Q,s$}
+\While{$Q\ne\emptyset$}\State $u\gets$\Call{Dequeue}{$Q$}
+\ForAll{$v\in Adj[u]$}\If{$color[v]=W$}\State $color[v]\gets G,\ dist[v]\gets dist[u]+1$
+\State $parent[v]\gets u$; \Call{Enqueue}{$Q,v$}\EndIf\EndFor
+\State $color[u]\gets B$\EndWhile\EndProcedure
+\end{algorithmic}
+</pre>
+```

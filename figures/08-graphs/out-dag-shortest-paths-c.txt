@@ -1,0 +1,2 @@
+dist: 0 3 2 -1
+path to c: s -> a -> c

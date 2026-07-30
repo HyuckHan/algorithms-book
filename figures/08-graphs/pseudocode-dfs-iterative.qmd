@@ -1,0 +1,9 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\State \Call{Push}{$S,s$}; mark \(s\) discovered
+\While{$S\ne\emptyset$}\State $u\gets$\Call{Pop}{$S$}
+\ForAll{\(v\in Adj[u]\) in reverse order}\If{\(v\) undiscovered}\State mark and \Call{Push}{$S,v$}\EndIf\EndFor\EndWhile
+\end{algorithmic}
+</pre>
+```

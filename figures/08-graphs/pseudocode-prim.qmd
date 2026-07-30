@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Prim}{$G,r$}\ForAll{$v\in V$}\State \(key[v]\gets\infty,\ parent[v]\gets\NIL\)\EndFor
+\State $key[r]\gets0;\ Q\gets$\Call{MinPriorityQueue}{$V,key$}
+\While{$Q\ne\emptyset$}\State $u\gets$\Call{ExtractMin}{$Q$}
+\ForAll{$(u,v,w)\in Adj[u]$}\If{$v\in Q$ \textbf{ and } $w&lt;key[v]$}
+\State \(parent[v]\gets u,\ key[v]\gets w\); \Call{DecreaseKey}{$Q,v,w$}\EndIf\EndFor\EndWhile
+\State\Return \(\{(parent[v],v):v\ne r\}\)\EndProcedure
+\end{algorithmic}
+</pre>
+```

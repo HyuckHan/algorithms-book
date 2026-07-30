@@ -1,0 +1,5 @@
+dijkstra dist: [0, 3, 2, 8, 10, 13]
+dijkstra path to E: S -> B -> A -> C -> D -> E
+bellman-ford dist: [0, 4, 5, 2, 4]
+bellman-ford path to d: s -> a -> c -> d
+reachable negative cycle detected: true

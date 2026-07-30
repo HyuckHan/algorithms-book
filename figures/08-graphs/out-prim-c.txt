@@ -1,0 +1,4 @@
+prim edges: AB8 AC9 CE5 AD11 DF8 FG7
+prim weight: 48
+kruskal edges: CE5 FG7 AB8 DF8 AC9 AD11
+kruskal weight: 48

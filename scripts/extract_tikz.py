@@ -157,6 +157,36 @@ FIGURE_CONFIG = {
         ("08_lcs_reconstruction.tex", 0): {"slug": "15-lcs-backtrack-trace"},
         ("11_summary_quiz.tex", 0): {"slug": "16-concept-map"},
     },
+    # See chapters/08.inventory §2 for the full index-by-index derivation.
+    # This lecture has the most sequence traces of any lecture so far (13,
+    # 59 SVGs total) -- BFS queue, DFS recursion stack, Kahn zero-heap, DFS
+    # topo finish-order, Prim key updates, Kruskal accept/reject, Dijkstra
+    # finalized set, and more all need one SVG per overlay step so the
+    # trace doesn't collapse to a single flattened final-state image.
+    "08": {
+        ("01_graph_basics.tex", 0): {"slug": "01-graph-definition"},
+        ("02_representation.tex", 0): {"slug": "02-matrix-direction"},
+        ("02_representation.tex", 1): {"slug": "03-matrix-to-list", "mode": "sequence"},
+        ("03_bfs.tex", 0): {"slug": "04-bfs-graph"},
+        ("03_bfs.tex", 1): {"slug": "05-bfs-queue-trace", "mode": "sequence"},
+        ("03_bfs.tex", 2): {"slug": "06-bfs-path-reconstruction"},
+        ("04_dfs.tex", 0): {"slug": "07-dfs-recursion-trace", "mode": "sequence"},
+        ("05_cycle_detection.tex", 0): {"slug": "08-back-edge-animation", "mode": "sequence"},
+        ("06_topological_sort.tex", 0): {"slug": "09-kahn-trace", "mode": "sequence"},
+        ("06_topological_sort.tex", 1): {"slug": "10-kahn-cycle-detection"},
+        ("06_topological_sort.tex", 2): {"slug": "11-dfs-topo-finish-reverse", "mode": "sequence"},
+        ("08_cut_property.tex", 0): {"slug": "12-cut-crossing-edge"},
+        ("09_prim.tex", 0): {"slug": "13-prim-trace", "mode": "sequence"},
+        ("10_kruskal.tex", 0): {"slug": "14-dsu-animation", "mode": "sequence"},
+        ("10_kruskal.tex", 1): {"slug": "15-kruskal-trace", "mode": "sequence"},
+        ("11_mst_comparison.tex", 0): {"slug": "16-mst-tie-square"},
+        ("12_shortest_path_intro.tex", 0): {"slug": "17-relaxation-animation", "mode": "sequence"},
+        ("13_unweighted_dag.tex", 0): {"slug": "18-bfs-weighted-counterexample"},
+        ("13_unweighted_dag.tex", 1): {"slug": "19-dag-relaxation-trace", "mode": "sequence"},
+        ("14_dijkstra.tex", 0): {"slug": "20-dijkstra-trace", "mode": "sequence"},
+        ("14_dijkstra.tex", 1): {"slug": "21-dijkstra-negative-counterexample"},
+        ("15_bellman_ford.tex", 0): {"slug": "22-bellman-ford-negative-cycle", "mode": "sequence"},
+    },
 }
 
 
@@ -537,7 +567,10 @@ def process_lecture(lecture, check_only, keep_build):
 
 
 def _lecture_slug(lecture):
-    names = {"01": "01-introduction", "02": "02-recursion", "03": "03-sorting", "05": "05-dynamic-programming"}
+    names = {
+        "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
+        "05": "05-dynamic-programming", "08": "08-graphs",
+    }
     return names.get(lecture, "lecture%s" % lecture)
 
 

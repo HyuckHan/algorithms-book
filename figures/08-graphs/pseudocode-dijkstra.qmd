@@ -1,0 +1,16 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Dijkstra}{$G,s$}\State 모든 \(dist\gets\infty,parent\gets\NIL,finalized\gets false\)
+\State \(dist[s]\gets0\)
+\State \(Q\gets\{(0,s)\}\)
+\While{$Q\ne\emptyset$}\State $(du,u)\gets$\Call{ExtractMin}{$Q$}
+\If{$du\ne dist[u]$}\State\textbf{continue}\Comment{stale entry}\EndIf
+\If{$finalized[u]$}\State\textbf{continue}\EndIf
+\State \(finalized[u]\gets true\)
+\ForAll{$(u,v,w)\in Adj[u]$}\If{\textbf{not} \(finalized[v]\) \textbf{ and } \(dist[u]+w&lt;dist[v]\)}
+\State \(dist[v]\gets dist[u]+w,\ parent[v]\gets u\)
+\State \Call{Insert}{$Q,(dist[v],v)$}\EndIf\EndFor\EndWhile\EndProcedure
+\end{algorithmic}
+</pre>
+```

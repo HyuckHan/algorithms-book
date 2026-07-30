@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Kruskal}{$G$}\State \(T\gets\emptyset\); \ForAll{$v\in V$}\State\Call{MakeSet}{$v$}\EndFor
+\State sort edges by nondecreasing \((weight,u,v)\)
+\ForAll{$(u,v,w)$ in sorted edges}\If{\Call{Find}{$u$}\(\ne\)\Call{Find}{$v$}}
+\State \(T\gets T\cup\{(u,v)\}\); \Call{Union}{$u,v$}\EndIf
+\If{$|T|=|V|-1$}\State\textbf{break}\EndIf\EndFor
+\State \Return \(T\) or MINIMUM\_SPANNING\_FOREST\EndProcedure
+\end{algorithmic}
+</pre>
+```

@@ -165,6 +165,71 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    "08": {
+        "dir": "08-graphs",
+        "snippets": {
+            "bfs": [
+                ("python/traversal.py", "py"),
+                ("java/GraphTraversal.java", "java"),
+                ("c/traversal.c", "c"),
+            ],
+            "dfs": [
+                ("python/traversal.py", "py"),
+                ("java/GraphTraversal.java", "java"),
+                ("c/traversal.c", "c"),
+            ],
+            "dfs-iterative": [
+                ("python/dfs_iterative.py", "py"),
+                ("java/DfsIterative.java", "java"),
+                ("c/dfs_iterative.c", "c"),
+            ],
+            "topo-kahn": [
+                ("python/topological_sort.py", "py"),
+                ("java/TopologicalSort.java", "java"),
+                ("c/topological_sort.c", "c"),
+            ],
+            "topo-dfs": [
+                ("python/topological_sort.py", "py"),
+                ("java/TopologicalSort.java", "java"),
+                ("c/topological_sort.c", "c"),
+            ],
+            "disjoint-set": [
+                ("python/disjoint_set.py", "py"),
+                ("java/DisjointSet.java", "java"),
+                ("c/disjoint_set.c", "c"),
+            ],
+            "prim": [
+                ("python/mst.py", "py"),
+                ("java/MinimumSpanningTree.java", "java"),
+                ("c/mst.c", "c"),
+            ],
+            "kruskal": [
+                ("python/mst.py", "py"),
+                ("java/MinimumSpanningTree.java", "java"),
+                ("c/mst.c", "c"),
+            ],
+            "dijkstra": [
+                ("python/shortest_paths.py", "py"),
+                ("java/ShortestPaths.java", "java"),
+                ("c/shortest_paths.c", "c"),
+            ],
+            "bellman-ford": [
+                ("python/shortest_paths.py", "py"),
+                ("java/ShortestPaths.java", "java"),
+                ("c/shortest_paths.c", "c"),
+            ],
+            "reconstruct-path": [
+                ("python/shortest_paths.py", "py"),
+                ("java/ShortestPaths.java", "java"),
+                ("c/shortest_paths.c", "c"),
+            ],
+            "dag-shortest-paths": [
+                ("python/dag_shortest_paths.py", "py"),
+                ("java/DagShortestPaths.java", "java"),
+                ("c/dag_shortest_paths.c", "c"),
+            ],
+        },
+    },
 }
 
 

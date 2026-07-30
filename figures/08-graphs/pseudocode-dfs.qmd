@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{DFS}{$G$}\ForAll{$u\in V$}\State $color[u]\gets W,\ parent[u]\gets\NIL$\EndFor
+\State $time\gets0$
+\ForAll{$u\in V$}\If{$color[u]=W$}\State \Call{DFSVisit}{$G,u$}\EndIf\EndFor\EndProcedure
+\Procedure{DFSVisit}{$G,u$}\State $color[u]\gets G,\ discover[u]\gets$\Call{PreIncrement}{$time$}
+\ForAll{$v\in Adj[u]$}\If{$color[v]=W$}\State $parent[v]\gets u$; \Call{DFSVisit}{$G,v$}\EndIf\EndFor
+\State $color[u]\gets B,\ finish[u]\gets$\Call{PreIncrement}{$time$}\EndProcedure
+\end{algorithmic}
+</pre>
+```

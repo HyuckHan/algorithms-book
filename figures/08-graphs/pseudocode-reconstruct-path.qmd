@@ -1,0 +1,8 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\State \(path\gets[]\)
+\While{$v\ne\NIL$}\State prepend \(v\); \(v\gets parent[v]\)\EndWhile
+\end{algorithmic}
+</pre>
+```

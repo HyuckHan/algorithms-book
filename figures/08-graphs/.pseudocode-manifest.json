@@ -1,0 +1,50 @@
+{
+  "bellman-ford": {
+    "index": 0,
+    "source": "15_bellman_ford.tex"
+  },
+  "bfs": {
+    "index": 0,
+    "source": "03_bfs.tex"
+  },
+  "dag-shortest-paths": {
+    "index": 0,
+    "source": "13_unweighted_dag.tex"
+  },
+  "dfs": {
+    "index": 0,
+    "source": "04_dfs.tex"
+  },
+  "dfs-iterative": {
+    "index": 1,
+    "source": "04_dfs.tex"
+  },
+  "dijkstra": {
+    "index": 0,
+    "source": "14_dijkstra.tex"
+  },
+  "has-cycle-dfs": {
+    "index": 0,
+    "source": "05_cycle_detection.tex"
+  },
+  "kruskal": {
+    "index": 0,
+    "source": "10_kruskal.tex"
+  },
+  "prim": {
+    "index": 0,
+    "source": "09_prim.tex"
+  },
+  "reconstruct-path": {
+    "index": 0,
+    "source": "12_shortest_path_intro.tex"
+  },
+  "topo-dfs": {
+    "index": 1,
+    "source": "06_topological_sort.tex"
+  },
+  "topo-kahn": {
+    "index": 0,
+    "source": "06_topological_sort.tex"
+  }
+}

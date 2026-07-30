@@ -1,0 +1,11 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{TopoKahn}{$G$}\State 모든 \(indegree[v]\) 계산; \(Q\gets\) indegree 0 vertices; \(order\gets[]\)
+\While{$Q\ne\emptyset$}\State $u\gets$\Call{Remove}{$Q$}; append \(u\)
+\ForAll{$v\in Adj[u]$}\State \(indegree[v]\gets indegree[v]-1\)
+\If{$indegree[v]=0$}\State \Call{Insert}{$Q,v$}\EndIf\EndFor\EndWhile
+\If{$|order|\ne|V|$}\State\Return CYCLE\EndIf\State\Return order\EndProcedure
+\end{algorithmic}
+</pre>
+```
