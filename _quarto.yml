@@ -33,7 +33,4 @@ format:
       - assets/mathjax-macros.html
       - assets/pseudocode/pseudocode-init.html
     css: assets/pseudocode/pseudocode.css
-  pdf:
-    documentclass: scrreport
-    include-in-header: assets/pdf-preamble.tex
 lang: ko
