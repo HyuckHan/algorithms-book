@@ -1,0 +1,193 @@
+# Lecture 05 · 동적 계획법 — 인벤토리 (M3, MIGRATION_STRATEGY §3.A)
+
+소스: `lecture-notes/lecture05/lecture05.tex`의 `\input` 순서. 이 강의는 파일명 번호와 실제
+프레젠테이션 순서가 다르다 — `05_matrix_path.tex`보다 `06_optimal_substructure.tex`가 먼저
+`\input`된다(아래 §1의 순서가 실제 순서다). 웹 페이지 순서는 content map이 이미 재편집해 둔
+Part A–E(+ Appendix) 경계를 그대로 절 경계로 채택한다.
+
+## 0. 수치 요약
+
+| 항목 | 사용자 지시 | 실제 소스(재확인) | 비고 |
+|---|---|---|---|
+| `\section` | (명시 없음) | **5** | Part A–E |
+| TikZ(`tikzpicture`) | 16 | **16** | 일치 |
+| 의사코드(`algorithmic`) | 9 | **9** | 일치 |
+| pgfplots(`axis`) | (명시 없음) | **0** | — |
+| frame | (명시 없음) | **85** | — |
+| `\dpdesign{state}{transition}{base}{order}{answer}` 사용 | (템플릿 강제 지시) | **5회** | 1회는 04_dp_workflow.tex의 일반형 예시, 나머지 4회는 Fibonacci/Matrix Path/LCS/Max Subarray 각 1회 |
+| 기존 Java/C 구현 | "일부 있음" | **8개 파일** (C 4 + Java 4, 알고리즘당 1쌍) | 아래 §3 — 전부 assert-only, 화면 출력 없음 |
+
+## 1. `\input` 순서별 절/frame/TikZ/algorithmic
+
+| # | 파일 | `\section` | TikZ | algorithmic | 비고 |
+|---|---|---|---|---|---|
+| 1 | `01_motivation.tex` | Part A. Why Dynamic Programming? | 2 | 0 | 학습 목표, "올바른 재귀가 왜 느릴 수 있는가?", DP 핵심 mission, **Lecture 5 Road Map**(idx0), **Recurrence·Memoization·Tabulation 관계도**(idx1) |
+| 2 | `02_fibonacci.tex` | (Part A 계속) | 1 | 1 | Fibonacci 컨벤션($F(0)=0,F(1)=1$), 첫 `\dpdesign` 예시, **FibRecursive**(naive), **$F(6)$ Partial Call Tree**(idx0), 중복 호출 집계, 비용 $T(n)=T(n-1)+T(n-2)+\Theta(1)$, $O(2^n)$/tight $\Theta(\varphi^n)$, Checkpoint |
+| 3 | `03_memoization_tabulation.tex` | Part B. Memoization, Tabulation, and DP Workflow | 2 | 2 | **FibMemo**(sentinel `UNKNOWN`), **Memoization Trace $F(6)$**(idx0, 4단계), 복잡도 $\Theta(n)$, **FibBottomUp**, **Bottom-Up Table Progression**(idx1, 3단계), Rolling Variables($\Theta(1)$ 공간), 비교표 |
+| 4 | `04_dp_workflow.tex` | (Part B 계속) | 0 | 0 | `\dpstate` 예시, **DP 설계 템플릿 일반형**(state/transition/base/order/answer), Engineering Check 5문항, 복잡도 공식 "state 수 × transition 비용", 설계 오류 Checkpoint |
+| 5 | `06_optimal_substructure.tex` | (Part C 진입 전, Matrix Path 앞) | 2 | 0 | Optimal Substructure 정의+증명 스케치, Overlapping Subproblems 정의, "Quick Sort와 Matrix Path" 비교표(분리 vs 중복 부분문제 — **L03 개념 다리 앵커**), "Optimal Substructure만으로 DP인가?", **Greedy Counterexample 2단 그리드**(idx0 지역 최적 경로 합 105, idx1 전역 최적 합 7, 3×3 grid `{1,2,100},{3,100,1},{1,1,1}`) |
+| 6 | `05_matrix_path.tex` | Part C. Representative DP Problems | 5 | 3 | Matrix Minimum Path Sum mission, 첫 `\dpdesign`(Matrix Path), **State-and-Dependency**(idx0), 잘못된 초기화 경고("첫 row/col은 누적합이지 `M[i][j]` 자체가 아니다" — 교정 유지 대상), **MinPath**(naive), **Call-Tree-repeats P(3,3)**(idx1), **MinPathMemo**(sentinel `seen[i][j]`), **Bottom-Up Evaluation Order**(algorithmic, 명명 없음 → `MatrixBottomUp`으로 식별), **Matrix DP Row Progression**(idx2, 4단계, $dp[4][4]=40$), **대표 Cell 계산 $dp[3][3]$**(idx3), **최소 경로 Reconstruction**(idx4, 합 40), 1-Row Space Optimization, Checkpoint($dp[1][3]=25,dp[3][1]=18,dp[3][3]=28$) |
+| 7 | `07_lcs.tex` | (Part C 계속) | 2 | 2 | Substring vs Subsequence, LCS 문제($X=$"ABCBDAB", $Y=$"BDCABA", 길이 4), 둘째 `\dpdesign`(LCS), State-and-Base-Cases 8×7 skeleton(tikz 아님, 순수 tabular), **Case 1 mini-diagram**(idx0, match→diagonal+1), Case 2(비교연산 설명, tikz 없음), **LCSLength**(naive), **LCS Partial Call Tree**(idx1), **LCSBottomUp**(algorithmic, 명명 없음), Notation bridge(1-based↔0-based), 복잡도 $\Theta(mn)$, **LCS Table Progression**(3단계 — tikzpicture 아니라 `\only`로 감싼 순수 `tabular` — 아래 §2 주석 참조) |
+| 8 | `08_lcs_reconstruction.tex` | Part D. Advanced DP and Reconstruction | 1 | 0 | Length-vs-Solution 구분, Backtracking 규칙(match→diagonal, mismatch→큰 값 방향, tie→up), **LCS Backtracking Trace**(idx0, custom `matrix of nodes`, 선택 경로 A,B,C,B→역순 BCBA), 검증, Space Optimization($\Theta(\min(m,n))$) |
+| 9 | `09_maximum_subarray.tex` | (Part D 계속 — 실제로는 D 절 안에서 Max Subarray로 전환, `\section` 재선언 없음) | 0 | 1 | mission+nonempty convention 경고, **MaxSubarrayBruteForce**(algorithmic, 명명 없음), 셋째 `\dpdesign`(Max Subarray: `bestEndingAt[i]`/`bestOverall` 분리), Extend-vs-Restart, Kadane Trace I·II(표, tikz 아님), 결과 sum=6·구간 `[4,-1,2,1]`, All-Negative Checkpoint(`[-8,-3,-6,-2,-5,-4]`, 답 -2), Kadane Code Contract, 비교표 |
+| 10 | `10_comparison.tex` | Part E. Comparison, Summary, and Quiz | 0 | 0 | "네 예제의 State와 Transition" 표, "Base·Order·Answer" 표, "복잡도와 Reconstruction 비교" 표, Top-Down-vs-Bottom-Up 기준, D&C/DP/Greedy 비교표, DP 설계 Checklist(6항목) |
+| 11 | `11_summary_quiz.tex` | (Part E 계속) | 1 | 0 | **Lecture 5 개념 Map**(idx0), Fibonacci·Matrix Path Quiz(4문항), LCS Quiz(4문항), Max Subarray·Concept Quiz(4문항), Quiz 정답 I·II(흔한 오류 목록 포함) |
+| 12 | `12_appendix.tex` | (Appendix, `\section` 없음) | 0 | 0 | Hirschberg Algorithm Preview($\Theta(mn)$ 시간/$\Theta(\min(m,n))$ 공간, 아이디어만), Max Subarray D&C Preview($T(n)=2T(n/2)+\Theta(n)$), "다음 강의로" |
+
+**합계**: TikZ 16, algorithmic 9, `\section` 5, frame 85.
+
+## 2. TikZ 16개 — 평탄화/시퀀스 방침
+
+| 파일 | idx | 내용 | 오버레이 | 처리 | 슬러그(안) |
+|---|---|---|---|---|---|
+| `01_motivation.tex` | 0 | Lecture 5 Road Map | 없음 | flatten | `01-roadmap` |
+| `01_motivation.tex` | 1 | Recurrence·Memoization·Tabulation 관계도 | 없음 | flatten | `02-recurrence-memo-tab` |
+| `02_fibonacci.tex` | 0 | $F(6)$ Partial Call Tree(중복 호출 강조) | 없음 | flatten | `03-fib-call-tree` |
+| `03_memoization_tabulation.tex` | 0 | Memoization Trace $F(6)$(`\only<1\|handout:0>`~`<4\|handout:1>`) | 있음(4단계) | **sequence** — 트레이스 핵심 | `04-memo-trace` |
+| `03_memoization_tabulation.tex` | 1 | Bottom-Up Table Progression $F(6)$(`\only<1\|handout:0>`~`<3\|handout:1>`) | 있음(3단계) | **sequence** — 트레이스 핵심 | `05-bottomup-trace` |
+| `06_optimal_substructure.tex` | 0 | Greedy Counterexample — 지역 최적(합 105) | 없음(같은 프레임 안 2단 배치) | flatten | `06-greedy-counterexample-local` |
+| `06_optimal_substructure.tex` | 1 | Greedy Counterexample — 전역 최적(합 7) | 없음 | flatten | `07-greedy-counterexample-optimal` |
+| `05_matrix_path.tex` | 0 | State-and-Dependency(의존 화살표) | 없음 | flatten | `08-matrix-dependency` |
+| `05_matrix_path.tex` | 1 | Call-Tree-repeats $P(3,3)$ | 없음 | flatten | `09-matrix-call-tree` |
+| `05_matrix_path.tex` | 2 | Matrix DP Row Progression(`\only<1\|handout:0>`~`<4\|handout:1>`) | 있음(4단계) | **sequence** — 트레이스 핵심, $dp[4][4]=40$ | `10-matrix-row-progression` |
+| `05_matrix_path.tex` | 3 | 대표 Cell 계산 $dp[3][3]=28$ | 없음 | flatten | `11-matrix-representative-cell` |
+| `05_matrix_path.tex` | 4 | 최소 경로 Reconstruction(합 40 경로) | 없음 | flatten | `12-matrix-reconstruction` |
+| `07_lcs.tex` | 0 | Case 1(match→diagonal+1) mini-diagram | 없음 | flatten | `13-lcs-case1` |
+| `07_lcs.tex` | 1 | LCS Partial Call Tree($L(3,4)$) | 없음 | flatten | `14-lcs-call-tree` |
+| `08_lcs_reconstruction.tex` | 0 | LCS Backtracking Trace(matrix of nodes) | 없음(static, 이미 완성된 표+경로) | flatten | `15-lcs-backtrack-trace` |
+| `11_summary_quiz.tex` | 0 | Lecture 5 개념 Map | 없음 | flatten | `16-concept-map` |
+
+**합계 SVG 파일 수**: flatten 13 + sequence(4+3+4=11) = **24개**.
+
+### 파이프라인 참고
+
+- `lecture05/common.tex`가 존재하고(`\input{common/recursion.tex}`, `common/sorting.tex`,
+  `common/selection.tex`, `common/dynamic_programming.tex`) `extract_tikz.py`의
+  `lecture_common_block()`은 파일 존재만 확인하고 `\input{lecture05/common.tex}`를 그대로
+  표준독립문서에 넣으므로, `common/dynamic_programming.tex`가 정의하는 `dp cell`/`dp done`/
+  `dp inactive`/`dp answer`/`dp current`/`dp dependency`/`dp repeat`/`dp edge`/`dp path` 스타일은
+  L03 방식과 동일하게 별도 처리 없이 자동으로 딸려온다. **L01의 "common.tex 없음" fallback은
+  이번에도 필요 없다.**
+- 오버레이는 전부 `\only<N|handout:M>` 형태다. `\visible`/`\alt`는 L05의 16개 tikzpicture
+  어디에도 없음을 직접 grep으로 재확인했다 — 새 오버레이 매크로 대응 불필요.
+- **주의**: `07_lcs.tex`의 "LCS Table Progression"(3단계, X="ABCBDAB"/Y="BDCABA" 표가 채워지는
+  과정)은 `tikzpicture`가 아니라 `\only<N|handout:M>{\begin{tabular}...\end{tabular}}`로 감싼
+  순수 LaTeX 표다 — `TIKZ_RE`/`AXIS_RE`에 매치되지 않으므로 `extract_tikz.py`가 아예 스캔하지
+  않는다(16개 집계에도 포함되지 않음, 사용자 지시의 "16개"와 일치). 이 트레이스는 다이어그램이
+  아니라 순수 수치 표이므로, SVG로 래스터화하지 않고 Quarto 표 3개를 `panel-tabset`(단계별 탭,
+  L01/L02의 "단계별 SVG+캡션" 트레이스와 동일한 UX)으로 직접 작성한다 — 값은 소스에서 이미
+  1글자 단위로 교차검증했으므로 손 타이핑이 아니라 소스 표의 충실한 전사다. 나머지 세
+  tikzpicture 기반 DP 트레이스(Memoization Trace, Bottom-Up Table Progression, Matrix DP Row
+  Progression)는 예정대로 sequence 모드 SVG로 처리한다.
+- Kadane Trace I·II(`09_maximum_subarray.tex`)도 마찬가지로 tikz가 아닌 순수 표이며, 알고리즘
+  진행 중간 상태(각 시점의 extend/restart/ending 값)이므로 qmd 본문에 표로 직접 제시한다.
+
+## 3. 기존 C/Java 구현 — 재사용 전략(8개 파일, 전부 확인 완료)
+
+`lecture-notes/code/lecture05/{c,java}/*` 8개 파일을 전부 읽고 값까지 검증했다. **L01/L02와
+달리 L05는 canonical C/Java가 이미 존재하는 첫 강의**이지만, 8개 전부 다음 두 특성을 공유한다:
+
+1. **화면 출력이 전혀 없다** — 전부 `assert`문으로만 자체 검증하는 단위테스트 스타일의
+   `main()`이다(`printf`/`System.out.println` 없음).
+2. **Java의 `assert`는 `-ea` 없이 `java` 실행 시 기본적으로 비활성화**된다 — 이 프로젝트의
+   `run_examples.py`는 `java -cp <dir> <class>`를 `-ea` 없이 호출하므로, 이 파일들을 그대로
+   실행하면 검증 코드 자체가 조용히 아무 일도 하지 않고 종료 코드 0으로 끝난다.
+
+따라서 **그대로(verbatim) 재사용하면 `run_examples.py`의 `outputs_match` 검사가 세 언어 모두
+빈 stdout(`[]`)을 비교해 "일치"로 vacuously PASS된다** — Power Set 때 발견한 것과 같은 계열의
+무의미한-통과 버그이며, `AGENTS.md` 원칙 2("실행 결과를 실제로 보여줘야 한다")에도 위배된다.
+빈 출력 탭은 애초에 책에 보여줄 것이 없다는 뜻이기도 하다.
+
+**결정**: 핵심 DP 로직(전이식·평가 순서·tie-break 규칙)은 원본과 **바이트 단위로 동일하게**
+`code/05-dynamic-programming/{c,java}/`로 옮기고 snippet 마커만 추가한다. `main()`은 이
+프로젝트의 다른 모든 from-scratch 데모와 같은 형태(입력 출력 + 결과 출력)로 새로 작성한다 —
+이는 알고리즘을 손으로 다시 만드는 것이 아니라(로직은 검증된 원본 그대로), 화면에 보여줄
+스캐폴딩을 붙이는 것이며 L01–L03에서 모든 데모가 이미 이 형태였다. Python은 4개 알고리즘 모두
+신규 작성(원본에 Python 없음, `find` 확인 완료).
+
+| 알고리즘 | 원본 C | 원본 Java | 핵심 로직 검증 결과 |
+|---|---|---|---|
+| Fibonacci | `c/fibonacci.c`(`fib_rolling`, `fib_memo`/`memo_rec`) | `java/FibonacciDP.java`(`fib`, `fibMemo`/`memoRec`) | $F(0)=0,F(1)=1$, $F(10)=55$, $F(50)=12586269025$ — 본문 컨벤션과 일치 |
+| Matrix Path | `c/min_path_sum.c`(`min_path`) | `java/MinPathSum.java`(`solve`) | 입력 행렬 `{6,7,12,5},{5,3,11,18},{7,17,3,3},{8,10,14,9}` = 06_matrix_path.tex 두 트레이스에서 역산한 행렬과 정확히 일치, 합 40, 경로 길이 7, tie-break: up 우선(`up<=left`) |
+| LCS | `c/lcs.c`(`lcs`) | `java/LCS.java`(`solve`) | `X="ABCBDAB"`, `Y="BDCABA"` → `"BCBA"`, 길이 4, tie-break: up 우선(`dp[i-1][j]>=dp[i][j-1]`) — 본문과 일치 |
+| Maximum Subarray | `c/max_subarray.c`(`max_subarray`) | `java/MaximumSubarray.java`(`solve`) | `[-2,1,-3,4,-1,2,1,-5,4]` → sum 6, `[3,6]`(0-based, 구간 `[4,-1,2,1]`); all-negative `[-8,-3,-6,-2,-5,-4]` → sum -2, start 3 — 본문 Checkpoint와 일치 |
+
+네 알고리즘 모두 원본 C/Java의 핵심 함수가 본문(강의노트) 트레이스와 완전히 일치함을
+확인했으므로, 로직 자체를 의심하거나 수정할 필요가 없다 — 오직 화면 출력 드라이버만 새로
+작성한다.
+
+## 4. DP 공통 템플릿 — 절 구조 강제
+
+`04_dp_workflow.tex`가 명시하는 일반형 `\dpdesign{State}{Transition}{Base}{Order}{Answer}`를
+Fibonacci·Matrix Path·LCS·Maximum Subarray 네 절 모두에서 동일한 5행 구조(정의 목록 또는
+소형 표)로 반복한다:
+
+| 알고리즘 | State | Transition | Base | Order | Answer/Reconstruction |
+|---|---|---|---|---|---|
+| Fibonacci | $F(i)$ | $F(i-1)+F(i-2)$ | $F(0)=0,F(1)=1$ | $i=2,\dots,n$ (또는 memo top-down) | $F(n)$, 복원 없음 |
+| Matrix Path | $dp[i][j]$ | $M[i][j]+\min(dp[i-1][j],dp[i][j-1])$ | 첫 row/col 누적합 | row-major(또는 column-major) | $dp[n][m]$ + parent 배열 backtracking |
+| LCS | $dp[i][j]$ | match: $dp[i-1][j-1]+1$; mismatch: $\max(dp[i-1][j],dp[i][j-1])$ | $dp[0][j]=dp[i][0]=0$ | $i=1..m$ 바깥, $j=1..n$ 안쪽 | $dp[m][n]$ + 표 역추적으로 문자열 복원 |
+| Maximum Subarray | $bestEndingAt[i]$ | $\max(A[i],bestEndingAt[i-1]+A[i])$ | $bestEndingAt[0]=A[0]$ | 왼쪽→오른쪽 $i=1..n-1$ | $bestOverall=\max_i bestEndingAt[i]$ + 경계 변수로 구간 복원 |
+
+이 표 자체가 qmd의 Part E(10_comparison.tex)에 이미 원본 형태로 존재하므로, 절 내부 템플릿과
+Part E 비교표가 서로 다른 말로 같은 내용을 반복하지 않도록 절 내부는 "설계"에, Part E는
+"비교·회고"에 초점을 맞춘다.
+
+## 5. content map(L05) 교정 항목 — 본문에 문서명 인용 없이 반영
+
+1. **Fibonacci 컨벤션**: $F(0)=0$, $F(1)=1$(원본의 다른 컨벤션과 혼동 금지); memoized $\Theta(n)$,
+   rolling 보조 공간 $\Theta(1)$.
+2. **Matrix Path 잘못된 초기화 되돌리지 않기**: `05_matrix_path.tex`가 이미 명시한
+   "`if(i==1||j==1) return M[i][j]`는 틀렸다 — 첫 row/col은 누적합이어야 한다"는 alertblock을
+   본문에서 강조로 유지(교정된 상태 그대로, 원본의 잘못된 버전으로 되돌리지 않음). 완성표
+   우하단 $dp[4][4]=40$.
+3. **Matrix Path 복원 경로**: $(1,1)\to(2,1)\to(2,2)\to(2,3)\to(3,3)\to(3,4)\to(4,4)$, 합
+   $6+5+3+11+3+3+9=40$.
+4. **LCS mismatch transition은 `max`**(min이 아님 — 흔한 실수로 명시된 항목), 답은
+   `dp[m][n]`(마지막 셀); tie-up convention으로 예제 답은 `BCBA`(up 우선).
+5. **LCS notation 다리**: 수학 표기 $X[1..i]$는 1-based prefix, C/Java 문자열 인덱스는 0-based
+   — `X[i-1]`, `Y[j-1]`로 명시적으로 연결(원본이 이미 이렇게 교정해 둔 부분, 유지).
+6. **Maximum Subarray nonempty convention**: 모두 음수이면 답은 0이 아니라 가장 큰 단일 원소
+   (all-negative 예제 답 $-2$). 이 규약을 매 표현에서 명시.
+7. **`bestEndingAt[i]`(state)와 `bestOverall`(answer) 분리**: 원본이 명시적으로 요구하는 구분 —
+   전자는 반드시 index $i$에서 끝나는 부분합, 후자는 전체 최댓값. 코드/본문 모두에서 두 변수를
+   섞어 쓰지 않는다.
+8. **sentinel/rolling state**: Fibonacci memoization은 `UNKNOWN`(`LLONG_MIN`) sentinel로 cache
+   miss를 표현(음수 값이 실제 결과와 절대 겹치지 않는 값을 sentinel로 사용); Matrix Path memo도
+   동일 패턴(`seen[i][j]`). Rolling 변수는 `prev2`/`prev1`/`current` 갱신 순서(먼저 `current`
+   계산 후 `prev2←prev1, prev1←current`)를 그대로 유지 — 순서를 바꾸면 이전 값이 유실된다.
+9. **비교연산자 오류 없음 재확인**: tie-break는 두 언어(C/Java) 모두 "up 우선"(`<=`/`>=` 방향)
+   으로 일관되며, 이는 본문의 "동점 시 위쪽 선호" 규칙과 정확히 일치 — 본문에서 이 규칙을
+   명시적으로 언급해 코드와 서술이 어긋나지 않게 한다.
+
+## 6. 퀴즈/Checkpoint 인벤토리
+
+| 위치 | 유형 | 문항 수 |
+|---|---|---|
+| `02_fibonacci.tex` §Fibonacci Checkpoint | 계산형 | 표 형태 |
+| `05_matrix_path.tex` §Matrix Path Checkpoint | 계산형 | $dp[1][3]$, $dp[3][1]$, $dp[3][3]$ 3문항 |
+| `09_maximum_subarray.tex` §All-Negative Checkpoint | 계산형 | 1문항 |
+| `11_summary_quiz.tex` §Fibonacci·Matrix Path Quiz | 서술/계산형 | 4 |
+| `11_summary_quiz.tex` §LCS Quiz | 서술/계산형 | 4 |
+| `11_summary_quiz.tex` §Maximum Subarray·Concept Quiz | 서술/계산형 | 4 |
+| `11_summary_quiz.tex` §Quiz 정답 I·II와 흔한 오류 | 정답+오류목록 | 12문항 정답 + 오류 5항목 |
+
+## 7. 개념 다리(사용자 지시 (7))
+
+- **L02 → L05**: `02_recursion.qmd`가 이미 예고한 "Fibonacci 재귀의 중복 부분문제 → 메모이제이션"
+  흐름을 여기서 완성한다. L02의 Fibonacci 호출 트리(중복 호출 강조)와 이 강의의
+  `F(6)` Partial Call Tree(idx0, 02_fibonacci.tex)가 같은 예제라는 점을 본문에서 짚는다.
+- **L03 Master Theorem → L05**: `06_optimal_substructure.tex`의 "Quick Sort와 Matrix Path"
+  비교표가 이미 분리된 부분문제(D&C, Master Theorem으로 분석) vs 중복되는 부분문제(DP)의
+  구분을 명시하고 있다 — 이 표를 앵커로 삼아 "재귀 관계식을 세운다는 점은 같지만, 부분문제가
+  겹치지 않으면 Master Theorem으로 분석하는 분할정복이고, 겹치면 그 중복을 저장하는 것이
+  DP다"라는 한 문장으로 L03과 연결한다. L03 자체는 수정하지 않는다(범위 밖).
+
+## 8. 웹 페이지 구성 방향
+
+content map의 Part A–E(+Appendix) 구조를 절 경계로 채택한다. 각 대표 알고리즘 절
+(Fibonacci·Matrix Path·LCS·Maximum Subarray)은 CONTENT_MODEL의 일반 알고리즘 템플릿에 더해
+**DP 5요소 템플릿(§4)을 절 구조에 강제**로 얹는다. Matrix Path·LCS·Max Subarray는 memo
+top-down + bottom-up 두 구현을 모두 보여주고(원본이 둘 다 제시), reconstruction이 있는 절
+(Matrix Path, LCS)은 별도 "복원" 하위 절을 둔다. Part D는 LCS 복원에, Appendix는
+Hirschberg/D&C 미리보기(코드/실행 없이 개념만)에 대응한다.
