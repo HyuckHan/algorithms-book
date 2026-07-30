@@ -1,0 +1,4 @@
+X: ABCBDAB
+Y: BDCABA
+lcs: BCBA
+length: 4

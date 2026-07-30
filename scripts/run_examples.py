@@ -141,6 +141,52 @@ ALGORITHM_CONFIG = {
             },
         },
     },
+    "05": {
+        "dir": "05-dynamic-programming",
+        "algorithms": {
+            # One binary/class per source file (fibonacci.c, MinPathSum.java,
+            # etc.) prints both algorithms sharing that file (e.g. memo and
+            # bottom-up), so both algorithm keys below point at the same
+            # compile/run target -- the per-language dict values are
+            # identical between the two entries in each pair by design, not
+            # duplication error.
+            "fib-memo": {
+                "c": {"file": "fibonacci.c", "bin": "fibonacci"},
+                "java": {"file": "FibonacciDP.java", "class": "FibonacciDP"},
+                "python": {"file": "fibonacci.py"},
+            },
+            "fib-bottom-up": {
+                "c": {"file": "fibonacci.c", "bin": "fibonacci"},
+                "java": {"file": "FibonacciDP.java", "class": "FibonacciDP"},
+                "python": {"file": "fibonacci.py"},
+            },
+            "min-path-memo": {
+                "c": {"file": "min_path_sum.c", "bin": "min_path_sum"},
+                "java": {"file": "MinPathSum.java", "class": "MinPathSum"},
+                "python": {"file": "min_path_sum.py"},
+            },
+            "matrix-bottom-up": {
+                "c": {"file": "min_path_sum.c", "bin": "min_path_sum"},
+                "java": {"file": "MinPathSum.java", "class": "MinPathSum"},
+                "python": {"file": "min_path_sum.py"},
+            },
+            "lcs-bottom-up": {
+                "c": {"file": "lcs.c", "bin": "lcs"},
+                "java": {"file": "LCS.java", "class": "LCS"},
+                "python": {"file": "lcs.py"},
+            },
+            "max-subarray-brute-force": {
+                "c": {"file": "max_subarray.c", "bin": "max_subarray"},
+                "java": {"file": "MaximumSubarray.java", "class": "MaximumSubarray"},
+                "python": {"file": "max_subarray.py"},
+            },
+            "max-subarray-kadane": {
+                "c": {"file": "max_subarray.c", "bin": "max_subarray"},
+                "java": {"file": "MaximumSubarray.java", "class": "MaximumSubarray"},
+                "python": {"file": "max_subarray.py"},
+            },
+        },
+    },
 }
 
 

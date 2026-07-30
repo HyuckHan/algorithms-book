@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\State $best\gets A[0]$
+\For{$i\gets0$ \textbf{to} $n-1$}
+\State $sum\gets0$
+\For{$j\gets i$ \textbf{to} $n-1$}
+\State $sum\gets sum+A[j]$; 경계와 $best$ 갱신
+\EndFor\EndFor
+\end{algorithmic}
+</pre>
+```

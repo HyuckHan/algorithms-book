@@ -1,0 +1,38 @@
+{
+  "fib-bottom-up": {
+    "index": 1,
+    "source": "03_memoization_tabulation.tex"
+  },
+  "fib-memo": {
+    "index": 0,
+    "source": "03_memoization_tabulation.tex"
+  },
+  "fib-recursive": {
+    "index": 0,
+    "source": "02_fibonacci.tex"
+  },
+  "lcs-bottom-up": {
+    "index": 1,
+    "source": "07_lcs.tex"
+  },
+  "lcs-length": {
+    "index": 0,
+    "source": "07_lcs.tex"
+  },
+  "matrix-bottom-up": {
+    "index": 2,
+    "source": "05_matrix_path.tex"
+  },
+  "max-subarray-brute-force": {
+    "index": 0,
+    "source": "09_maximum_subarray.tex"
+  },
+  "min-path": {
+    "index": 0,
+    "source": "05_matrix_path.tex"
+  },
+  "min-path-memo": {
+    "index": 1,
+    "source": "05_matrix_path.tex"
+  }
+}

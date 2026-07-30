@@ -1,0 +1,11 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{MinPathMemo}{$i,j$}
+\If{$seen[i][j]$}\State\Return $memo[i][j]$\EndIf
+\State 정확한 boundary recurrence로 $memo[i][j]$ 계산
+\State $seen[i][j]\gets true$; \Return $memo[i][j]$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

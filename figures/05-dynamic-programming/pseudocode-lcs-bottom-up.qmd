@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\State base row와 base column을 0으로 초기화
+\For{$i\gets1$ \textbf{to} $m$}\For{$j\gets1$ \textbf{to} $n$}
+\If{$X[i-1]=Y[j-1]$}\State $dp[i][j]\gets dp[i-1][j-1]+1$
+\Else\State $dp[i][j]\gets\max(dp[i-1][j],dp[i][j-1])$\EndIf
+\EndFor\EndFor
+\State\Return $dp[m][n]$
+\end{algorithmic}
+</pre>
+```

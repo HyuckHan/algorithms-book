@@ -1,0 +1,10 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{FibRecursive}{$n$}
+\If{$n\le1$}\State\Return $n$\EndIf
+\State\Return \Call{FibRecursive}{$n-1$}+\Call{FibRecursive}{$n-2$}
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

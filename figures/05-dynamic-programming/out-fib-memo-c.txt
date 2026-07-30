@@ -1,0 +1,3 @@
+n: 6
+memo: 8
+bottom_up: 8

@@ -125,6 +125,46 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    "05": {
+        "dir": "05-dynamic-programming",
+        "snippets": {
+            "fib-memo": [
+                ("python/fibonacci.py", "py"),
+                ("java/FibonacciDP.java", "java"),
+                ("c/fibonacci.c", "c"),
+            ],
+            "fib-bottom-up": [
+                ("python/fibonacci.py", "py"),
+                ("java/FibonacciDP.java", "java"),
+                ("c/fibonacci.c", "c"),
+            ],
+            "min-path-memo": [
+                ("python/min_path_sum.py", "py"),
+                ("java/MinPathSum.java", "java"),
+                ("c/min_path_sum.c", "c"),
+            ],
+            "matrix-bottom-up": [
+                ("python/min_path_sum.py", "py"),
+                ("java/MinPathSum.java", "java"),
+                ("c/min_path_sum.c", "c"),
+            ],
+            "lcs-bottom-up": [
+                ("python/lcs.py", "py"),
+                ("java/LCS.java", "java"),
+                ("c/lcs.c", "c"),
+            ],
+            "max-subarray-brute-force": [
+                ("python/max_subarray.py", "py"),
+                ("java/MaximumSubarray.java", "java"),
+                ("c/max_subarray.c", "c"),
+            ],
+            "max-subarray-kadane": [
+                ("python/max_subarray.py", "py"),
+                ("java/MaximumSubarray.java", "java"),
+                ("c/max_subarray.c", "c"),
+            ],
+        },
+    },
 }
 
 

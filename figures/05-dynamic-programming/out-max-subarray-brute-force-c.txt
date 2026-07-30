@@ -1,0 +1,2 @@
+brute_force sum: 6 start: 3 end: 6
+kadane sum: 6 start: 3 end: 6

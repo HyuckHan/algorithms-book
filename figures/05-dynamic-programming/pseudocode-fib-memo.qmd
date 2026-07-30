@@ -1,0 +1,11 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{FibMemo}{$n,memo$}
+\If{$memo[n]\ne\mathtt{UNKNOWN}$}\State\Return $memo[n]$\Comment{cache hit}\EndIf
+\State $memo[n]\gets\Call{FibMemo}{n-1,memo}+\Call{FibMemo}{n-2,memo}$
+\State\Return $memo[n]$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

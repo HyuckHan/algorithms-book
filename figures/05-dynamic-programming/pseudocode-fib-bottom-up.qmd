@@ -1,0 +1,14 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{FibBottomUp}{$n$}
+\If{$n\le1$}\State\Return $n$\EndIf
+\State $dp[0]\gets0$; $dp[1]\gets1$
+\For{$i\gets2$ \textbf{to} $n$}
+\State $dp[i]\gets dp[i-1]+dp[i-2]$
+\EndFor
+\State\Return $dp[n]$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

@@ -76,6 +76,21 @@ PSEUDOCODE_CONFIG = {
         ("06_linear_search.tex", 0): "linear-search",
         ("07_binary_search.tex", 0): "binary-search",
     },
+    # See chapters/05.inventory §1 for the frame titles these came from. The
+    # three blocks with no `\Procedure{...}` wrapper in the source (bare
+    # `\State`/`\For` loops, presented under a frame title instead) get a
+    # slug matching that frame title rather than a source-named procedure.
+    "05": {
+        ("02_fibonacci.tex", 0): "fib-recursive",
+        ("03_memoization_tabulation.tex", 0): "fib-memo",
+        ("03_memoization_tabulation.tex", 1): "fib-bottom-up",
+        ("05_matrix_path.tex", 0): "min-path",
+        ("05_matrix_path.tex", 1): "min-path-memo",
+        ("05_matrix_path.tex", 2): "matrix-bottom-up",
+        ("07_lcs.tex", 0): "lcs-length",
+        ("07_lcs.tex", 1): "lcs-bottom-up",
+        ("09_maximum_subarray.tex", 0): "max-subarray-brute-force",
+    },
 }
 
 
@@ -151,7 +166,7 @@ def to_html_fragment(snippet):
 
 
 def _lecture_slug(lecture):
-    names = {"01": "01-introduction", "03": "03-sorting"}
+    names = {"01": "01-introduction", "03": "03-sorting", "05": "05-dynamic-programming"}
     return names.get(lecture, "lecture%s" % lecture)
 
 

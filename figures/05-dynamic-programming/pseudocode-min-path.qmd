@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{MinPath}{$i,j$}
+\If{$i=1$ \textbf{and} $j=1$}\State\Return $M[1][1]$\EndIf
+\If{$i=1$}\State\Return \Call{MinPath}{$1,j-1$}+$M[1][j]$\EndIf
+\If{$j=1$}\State\Return \Call{MinPath}{$i-1,1$}+$M[i][1]$\EndIf
+\State\Return $\min(\Call{MinPath}{i-1,j},\Call{MinPath}{i,j-1})+M[i][j]$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

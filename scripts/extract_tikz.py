@@ -129,6 +129,34 @@ FIGURE_CONFIG = {
         ("11_power_set.tex", 0): {"slug": "13-power-set-tree"},
         ("13_summary_quiz.tex", 0): {"slug": "14-concept-map"},
     },
+    # See chapters/05.inventory §2 for the full index-by-index derivation.
+    # Three of the sixteen are the DP-table-filling traces the user's L05
+    # prompt calls out by name (memoization trace, bottom-up table
+    # progression) -- these render as overlay sequences, same as L01/L02's
+    # step-by-step search/sort traces, so the trace doesn't collapse to one
+    # flattened final-state image. The LCS "table progression" is NOT in this
+    # config or in the 16-figure count: it's a bare `\only{...}` around a
+    # `tabular`, not a tikzpicture, so TIKZ_RE never matches it -- that trace
+    # is hand-authored as three plain Quarto tables in the qmd instead of an
+    # SVG sequence (see chapters/05.inventory §2 note).
+    "05": {
+        ("01_motivation.tex", 0): {"slug": "01-roadmap"},
+        ("01_motivation.tex", 1): {"slug": "02-recurrence-memo-tab"},
+        ("02_fibonacci.tex", 0): {"slug": "03-fib-call-tree"},
+        ("03_memoization_tabulation.tex", 0): {"slug": "04-memo-trace", "mode": "sequence"},
+        ("03_memoization_tabulation.tex", 1): {"slug": "05-bottomup-trace", "mode": "sequence"},
+        ("06_optimal_substructure.tex", 0): {"slug": "06-greedy-counterexample-local"},
+        ("06_optimal_substructure.tex", 1): {"slug": "07-greedy-counterexample-optimal"},
+        ("05_matrix_path.tex", 0): {"slug": "08-matrix-dependency"},
+        ("05_matrix_path.tex", 1): {"slug": "09-matrix-call-tree"},
+        ("05_matrix_path.tex", 2): {"slug": "10-matrix-row-progression", "mode": "sequence"},
+        ("05_matrix_path.tex", 3): {"slug": "11-matrix-representative-cell"},
+        ("05_matrix_path.tex", 4): {"slug": "12-matrix-reconstruction"},
+        ("07_lcs.tex", 0): {"slug": "13-lcs-case1"},
+        ("07_lcs.tex", 1): {"slug": "14-lcs-call-tree"},
+        ("08_lcs_reconstruction.tex", 0): {"slug": "15-lcs-backtrack-trace"},
+        ("11_summary_quiz.tex", 0): {"slug": "16-concept-map"},
+    },
 }
 
 
@@ -509,7 +537,7 @@ def process_lecture(lecture, check_only, keep_build):
 
 
 def _lecture_slug(lecture):
-    names = {"01": "01-introduction", "02": "02-recursion", "03": "03-sorting"}
+    names = {"01": "01-introduction", "02": "02-recursion", "03": "03-sorting", "05": "05-dynamic-programming"}
     return names.get(lecture, "lecture%s" % lecture)
 
 
