@@ -94,6 +94,11 @@ ALGORITHM_CONFIG = {
     "01": {
         "dir": "01-introduction",
         "algorithms": {
+            "maximum": {
+                "c": {"file": "maximum.c", "bin": "maximum"},
+                "java": {"file": "Maximum.java", "class": "Maximum"},
+                "python": {"file": "maximum.py"},
+            },
             "linear-search": {
                 "c": {"file": "linear_search.c", "bin": "linear_search"},
                 "java": {"file": "LinearSearch.java", "class": "LinearSearch"},

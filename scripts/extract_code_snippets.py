@@ -78,6 +78,11 @@ SNIPPET_CONFIG = {
     "01": {
         "dir": "01-introduction",
         "snippets": {
+            "maximum": [
+                ("python/maximum.py", "py"),
+                ("java/Maximum.java", "java"),
+                ("c/maximum.c", "c"),
+            ],
             "linear-search": [
                 ("python/linear_search.py", "py"),
                 ("java/LinearSearch.java", "java"),
