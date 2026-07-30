@@ -107,6 +107,8 @@ ALGO_IDENTIFIERS = {
         "sum": ["sum"],
         "hanoi": ["hanoi", "Hanoi"],
         "recursive-binary-search": ["bsearch"],
+        "maze": ["find_path", "findPath"],
+        "power-set": ["power_set", "powerSet", "PowerSet"],
     },
 }
 
@@ -141,6 +143,8 @@ SECTION_ID = {
         "sum": "part-b.-재귀의-실행-호출-스택",
         "hanoi": "part-h.-hanoi",
         "recursive-binary-search": "part-g.-재귀적으로-문제-설계하기",
+        "maze": "part-i.-미로-탐색maze과-backtracking",
+        "power-set": "part-k.-멱집합power-set",
     },
 }
 
