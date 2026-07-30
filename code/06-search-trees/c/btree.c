@@ -215,6 +215,7 @@ int main(void) {
     int out[16], n = 0;
     btree_inorder(b.root, out, &n);
     print_ints("inorder", out, n);
+    printf("size: %d\n", b.size);
     print_ints("root", b.root->keys, b.root->nkeys);
 
     printf("children: ");
@@ -229,6 +230,6 @@ int main(void) {
 
     int del[] = {6, 7, 5, 10, 12, 17, 20, 30};
     for (size_t i = 0; i < sizeof del / sizeof del[0]; i++) btree_delete(&b, del[i]);
-    printf("size: %d\n", b.size);
+    printf("delete size: %d\n", b.size);
     return 0;
 }

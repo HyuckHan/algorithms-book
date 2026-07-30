@@ -99,6 +99,7 @@ public final class BTree {
         BTree t = new BTree(2);
         for (int k : new int[] {10, 20, 5, 6, 12, 30, 7, 17}) t.insert(k);
         System.out.println("inorder: " + join(t.inorder()));
+        System.out.println("size: " + t.size());
         System.out.println("root: " + join(t.root.keys));
         StringBuilder children = new StringBuilder();
         for (int i = 0; i < t.root.children.size(); i++) {
@@ -107,6 +108,6 @@ public final class BTree {
         }
         System.out.println("children: " + children);
         for (int k : new int[] {6, 7, 5, 10, 12, 17, 20, 30}) t.delete(k);
-        System.out.println("size: " + t.size());
+        System.out.println("delete size: " + t.size());
     }
 }

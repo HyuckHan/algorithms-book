@@ -168,8 +168,9 @@ if __name__ == "__main__":
     for k in [10, 20, 5, 6, 12, 30, 7, 17]:
         t.insert(k)
     print("inorder:", ",".join(str(k) for k in t.inorder()))
+    print("size:", len(t))
     print("root:", ",".join(str(k) for k in t.root.keys))
     print("children:", ";".join(",".join(str(k) for k in c.keys) for c in t.root.children))
     for k in [6, 7, 5, 10, 12, 17, 20, 30]:
         t.delete(k)
-    print("size:", len(t))
+    print("delete size:", len(t))
