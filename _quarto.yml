@@ -17,6 +17,7 @@ book:
   chapters:
     - index.qmd
     - chapters/01-introduction.qmd
+    - chapters/02-recursion.qmd
     - chapters/03-sorting.qmd
 format:
   html:
