@@ -79,6 +79,23 @@ const INTERNAL_DOC_PATTERNS = [
   /\bAGENT_WORKFLOW\b/,
   /\bAGENTS\.md\b/,
   /\bMILESTONES\.md\b/,
+  // Build-pipeline/production jargon (never meaningful to a reader): this is
+  // exactly the class of bug an internal "how this figure was made" note
+  // is (found and removed from L05's LCS section -- a callout literally
+  // said "TikZ SVG 대신 표로 직접 제시한다"). None of these terms occur
+  // anywhere in L01/02/03/05's real rendered body text (checked via
+  // page.evaluate(() => document.body.innerText) before adding this list),
+  // so this is a zero-false-positive tripwire, not a guess.
+  /\bTikZ\b/i,
+  /\bSVG\b/,
+  /\bpgfplots\b/i,
+  /\bdvisvgm\b/i,
+  /\blualatex\b/i,
+  /\btikzpicture\b/i,
+  /\\only\b/,
+  /\\visible\b/,
+  /\\alt</,
+  /pseudocode\.js/i,
 ];
 
 const url = process.argv[2];

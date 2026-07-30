@@ -324,13 +324,16 @@ def main():
           % (expected, rendered, unrendered, "PASS" if gate3_pass else "FAIL"))
     ok = ok and gate3_pass
 
-    # Internal doc-name leak check: SPEC.md/PER_LECTURE_NOTES.md/etc. must
-    # never be cited in reader-facing prose (a correction stands on its own
-    # merits; the internal tracking doc it came from is not the reader's
-    # business). Scoped to the rendered page's visible body text.
+    # Internal doc-name / production-jargon leak check: SPEC.md/
+    # PER_LECTURE_NOTES.md/etc. must never be cited in reader-facing prose
+    # (a correction stands on its own merits; the internal tracking doc it
+    # came from is not the reader's business) -- and neither should
+    # build-pipeline jargon like TikZ/SVG/pgfplots/`\only` (an author-facing
+    # "how this figure was made" note, same failure mode as citing an
+    # internal doc). Scoped to the rendered page's visible body text.
     internal_refs = facts.get("internalDocRefs", [])
     internal_ok = len(internal_refs) == 0
-    print("  internal doc-name references: %s -> %s"
+    print("  internal doc-name / production jargon references: %s -> %s"
           % (internal_refs if internal_refs else "none", "PASS" if internal_ok else "FAIL"))
     ok = ok and internal_ok
 
