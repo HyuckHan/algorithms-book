@@ -74,6 +74,7 @@ CONTRAST_MINIMUM = 4.5
 
 LECTURE_CHAPTER = {
     "01": {"lecture_notes_dir": "lecture01", "chapter_html": "chapters/01-introduction.html"},
+    "02": {"lecture_notes_dir": "lecture02", "chapter_html": "chapters/02-recursion.html"},
     "03": {"lecture_notes_dir": "lecture03", "chapter_html": "chapters/03-sorting.html"},
 }
 
@@ -102,6 +103,11 @@ ALGO_IDENTIFIERS = {
         "linear-search": ["linear_search", "LinearSearch", "linearSearch"],
         "binary-search": ["binary_search", "BinarySearch", "binarySearch"],
     },
+    "02": {
+        "sum": ["sum"],
+        "hanoi": ["hanoi", "Hanoi"],
+        "recursive-binary-search": ["bsearch"],
+    },
 }
 
 # lecture -> algorithm name (matches run_examples.py's ALGORITHM_CONFIG keys)
@@ -127,6 +133,14 @@ SECTION_ID = {
         "maximum": "maximum의-복잡도",
         "linear-search": "linear-search의-복잡도",
         "binary-search": "binary-search의-복잡도",
+    },
+    # L02's three representative algorithms each get their own H2 Part (no
+    # further H3 split), so the code panel-tabset lives directly in that
+    # Part's own section id.
+    "02": {
+        "sum": "part-b.-재귀의-실행-호출-스택",
+        "hanoi": "part-h.-hanoi",
+        "recursive-binary-search": "part-g.-재귀적으로-문제-설계하기",
     },
 }
 

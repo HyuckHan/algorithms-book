@@ -51,6 +51,10 @@ const SECTION_CHECKS = [
   // code panel-tabset lives later, under a "...의 복잡도" heading (see
   // qa_check.py's SECTION_ID mapping for the same reasoning).
   "maximum의-복잡도", "linear-search의-복잡도", "binary-search의-복잡도",
+  // L02's three representative algorithms (Sum, Hanoi, Recursive Binary
+  // Search) each get their own H2 Part with no further H3 split, so their
+  // code panel-tabset lives directly in that Part's own section id.
+  "part-b.-재귀의-실행-호출-스택", "part-g.-재귀적으로-문제-설계하기", "part-h.-hanoi",
 ].map((id) => ({ id, languages: ["python", "java", "c"] }));
 
 // Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)
