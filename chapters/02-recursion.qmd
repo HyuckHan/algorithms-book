@@ -494,19 +494,50 @@ Hanoi의 최소 이동 횟수는 $n$에 **선형**이 아니라 **지수**다: $
 visited를 unmark할 필요는 없다(경로 자체를 출력하려면 다른 역할의 current path가 필요하다).
 :::
 
-```{.c}
-bool find_path(int r, int c) {
-  if (outside(r,c) || wall(r,c) || visited(r,c)) return false;
-  if (is_exit(r,c)) return true;
-  mark_visited(r,c);
-  for each (nr,nc) in four_neighbors(r,c)
-    if (find_path(nr,nc)) return true;
-  return false;
-}
-```
-
 경로를 남기려면 (1) current를 candidate path로 표시, (2) 이웃을 재귀적으로 explore, (3) 모두
 실패하면 dead end로 바꾸고 돌아간다 — 성공 상태와 방문했지만 실패한 상태를 구분한다.
+
+**구현**: 세 언어 모두 이 절의 트레이스 그림과 같은 6×6 미로를 코드 안에 고정 grid로 둔다
+(`'#'`은 벽, `'.'`은 통로, 시작 $(0,0)$, 출구 $(5,5)$). `visited`와 candidate path는 전역이
+아니라 호출자가 만들어 매개변수로 넘기는 지역 배열이라 자기완결적으로 실행된다 — Hanoi와
+같은 원칙이다. choose(현재 cell을 visited로 표시하고 path에 추가) → explore(네 이웃을
+순서대로 재귀 탐색) → unchoose(모든 이웃이 실패하면 path에서 제거)의 구조를 코드 주석에
+그대로 남겼다. 이웃 순서(위·아래·왼쪽·오른쪽)는 임의로 고정한 것이며, 실제 실행은 이 순서
+때문에 트레이스 그림의 첫 dead end(위쪽 경로가 막힌 뒤 되돌아가는 지점)와 같은 지점에서
+막다른 길을 만난다 — 이후의 구체적인 되돌아가기 순서는 이웃 순서 선택에 따라 그림과 다를 수
+있지만, 미로 자체와 최종적으로 경로가 존재한다는 결론은 그림과 같다.
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/02-recursion/snippet-maze.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/02-recursion/snippet-maze.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/02-recursion/snippet-maze.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/02-recursion/out-maze-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/02-recursion/out-maze-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/02-recursion/out-maze-c.txt >}}
+```
+:::
 
 **6×6 미로: 탐색과 되돌아가기**
 
@@ -578,17 +609,47 @@ $S=\{a,b,c\}$일 때 $\mathcal P(S)=\{\emptyset,\{a\},\{b\},\{c\},\{a,b\},\{a,c\
 `power(k)`는 $data[k..n-1]$의 모든 선택을 완성해, 이미 정한 $include[0..k-1]$과 함께 출력한다.
 :::
 
-```{.c}
-void power_set(int k) {
-  if (k == n) { print_selected(include); return; }
-  include[k] = false; power_set(k + 1);
-  include[k] = true;  power_set(k + 1);
-}
-```
-
 base case는 empty set도 한 줄로 출력한다.
 
 ![상태공간 트리 $\{a,b,c\}$: 각 level은 다음 원소를 exclude/include하는 독립적인 두 선택이다.](../figures/02-recursion/13-power-set-tree.svg){fig-alt="루트 공집합에서 시작해 a, b, c를 차례로 exclude/include하며 8개의 leaf(부분집합)에 도달하는 이진 트리" width="75%"}
+
+**구현**: 세 언어 모두 고정 입력 `{a,b,c}`를 쓴다. `include`는 전역이 아니라 호출자(`main`)가
+만들어 매개변수로 넘기는 지역 배열이다. **매 단계에서 exclude를 include보다 먼저 재귀 호출하는
+순서**가 그대로 위 상태공간 트리의 왼쪽→오른쪽 leaf 순서를 만든다 — 실행 결과의 여덟 줄이
+$\emptyset,\{c\},\{b\},\{b,c\},\{a\},\{a,c\},\{a,b\},\{a,b,c\}$ 순서로 나오는 것을 확인할 수
+있다.
+
+::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/02-recursion/snippet-power-set.py >}}
+```
+## Java
+```{.java}
+{{< include ../figures/02-recursion/snippet-power-set.java >}}
+```
+## C
+```{.c}
+{{< include ../figures/02-recursion/snippet-power-set.c >}}
+```
+:::
+
+**실행 결과** (실제 컴파일·실행 캡처 — `gcc -Wall`, `javac`/`java`, `python3`):
+
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/02-recursion/out-power-set-python.txt >}}
+```
+## Java
+```{.default}
+{{< include ../figures/02-recursion/out-power-set-java.txt >}}
+```
+## C
+```{.default}
+{{< include ../figures/02-recursion/out-power-set-c.txt >}}
+```
+:::
 
 **출력 크기가 Lower Bound다**: 부분집합 수만 $2^n$이므로 leaf 하나를 생성하는 데만
 $\Omega(2^n)$이 필요하다. 길이 $n$의 include 배열을 매번 출력하면 $\Theta(n2^n)$이지만, 선택

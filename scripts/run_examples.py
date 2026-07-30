@@ -129,6 +129,16 @@ ALGORITHM_CONFIG = {
                 "java": {"file": "RecursiveBinarySearch.java", "class": "RecursiveBinarySearch"},
                 "python": {"file": "recursive_binary_search.py"},
             },
+            "maze": {
+                "c": {"file": "maze.c", "bin": "maze"},
+                "java": {"file": "Maze.java", "class": "Maze"},
+                "python": {"file": "maze.py"},
+            },
+            "power-set": {
+                "c": {"file": "power_set.c", "bin": "power_set"},
+                "java": {"file": "PowerSet.java", "class": "PowerSet"},
+                "python": {"file": "power_set.py"},
+            },
         },
     },
 }
@@ -166,11 +176,23 @@ def run_python_file(python_dir, filename):
 
 
 def normalize_numbers(text):
-    """Extract the sequence of integers from stdout, ignoring surrounding
-    format (brackets, spacing, labels) -- each language's demo prints in its
-    own idiom, so this is the "same algorithm, same input" comparison, not a
-    byte-diff."""
-    return re.findall(r"-?\d+", text)
+    """Extract the sequence of integers *and* letter-runs from stdout,
+    ignoring surrounding format (brackets, spacing, labels) -- each
+    language's demo prints in its own idiom, so this is the "same
+    algorithm, same input" comparison, not a byte-diff.
+
+    Letter-runs matter for algorithms whose output is symbolic rather than
+    numeric (e.g. Power Set's `{a,b,c}`-style subsets, 1.9.2/2.12): a
+    digits-only extraction would reduce that output to an empty sequence
+    for all three languages, making the "outputs match" check vacuously
+    true -- it would pass even if the three languages printed completely
+    different subsets. Print-label words (e.g. "input", "path_exists")
+    also get captured, but since every demo in this repo uses the same
+    English labels across all three languages by construction, that adds
+    signal (catching an accidental label mismatch) without causing false
+    negatives.
+    """
+    return re.findall(r"-?\d+|[a-zA-Z]+", text)
 
 
 def process_algorithms(lecture, code_dir, out_dir, build_dir):

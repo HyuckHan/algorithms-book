@@ -113,6 +113,16 @@ SNIPPET_CONFIG = {
                 ("java/RecursiveBinarySearch.java", "java"),
                 ("c/recursive_binary_search.c", "c"),
             ],
+            "maze": [
+                ("python/maze.py", "py"),
+                ("java/Maze.java", "java"),
+                ("c/maze.c", "c"),
+            ],
+            "power-set": [
+                ("python/power_set.py", "py"),
+                ("java/PowerSet.java", "java"),
+                ("c/power_set.c", "c"),
+            ],
         },
     },
 }
