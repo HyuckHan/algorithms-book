@@ -20,6 +20,7 @@ book:
     - chapters/02-recursion.qmd
     - chapters/03-sorting.qmd
     - chapters/05-dynamic-programming.qmd
+    - chapters/08-graphs.qmd
 format:
   html:
     theme: [cosmo, assets/theme.scss]
