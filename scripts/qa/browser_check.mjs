@@ -80,6 +80,11 @@ const SECTION_CHECKS = [
   "part-c.-bfs", "part-d.-dfs", "part-f.-topological-sort",
   "part-j.-kruskal과-disjoint-set", "part-m.-unweighteddag-shortest-paths",
   "part-o.-bellmanford-algorithm",
+  // L07's 3 ALGORITHM_CONFIG entries each get a whole H2 Part to themselves
+  // (see qa_check.py's SECTION_ID mapping -- ids confirmed against the
+  // actually-rendered chapter, not guessed from the .qmd headings).
+  "part-d.-integer와-string-hashing", "part-f.-separate-chaining",
+  "part-k.-삭제와-구현",
 ].map((id) => ({ id, languages: ["python", "java", "c"] }));
 
 // Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)

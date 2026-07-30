@@ -79,6 +79,7 @@ LECTURE_CHAPTER = {
     "04": {"lecture_notes_dir": "lecture04", "chapter_html": "chapters/04-selection.html"},
     "05": {"lecture_notes_dir": "lecture05", "chapter_html": "chapters/05-dynamic-programming.html"},
     "06": {"lecture_notes_dir": "lecture06", "chapter_html": "chapters/06-search-trees.html"},
+    "07": {"lecture_notes_dir": "lecture07", "chapter_html": "chapters/07-hash-tables.html"},
     "08": {"lecture_notes_dir": "lecture08", "chapter_html": "chapters/08-graphs.html"},
 }
 
@@ -211,6 +212,23 @@ ALGO_IDENTIFIERS = {
             "reconstruct_path",
         ],
     },
+    # L07's 3 ALGORITHM_CONFIG entries each get their own H2 Part (see
+    # SECTION_ID below). "mutable-key-example" (Java-only, no run_examples.py
+    # ALGORITHM_CONFIG entry -- see chapters/07.inventory §c) deliberately has
+    # no key here since SECTION_GATES/PIPELINE_ALGORITHMS iterate this dict to
+    # build the 3-language pipeline gate, and that demo is single-language by
+    # design, not a gate omission.
+    "07": {
+        "string-hash": ["StringHash", "string_hash", "ascii_sum", "asciiSum"],
+        "chained-hash-table": [
+            "ChainedHashMap", "ChainedHashTable", "chained_hash_table",
+            "chain_put", "chain_get", "chain_remove", "bucket_chain", "bucketChain", "chain_bucket",
+        ],
+        "open-address-hash-table": [
+            "OpenAddressHashMap", "OpenAddressHashTable", "open_address_hash_table",
+            "open_put", "open_get", "open_remove", "findIndex", "find_index",
+        ],
+    },
 }
 
 # lecture -> algorithm name (matches run_examples.py's ALGORITHM_CONFIG keys)
@@ -288,6 +306,17 @@ SECTION_ID = {
         "mst": "part-j.-kruskal과-disjoint-set",
         "dag-shortest-paths": "part-m.-unweighteddag-shortest-paths",
         "shortest-paths": "part-o.-bellmanford-algorithm",
+    },
+    # Confirmed against the actually-rendered _book/chapters/07-hash-tables.html
+    # section ids, not guessed from the .qmd headings. Each of L07's 3
+    # ALGORITHM_CONFIG entries gets a whole H2 Part to itself, matching
+    # L02/L04/L06's whole-Part pattern (open-address-hash-table's demo lives
+    # in Part K, which covers both deletion and the implementation demo
+    # together -- see chapters/07-hash-tables.qmd).
+    "07": {
+        "string-hash": "part-d.-integer와-string-hashing",
+        "chained-hash-table": "part-f.-separate-chaining",
+        "open-address-hash-table": "part-k.-삭제와-구현",
     },
 }
 
