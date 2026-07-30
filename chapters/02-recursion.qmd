@@ -4,7 +4,7 @@ description: "작은 동일 문제로 문제를 명세하고, 호출 스택·귀
 lecture: 2
 order: 2
 slug: "02-recursion"
-status: "review"
+status: "verified"
 objectives:
   - "재귀 mission, base case, recursive case, progress measure를 정의한다."
   - "호출 스택의 push와 반환 과정을 추적한다."
