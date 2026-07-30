@@ -1,0 +1,9 @@
+input: n=3
+move disk 1: L -> R
+move disk 2: L -> M
+move disk 1: R -> M
+move disk 3: L -> R
+move disk 1: M -> L
+move disk 2: M -> R
+move disk 1: L -> R
+hanoi: 7

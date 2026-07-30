@@ -95,6 +95,26 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    "02": {
+        "dir": "02-recursion",
+        "snippets": {
+            "sum": [
+                ("python/sum.py", "py"),
+                ("java/Sum.java", "java"),
+                ("c/sum.c", "c"),
+            ],
+            "hanoi": [
+                ("python/hanoi.py", "py"),
+                ("java/Hanoi.java", "java"),
+                ("c/hanoi.c", "c"),
+            ],
+            "recursive-binary-search": [
+                ("python/recursive_binary_search.py", "py"),
+                ("java/RecursiveBinarySearch.java", "java"),
+                ("c/recursive_binary_search.c", "c"),
+            ],
+        },
+    },
 }
 
 

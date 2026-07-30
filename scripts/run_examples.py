@@ -111,6 +111,26 @@ ALGORITHM_CONFIG = {
             },
         },
     },
+    "02": {
+        "dir": "02-recursion",
+        "algorithms": {
+            "sum": {
+                "c": {"file": "sum.c", "bin": "sum"},
+                "java": {"file": "Sum.java", "class": "Sum"},
+                "python": {"file": "sum.py"},
+            },
+            "hanoi": {
+                "c": {"file": "hanoi.c", "bin": "hanoi"},
+                "java": {"file": "Hanoi.java", "class": "Hanoi"},
+                "python": {"file": "hanoi.py"},
+            },
+            "recursive-binary-search": {
+                "c": {"file": "recursive_binary_search.c", "bin": "recursive_binary_search"},
+                "java": {"file": "RecursiveBinarySearch.java", "class": "RecursiveBinarySearch"},
+                "python": {"file": "recursive_binary_search.py"},
+            },
+        },
+    },
 }
 
 

@@ -38,7 +38,13 @@ CACHE_DIR = REPO_ROOT / "figures" / ".cache" / "tikz-build"
 
 TIKZ_RE = re.compile(r"\\begin\{tikzpicture\}.*?\\end\{tikzpicture\}", re.DOTALL)
 AXIS_RE = re.compile(r"\\begin\{axis\}.*?\\end\{axis\}", re.DOTALL)
-ONLY_HEAD_RE = re.compile(r"\\only<([^>]*)>")
+# \visible<SPEC>{BODY} (cumulative reveal, used by L02's call-stack "push"
+# figure) has the exact same single-branch, brace-balanced shape as
+# \only<SPEC>{BODY} and the same lo<=target<=hi semantics work for both here
+# (we're picking one flattened/sequence target state, not reproducing
+# beamer's live progressive-reveal layout), so one regex/one set of
+# functions (find_only_blocks/render_only_at) handles both.
+ONLY_HEAD_RE = re.compile(r"\\(?:only|visible)<([^>]*)>")
 ALT_HEAD_RE = re.compile(r"\\alt<([^>]*)>")
 
 PREAMBLE = r"""\documentclass[border=4pt]{standalone}
@@ -107,6 +113,22 @@ FIGURE_CONFIG = {
         ("10_asymptotic_notation.tex", 1): {"slug": "12-oh-omega-theta"},
         ("12_summary_quiz.tex", 0): {"slug": "13-concept-map"},
     },
+    "02": {
+        ("02_execution.tex", 0): {"slug": "01-call-stack-push"},
+        ("02_execution.tex", 1): {"slug": "02-call-stack-pop", "mode": "sequence"},
+        ("04_basic_examples.tex", 0): {"slug": "03-fibonacci-tree"},
+        ("05_recurrences.tex", 0): {"slug": "04-recursion-tree"},
+        ("06_master_theorem.tex", 0): {"slug": "05-master-theorem-competition"},
+        ("07_recursive_thinking.tex", 0): {"slug": "06-binary-search-reduction", "mode": "sequence"},
+        ("08_hanoi.tex", 0): {"slug": "07-hanoi-rules"},
+        ("08_hanoi.tex", 1): {"slug": "08-hanoi-n3-states", "mode": "sequence"},
+        ("08_hanoi.tex", 2): {"slug": "09-hanoi-recursion-tree"},
+        ("09_maze.tex", 0): {"slug": "10-maze-trace", "mode": "sequence"},
+        ("10_blob.tex", 0): {"slug": "11-blob-neighbors"},
+        ("10_blob.tex", 1): {"slug": "12-blob-floodfill", "mode": "sequence"},
+        ("11_power_set.tex", 0): {"slug": "13-power-set-tree"},
+        ("13_summary_quiz.tex", 0): {"slug": "14-concept-map"},
+    },
 }
 
 
@@ -131,11 +153,12 @@ def find_brace_block(text, open_pos):
 
 
 def find_only_blocks(text):
-    """Find top-level \\only<SPEC>{BODY} occurrences, brace-balanced.
+    """Find top-level \\only<SPEC>{BODY} or \\visible<SPEC>{BODY} occurrences,
+    brace-balanced (ONLY_HEAD_RE matches either keyword).
 
     Returns a list of (start, end, spec, body) with `end` exclusive. Does not
-    recurse into BODY (none of the lecture-notes figures nest \\only inside
-    \\only, and none in this repository need it).
+    recurse into BODY (none of the lecture-notes figures nest \\only/\\visible
+    inside another, and none in this repository need it).
     """
     blocks = []
     pos = 0
@@ -486,7 +509,7 @@ def process_lecture(lecture, check_only, keep_build):
 
 
 def _lecture_slug(lecture):
-    names = {"01": "01-introduction", "03": "03-sorting"}
+    names = {"01": "01-introduction", "02": "02-recursion", "03": "03-sorting"}
     return names.get(lecture, "lecture%s" % lecture)
 
 
