@@ -39,10 +39,18 @@ function contrastRatio(fgCss, bgCss) {
 // wraps each heading's content in <section id="...">, so this looks up the
 // section by the heading's slug id and inspects only code inside it -- a
 // whole-page check can't tell "3 languages present somewhere on the page"
-// from "3 languages present in *this* algorithm's section".
+// from "3 languages present in *this* algorithm's section". This list is
+// flat across all lectures (not scoped to whichever page is being checked);
+// ids from a different lecture's page just report found:false harmlessly,
+// since qa_check.py only reads the entries relevant to its --lecture arg.
 const SECTION_CHECKS = [
   "selection-sort", "bubble-sort", "insertion-sort", "merge-sort",
   "quick-sort", "heapsort", "counting-sort", "radix-sort",
+  // L01 introduces Linear/Binary Search early but -- matching the lecture's
+  // own deferral of complexity until after asymptotic notation -- their
+  // code panel-tabset lives later, under a "...의 복잡도" heading (see
+  // qa_check.py's SECTION_ID mapping for the same reasoning).
+  "linear-search의-복잡도", "binary-search의-복잡도",
 ].map((id) => ({ id, languages: ["python", "java", "c"] }));
 
 // Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)

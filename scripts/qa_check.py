@@ -66,59 +66,79 @@ QA_DIR = REPO_ROOT / "scripts" / "qa"
 CONTRAST_MINIMUM = 4.5
 
 LECTURE_CHAPTER = {
+    "01": {"lecture_notes_dir": "lecture01", "chapter_html": "chapters/01-introduction.html"},
     "03": {"lecture_notes_dir": "lecture03", "chapter_html": "chapters/03-sorting.html"},
 }
 
-# Per-language identifiers for every from-scratch sort with its own section
-# (used to build each section's "forbidden" list below: every OTHER
-# algorithm's identifiers, since finding them inside this algorithm's
-# section means the tabset is showing more than just its own code).
+# Per-lecture, per-language identifiers for every from-scratch algorithm with
+# its own section (used to build each section's "forbidden" list below: every
+# OTHER algorithm's identifiers *in that lecture*, since finding them inside
+# this algorithm's section means the tabset is showing more than just its
+# own code).
 ALGO_IDENTIFIERS = {
-    "selection-sort": ["selection_sort", "SelectionSort", "selectionSort"],
-    "bubble-sort": ["bubble_sort", "BubbleSort", "bubbleSort"],
-    "insertion-sort": ["insertion_sort", "InsertionSort", "insertionSort"],
-    "merge-sort": ["merge_sort", "MergeSort", "mergeSort"],
-    "quick-sort": ["quick_sort", "QuickSort", "quickSort", "partition"],
-    "heap-sort": [
-        "heap_sort", "HeapSort", "heapSort",
-        "max_heapify", "MaxHeapify", "maxHeapify",
-        "build_max_heap", "BuildMaxHeap", "buildMaxHeap",
-    ],
-    "counting-sort": ["counting_sort", "CountingSort", "countingSort"],
-    "radix-sort": ["radix_sort", "RadixSort", "radixSort"],
+    "03": {
+        "selection-sort": ["selection_sort", "SelectionSort", "selectionSort"],
+        "bubble-sort": ["bubble_sort", "BubbleSort", "bubbleSort"],
+        "insertion-sort": ["insertion_sort", "InsertionSort", "insertionSort"],
+        "merge-sort": ["merge_sort", "MergeSort", "mergeSort"],
+        "quick-sort": ["quick_sort", "QuickSort", "quickSort", "partition"],
+        "heap-sort": [
+            "heap_sort", "HeapSort", "heapSort",
+            "max_heapify", "MaxHeapify", "maxHeapify",
+            "build_max_heap", "BuildMaxHeap", "buildMaxHeap",
+        ],
+        "counting-sort": ["counting_sort", "CountingSort", "countingSort"],
+        "radix-sort": ["radix_sort", "RadixSort", "radixSort"],
+    },
+    "01": {
+        "linear-search": ["linear_search", "LinearSearch", "linearSearch"],
+        "binary-search": ["binary_search", "BinarySearch", "binarySearch"],
+    },
 }
 
-# algorithm name (matches run_examples.py's ALGORITHM_CONFIG keys) -> the
-# rendered <section id="..."> slug Quarto derives from that H3's heading text
-# (mostly identical, except Heapsort's heading has no space/dash).
+# lecture -> algorithm name (matches run_examples.py's ALGORITHM_CONFIG keys)
+# -> the rendered <section id="..."> slug Quarto derives from that heading's
+# text (mostly identical, except L03 Heapsort's heading has no space/dash).
 SECTION_ID = {
-    "selection-sort": "selection-sort",
-    "bubble-sort": "bubble-sort",
-    "insertion-sort": "insertion-sort",
-    "merge-sort": "merge-sort",
-    "quick-sort": "quick-sort",
-    "heap-sort": "heapsort",
-    "counting-sort": "counting-sort",
-    "radix-sort": "radix-sort",
+    "03": {
+        "selection-sort": "selection-sort",
+        "bubble-sort": "bubble-sort",
+        "insertion-sort": "insertion-sort",
+        "merge-sort": "merge-sort",
+        "quick-sort": "quick-sort",
+        "heap-sort": "heapsort",
+        "counting-sort": "counting-sort",
+        "radix-sort": "radix-sort",
+    },
+    # L01 introduces Linear/Binary Search early (Part D: problem, pseudocode,
+    # trace) but -- matching the lecture's own deferral of complexity to
+    # after asymptotic notation is introduced -- their "구현" panel-tabset
+    # lives later, alongside their complexity analysis (Part H), under a
+    # "...의 복잡도" heading rather than the intro section's own id.
+    "01": {
+        "linear-search": "linear-search의-복잡도",
+        "binary-search": "binary-search의-복잡도",
+    },
 }
 
 # Algorithms with their own isolated C/Java/Python section (panel-tabset),
 # per ADR-004 / run_examples.py's ALGORITHM_CONFIG.
 SECTION_GATES = {
-    "03": [
+    lecture: [
         {
-            "section_id": SECTION_ID[algo],
+            "section_id": SECTION_ID[lecture][algo],
             "algorithm": algo,
             "languages": ["python", "java", "c"],
             "forbidden": [
                 ident
-                for other, idents in ALGO_IDENTIFIERS.items()
+                for other, idents in ALGO_IDENTIFIERS[lecture].items()
                 if other != algo
                 for ident in idents
             ],
         }
-        for algo in ALGO_IDENTIFIERS
-    ],
+        for algo in ALGO_IDENTIFIERS[lecture]
+    ]
+    for lecture in ALGO_IDENTIFIERS
 }
 
 
