@@ -323,15 +323,15 @@ DeterministicSelect의 전체 단계: (1) $n\le5$이면 직접 정렬해 반환,
 
 마지막 group은 1–4개일 수 있다. 크기 $g$인 group을 정렬한 뒤 $\lceil g/2\rceil$th 원소를 lower median으로 선택한다(예: $g=4$이면 2nd, $g=2$이면 1st). 이는 구현 correctness에는 포함되지만, 분석에서는 incomplete group과 $M$ 자신이 속한 group을 $O(1)$ 예외로 처리한다 — 불완전 group에는 아래에서 다룰 "3개 보장"을 적용하지 않는다.
 
-{{< include ../figures/04-selection/pseudocode-deterministic-select-pivot.qmd >}}
+아래 의사코드는 이 6단계 전체를 하나로 이어 보여준다: 앞부분이 group을 구성하고 medians의 median $M$을 재귀로 구하고 나면, 곧바로 그 $M$으로 원본을 3-way partition해 한쪽만 재귀하는 뒷부분으로 이어진다 — 별개의 두 알고리즘이 아니라 한 procedure다.
 
-$p+i-1$은 유효한 absolute index이며, $M$은 원본 $A[p..r]$에 실제로 존재하는 값이다.
+{{< include ../figures/04-selection/pseudocode-deterministic-select.qmd >}}
 
-{{< include ../figures/04-selection/pseudocode-deterministic-select-partition.qmd >}}
+$p+i-1$은 유효한 absolute index이고, $M$은 원본 $A[p..r]$에 실제로 존재하는 값이다. $M$을 구한 뒤에는 그 값으로 원본을 3-way partition해
 
 $$A[p..lt-1]<M,\quad A[lt..gt]=M,\quad A[gt+1..r]>M$$
 
-이제 group median 수집이 원본 원소를 양쪽에서 얼마나 제거하는지 계산할 차례다.
+을 얻고, $L=lt-p,\ E=gt-lt+1$이라 하면 $i\le L$이면 왼쪽, $i\le L+E$이면 $M$, 아니면 오른쪽에서 rank $i-L-E$를 재귀로 찾는다. 이제 group median 수집이 원본 원소를 양쪽에서 얼마나 제거하는지 계산할 차례다.
 
 ### Pivot 보장: 왜 양쪽에서 일정 비율이 제거되는가
 

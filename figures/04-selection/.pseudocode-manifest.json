@@ -1,11 +1,15 @@
 {
-  "deterministic-select-partition": {
-    "index": 1,
-    "source": "10_group_of_five.tex"
-  },
-  "deterministic-select-pivot": {
-    "index": 0,
-    "source": "10_group_of_five.tex"
+  "deterministic-select": {
+    "sources": [
+      {
+        "index": 0,
+        "source": "10_group_of_five.tex"
+      },
+      {
+        "index": 1,
+        "source": "10_group_of_five.tex"
+      }
+    ]
   },
   "fixed-quickselect": {
     "index": 0,

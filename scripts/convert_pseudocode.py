@@ -67,6 +67,20 @@ what pseudocode.js's stricter-than-algorithmicx grammar needs it to appear):
    the NAME group (never the args group) fixes the parse without changing
    which procedure it is; a name with no whitespace is left untouched, so
    this is a no-op for every already-working lecture.
+
+Separately from those five text-level normalizations, PSEUDOCODE_CONFIG can
+map more than one (section file, index) key to the *same* slug -- this marks
+a procedure the source splits across multiple frames purely for slide-space
+reasons (e.g. L04's `10_group_of_five.tex` has two `\\Procedure{DeterministicSelect...}`
+blocks: "Pivot 만들기" builds the pivot, "(continued)" partitions around it
+and recurses) as one continuous algorithm rather than two separate ones.
+merge_algorithmic_bodies() drops every body's `\\Procedure{...}{...}` header
+except the first (a later header would show extra locally-computed
+variables, e.g. `M`, as if they were caller-supplied parameters, which they
+aren't) and every body's `\\EndProcedure` except the last, then concatenates
+them -- so pseudocode.js renders one line-numbered listing that continues
+instead of two blocks that both start at line 1 and look like two separate
+procedure definitions.
 """
 import argparse
 import html
@@ -85,6 +99,8 @@ BARE_TEXT_CMD_RE = re.compile(r"\\text\{[^{}]*\}")
 STATEX_RE = re.compile(r"\\Statex\b")
 PROCEDURE_HEAD_RE = re.compile(r"\\Procedure\{[^{}]*\}\{[^{}]*\}")
 PROCEDURE_NAME_RE = re.compile(r"\\Procedure\{([^{}]*)\}")
+PROCEDURE_HEADER_LINE_RE = re.compile(r"^\\Procedure\{[^{}]*\}\{[^{}]*\}\s*\n?")
+END_PROCEDURE_TAIL_RE = re.compile(r"\\EndProcedure\s*$")
 PRECONDITION_RE = re.compile(r"\\(?:Require|Ensure|Input|Output)\s*\{")
 
 # Lecture-specific slugs, keyed by (section filename, 0-based index of the
@@ -136,12 +152,18 @@ PSEUDOCODE_CONFIG = {
     # hoist_call_out_of_math (generalized during the L08 session) is expected
     # to fix all three without further changes; verified by running this
     # script and inspecting the output (no manual edits made).
+    # 10_group_of_five.tex's two \Procedure{DeterministicSelect...} blocks
+    # ("Pivot 만들기" then "(continued)") are one continuous algorithm split
+    # across two frames for slide-space reasons -- both map to the same
+    # slug so merge_algorithmic_bodies() (see module docstring) renders them
+    # as a single continuously-numbered listing instead of two blocks that
+    # each restart at line 1 and look like two separate procedures.
     "04": {
         ("03_sort_then_select.tex", 0): "select-by-sorting",
         ("04_quickselect_idea.tex", 0): "fixed-quickselect",
         ("08_randomized_select.tex", 0): "randomized-select",
-        ("10_group_of_five.tex", 0): "deterministic-select-pivot",
-        ("10_group_of_five.tex", 1): "deterministic-select-partition",
+        ("10_group_of_five.tex", 0): "deterministic-select",
+        ("10_group_of_five.tex", 1): "deterministic-select",
     },
     "08": {
         ("03_bfs.tex", 0): "bfs",
@@ -276,10 +298,47 @@ def rename_statex_to_state(body):
     return STATEX_RE.sub("\\\\State", body)
 
 
+def merge_algorithmic_bodies(bodies):
+    """Merge multiple `\\Procedure{...}{...}...\\EndProcedure` bodies that
+    describe one continuous algorithm split across several source frames
+    (see module docstring) into a single body: only the first body's
+    `\\Procedure` header and only the last body's `\\EndProcedure` survive,
+    so the result reads as one procedure instead of several. Bodies are
+    stripped of surrounding whitespace before joining so line breaks between
+    the merged pieces are consistent regardless of source formatting."""
+    parts = []
+    for i, raw in enumerate(bodies):
+        part = raw.strip()
+        if i > 0:
+            part = PROCEDURE_HEADER_LINE_RE.sub("", part, count=1).lstrip()
+        if i < len(bodies) - 1:
+            part = END_PROCEDURE_TAIL_RE.sub("", part).rstrip()
+        parts.append(part)
+    return "\n".join(parts)
+
+
 def find_algorithmic_blocks(section_path):
     text = section_path.read_text(encoding="utf-8")
     for idx, m in enumerate(ALGORITHMIC_RE.finditer(text)):
         yield idx, m.group(2).strip()
+
+
+def expected_rendered_count(lecture):
+    """Number of distinct pseudocode.js blocks this lecture's rendered page
+    should show: the number of distinct configured PSEUDOCODE_CONFIG slugs,
+    not the raw count of `\\begin{algorithmic}` source blocks -- those can
+    differ when merge_algorithmic_bodies folds more than one source block
+    into a single rendered slug (see module docstring and PSEUDOCODE_CONFIG's
+    "04" entry). Used by qa_check.py's gate 3 as the expected baseline."""
+    sections_dir = LECTURE_NOTES / ("lecture%s" % lecture) / "sections"
+    config = PSEUDOCODE_CONFIG.get(lecture, {})
+    slugs = set()
+    for section_path in sorted(sections_dir.glob("*.tex")):
+        for idx, _ in find_algorithmic_blocks(section_path):
+            slug = config.get((section_path.name, idx))
+            if slug is not None:
+                slugs.add(slug)
+    return len(slugs)
 
 
 def to_pseudocode_snippet(body):
@@ -317,6 +376,11 @@ def process_lecture(lecture, check_only):
     written, unmapped, missing = [], [], []
     manifest = {}
 
+    # Group by slug (not just iterate block-by-block) so multiple source
+    # blocks mapped to the same slug -- one algorithm split across several
+    # frames, see PSEUDOCODE_CONFIG's "04" entry and module docstring -- are
+    # merged into a single snippet instead of each producing its own file.
+    slug_entries = {}
     for section_path in sorted(sections_dir.glob("*.tex")):
         for idx, body in find_algorithmic_blocks(section_path):
             key = (section_path.name, idx)
@@ -324,19 +388,27 @@ def process_lecture(lecture, check_only):
             if slug is None:
                 unmapped.append("%s#%d" % (section_path.name, idx))
                 continue
+            slug_entries.setdefault(slug, []).append((section_path.name, idx, body))
 
-            snippet = to_pseudocode_snippet(body)
-            manifest[slug] = {"source": section_path.name, "index": idx}
-            out_path = out_dir / ("pseudocode-%s.qmd" % slug)
+    for slug, entries in slug_entries.items():
+        bodies = [body for _, _, body in entries]
+        merged_body = bodies[0] if len(bodies) == 1 else merge_algorithmic_bodies(bodies)
+        snippet = to_pseudocode_snippet(merged_body)
+        manifest[slug] = (
+            {"source": entries[0][0], "index": entries[0][1]}
+            if len(entries) == 1
+            else {"sources": [{"source": s, "index": i} for s, i, _ in entries]}
+        )
+        out_path = out_dir / ("pseudocode-%s.qmd" % slug)
 
-            if check_only:
-                if not out_path.exists() or out_path.read_text(encoding="utf-8") != to_html_fragment(snippet):
-                    missing.append(slug)
-                continue
+        if check_only:
+            if not out_path.exists() or out_path.read_text(encoding="utf-8") != to_html_fragment(snippet):
+                missing.append(slug)
+            continue
 
-            out_dir.mkdir(parents=True, exist_ok=True)
-            out_path.write_text(to_html_fragment(snippet), encoding="utf-8")
-            written.append(slug)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(to_html_fragment(snippet), encoding="utf-8")
+        written.append(slug)
 
     if not check_only:
         manifest_path = out_dir / ".pseudocode-manifest.json"

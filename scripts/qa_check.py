@@ -331,14 +331,17 @@ def check_algorithm_pipeline(lecture, algo_name):
 
 
 def source_algorithmic_count(lecture):
+    """Expected number of distinct rendered pseudocode.js blocks -- delegates
+    to convert_pseudocode.py's own PSEUDOCODE_CONFIG-aware count rather than
+    a raw `\\begin{algorithmic}` tally, since merge_algorithmic_bodies can
+    fold more than one source block into a single rendered slug (e.g. L04's
+    DeterministicSelect, split across two source frames but rendered as one
+    continuous listing) -- a raw count would over-count against what the
+    page actually renders in that case."""
     sys.path.insert(0, str(REPO_ROOT / "scripts"))
     import convert_pseudocode as cp  # local import: scripts/ is not normally on sys.path
 
-    sections_dir = cp.LECTURE_NOTES / ("lecture%s" % lecture) / "sections"
-    count = 0
-    for section_path in sorted(sections_dir.glob("*.tex")):
-        count += sum(1 for _ in cp.find_algorithmic_blocks(section_path))
-    return count
+    return cp.expected_rendered_count(lecture)
 
 
 class _QuietHandler(http.server.SimpleHTTPRequestHandler):
