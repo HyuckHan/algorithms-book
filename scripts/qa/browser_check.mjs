@@ -61,6 +61,12 @@ const SECTION_CHECKS = [
   // actually-rendered chapter, not guessed from the .qmd headings).
   "tabulation-bottom-up", "matrix-minimum-path-sum",
   "longest-common-subsequence-lcs", "maximum-subarray-kadanes-algorithm",
+  // L08's 12 algorithm slugs collapse into 6 sections (see qa_check.py's
+  // SECTION_ID mapping -- ids confirmed against the actually-rendered
+  // chapter, not guessed from the .qmd headings).
+  "part-c.-bfs", "part-d.-dfs", "part-f.-topological-sort",
+  "part-j.-kruskal과-disjoint-set", "part-m.-unweighteddag-shortest-paths",
+  "part-o.-bellmanford-algorithm",
 ].map((id) => ({ id, languages: ["python", "java", "c"] }));
 
 // Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)
@@ -109,9 +115,12 @@ const failedRequests = [];
 page.on("response", (res) => { if (res.status() >= 400) failedRequests.push(res.url() + " :: HTTP " + res.status()); });
 
 await page.goto(url, { waitUntil: "networkidle", timeout: 60000 });
-// Pseudocode rendering races MathJax readiness against an 8s hard timeout
-// (see assets/pseudocode/pseudocode-init.html); wait past that plus margin.
-await page.waitForTimeout(9000);
+// Pseudocode rendering races MathJax readiness (8s hard cap) then a
+// per-block font warm-up (15s hard cap) before rendering runs (see
+// assets/pseudocode/pseudocode-init.html) -- wait past the worst case
+// (8s + 15s) plus margin, not just the old single 8s cap, or this check
+// can catch the page mid-render on a slow/loaded machine and undercount.
+await page.waitForTimeout(25000);
 
 const domFacts = await page.evaluate(({ sectionChecks, internalDocPatternSources }) => {
   const bodyText = document.body.innerText;

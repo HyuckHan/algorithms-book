@@ -77,6 +77,7 @@ LECTURE_CHAPTER = {
     "02": {"lecture_notes_dir": "lecture02", "chapter_html": "chapters/02-recursion.html"},
     "03": {"lecture_notes_dir": "lecture03", "chapter_html": "chapters/03-sorting.html"},
     "05": {"lecture_notes_dir": "lecture05", "chapter_html": "chapters/05-dynamic-programming.html"},
+    "08": {"lecture_notes_dir": "lecture08", "chapter_html": "chapters/08-graphs.html"},
 }
 
 # Per-lecture, per-language identifiers for every from-scratch algorithm with
@@ -133,6 +134,36 @@ ALGO_IDENTIFIERS = {
             "max_subarray_brute_force", "max_subarray_kadane",
         ],
     },
+    # L08's 12 run_examples.py slugs collapse into 6 sections (each section
+    # can hold multiple slugs' code, same reasoning as L05's shared
+    # sections) -- keys here are the section-scoped conceptual group, not
+    # the individual slug. Identifiers are actual class/function names from
+    # the code (not display names like "BFS"/"Dijkstra", which appear as
+    # ordinary words throughout this chapter's prose and comparison tables
+    # -- word-boundary matching on those would false-positive constantly).
+    "08": {
+        "bfs": ["graph_bfs", "BFSResult"],
+        "dfs": [
+            "graph_dfs", "DFSResult", "dfsIterative", "dfs_iterative",
+            "graph_dfs_iterative", "DfsIterative",
+        ],
+        "topological-sort": [
+            "TopologicalSort", "graph_topological_kahn", "graph_topological_dfs",
+            "topo_dfs", "topo_visit", "topo_kahn",
+        ],
+        "mst": [
+            "MinimumSpanningTree", "graph_prim", "graph_kruskal",
+            "DisjointSet", "dsu_init", "dsu_find", "dsu_union",
+        ],
+        "dag-shortest-paths": [
+            "DagShortestPaths", "graph_dag_shortest_paths", "dag_shortest_paths",
+        ],
+        "shortest-paths": [
+            "ShortestPaths", "graph_dijkstra", "graph_bellman_ford",
+            "bellmanFord", "bellman_ford", "graph_reconstruct_path",
+            "reconstruct_path",
+        ],
+    },
 }
 
 # lecture -> algorithm name (matches run_examples.py's ALGORITHM_CONFIG keys)
@@ -177,6 +208,16 @@ SECTION_ID = {
         "lcs": "longest-common-subsequence-lcs",
         "max-subarray": "maximum-subarray-kadanes-algorithm",
     },
+    # Confirmed against the actually-rendered _book/chapters/08-graphs.html
+    # H2/H3 ids, not guessed from the .qmd headings.
+    "08": {
+        "bfs": "part-c.-bfs",
+        "dfs": "part-d.-dfs",
+        "topological-sort": "part-f.-topological-sort",
+        "mst": "part-j.-kruskal과-disjoint-set",
+        "dag-shortest-paths": "part-m.-unweighteddag-shortest-paths",
+        "shortest-paths": "part-o.-bellmanford-algorithm",
+    },
 }
 
 # lecture -> conceptual section name -> list of run_examples.py
@@ -190,6 +231,29 @@ PIPELINE_ALGORITHMS = {
         "matrix-path": ["min-path-memo", "matrix-bottom-up"],
         "lcs": ["lcs-bottom-up"],
         "max-subarray": ["max-subarray-brute-force", "max-subarray-kadane"],
+    },
+    "08": {
+        "bfs": ["bfs"],
+        "dfs": ["dfs", "dfs-iterative"],
+        "topological-sort": ["topo-kahn", "topo-dfs"],
+        "mst": ["prim", "kruskal", "disjoint-set"],
+        "dag-shortest-paths": ["dag-shortest-paths"],
+        "shortest-paths": ["dijkstra", "bellman-ford", "reconstruct-path"],
+    },
+}
+
+# lecture -> conceptual section name -> identifiers it's allowed to
+# reference despite belonging to another group -- L08's DAG Shortest Paths
+# genuinely, intentionally builds on both Topological Sort (calls
+# TopologicalSort.kahn/graph_topological_kahn to get the evaluation order)
+# and the shared shortest-path infrastructure (reuses ShortestPaths.INF as
+# its sentinel) rather than duplicating either, matching the
+# DAGShortestPaths pseudocode's own \Call{TopologicalSort}{G}. That's real
+# architectural reuse, not copy-paste contamination, so it's an explicit
+# exception rather than a reason to weaken the identifiers themselves.
+ALLOWED_CROSS_REFERENCES = {
+    "08": {
+        "dag-shortest-paths": ["TopologicalSort", "graph_topological_kahn", "ShortestPaths"],
     },
 }
 
@@ -206,6 +270,7 @@ SECTION_GATES = {
                 for other, idents in ALGO_IDENTIFIERS[lecture].items()
                 if other != algo
                 for ident in idents
+                if ident not in ALLOWED_CROSS_REFERENCES.get(lecture, {}).get(algo, [])
             ],
         }
         for algo in ALGO_IDENTIFIERS[lecture]
