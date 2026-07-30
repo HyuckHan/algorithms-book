@@ -1,0 +1,20 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{HashPut}{$T,key,value$}
+\State $firstDeleted\gets$ NONE
+\For{$i\gets0$ to $m-1$}
+ \State $j\gets$\Call{Probe}{$key,i$}
+ \If{$T[j]$ is OCCUPIED \textbf{and} $T[j].key=key$}
+   \State $T[j].value\gets value$; \Return UPDATED
+ \ElsIf{$T[j]=$ DELETED \textbf{and} $firstDeleted=$ NONE}
+   \State $firstDeleted\gets j$
+ \ElsIf{$T[j]=$ EMPTY}
+   \State place at $firstDeleted$ if present, else at $j$; \Return INSERTED
+ \EndIf
+\EndFor
+\State use $firstDeleted$ if present; otherwise RESIZE/FAIL
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

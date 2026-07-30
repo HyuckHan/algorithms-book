@@ -1,0 +1,22 @@
+{
+  "chained-hash-operations": {
+    "index": 0,
+    "source": "06_chaining.tex"
+  },
+  "hash-delete": {
+    "index": 0,
+    "source": "11_deletion.tex"
+  },
+  "hash-put": {
+    "index": 1,
+    "source": "07_open_addressing.tex"
+  },
+  "hash-search": {
+    "index": 0,
+    "source": "07_open_addressing.tex"
+  },
+  "string-hash": {
+    "index": 0,
+    "source": "04_string_hashing.tex"
+  }
+}

@@ -64,6 +64,12 @@ ALT_HEAD_RE = re.compile(r"\\alt<([^>]*)>|alt=<([^>]*)>")
 # argument count}.
 MACRO_PICTURES = {
     "06": {"travtree": 7},
+    # \htrowthirteen{13-value comma list} and \loadgauge{ratio}{label1}{label2}
+    # (lecture-notes/common/hash_tables.tex) are the same "macro definition
+    # itself contains a full \begin{tikzpicture}" shape as L06's \travtree --
+    # a hash-table row / a load-factor bar drawn fresh per call site, not an
+    # \only-wrapped span of one shared picture.
+    "07": {"htrowthirteen": 1, "loadgauge": 3},
 }
 FRAME_START_RE = re.compile(r"\\begin\{frame\}")
 
@@ -307,6 +313,58 @@ FIGURE_CONFIG = {
         ("14_dijkstra.tex", 0): {"slug": "20-dijkstra-trace", "mode": "sequence"},
         ("14_dijkstra.tex", 1): {"slug": "21-dijkstra-negative-counterexample"},
         ("15_bellman_ford.tex", 0): {"slug": "22-bellman-ford-negative-cycle", "mode": "sequence"},
+    },
+    # See chapters/07.inventory §(e) for the full index-by-index derivation.
+    # 01_motivation/12_load_factor/14_implementation/15_comparison/
+    # 16_summary_quiz/17_appendix have no tikzpicture/axis/macro figure at
+    # all (tables and lstlisting only) and so contribute no keys here.
+    # Two `\htrowthirteen`/`\loadgauge` macro-call figures (MACRO_PICTURES
+    # above) are interleaved with literal tikzpicture/axis figures in
+    # document order within 05_collision/08_linear_probing/11_deletion --
+    # find_figures() sorts all three kinds together by source position, so
+    # the index below is that combined order, not a per-kind index.
+    "07": {
+        ("02_hashing_model.tex", 0): {"slug": "01-hash-pipeline"},
+        ("02_hashing_model.tex", 1): {"slug": "02-hash-candidate-bucket"},
+        ("03_hash_functions.tex", 0): {"slug": "03-distribution-comparison"},
+        # \alt=<1..4>{style}{style} on 4 nodes -- a genuine 4-step trace
+        # (each alt highlights the node just computed), not a single final
+        # state, so this is a sequence like L06's alt-based traces.
+        ("04_string_hashing.tex", 0): {"slug": "04-multiplication-trace", "mode": "sequence"},
+        ("04_string_hashing.tex", 1): {"slug": "05-prefix-collision"},
+        ("05_collision.tex", 0): {"slug": "06-original-integer-table"},  # macro:htrowthirteen
+        ("05_collision.tex", 1): {"slug": "07-insert-29-collision-trace", "mode": "sequence"},
+        ("05_collision.tex", 2): {"slug": "08-pigeonhole-principle"},
+        ("06_chaining.tex", 0): {"slug": "09-chaining-structure"},
+        ("06_chaining.tex", 1): {"slug": "10-chaining-insert-trace", "mode": "sequence"},
+        ("06_chaining.tex", 2): {"slug": "11-chaining-search-delete-trace", "mode": "sequence"},
+        ("06_chaining.tex", 3): {"slug": "12-chaining-worst-case"},
+        # 07_open_addressing.tex: \htlegend (arity-0, three bare-\tikz
+        # snippets, no \begin{tikzpicture} at all) is intentionally NOT in
+        # MACRO_PICTURES -- its EMPTY/OCCUPIED/DELETED legend duplicates the
+        # \begin{description} text right below it in the same frame, so it's
+        # covered by prose instead of a rendered figure (chapters/07.inventory §e).
+        # \htrowthirteen IS called once in this file though (the "왜 첫
+        # Tombstone에 즉시 쓰지 않는가?" example row) -- must not be missed.
+        ("07_open_addressing.tex", 0): {"slug": "13-tombstone-reuse-example"},  # macro:htrowthirteen
+        ("08_linear_probing.tex", 0): {"slug": "14-linear-trace1-collision", "mode": "sequence"},
+        ("08_linear_probing.tex", 1): {"slug": "15-linear-trace2-wraparound", "mode": "sequence"},
+        ("08_linear_probing.tex", 2): {"slug": "16-linear-final-table"},  # macro:htrowthirteen
+        ("08_linear_probing.tex", 3): {"slug": "17-primary-clustering", "mode": "sequence"},
+        ("08_linear_probing.tex", 4): {"slug": "18-linear-probe-cost-curve"},  # pgfplots axis
+        ("09_quadratic_probing.tex", 0): {"slug": "19-quadratic-trace-30", "mode": "sequence"},
+        ("09_quadratic_probing.tex", 1): {"slug": "20-secondary-clustering"},
+        ("10_double_hashing.tex", 0): {"slug": "21-double-hash-probe-trace", "mode": "sequence"},
+        ("10_double_hashing.tex", 1): {"slug": "22-double-hash-gcd-failure"},
+        ("11_deletion.tex", 0): {"slug": "23-probe-cluster-before-delete"},  # macro:htrowthirteen
+        ("11_deletion.tex", 1): {"slug": "24-wrong-deletion-trace", "mode": "sequence"},
+        ("11_deletion.tex", 2): {"slug": "25-correct-deletion-tombstone-trace", "mode": "sequence"},
+        # \loadgauge{...} called twice in the same frame (logical then
+        # probing load) -- group_macro_calls_by_frame groups them into one
+        # 2-state figure, same as any other macro-call sequence.
+        ("11_deletion.tex", 3): {"slug": "26-logical-vs-probing-load"},  # macro:loadgauge x2
+        ("13_rehashing.tex", 0): {"slug": "27-rehash-animation", "mode": "sequence"},
+        ("13_rehashing.tex", 1): {"slug": "28-resize-cost-sequence"},
     },
 }
 
@@ -900,7 +958,7 @@ def _lecture_slug(lecture):
     names = {
         "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
         "04": "04-selection", "05": "05-dynamic-programming", "06": "06-search-trees",
-        "08": "08-graphs",
+        "07": "07-hash-tables", "08": "08-graphs",
     }
     return names.get(lecture, "lecture%s" % lecture)
 

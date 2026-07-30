@@ -1,0 +1,6 @@
+ascii_sum(abcd): 394
+ascii_sum(dbac): 394
+string_hash(abcd): 219759674
+string_hash(dbac): 226503684
+string_hash(Apple): 19396217338
+string_hash(Apply): 19396217358

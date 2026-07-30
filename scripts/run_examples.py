@@ -314,6 +314,26 @@ ALGORITHM_CONFIG = {
             },
         },
     },
+    "07": {
+        "dir": "07-hash-tables",
+        "algorithms": {
+            "string-hash": {
+                "c": {"file": "string_hash.c", "bin": "string_hash"},
+                "java": {"file": "StringHash.java", "class": "StringHash"},
+                "python": {"file": "string_hash.py"},
+            },
+            "chained-hash-table": {
+                "c": {"file": "chained_hash_table.c", "bin": "chained_hash_table"},
+                "java": {"file": "ChainedHashMap.java", "class": "ChainedHashMap"},
+                "python": {"file": "chained_hash_table.py"},
+            },
+            "open-address-hash-table": {
+                "c": {"file": "open_address_hash_table.c", "bin": "open_address_hash_table"},
+                "java": {"file": "OpenAddressHashMap.java", "class": "OpenAddressHashMap"},
+                "python": {"file": "open_address_hash_table.py"},
+            },
+        },
+    },
 }
 
 

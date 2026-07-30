@@ -1,0 +1,19 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{ChainedSearch}{$T,key$}
+ \For{each entry $e$ in $T[h(key)]$}
+  \If{$e.key=key$}\State\Return $e$\EndIf
+ \EndFor
+ \State\Return NOT\_FOUND
+\EndProcedure
+\State
+\Procedure{ChainedPut}{$T,key,value$}
+ \State $e\gets$\Call{ChainedSearch}{$T,key$}
+ \If{$e\ne$ NOT\_FOUND}\State $e.value\gets value$\Else
+ \State insert $(key,value)$ at chain head; $n\gets n+1$
+ \EndIf
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

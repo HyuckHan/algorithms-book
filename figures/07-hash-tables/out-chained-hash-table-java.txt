@@ -1,0 +1,8 @@
+bucket3 chain: 24,17,10
+size: 3
+get(17): 17
+put(17,170) old: 17
+get(17): 170
+remove(17): 170
+bucket3 chain after remove: 24,10
+size after remove: 2

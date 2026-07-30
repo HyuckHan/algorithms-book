@@ -1,0 +1,13 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{StringHash}{$S,B$}
+\State $hash\gets0$
+\For{each character $c$ in $S$}
+  \State $hash\gets hash\cdot B+$\Call{Code}{$c$}
+\EndFor
+\State \Return $hash$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

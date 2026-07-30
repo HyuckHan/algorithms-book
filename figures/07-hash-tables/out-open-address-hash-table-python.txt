@@ -1,0 +1,7 @@
+size after inserts: 10
+get(38): 380
+remove(1): 10
+size after remove: 9
+get(38) after remove: 380
+get(14): 140
+size after insert14: 10

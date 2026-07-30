@@ -285,6 +285,33 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    "07": {
+        "dir": "07-hash-tables",
+        "snippets": {
+            "string-hash": [
+                ("python/string_hash.py", "py"),
+                ("java/StringHash.java", "java"),
+                ("c/string_hash.c", "c"),
+            ],
+            "chained-hash-table": [
+                ("python/chained_hash_table.py", "py"),
+                ("java/ChainedHashMap.java", "java"),
+                ("c/chained_hash_table.c", "c"),
+            ],
+            "open-address-hash-table": [
+                ("python/open_address_hash_table.py", "py"),
+                ("java/OpenAddressHashMap.java", "java"),
+                ("c/open_address_hash_table.c", "c"),
+            ],
+            # Java-only: the mutable-key hazard is a java.util.HashMap
+            # contract failure (equals/hashCode-relevant field mutated while
+            # the key is in the table) -- source material and CODE_INVENTORY
+            # only ever show this in Java, not C/Python (see chapters/07.inventory).
+            "mutable-key-example": [
+                ("java/MutableKeyExample.java", "java"),
+            ],
+        },
+    },
 }
 
 

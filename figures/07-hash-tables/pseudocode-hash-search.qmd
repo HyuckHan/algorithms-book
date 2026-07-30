@@ -1,0 +1,16 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{HashSearch}{$T,key$}
+\For{$i\gets0$ to $m-1$}
+ \State $j\gets$\Call{Probe}{$key,i$}
+ \If{$T[j]=$ EMPTY}\State\Return NOT\_FOUND\EndIf
+ \If{$T[j]$ is OCCUPIED \textbf{and} $T[j].key=key$}
+   \State\Return $T[j]$
+ \EndIf
+\EndFor
+\State\Return NOT\_FOUND
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

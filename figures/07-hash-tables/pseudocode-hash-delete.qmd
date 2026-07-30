@@ -1,0 +1,13 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{HashDelete}{$T,key$}
+\State $j\gets$\Call{FindSlot}{$T,key$}
+\If{$j=$ NOT\_FOUND}\State\Return false\EndIf
+\State $T[j]\gets$ DELETED
+\State $active\gets active-1$; $tombstones\gets tombstones+1$
+\State \Return true
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

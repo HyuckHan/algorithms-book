@@ -201,6 +201,29 @@ PSEUDOCODE_CONFIG = {
         ("14_dijkstra.tex", 0): "dijkstra",
         ("15_bellman_ford.tex", 0): "bellman-ford",
     },
+    # See chapters/07.inventory §(b). All 5 \Call occurrences in this lecture
+    # sit inside `$...$` math in the source (StringHash's \Call{Code}{c},
+    # ChainedPut's \Call{ChainedSearch}{...}, HashSearch/HashPut's
+    # \Call{Probe}{...}, HashDelete's \Call{FindSlot}{...}) -- the L05 bug
+    # pattern hoist_call_out_of_math already generalizes for, exercised here
+    # more than in any other lecture so far. No merges needed: every
+    # \Procedure block here is already complete on its own (unlike L04's
+    # split DeterministicSelect); ChainedPut calling ChainedSearch, and
+    # HashSearch/HashPut/HashDelete calling the not-formally-defined
+    # Probe/FindSlot, are connected via qmd prose instead (the B-Tree
+    # "independent subroutine" pattern), not by merging blocks.
+    "07": {
+        ("04_string_hashing.tex", 0): "string-hash",
+        # ChainedSearch and ChainedPut sit in ONE \begin{algorithmic} block
+        # (separated by a bare \Statex, not a second \begin{algorithmic}) --
+        # same "two \Procedures, one source block" shape as L08's
+        # 04_dfs.tex (DFS/DFSVisit), so this is a single pseudocode.js
+        # snippet, not two.
+        ("06_chaining.tex", 0): "chained-hash-operations",
+        ("07_open_addressing.tex", 0): "hash-search",
+        ("07_open_addressing.tex", 1): "hash-put",
+        ("11_deletion.tex", 0): "hash-delete",
+    },
 }
 
 
@@ -385,7 +408,8 @@ def to_html_fragment(snippet):
 def _lecture_slug(lecture):
     names = {
         "01": "01-introduction", "03": "03-sorting", "04": "04-selection",
-        "05": "05-dynamic-programming", "06": "06-search-trees", "08": "08-graphs",
+        "05": "05-dynamic-programming", "06": "06-search-trees", "07": "07-hash-tables",
+        "08": "08-graphs",
     }
     return names.get(lecture, "lecture%s" % lecture)
 
