@@ -59,7 +59,7 @@
 ## M4 — 고밀도 챕터 + 마감 (L04·L06·L07·L09·L10)
 
 **목표** 나머지 변환. **L06(TikZ 55)**에서 캐시·병렬 컴파일 튜닝.
-**작업** 위 반복. 표지/서문, 개념 다리(heap↔PQ, Master Theorem 재호명 — 강의노트 bridge frame 활용), 용어집, PDF 출력 정리.
+**작업** 위 반복. 표지/서문, 개념 다리(heap↔PQ, Master Theorem 재호명 — 강의노트 bridge frame 활용), 용어집.
 **완료 조건** 전 강의 verified 이상. 전체 링크·접근성 감사 통과. HTML+PDF 배포.
 
 ---
