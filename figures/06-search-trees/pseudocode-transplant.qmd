@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Transplant}{$T,u,v$}
+\If{$u.parent=\NIL$}\State $T.root\gets v$
+\ElsIf{$u=u.parent.left$}\State $u.parent.left\gets v$
+\Else\State $u.parent.right\gets v$\EndIf
+\If{$v\ne\NIL$}\State $v.parent\gets u.parent$\EndIf
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

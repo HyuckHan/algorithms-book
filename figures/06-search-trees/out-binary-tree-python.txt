@@ -1,0 +1,6 @@
+preorder: A,B,D,E,C,F,G
+inorder: D,B,E,A,F,C,G
+postorder: D,E,B,F,G,C,A
+levelorder: A,B,C,D,E,F,G
+size: 7
+height: 2

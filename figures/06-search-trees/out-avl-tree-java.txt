@@ -1,0 +1,10 @@
+LL inorder: 10,20,30
+LL height: 1
+RR inorder: 10,20,30
+RR height: 1
+LR inorder: 10,20,30
+LR height: 1
+RL inorder: 10,20,30
+RL height: 1
+sequential15 height: 3
+sequential15 inorder: 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14

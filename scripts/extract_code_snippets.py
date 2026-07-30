@@ -190,6 +190,36 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    "06": {
+        "dir": "06-search-trees",
+        "snippets": {
+            "binary-tree": [
+                ("python/binary_tree.py", "py"),
+                ("java/BinaryTree.java", "java"),
+                ("c/binary_tree.c", "c"),
+            ],
+            "binary-search-tree": [
+                ("python/binary_search_tree.py", "py"),
+                ("java/BinarySearchTree.java", "java"),
+                ("c/binary_search_tree.c", "c"),
+            ],
+            "avl-tree": [
+                ("python/avl_tree.py", "py"),
+                ("java/AVLTree.java", "java"),
+                ("c/avl_tree.c", "c"),
+            ],
+            "red-black-tree": [
+                ("python/red_black_tree.py", "py"),
+                ("java/RedBlackTree.java", "java"),
+                ("c/red_black_tree.c", "c"),
+            ],
+            "btree": [
+                ("python/btree.py", "py"),
+                ("java/BTree.java", "java"),
+                ("c/btree.c", "c"),
+            ],
+        },
+    },
     "08": {
         "dir": "08-graphs",
         "snippets": {

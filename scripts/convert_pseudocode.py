@@ -127,6 +127,28 @@ PSEUDOCODE_CONFIG = {
         ("06_linear_search.tex", 0): "linear-search",
         ("07_binary_search.tex", 0): "binary-search",
     },
+    # See chapters/06.inventory §3. Exactly one \Call-in-math occurrence
+    # (03_traversal.tex's LevelOrder: "$u\gets\Call{Dequeue}{Q}$") -- the
+    # same L05-bug pattern hoist_call_out_of_math already generalizes for;
+    # verified by running this script and inspecting the output (no manual
+    # edits made). Red-Black Tree has no dedicated \Procedure block in the
+    # source at all (insertion/deletion are prose+TikZ only, confirmed by
+    # reading every section file) -- there is deliberately no "06" entry
+    # for it here.
+    "06": {
+        ("03_traversal.tex", 0): "preorder",
+        ("03_traversal.tex", 1): "inorder",
+        ("03_traversal.tex", 2): "postorder",
+        ("03_traversal.tex", 3): "level-order",
+        ("06_bst_search.tex", 0): "tree-search-recursive",
+        ("06_bst_search.tex", 1): "tree-search-iterative",
+        ("06_bst_search.tex", 2): "tree-minimum",
+        ("07_bst_insert_delete.tex", 0): "tree-insert",
+        ("07_bst_insert_delete.tex", 1): "transplant",
+        ("09_avl.tex", 0): "rotate-right",
+        ("11_btree.tex", 0): "btree-search",
+        ("11_btree.tex", 1): "btree-insert",
+    },
     # See chapters/05.inventory §1 for the frame titles these came from. The
     # three blocks with no `\Procedure{...}` wrapper in the source (bare
     # `\State`/`\For` loops, presented under a frame title instead) get a
@@ -363,7 +385,7 @@ def to_html_fragment(snippet):
 def _lecture_slug(lecture):
     names = {
         "01": "01-introduction", "03": "03-sorting", "04": "04-selection",
-        "05": "05-dynamic-programming", "08": "08-graphs",
+        "05": "05-dynamic-programming", "06": "06-search-trees", "08": "08-graphs",
     }
     return names.get(lecture, "lecture%s" % lecture)
 

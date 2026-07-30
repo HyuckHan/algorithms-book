@@ -1,0 +1,18 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{TreeInsert}{$T,z$}
+\State $y\gets\NIL$; $x\gets T.root$
+\While{$x\ne\NIL$}
+\State $y\gets x$
+\If{$z.key=x.key$}\State\Return \texttt{DUPLICATE}\EndIf
+\If{$z.key&lt;x.key$}\State $x\gets x.left$\Else\State $x\gets x.right$\EndIf
+\EndWhile
+\State $z.parent\gets y$
+\If{$y=\NIL$}\State $T.root\gets z$
+\ElsIf{$z.key&lt;y.key$}\State $y.left\gets z$
+\Else\State $y.right\gets z$\EndIf
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

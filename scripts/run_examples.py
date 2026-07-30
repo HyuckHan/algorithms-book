@@ -212,6 +212,36 @@ ALGORITHM_CONFIG = {
             },
         },
     },
+    "06": {
+        "dir": "06-search-trees",
+        "algorithms": {
+            "binary-tree": {
+                "c": {"file": "binary_tree.c", "bin": "binary_tree"},
+                "java": {"file": "BinaryTree.java", "class": "BinaryTree"},
+                "python": {"file": "binary_tree.py"},
+            },
+            "binary-search-tree": {
+                "c": {"file": "binary_search_tree.c", "bin": "binary_search_tree"},
+                "java": {"file": "BinarySearchTree.java", "class": "BinarySearchTree"},
+                "python": {"file": "binary_search_tree.py"},
+            },
+            "avl-tree": {
+                "c": {"file": "avl_tree.c", "bin": "avl_tree"},
+                "java": {"file": "AVLTree.java", "class": "AVLTree"},
+                "python": {"file": "avl_tree.py"},
+            },
+            "red-black-tree": {
+                "c": {"file": "red_black_tree.c", "bin": "red_black_tree"},
+                "java": {"file": "RedBlackTree.java", "class": "RedBlackTree"},
+                "python": {"file": "red_black_tree.py"},
+            },
+            "btree": {
+                "c": {"file": "btree.c", "bin": "btree"},
+                "java": {"file": "BTree.java", "class": "BTree"},
+                "python": {"file": "btree.py"},
+            },
+        },
+    },
     "08": {
         "dir": "08-graphs",
         "algorithms": {

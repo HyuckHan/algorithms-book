@@ -1,0 +1,13 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{RotateRight}{$y$}
+\State $x\gets y.left$; $B\gets x.right$
+\State $x.right\gets y$; $y.left\gets B$
+\State parent/root link가 $y$ 대신 $x$를 가리키게 갱신
+\State $h(y)$ 갱신; $h(x)$ 갱신
+\State\Return $x$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

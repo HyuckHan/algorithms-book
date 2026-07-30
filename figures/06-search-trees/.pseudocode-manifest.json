@@ -1,0 +1,50 @@
+{
+  "btree-insert": {
+    "index": 1,
+    "source": "11_btree.tex"
+  },
+  "btree-search": {
+    "index": 0,
+    "source": "11_btree.tex"
+  },
+  "inorder": {
+    "index": 1,
+    "source": "03_traversal.tex"
+  },
+  "level-order": {
+    "index": 3,
+    "source": "03_traversal.tex"
+  },
+  "postorder": {
+    "index": 2,
+    "source": "03_traversal.tex"
+  },
+  "preorder": {
+    "index": 0,
+    "source": "03_traversal.tex"
+  },
+  "rotate-right": {
+    "index": 0,
+    "source": "09_avl.tex"
+  },
+  "transplant": {
+    "index": 1,
+    "source": "07_bst_insert_delete.tex"
+  },
+  "tree-insert": {
+    "index": 0,
+    "source": "07_bst_insert_delete.tex"
+  },
+  "tree-minimum": {
+    "index": 2,
+    "source": "06_bst_search.tex"
+  },
+  "tree-search-iterative": {
+    "index": 1,
+    "source": "06_bst_search.tex"
+  },
+  "tree-search-recursive": {
+    "index": 0,
+    "source": "06_bst_search.tex"
+  }
+}

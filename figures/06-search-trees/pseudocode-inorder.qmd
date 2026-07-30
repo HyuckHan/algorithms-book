@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Inorder}{$x$}
+\If{$x=\NIL$}\State\Return\EndIf
+\State \Call{Inorder}{$x.left$}
+\State \Call{Visit}{$x$}
+\State \Call{Inorder}{$x.right$}
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

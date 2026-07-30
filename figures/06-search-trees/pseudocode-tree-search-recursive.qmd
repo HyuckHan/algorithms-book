@@ -1,0 +1,11 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{TreeSearch}{$x,k$}
+\If{$x=\NIL$ \textbf{or} $k=x.key$}\State\Return $x$\EndIf
+\If{$k&lt;x.key$}\State\Return \Call{TreeSearch}{$x.left,k$}\EndIf
+\State\Return \Call{TreeSearch}{$x.right,k$}
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

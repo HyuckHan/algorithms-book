@@ -4,7 +4,10 @@
 Pipeline (SPEC 4.4): for each lecture, scan lecture-notes/lectureNN/sections/*.tex
 for `tikzpicture`/`axis` (pgfplots) blocks, compile each as a standalone document
 (lualatex) reusing the lecture's own TikZ styles, convert to SVG with dvisvgm,
-and cache by content hash so unchanged figures are not recompiled.
+and cache by content hash so unchanged figures are not recompiled. Cache misses
+compile in parallel (multiprocessing.Pool, see default_worker_count() and
+--jobs) -- needed for lectures with many figures (L06 has ~60, by far the
+most of any lecture) to keep build time manageable.
 
 `\\only<N>` overlays are flattened to their final state by default. A small,
 lecture-specific FIGURE_CONFIG can mark specific figures as "sequence" instead,
@@ -26,6 +29,8 @@ blocks extracted and reproduced literally.
 import argparse
 import hashlib
 import json
+import multiprocessing
+import os
 import re
 import shutil
 import subprocess
@@ -45,7 +50,22 @@ AXIS_RE = re.compile(r"\\begin\{axis\}.*?\\end\{axis\}", re.DOTALL)
 # beamer's live progressive-reveal layout), so one regex/one set of
 # functions (find_only_blocks/render_only_at) handles both.
 ONLY_HEAD_RE = re.compile(r"\\(?:only|visible)<([^>]*)>")
-ALT_HEAD_RE = re.compile(r"\\alt<([^>]*)>")
+ALT_HEAD_RE = re.compile(r"\\alt<([^>]*)>|alt=<([^>]*)>")
+
+# Per-lecture "whole-picture" macros that expand to a complete
+# `\begin{tikzpicture}...\end{tikzpicture}` themselves, defined once in a
+# common/*.tex file -- so a usage site in a section file has no literal
+# tikzpicture/axis text for TIKZ_RE/AXIS_RE to find at all. L06's
+# `\travtree{#1}...{#7}` (common/search_trees.tex) draws a fixed 7-node tree
+# with one style-override argument per node; its three animation frames in
+# 03_traversal.tex call it several times in a row -- one call per
+# *already-resolved* state (not one tikzpicture with `\only` overlays inside
+# it) -- and its comparison frame once. Keyed by lecture -> {macro name:
+# argument count}.
+MACRO_PICTURES = {
+    "06": {"travtree": 7},
+}
+FRAME_START_RE = re.compile(r"\\begin\{frame\}")
 
 PREAMBLE = r"""\documentclass[border=4pt]{standalone}
 \usepackage{kotex}
@@ -64,7 +84,7 @@ PREAMBLE = r"""\documentclass[border=4pt]{standalone}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
-\usetikzlibrary{arrows.meta,positioning,calc,fit,trees,patterns,decorations.pathreplacing,matrix}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,trees,patterns,decorations.pathreplacing,matrix,shapes.multipart}
 %(common_block)s
 \begin{document}
 %(body)s
@@ -180,6 +200,79 @@ FIGURE_CONFIG = {
     # topo finish-order, Prim key updates, Kruskal accept/reject, Dijkstra
     # finalized set, and more all need one SVG per overlay step so the
     # trace doesn't collapse to a single flattened final-state image.
+    # See chapters/06.inventory §2 for the full index-by-index derivation.
+    # By far the most figure-dense lecture (60 entries / ~72 SVGs) -- see
+    # default_worker_count()/--jobs for the parallel compile this needs.
+    # Two overlay mechanisms unique to this lecture: 03_traversal.tex's
+    # \travtree{}x7 (MACRO_PICTURES above) and the `alt=<N>{style}{style}`
+    # tikz-key form (ALT_HEAD_RE) used in 01_tree_basics.tex/11_btree.tex.
+    # AVL/RB/B-Tree "before/after" pairs and triples are each a SEPARATE
+    # literal tikzpicture (its own \only wraps the *whole* picture, not an
+    # \only span inside one shared picture) -- so unlike this dict's usual
+    # "mode": "sequence" pattern, each one is its own flatten-mode entry
+    # with a descriptive step suffix baked into its own slug.
+    "06": {
+        ("01_tree_basics.tex", 0): {"slug": "01-rooted-tree-definition"},
+        ("01_tree_basics.tex", 1): {"slug": "02-tree-terminology-trace", "mode": "sequence"},
+        ("02_binary_tree.tex", 0): {"slug": "03-left-child-example"},
+        ("02_binary_tree.tex", 1): {"slug": "04-right-child-example"},
+        ("02_binary_tree.tex", 2): {"slug": "05-full-perfect-complete"},
+        ("02_binary_tree.tex", 3): {"slug": "06-linked-representation"},
+        ("03_traversal.tex", 0): {"slug": "07-traversal-reference-tree"},
+        ("03_traversal.tex", 1): {"slug": "08-preorder-trace"},
+        ("03_traversal.tex", 2): {"slug": "09-inorder-trace"},
+        ("03_traversal.tex", 3): {"slug": "10-postorder-trace"},
+        ("03_traversal.tex", 4): {"slug": "11-level-order-reference-tree"},
+        ("03_traversal.tex", 5): {"slug": "12-expression-tree"},
+        ("06_bst_search.tex", 0): {"slug": "13-fixed-bst-example"},
+        ("06_bst_search.tex", 1): {"slug": "14-search-trace", "mode": "sequence"},
+        ("06_bst_search.tex", 2): {"slug": "15-successor-cases"},
+        ("06_bst_search.tex", 3): {"slug": "16-successor-case2-ancestor-chain"},
+        ("07_bst_insert_delete.tex", 0): {"slug": "17-insert-trace", "mode": "sequence"},
+        ("07_bst_insert_delete.tex", 1): {"slug": "18-delete-case1-leaf", "mode": "sequence"},
+        ("07_bst_insert_delete.tex", 2): {"slug": "19-delete-case2-one-child", "mode": "sequence"},
+        ("07_bst_insert_delete.tex", 3): {"slug": "20-delete-case3-successor-setup"},
+        ("07_bst_insert_delete.tex", 4): {"slug": "21-delete-case3-final-tree"},
+        ("08_balanced_motivation.tex", 0): {"slug": "22-degenerate-bst-trace", "mode": "sequence"},
+        ("09_avl.tex", 0): {"slug": "23-right-rotation-before"},
+        ("09_avl.tex", 1): {"slug": "24-right-rotation-after"},
+        ("09_avl.tex", 2): {"slug": "25-ll-case-before"},
+        ("09_avl.tex", 3): {"slug": "26-ll-case-after"},
+        ("09_avl.tex", 4): {"slug": "27-rr-case-before"},
+        ("09_avl.tex", 5): {"slug": "28-rr-case-after"},
+        ("09_avl.tex", 6): {"slug": "29-lr-case-step1"},
+        ("09_avl.tex", 7): {"slug": "30-lr-case-step2"},
+        ("09_avl.tex", 8): {"slug": "31-lr-case-step3"},
+        ("09_avl.tex", 9): {"slug": "32-rl-case-step1"},
+        ("09_avl.tex", 10): {"slug": "33-rl-case-step2"},
+        ("09_avl.tex", 11): {"slug": "34-rl-case-step3"},
+        ("10_red_black.tex", 0): {"slug": "35-nil-sentinel"},
+        ("10_red_black.tex", 1): {"slug": "36-invariant-violation-example"},
+        ("10_red_black.tex", 2): {"slug": "37-rb-case1-before"},
+        ("10_red_black.tex", 3): {"slug": "38-rb-case1-after"},
+        ("10_red_black.tex", 4): {"slug": "39-rb-insert-41-38-31-step1"},
+        ("10_red_black.tex", 5): {"slug": "40-rb-insert-41-38-31-step2"},
+        ("10_red_black.tex", 6): {"slug": "41-rb-insert-41-38-31-step3"},
+        ("10_red_black.tex", 7): {"slug": "42-rb-insert-12-before"},
+        ("10_red_black.tex", 8): {"slug": "43-rb-insert-12-after"},
+        ("10_red_black.tex", 9): {"slug": "44-rb-insert-19-step1"},
+        ("10_red_black.tex", 10): {"slug": "45-rb-insert-19-step2"},
+        ("10_red_black.tex", 11): {"slug": "46-rb-insert-8-final"},
+        ("11_btree.tex", 0): {"slug": "47-multiway-range-invariant"},
+        ("11_btree.tex", 1): {"slug": "48-btree-search-trace", "mode": "sequence"},
+        ("11_btree.tex", 2): {"slug": "49-btree-insert-step1"},
+        ("11_btree.tex", 3): {"slug": "50-btree-insert-step2"},
+        ("11_btree.tex", 4): {"slug": "51-btree-insert-step3"},
+        ("11_btree.tex", 5): {"slug": "52-btree-insert-step4"},
+        ("11_btree.tex", 6): {"slug": "53-btree-insert2-step1"},
+        ("11_btree.tex", 7): {"slug": "54-btree-insert2-step2"},
+        ("11_btree.tex", 8): {"slug": "55-btree-final-check"},
+        ("11_btree.tex", 9): {"slug": "56-btree-borrow-before"},
+        ("11_btree.tex", 10): {"slug": "57-btree-borrow-after"},
+        ("11_btree.tex", 11): {"slug": "58-btree-merge-before"},
+        ("11_btree.tex", 12): {"slug": "59-btree-merge-after"},
+        ("13_summary_quiz.tex", 0): {"slug": "60-concept-map"},
+    },
     "08": {
         ("01_graph_basics.tex", 0): {"slug": "01-graph-definition"},
         ("02_representation.tex", 0): {"slug": "02-matrix-direction"},
@@ -337,6 +430,15 @@ def find_alt_blocks(text):
     (used by L01's Binary Search trace to grey out discarded cells from overlay 2
     onward -- \\alt has no `\\only`-style single-branch equivalent, so it needs its
     own extraction/resolution, mirroring find_only_blocks/render_only_at above).
+
+    Also matches the `alt=<SPEC>{TRUE-STYLE}{FALSE-STYLE}` *tikz key* form (no
+    backslash) L06 uses inside `\\node[...,alt=<N>{st current}{st done}]`
+    style lists (e.g. 01_tree_basics.tex, 11_btree.tex) -- syntactically the
+    same SPEC-then-two-braces shape, just triggered by a bare `alt=` key
+    rather than the `\\alt` command, and resolved the same way: replacing the
+    whole `alt=<...>{...}{...}` span with the chosen branch's bare style name
+    leaves a valid `[...,st current]`-style option list, since TikZ styles
+    happily cascade.
     """
     blocks = []
     pos = 0
@@ -344,7 +446,7 @@ def find_alt_blocks(text):
         m = ALT_HEAD_RE.search(text, pos)
         if not m:
             break
-        spec = m.group(1)
+        spec = m.group(1) if m.group(1) is not None else m.group(2)
         true_start = m.end()
         if true_start >= len(text) or text[true_start] != "{":
             pos = m.end()
@@ -374,6 +476,48 @@ def render_alt_at(text, target):
     return result
 
 
+NODE_OVERLAY_RE = re.compile(r"\\node<([^>]*)>")
+
+
+def normalize_node_overlay_shorthand(text):
+    """`\\node<SPEC>[options]{content};` is beamer-tikz's per-node overlay
+    shorthand (equivalent to wrapping the whole node command in
+    `\\only<SPEC>{...}`), used by L06's 01_tree_basics.tex -- but that
+    beamer/tikz overlay integration isn't loaded in the `standalone`-class
+    documents this script compiles (no beamer document class), so the bare
+    `<SPEC>` right after `\\node` is invalid syntax there and throws a fatal
+    LaTeX error. Rewrite each occurrence to the equivalent
+    `\\only<SPEC>{\\node...;}` up front, so the normal find_only_blocks/
+    render_only_at pass handles it exactly like any other conditional
+    content. A brace-balanced scan finds the node command's terminating
+    top-level `;` (content can itself contain `{...}` groups)."""
+    if "\\node<" not in text:
+        return text
+    pieces = []
+    pos = 0
+    for m in NODE_OVERLAY_RE.finditer(text):
+        if m.start() < pos:
+            continue  # already consumed as part of a previous match's body
+        pieces.append(text[pos:m.start()])
+        spec = m.group(1)
+        i = m.end()
+        depth = 0
+        while i < len(text):
+            if text[i] == "{":
+                depth += 1
+            elif text[i] == "}":
+                depth -= 1
+            elif text[i] == ";" and depth == 0:
+                i += 1
+                break
+            i += 1
+        node_cmd = "\\node" + text[m.end():i]
+        pieces.append("\\only<%s>{%s}" % (spec, node_cmd))
+        pos = i
+    pieces.append(text[pos:])
+    return "".join(pieces)
+
+
 def render_overlay_at(text, target):
     """Resolve both \\alt<...>{...}{...} and \\only<...>{...} for overlay `target`."""
     text = render_alt_at(text, target)
@@ -400,9 +544,77 @@ def overlay_steps(text):
     return sorted(steps)
 
 
-def find_figures(section_path):
-    """Yield (index, kind, raw_text) for each tikzpicture/axis block in a section file, in order."""
+def find_macro_calls(text, macro_name, arity):
+    """Find every `\\macroname{arg1}...{argN}` call (brace-balanced per
+    argument), returning (start, end, full_call_text) tuples in document
+    order. A call site with fewer than `arity` brace groups immediately
+    following (e.g. a substring match on a longer macro name) is skipped."""
+    calls = []
+    pattern = re.compile(r"\\%s\b" % re.escape(macro_name))
+    pos = 0
+    while True:
+        m = pattern.search(text, pos)
+        if not m:
+            break
+        end = m.end()
+        ok = True
+        for _ in range(arity):
+            while end < len(text) and text[end].isspace():
+                end += 1
+            if end >= len(text) or text[end] != "{":
+                ok = False
+                break
+            _, end = find_brace_block(text, end)
+        if ok:
+            calls.append((m.start(), end, text[m.start():end]))
+            pos = end
+        else:
+            pos = m.end()
+    return calls
+
+
+def group_macro_calls_by_frame(text, calls):
+    """Group macro calls (from find_macro_calls) by which `\\begin{frame}`
+    block they fall in: consecutive calls in the same frame are one
+    animation's already-resolved states (see MACRO_PICTURES docstring), so
+    they become one figure/sequence; calls in different frames are
+    unrelated figures. Returns a list of (start, end, list_of_raw_calls)."""
+    frame_starts = [m.start() for m in FRAME_START_RE.finditer(text)]
+
+    def frame_of(pos):
+        lo, hi, ans = 0, len(frame_starts) - 1, -1
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            if frame_starts[mid] <= pos:
+                ans = mid
+                lo = mid + 1
+            else:
+                hi = mid - 1
+        return ans
+
+    groups = []
+    current_frame = None
+    for start, end, raw in calls:
+        f = frame_of(start)
+        if f != current_frame:
+            groups.append({"frame": f, "start": start, "end": end, "raws": []})
+            current_frame = f
+        groups[-1]["end"] = end
+        groups[-1]["raws"].append(raw)
+    return [(g["start"], g["end"], g["raws"]) for g in groups]
+
+
+def find_figures(section_path, lecture=None):
+    """Yield (index, kind, raw_text) for each tikzpicture/axis block in a section file, in order.
+
+    `kind` is "tikzpicture"/"axis" with `raw_text` a string, or
+    "macro:<name>" (see MACRO_PICTURES) with `raw_text` a *list* of already-
+    resolved state strings -- one per call in that macro's frame-group, no
+    further `\\only` overlay resolution needed (see
+    group_macro_calls_by_frame's docstring).
+    """
     text = section_path.read_text(encoding="utf-8")
+    text = normalize_node_overlay_shorthand(text)
     tikz_spans = [(m.start(), m.end(), "tikzpicture", m.group(0)) for m in TIKZ_RE.finditer(text)]
     axis_spans = [(m.start(), m.end(), "axis", m.group(0)) for m in AXIS_RE.finditer(text)]
     # pgfplots `axis` blocks are frequently written *inside* an existing
@@ -419,7 +631,12 @@ def find_figures(section_path):
         for (start, end, kind, raw) in axis_spans
         if not any(t_start <= start and end <= t_end for t_start, t_end, _, _ in tikz_spans)
     ]
-    spans = sorted(tikz_spans + axis_spans, key=lambda s: s[0])
+    macro_spans = []
+    for macro_name, arity in MACRO_PICTURES.get(lecture, {}).items():
+        calls = find_macro_calls(text, macro_name, arity)
+        for start, end, raws in group_macro_calls_by_frame(text, calls):
+            macro_spans.append((start, end, "macro:%s" % macro_name, raws))
+    spans = sorted(tikz_spans + axis_spans + macro_spans, key=lambda s: s[0])
     # Any remaining (non-nested) axis blocks are bare pgfplots content, which
     # must live inside a tikzpicture in standalone mode; wrap those.
     for idx, (_, _, kind, raw) in enumerate(spans):
@@ -577,7 +794,30 @@ def save_manifest(out_dir, manifest):
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True), encoding="utf-8")
 
 
-def process_lecture(lecture, check_only, keep_build):
+def default_worker_count():
+    """Parallel lualatex compile job count: each job is its own process
+    invoking lualatex+dvisvgm independently (no shared mutable state --
+    compile_svg_verified writes under its own CACHE_DIR/job_name subdir), so
+    this only needs to respect available cores/memory, not correctness.
+    Capped at 8: lualatex's own memory footprint makes higher parallelism
+    prone to thrashing on typical CI/dev machines rather than helping."""
+    return max(1, min(os.cpu_count() or 4, 8))
+
+
+def _compile_job(job):
+    body_tex, common_block, out_svg, out_slug = job
+    ok, err = compile_svg_verified(body_tex, common_block, out_svg, out_slug)
+    return out_slug, ok, err
+
+
+def process_lecture(lecture, check_only, keep_build, jobs=None):
+    """`jobs` parallel lualatex compiles at once for lectures with many
+    figures (L06 has ~60 -- see the module docstring's note on caching and
+    parallel compilation) -- see default_worker_count() for the default.
+    Figure *discovery* and cache-hit checking stay sequential (cheap, and
+    order determines each figure's manifest key); only the actual
+    lualatex+dvisvgm compile of cache-misses runs in parallel, since each is
+    an independent process writing to its own output file."""
     sections_dir = LECTURE_NOTES / ("lecture%s" % lecture) / "sections"
     common_block = lecture_common_block(lecture)
     out_dir = REPO_ROOT / "figures" / _lecture_slug(lecture)
@@ -586,26 +826,38 @@ def process_lecture(lecture, check_only, keep_build):
     manifest = load_manifest(out_dir)
     expected_files = set()
     built, cached, failed = [], [], []
+    pending = []  # (body_tex, common_block, out_svg, out_slug, content_hash)
 
     section_paths = sorted(sections_dir.glob("*.tex"))
     for section_path in section_paths:
-        for idx, kind, raw in find_figures(section_path):
+        for idx, kind, raw in find_figures(section_path, lecture):
             key = (section_path.name, idx)
             cfg = config.get(key, {})
             slug = cfg.get("slug", "%s-%d" % (section_path.stem, idx))
             mode = cfg.get("mode", "flatten")
             patch_name = cfg.get("patch")
-            if patch_name:
-                raw = apply_tikz_patch(raw, patch_name)
 
-            steps = overlay_steps(raw)
-            if mode == "sequence" and steps:
-                targets = [(step, "%s-step%d" % (slug, i + 1)) for i, step in enumerate(steps)]
+            if kind.startswith("macro:"):
+                # Each entry in `raw` (a list) is already one fully-resolved
+                # state -- a separate macro call, not an \only overlay of a
+                # shared body (see find_figures's docstring) -- so there is
+                # no overlay_steps()/render_overlay_at() step here at all.
+                bodies = [apply_tikz_patch(b, patch_name) if patch_name else b for b in raw]
+                if len(bodies) > 1:
+                    targets = [(None, "%s-step%d" % (slug, i + 1), b) for i, b in enumerate(bodies)]
+                else:
+                    targets = [(None, slug, bodies[0])]
             else:
-                target_state = max(steps) if steps else None
-                targets = [(target_state, slug)]
-            for target, out_slug in targets:
-                body_tex = render_overlay_at(raw, target) if target is not None else raw
+                if patch_name:
+                    raw = apply_tikz_patch(raw, patch_name)
+                steps = overlay_steps(raw)
+                if mode == "sequence" and steps:
+                    targets = [(step, "%s-step%d" % (slug, i + 1), raw) for i, step in enumerate(steps)]
+                else:
+                    target_state = max(steps) if steps else None
+                    targets = [(target_state, slug, raw)]
+            for target, out_slug, target_raw in targets:
+                body_tex = render_overlay_at(target_raw, target) if target is not None else target_raw
                 content_hash = sha1(body_tex)
                 out_svg = out_dir / ("%s.svg" % out_slug)
                 expected_files.add(out_svg.name)
@@ -618,12 +870,23 @@ def process_lecture(lecture, check_only, keep_build):
                     failed.append((out_slug, "not yet built (hash changed or missing)"))
                     continue
 
-                ok, err = compile_svg_verified(body_tex, common_block, out_svg, out_slug)
-                if ok:
-                    manifest[out_slug] = content_hash
-                    built.append(out_slug)
-                else:
-                    failed.append((out_slug, err))
+                pending.append((body_tex, common_block, out_svg, out_slug, content_hash))
+
+    if not check_only and pending:
+        worker_count = min(jobs or default_worker_count(), len(pending))
+        jobs_arg = [(b, c, o, s) for b, c, o, s, _ in pending]
+        if worker_count > 1:
+            with multiprocessing.Pool(worker_count) as pool:
+                results = pool.map(_compile_job, jobs_arg)
+        else:
+            results = [_compile_job(j) for j in jobs_arg]
+        hash_by_slug = {out_slug: content_hash for _, _, _, out_slug, content_hash in pending}
+        for out_slug, ok, err in results:
+            if ok:
+                manifest[out_slug] = hash_by_slug[out_slug]
+                built.append(out_slug)
+            else:
+                failed.append((out_slug, err))
 
     if not check_only:
         save_manifest(out_dir, manifest)
@@ -636,7 +899,8 @@ def process_lecture(lecture, check_only, keep_build):
 def _lecture_slug(lecture):
     names = {
         "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
-        "04": "04-selection", "05": "05-dynamic-programming", "08": "08-graphs",
+        "04": "04-selection", "05": "05-dynamic-programming", "06": "06-search-trees",
+        "08": "08-graphs",
     }
     return names.get(lecture, "lecture%s" % lecture)
 
@@ -646,9 +910,13 @@ def main():
     parser.add_argument("--lecture", default="03", help="lecture number, e.g. 03 (default: 03)")
     parser.add_argument("--check", action="store_true", help="report status without compiling")
     parser.add_argument("--keep-build", action="store_true", help="keep the LaTeX build cache dir for debugging")
+    parser.add_argument("--jobs", type=int, default=None,
+                         help="parallel lualatex compiles (default: min(cpu_count, 8) -- see default_worker_count())")
     args = parser.parse_args()
 
-    built, cached, failed, expected_files, manifest = process_lecture(args.lecture, args.check, args.keep_build)
+    built, cached, failed, expected_files, manifest = process_lecture(
+        args.lecture, args.check, args.keep_build, jobs=args.jobs
+    )
 
     print("extract_tikz.py --lecture %s%s" % (args.lecture, " --check" if args.check else ""))
     print("  built:  %d" % len(built))

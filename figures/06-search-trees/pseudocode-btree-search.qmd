@@ -1,0 +1,13 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BTreeSearch}{$x,k$}
+\State node 안에서 첫 $k\le x.key[i]$ 위치를 찾음
+\If{$i$가 존재하고 $k=x.key[i]$}\State\Return $(x,i)$\EndIf
+\If{$x.leaf$}\State\Return $\NIL$\EndIf
+\State child page $x.child[i]$를 읽음
+\State\Return \Call{BTreeSearch}{$x.child[i],k$}
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

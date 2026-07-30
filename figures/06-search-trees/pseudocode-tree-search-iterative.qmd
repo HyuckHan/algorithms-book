@@ -1,0 +1,13 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{IterativeTreeSearch}{$x,k$}
+\While{$x\ne\NIL$ \textbf{and} $k\ne x.key$}
+\If{$k&lt;x.key$}\State $x\gets x.left$
+\Else\State $x\gets x.right$\EndIf
+\EndWhile
+\State\Return $x$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

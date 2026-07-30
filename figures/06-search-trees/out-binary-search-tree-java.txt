@@ -1,0 +1,11 @@
+inorder: 2,3,4,6,7,9,13,14,15,17,18,20
+insert12 inorder: 2,3,4,6,7,9,12,13,14,15,17,18,20
+minimum: 2
+maximum: 20
+successor15: 17
+successor6: 7
+successor4: 6
+successor20: none
+predecessor15: 14
+delete6 inorder: 2,3,4,7,9,12,13,14,15,17,18,20
+delete15 inorder: 2,3,4,7,9,12,13,14,17,18,20

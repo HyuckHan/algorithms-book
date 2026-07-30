@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Postorder}{$x$}
+\If{$x=\NIL$}\State\Return\EndIf
+\State \Call{Postorder}{$x.left$}
+\State \Call{Postorder}{$x.right$}
+\State \Call{Visit}{$x$}
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

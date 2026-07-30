@@ -1,0 +1,11 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{TreeMinimum}{$x$}
+\If{$x=\NIL$}\State\Return $\NIL$\EndIf
+\While{$x.left\ne\NIL$}\State $x\gets x.left$\EndWhile
+\State\Return $x$
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

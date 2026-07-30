@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Preorder}{$x$}
+\If{$x=\NIL$}\State\Return\EndIf
+\State \Call{Visit}{$x$}
+\State \Call{Preorder}{$x.left$}
+\State \Call{Preorder}{$x.right$}
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

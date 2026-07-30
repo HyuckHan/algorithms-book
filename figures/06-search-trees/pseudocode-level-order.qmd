@@ -1,0 +1,15 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{LevelOrder}{$root$}
+\If{$root=\NIL$}\State\Return\EndIf
+\State $Q\gets$ empty queue; \Call{Enqueue}{$Q,root$}
+\While{$Q$ is not empty}
+\State $u\gets$\Call{Dequeue}{$Q$}; \Call{Visit}{$u$}
+\If{$u.left\ne\NIL$}\State\Call{Enqueue}{$Q,u.left$}\EndIf
+\If{$u.right\ne\NIL$}\State\Call{Enqueue}{$Q,u.right$}\EndIf
+\EndWhile
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

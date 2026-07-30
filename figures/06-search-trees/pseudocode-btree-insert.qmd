@@ -1,0 +1,13 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BTreeInsert}{$T,k$}
+\If{$T.root$ is full}
+\State 새 root $s$ 생성; $s.child[0]\gets T.root$
+\State \Call{SplitChild}{$s,0$}; $T.root\gets s$
+\EndIf
+\State \Call{InsertNonFull}{$T.root,k$}
+\EndProcedure
+\end{algorithmic}
+</pre>
+```
