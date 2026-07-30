@@ -266,7 +266,14 @@ Quick Sort도 재귀적으로 문제를 나누고 optimal substructure를 갖지
 않으므로 저장할 이유가 없다 — **optimal substructure만으로는 DP가 아니다**. DP가 되려면
 overlapping subproblems가 함께 있어야 한다.
 
-![탐욕적으로 각 칸에서 지역적으로 더 작은 값만 따라가면(왼쪽) 전역 최적(오른쪽, 합 7)을 놓치고 더 나쁜 경로(합 105)를 고를 수 있다 — Matrix Path는 지금 보이는 것만으로 판단할 수 없다.](../figures/05-dynamic-programming/06-greedy-counterexample-local.svg){fig-alt="3x3 격자에서 지역적으로 작은 값을 따라가 합 105가 되는 경로가 강조된 다이어그램" width="45%"} ![전역 최적 경로는 합 7이다.](../figures/05-dynamic-programming/07-greedy-counterexample-optimal.svg){fig-alt="같은 3x3 격자에서 전역 최적 경로(합 7)가 강조된 다이어그램" width="45%"}
+탐욕(greedy)이 왜 위험한지 같은 $3\times3$ 행렬로 확인해 보자. 탐욕은 현재 칸에서 보이는
+다음 칸들의 값만 비교해 그 자리에서 하나를 확정하므로, 그 다음에 얼마나 큰 값이 기다리고
+있는지 알 수 없다 — Matrix Path의 최적해는 도착점까지 전체 경로의 합을 최소화해야 하므로,
+지금 당장 작아 보이는 선택이 나중에 더 큰 값을 강제로 지나게 만들 수 있다.
+
+![매 칸에서 더 작은 다음 칸(오른쪽 우선)만 보고 이동하면 첫 row를 따라가다 두 개의 100을 모두 지나게 되어, 합이 $1+2+100+1+1=105$로 매우 나쁘다.](../figures/05-dynamic-programming/06-greedy-counterexample-local.svg){fig-alt="3x3 격자에서 지역적으로 작은 값을 따라가 합 105가 되는 경로가 강조된 다이어그램" width="45%"}
+
+![전역 최적 경로는 첫 column을 따라 내려간 뒤 마지막 row를 따라가 두 100을 모두 피하고, 합 $1+3+1+1+1=7$을 달성한다.](../figures/05-dynamic-programming/07-greedy-counterexample-optimal.svg){fig-alt="같은 3x3 격자에서 전역 최적 경로(합 7)가 강조된 다이어그램" width="45%"}
 
 ### Matrix Minimum Path Sum
 
@@ -279,6 +286,12 @@ overlapping subproblems가 함께 있어야 한다.
 | State | Transition | Base | Order | Answer |
 |---|---|---|---|---|
 | $dp[i][j]$ | $M[i][j]+\min(dp[i-1][j],dp[i][j-1])$ | 첫 row/column은 누적합 | row-major(또는 column-major) | $dp[n][m]$ + parent 배열로 경로 복원 |
+
+::: {.callout-tip title="Notation bridge"}
+수학의 $dp[i][j]$, $(1,1)\to(n,m)$은 1-based다. C/Java/Python 배열 인덱스는 0-based이므로
+같은 칸이 코드에서는 `dp[i-1][j-1]`, 도착 칸은 `dp[n-1][m-1]`이 된다. 아래 Checkpoint의
+$dp[1][3]$ 같은 표기도 이 1-based 좌표를 그대로 쓴 것이다 — 코드 인덱스와 혼동하지 않는다.
+:::
 
 ![State $(i,j)$는 위쪽 $(i-1,j)$와 왼쪽 $(i,j-1)$ 두 state에만 의존한다.](../figures/05-dynamic-programming/08-matrix-dependency.svg){fig-alt="격자에서 한 칸이 위쪽 칸과 왼쪽 칸으로부터 화살표를 받는 의존 관계 다이어그램" width="60%"}
 
@@ -527,11 +540,6 @@ comparison은 assignment가 아니다 — 이 naive 재귀는 $O(2^{m+n})$ 수�
 |B|0|1|2|2|3|4|4|
 
 answer: $dp[7][6]=4$.
-:::
-
-::: {.callout-note}
-위 세 표는 `\only`로 감싼 순수 LaTeX `tabular`에서 그대로 옮긴 값이다(다이어그램이 아니라 수치
-표이므로 TikZ SVG 대신 표로 직접 제시한다 — 다른 DP 트레이스는 SVG 시퀀스를 쓴다).
 :::
 
 **구현**: 세 언어 모두 같은 예제 입력 $X=$"ABCBDAB", $Y=$"BDCABA"를 쓴다.
