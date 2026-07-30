@@ -45,6 +45,24 @@ M5(운영 하드닝)에서 전체 챕터를 놓고 일관된 크기 기준으로
 맞추려고 초안 단계에서 대략적으로 정한 값이라, 그림마다 원본 크기 대비 일관된 배율 기준이
 적용되지 않았다.
 
+## Lecture 07 · Hash Tables
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음):
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 1.98x | `08-pigeonhole-principle.svg` | E(Collision) | key 4개·bucket 3개짜리 작은 다이어그램, 60% width |
+| 1.79x | `22-double-hash-gcd-failure.svg` | J(Double Hashing) | 12-slot 중 3칸만 강조하는 가는 한 줄 다이어그램, 90% width |
+| 1.70x | `27-rehash-animation-step4.svg` | M(Resize/Rehashing) | rehash 최종 상태(작은 텍스트 위주), 90% width |
+| 1.60x | `23-probe-cluster-before-delete.svg`, `16-linear-final-table.svg`, `13-tombstone-reuse-example.svg`, `06-original-integer-table.svg` | K/H/G/E | `\htrowthirteen` 매크로로 그린 13-slot 한 줄짜리 표 — 가로로 얇고 세로로 짧은 원본이 90% width에서 크게 확대됨(공통 원인) |
+| 1.51–1.55x | `15-linear-trace2-wraparound-step3.svg`, `14-linear-trace1-collision-step3.svg`, `07-insert-29-collision-trace-step3.svg`, `25-correct-deletion-tombstone-trace-step4.svg`, `24-wrong-deletion-trace-step5.svg`, `21-double-hash-probe-trace-step4.svg`, `19-quadratic-trace-30-step3.svg` | E/H/I/J/K | 13-slot 한 줄 트레이스의 각 스텝, 90% width — 위와 같은 원인 |
+| 1.50x | `26-logical-vs-probing-load-step2.svg` | K(삭제) | `\loadgauge` 매크로로 그린 가는 막대 게이지, 70% width |
+| 1.33x | `03-distribution-comparison.svg` | C(Hash Function 설계) | 막대그래프 두 개가 세로로 나열된 다이어그램, 70% width |
+| 1.32x | `20-secondary-clustering.svg` | I(Quadratic Probing) | key 3개짜리 작은 다이어그램, 60% width |
+| 1.22x | `17-primary-clustering-step3.svg`, `28-resize-cost-sequence.svg`, `18-linear-probe-cost-curve.svg` | H/M/H | primary clustering 트레이스, resize cost 막대그래프, PGFPlots 곡선 — 각각 70%/60%/70% width |
+
+**패턴 요약**: L06/L08에서 이미 확인된 "원본이 작을수록 같은 %width도 더 크게 확대된다"는 원인이 여기서도 반복되지만, L07 특유의 원인이 하나 추가된다 — `\htrowthirteen`/`\loadgauge` 매크로(`lecture-notes/common/hash_tables.tex`)로 그리는 **가로로 얇고 세로로 짧은 "한 줄" 다이어그램**(13-slot 표, load gauge)이 이 목록의 절반 가까이를 차지한다. 이런 다이어그램은 폭은 있지만 높이가 아주 작아 %width 기준 배율 계산 자체가 다른 종류(정사각형에 가까운 tree/graph 다이어그램)와 시각적으로 다르게 느껴질 수 있다 — M5 일괄 조정 시 "한 줄 표" 종류를 별도 카테고리로 다룰지 검토할 가치가 있다.
+
 ## 다음 강의 추가 시
 
 새 강의를 변환할 때도 이 표 형식으로 이어서 기록한다(`## Lecture NN · 제목` 절 추가). M5에서
