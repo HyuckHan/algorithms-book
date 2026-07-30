@@ -4,7 +4,7 @@ description: "Tree 용어부터 BST·AVL·Red-Black·B-Tree까지 — 균형을 
 lecture: 6
 order: 6
 slug: "06-search-trees"
-status: "review"
+status: "verified"
 objectives:
   - "tree 용어(root/parent/child/sibling/leaf/ancestor/subtree)와 depth·level·height convention을 정확히 사용한다."
   - "full·perfect·complete binary tree를 구분하고, 네 traversal을 추적해 시간·공간 비용을 설명한다."
