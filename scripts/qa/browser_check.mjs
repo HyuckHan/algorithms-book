@@ -50,7 +50,7 @@ const SECTION_CHECKS = [
   // own deferral of complexity until after asymptotic notation -- their
   // code panel-tabset lives later, under a "...의 복잡도" heading (see
   // qa_check.py's SECTION_ID mapping for the same reasoning).
-  "linear-search의-복잡도", "binary-search의-복잡도",
+  "maximum의-복잡도", "linear-search의-복잡도", "binary-search의-복잡도",
 ].map((id) => ({ id, languages: ["python", "java", "c"] }));
 
 // Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)
@@ -93,6 +93,27 @@ const domFacts = await page.evaluate(({ sectionChecks, internalDocPatternSources
 
   const renderedPseudocodeCount = document.querySelectorAll(".ps-root").length;
   const unrenderedPseudocodeCount = document.querySelectorAll("pre.pseudocode").length;
+
+  // A `## heading` immediately followed by another block (e.g. an image)
+  // with no blank line between them in the .qmd source doesn't get parsed
+  // as Markdown at all inside a fenced div -- it survives as literal "##
+  // heading" text merged into the previous block's paragraph (observed in
+  // 01-introduction.qmd's Linear/Binary Search step-sequence tabsets: only
+  // step 1 became a real tab, steps 2-4 leaked in as plain text glued to
+  // step 1's image). Scan visible text outside <pre>/<code> (where a
+  // literal "##" could legitimately appear, e.g. a C preprocessor sample)
+  // for a stray "##" as a general leaked-heading-marker tripwire, and
+  // separately flag any tab-pane with more than one <img> -- a case
+  // multiple step images landing in a single pane, root symptom of the
+  // exact same bug.
+  const bodyTextOutsideCode = Array.from(document.body.querySelectorAll("*"))
+    .filter((el) => el.children.length === 0 && !el.closest("pre") && !el.closest("code"))
+    .map((el) => el.textContent)
+    .join(" ");
+  const leakedHeadingMarkers = [...bodyTextOutsideCode.matchAll(/.{0,20}##\s?\S+.{0,20}/g)].map((m) => m[0]);
+  const multiImageTabPanes = Array.from(document.querySelectorAll(".tab-pane"))
+    .map((pane) => ({ id: pane.id, imgCount: pane.querySelectorAll("img").length }))
+    .filter((p) => p.imgCount > 1);
 
   const imgs = Array.from(document.querySelectorAll("img"));
   const brokenImgs = imgs.filter((i) => i.naturalWidth === 0).map((i) => i.getAttribute("src"));
@@ -185,6 +206,8 @@ const domFacts = await page.evaluate(({ sectionChecks, internalDocPatternSources
     codeBlocks,
     codeTokens,
     sectionFacts,
+    leakedHeadingMarkers,
+    multiImageTabPanes,
     horizontalOverflow: scrollWidth > clientWidth + 2,
   };
 }, { sectionChecks: SECTION_CHECKS, internalDocPatternSources: INTERNAL_DOC_PATTERNS.map((re) => re.source) });
@@ -231,6 +254,8 @@ console.log(JSON.stringify({
   codeBlocks: domFacts.codeBlocks,
   codeTokenSamples: uniqueTokens,
   sectionFacts: domFacts.sectionFacts,
+  leakedHeadingMarkers: domFacts.leakedHeadingMarkers,
+  multiImageTabPanes: domFacts.multiImageTabPanes,
 }, null, 2));
 
 await browser.close();

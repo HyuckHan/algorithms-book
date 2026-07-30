@@ -37,6 +37,13 @@ Currently implements:
     CODE_INVENTORY, DECISIONS.md, etc.) -- a correction belongs in the
     chapter on its own merits, not cited back to the internal tracking doc
     it came from.
+  - Leaked-heading-marker check: fails if visible text outside <pre>/<code>
+    contains a literal "##" (a `## heading` inside a fenced div, e.g. a
+    step-sequence panel-tabset, that lacked a blank line before the next
+    block does not parse as Markdown -- it survives as raw text glued onto
+    the previous block), or if any `.tab-pane` contains more than one
+    `<img>` (the same underlying bug's other symptom: multiple step images
+    landing crammed into a single tab instead of one per tab).
 
 Gates 1/2/5/7 from docs/QUALITY_ASSURANCE.md are NOT implemented here yet
 (tracked for M2 per docs/MILESTONES.md); this script does not claim to check
@@ -91,6 +98,7 @@ ALGO_IDENTIFIERS = {
         "radix-sort": ["radix_sort", "RadixSort", "radixSort"],
     },
     "01": {
+        "maximum": ["maximum", "Maximum"],
         "linear-search": ["linear_search", "LinearSearch", "linearSearch"],
         "binary-search": ["binary_search", "BinarySearch", "binarySearch"],
     },
@@ -116,6 +124,7 @@ SECTION_ID = {
     # lives later, alongside their complexity analysis (Part H), under a
     # "...의 복잡도" heading rather than the intro section's own id.
     "01": {
+        "maximum": "maximum의-복잡도",
         "linear-search": "linear-search의-복잡도",
         "binary-search": "binary-search의-복잡도",
     },
@@ -261,6 +270,24 @@ def main():
     print("  internal doc-name references: %s -> %s"
           % (internal_refs if internal_refs else "none", "PASS" if internal_ok else "FAIL"))
     ok = ok and internal_ok
+
+    # Leaked-heading-marker check: a `## heading` immediately followed by
+    # another block with no blank line between them in the .qmd source
+    # (e.g. inside a step-sequence panel-tabset) doesn't parse as Markdown
+    # inside a fenced div -- it survives as literal "## heading" text glued
+    # onto the previous block, and any images meant for separate tabs land
+    # crammed into one pane instead (exactly what happened to L01's
+    # Linear/Binary Search step-sequence tabsets before this gate existed).
+    leaked_headings = facts.get("leakedHeadingMarkers", [])
+    multi_image_panes = facts.get("multiImageTabPanes", [])
+    markup_leak_ok = len(leaked_headings) == 0 and len(multi_image_panes) == 0
+    print("  trace figure markup (no leaked ## / no multi-image tab panes): -> %s"
+          % ("PASS" if markup_leak_ok else "FAIL"))
+    for sample in leaked_headings:
+        print("    LEAKED HEADING TEXT: %r" % sample)
+    for pane in multi_image_panes:
+        print("    MULTI-IMAGE PANE: id=%s imgCount=%d" % (pane["id"], pane["imgCount"]))
+    ok = ok and markup_leak_ok
 
     # Gate 6: inline code contrast >= 4.5:1.
     samples = facts.get("inlineCodeSamples", [])
