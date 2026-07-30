@@ -1,0 +1,240 @@
+# Lecture 06 · 검색 트리 — 인벤토리 (M4, MIGRATION_STRATEGY 우선순위 6번째)
+
+소스: `lecture-notes/lecture06/lecture06.tex`의 `\input` 순서 — 파일명 번호와 실제 순서가
+일치한다. **범위는 L06 하나** — TikZ가 전 강의 중 가장 많다(SPEC 추정 55개, 실측 60개
+figure entry/89개 SVG)는 점이 이번 강의의 가장 큰 리스크이므로, 파이프라인 확인·캐시·
+병렬 컴파일을 최우선으로 다뤘다.
+
+## 0. 수치 요약
+
+| 항목 | 실제 소스 | 비고 |
+|---|---|---|
+| `\section`/`\subsection` | 14 (5 `\section` + 9 `\subsection`) | Part A–E, 세부는 subsection |
+| frame | 약 100 | 원본 slide 대응표 기준(104장) |
+| TikZ figure entry | **60** | `find_figures()` 실측(literal tikzpicture + macro 그룹) |
+| TikZ SVG 총수 | **89** | sequence/step 전개 포함 |
+| pgfplots | **0** | |
+| 의사코드(`algorithmic`) | **12** | SPEC 수치와 일치 |
+| 기존 Java 구현 | **5개 파일 + 1 demo** | BinaryTree, BinarySearchTree, AVLTree, RedBlackTree, BTree(+BinaryTreeDemo) |
+| 기존 C 구현 | **0개** | `lecture-notes/code/lecture06/`에 C 디렉터리 자체가 없음 — **C는 전량 신규** |
+
+## 1. `\input` 순서별 절/frame/TikZ/algorithmic — Part 대응
+
+| # | 파일 | Part | TikZ entry | algorithmic | 다루는 내용 |
+|---|---|---|---|---|---|
+| 1 | `01_tree_basics.tex` | A. Tree와 BST | 2 | 0 | 학습목표, 왜 Tree인가, rooted tree 정의, **Tree 용어**(root/parent/child/sibling/leaf/ancestor/subtree, 4단계 하이라이트 trace), depth·level·height convention(edge-height, root depth 0), tree의 세 가지 동치 성질, Checkpoint |
+| 2 | `02_binary_tree.tex` | (A 계속 → B) | 4 | 0 | binary tree 정의, 같은 key 다른 tree(L/R child 예제), 응용(expression/Huffman/heap/search), **Full·Perfect·Complete 구분**(교정: full≠leaf 동일 depth), perfect node 수 공식, linked representation, parent pointer trade-off, array representation(heap 연결) |
+| 3 | `03_traversal.tex` | C. Traversal | 6 (macro 5 + literal 1) | 4 | 고정 tree A(B(D,E),C(F,G))로 Preorder/Inorder/Postorder pseudocode+**`\travtree` animation**, DFS 비용, **LevelOrder pseudocode**(교정: 표준 queue 알고리즘), level-order queue animation(표), BFS queue 공간, Expression Tree, traversal→notation, Checkpoint |
+| 4 | `04_binary_tree_impl.tex` | D. Java 구현 | 0 | 0 | BinaryTree API contract(empty height=-1), Generic Node, Constructor/deep-copy ownership, traversal 중심 API, size/height 재귀식, subtree API(shared vs deep copy), Code Checkpoint |
+| 5 | `05_dynamic_set.tex` | E. Dynamic Set | 0 | 0 | Dictionary ADT→Dynamic Set Ops→BST, UPDATE 정책, **구조 선택 preview 표**(unsorted list/sorted array/BST/balanced BST/hash/B-Tree), 공통 비용 모델 $\Theta(h)$, Checkpoint |
+| 6 | `06_bst_search.tex` | F. BST 기본 연산 | 4 | 3 | **distinct-key invariant**(교정), 고정 BST 예제(15 루트), inorder=정렬순서, **TreeSearch/IterativeTreeSearch pseudocode**, **SEARCH 13 실제 경로 animation**(4단계), MINIMUM·MAXIMUM, **TreeMinimum pseudocode**, SUCCESSOR 두 case, SUCCESSOR animation, 예제 검증, Checkpoint |
+| 7 | `07_bst_insert_delete.tex` | G. INSERT·DELETE | 5 | 2 | INSERT x/y cursor, **TreeInsert pseudocode**, **INSERT 12 실제 경로 animation**(6단계, 교정: 절대 경로 `15→6→7→13→9→NIL`), correctness·비용, DELETE 세 case, **Transplant pseudocode**, DELETE Case1/2(before·after 쌍), DELETE Case3(successor 선택+transplant sequence+최종 tree), correctness intuition, Checkpoint |
+| 8 | `08_balanced_motivation.tex` | B. Balanced Tree 동기 | 1 | 0 | **정렬 입력 1..7 degenerate BST animation**(5단계), 같은 key 다른 shape, balanced tree 목표(AVL vs RB 예고), Checkpoint |
+| 9 | `09_avl.tex` | C. AVL Tree | 12 | 1 | **AVL invariant, $BF=h(left)-h(right)$**(교정: left-right 부호), height 저장 이유, Right Rotation before/after(inorder 보존), **RotateRight pseudocode**, **LL/RR/LR/RL 네 case**(각 2~3장, before/intermediate/after), 케이스 표, INSERT workflow·복잡도, DELETE가 더 어려운 이유, Checkpoint |
+| 10 | `10_red_black.tex` | D. Red-Black Tree | 12 | 0 | 다섯 invariant, NIL sentinel(교정: ordinary leaf 구분), black-height convention, invariant 위반 예, height $\le2bh$ 증명, black-height→node 수 증명, red 삽입 이유, **z/p/g/u 용어**(교정), Case1(uncle red) before/after, **RB Insert 41,38,31→12→19→8 전체 시퀀스**(교정: 표준 사례로 통합), fixup 요약(mirror 포함), DELETE 범위(appendix로 위임) |
+| 11 | `11_btree.tex` | E. B-Tree | 13 | 2 | 왜 B-Tree인가(page/I/O), **minimum degree $t$ convention**, $t=2$(2-3-4 tree), range invariant, **BTreeSearch pseudocode**, B-Tree Search animation(key 17, 2단계), cost model(CPU/IO 분리), SplitChild 핵심, **Split-Before-Descend(BTreeInsert) pseudocode**, **Insert 10,20,5,6,12,30,7,17 전체 시퀀스**(t=2), Final Invariant Check, DELETE preview(borrow/merge), Borrow before/after, Merge/root shrink before/after, Checkpoint |
+| 12 | `12_comparison.tex` | F. 비교 | 0 | 0 | 종합 비교표(height/연산/cost model), AVL vs RB 비교표, 구조→application 연결표, Checkpoint |
+| 13 | `13_summary_quiz.tex` | (요약) | 1 | 0 | Concept Map, Tree Basics/Traversal/BST/AVL·RB/B-Tree Quiz 5세트 + 정답 2세트 |
+| 14 | `14_appendix.tex` | Appendix | 0 | 0 | AVL height-Fibonacci bound, RB DELETE fixup preview, B+Tree preview, Code/Invariant validation 목록 |
+
+**합계**: TikZ entry 60(SVG 89), algorithmic 12, `\section`+`\subsection` 14.
+
+## 2. TikZ 60개 — 슬러그·모드 (전체 목록, `figures/06-search-trees/` 기준)
+
+이 강의는 세 가지 오버레이 메커니즘이 섞여 있다 — 파이프라인에 모두 새로 추가했다(§9 참고):
+(a) 표준 `\only<N>{...}`/`\alt<N>{...}{...}`(기존 지원), (b) **`alt=<N>{style1}{style2}`**
+tikz-key 형태(`\node[...,alt=<N>{...}{...}]`, 기존 `\alt<>{}{}` 커맨드와 문법은 같으나 트리거가
+다름), (c) **`\travtree{#1}..{#7}`** 매크로(`common/search_trees.tex`에 전체 tikzpicture가
+정의되어 있어 사용처에는 `\begin{tikzpicture}` 텍스트가 전혀 없음 — 정규식만으로는 발견 불가),
+(d) **`\node<N>[...]{...}`** beamer-tikz 전용 per-node 오버레이 축약형(standalone 문서에는
+beamer 오버레이 확장이 없어 그대로 두면 컴파일 에러).
+
+| # | 슬러그 | 소스 | 모드 | 내용 |
+|---|---|---|---|---|
+| 01 | rooted-tree-definition | 01_tree_basics#0 | flatten | rooted tree 정의(A-B-C-D-E-F-G) |
+| 02 | tree-terminology-trace | 01_tree_basics#1 | **sequence**(4) | root/parent-child/leaf/subtree 하이라이트(alt=<>, `\node<N>` 축약형) |
+| 03 | left-child-example | 02_binary_tree#0 | flatten | A→B (L) |
+| 04 | right-child-example | 02_binary_tree#1 | flatten | A→B (R) |
+| 05 | full-perfect-complete | 02_binary_tree#2 | flatten | 세 형태 나란히 |
+| 06 | linked-representation | 02_binary_tree#3 | flatten | parent/key/left/right(rectangle split — `shapes.multipart` 라이브러리 필요) |
+| 07 | traversal-reference-tree | 03_traversal#0(macro) | flatten | 고정 tree(기준) |
+| 08 | preorder-trace | 03_traversal#1(macro) | **sequence**(5) | \travtree 5회 호출 |
+| 09 | inorder-trace | 03_traversal#2(macro) | **sequence**(4) | \travtree 4회 호출 |
+| 10 | postorder-trace | 03_traversal#3(macro) | **sequence**(5) | \travtree 5회 호출 |
+| 11 | level-order-reference-tree | 03_traversal#4(macro) | flatten | queue animation 표와 병행 |
+| 12 | expression-tree | 03_traversal#5 | flatten | `* + x y / + a b c` |
+| 13 | fixed-bst-example | 06_bst_search#0 | flatten | 15 루트 12-node BST |
+| 14 | search-trace | 06_bst_search#1 | **sequence**(4) | SEARCH 13 경로 |
+| 15 | successor-cases | 06_bst_search#2 | flatten | case1(15→17)+case2(4→6) 병기 |
+| 16 | successor-case2-ancestor-chain | 06_bst_search#3 | flatten | 4→3→6 upward walk 보조 그림 |
+| 17 | insert-trace | 07_bst_insert_delete#0 | **sequence**(6) | INSERT 12 x/y 경로 |
+| 18 | delete-case1-leaf | 07_bst_insert_delete#1 | **sequence**(2) | leaf 삭제 전/후 |
+| 19 | delete-case2-one-child | 07_bst_insert_delete#2 | **sequence**(2) | one-child 삭제 전/후 |
+| 20 | delete-case3-successor-setup | 07_bst_insert_delete#3 | flatten | successor 선택 상태 |
+| 21 | delete-case3-final-tree | 07_bst_insert_delete#4 | flatten | Transplant 완료 후 |
+| 22 | degenerate-bst-trace | 08_balanced_motivation#0 | **sequence**(5) | 1..7 순차 삽입 |
+| 23–24 | right-rotation-before/after | 09_avl#0,1 | flatten×2 | 일반 rotation(x,y,A,B,C) |
+| 25–26 | ll-case-before/after | 09_avl#2,3 | flatten×2 | 30,20,10 |
+| 27–28 | rr-case-before/after | 09_avl#4,5 | flatten×2 | 10,20,30 |
+| 29–31 | lr-case-step1/2/3 | 09_avl#6,7,8 | flatten×3 | 30,10,20 |
+| 32–34 | rl-case-step1/2/3 | 09_avl#9,10,11 | flatten×3 | 10,30,20 |
+| 35 | nil-sentinel | 10_red_black#0 | flatten | shared NIL 예시 |
+| 36 | invariant-violation-example | 10_red_black#1 | flatten | red-red 위반 |
+| 37–38 | rb-case1-before/after | 10_red_black#2,3 | flatten×2 | uncle red recolor |
+| 39–41 | rb-insert-41-38-31-step1/2/3 | 10_red_black#4,5,6 | flatten×3 | outer case, right rotate |
+| 42–43 | rb-insert-12-before/after | 10_red_black#7,8 | flatten×2 | uncle red recolor |
+| 44–45 | rb-insert-19-step1/2 | 10_red_black#9,10 | flatten×2 | inner→outer |
+| 46 | rb-insert-8-final | 10_red_black#11 | flatten | 최종 검증 |
+| 47 | multiway-range-invariant | 11_btree#0 | flatten | $k_1..k_r$/$c_0..c_r$ |
+| 48 | btree-search-trace | 11_btree#1(alt=) | **sequence**(2) | key 17 탐색 |
+| 49–52 | btree-insert-step1..4 | 11_btree#2,3,4,5 | flatten×4 | 10→10\|20→풀→split |
+| 53–54 | btree-insert2-step1/2 | 11_btree#6,7 | flatten×2 | 12,30,7,17 삽입, split |
+| 55 | btree-final-check | 11_btree#8 | flatten | 최종 invariant |
+| 56–57 | btree-borrow-before/after | 11_btree#9,10 | flatten×2 | sibling에서 borrow |
+| 58–59 | btree-merge-before/after | 11_btree#11,12 | flatten×2 | merge+root shrink |
+| 60 | concept-map | 13_summary_quiz#0 | flatten | Search Trees 개념도 |
+
+**AVL/RB/B-Tree의 "before/after" 쌍·삼중은 `mode: sequence`가 아니라 각각 독립된 flatten
+슬러그다** — 원본이 그림 전체를 감싸는 `\only<N>{\begin{tikzpicture}...}`(공유 picture 안의
+`\only` 서브스팬이 아니라, 그림 자체가 여러 개 별도 정의)이기 때문이다. qmd에서는 연속된
+이미지 두세 장 + 캡션으로 붙여 하나의 흐름처럼 보이게 구성한다(L04 step1+stepN 패턴과 동일).
+
+## 3. algorithmic 12개 — 이름과 위치, `\Call`-in-math 사전 점검
+
+| # | 파일 | idx | Procedure | `\Call`이 수식 안에 있는가? |
+|---|---|---|---|---|
+| 1 | `03_traversal.tex` | 0 | `Preorder(x)` | 아니오 |
+| 2 | `03_traversal.tex` | 1 | `Inorder(x)` | 아니오 |
+| 3 | `03_traversal.tex` | 2 | `Postorder(x)` | 아니오 |
+| 4 | `03_traversal.tex` | 3 | `LevelOrder(root)` | **예** — `$u\gets\Call{Dequeue}{Q}$` 한 줄 전체가 수식 안 |
+| 5 | `06_bst_search.tex` | 0 | `TreeSearch(x,k)` | 아니오 |
+| 6 | `06_bst_search.tex` | 1 | `IterativeTreeSearch(x,k)` | 해당 없음(`\Call` 미사용) |
+| 7 | `06_bst_search.tex` | 2 | `TreeMinimum(x)` | 해당 없음(`\Call` 미사용) |
+| 8 | `07_bst_insert_delete.tex` | 0 | `TreeInsert(T,z)` | 해당 없음(`\Call` 미사용) |
+| 9 | `07_bst_insert_delete.tex` | 1 | `Transplant(T,u,v)` | 해당 없음(`\Call` 미사용) |
+| 10 | `09_avl.tex` | 0 | `RotateRight(y)` | 해당 없음(`\Call` 미사용) |
+| 11 | `11_btree.tex` | 0 | `BTreeSearch(x,k)` | 아니오(bare `\Call`, 인자만 수식) |
+| 12 | `11_btree.tex` | 1 | `BTreeInsert(T,k)`("Split-Before-Descend") | 아니오(bare `\Call`, 두 곳 모두) |
+
+**정확히 1개**(`LevelOrder`)에서 L04/L05와 같은 `\Call`-in-math 패턴이 나온다. 기존
+`hoist_call_out_of_math`이 자동으로 고칠 것으로 예상 — 실행 후 육안 확인 필요(§9).
+Red-Black Tree는 **전용 pseudocode 블록이 없다**(`docs/CODE_INVENTORY.md`의 "RedBlackTree.java는
+있지만 12개 목록에는 전용 섹션이 없었다" 메모와 일치, 직접 재확인 완료) — insertion/deletion은
+전부 prose+TikZ로 설명되므로, RB 관련 코드 섹션의 "의사코드"는 본문 설명(다섯 invariant, z/p/g/u
+case 표)을 CONTENT_MODEL의 의사코드 대신 정확성/추적 절로 다룬다.
+
+## 4. 코드 재고 — CODE_INVENTORY.md 확인 결과 및 재사용 전략
+
+`lecture-notes/code/lecture06/java/*.java` 6개 파일을 전부 읽었다. **C 디렉터리 자체가
+없다** — 이 강의는 C를 전량 새로 작성해야 한다(`docs/CODE_INVENTORY.md`의 사전 조사와 일치).
+
+| 알고리즘 | 원본 Java | 예제 입력(trace와 대조 완료) |
+|---|---|---|
+| BinaryTree(4 traversal) | `BinaryTree.java`(+`BinaryTreeDemo.java`) | A(B(D,E),C(F,G)) — preorder/inorder/postorder/levelorder 결과 slide와 정확히 일치 |
+| BinarySearchTree(search/min/max/successor/predecessor/insert/delete) | `BinarySearchTree.java` | insert keys `15,6,3,2,4,7,13,9,14,18,17,20`(고정 BST 예제와 일치), insert(12) 경로, successor(15)=17·successor(6)=7·successor(4)=6·successor(20)=empty·predecessor(15)=14 — 전부 slide 예제와 일치 |
+| AVLTree(rotation 포함 insert/delete) | `AVLTree.java` | `bf=h(left)-h(right)` 부호 확인. 4개 테스트 조합 `{30,20,10}/{10,20,30}/{30,10,20}/{10,30,20}`이 slide의 LL/RR/LR/RL 예제와 정확히 일치 |
+| RedBlackTree(insert/delete fixup) | `RedBlackTree.java` | insert `{41,38,31,12,19,8}`이 slide의 "RB Insert: 41,38,31→12→19→8" 시퀀스와 정확히 일치 |
+| BTree(search/insert/delete, t 파라미터) | `BTree.java` | `t=2`, insert `{10,20,5,6,12,30,7,17}`이 slide 시퀀스와 정확히 일치, 최종 root `[10,20]`+children `[5,6,7]/[12,17]/[30]`도 "Final B-Tree Invariant Check" slide와 일치 |
+
+Java 5개 전부 **verbatim 재사용**(assert-only, 화면 출력 없음 — L05/L08/L04와 같은 이유로
+새 print 기반 데모 작성 필요). **C 5개 전부 신규**, **Python 5개 전부 신규**. 예제 입력은 위
+표의 값을 그대로 쓴다(이미 slide trace와 1:1 확인됨, 추가 검증 불필요).
+
+### 코드 섹션 구성(대표 알고리즘 5개, 언어별)
+
+| 알고리즘 | Java | C | Python |
+|---|---|---|---|
+| BinaryTree traversal | 재사용(verbatim) + 신규 print 드라이버 | 신규 | 신규 |
+| BinarySearchTree | 재사용(verbatim) + 신규 print 드라이버 | 신규 | 신규 |
+| AVLTree | 재사용(verbatim) + 신규 print 드라이버 | 신규 | 신규 |
+| RedBlackTree | 재사용(verbatim) + 신규 print 드라이버 | 신규 | 신규 |
+| BTree | 재사용(verbatim) + 신규 print 드라이버 | 신규 | 신규 |
+
+## 5. content map 교정 항목 — 본문에 문서명 인용 없이 반영
+
+1. **"같은 node 재방문" → unique simple path**: Tree의 세 가지 성질(§`01_tree_basics.tex`)에서
+   이미 정확한 용어("unique simple path")로 반영되어 있음 — 그대로 옮긴다.
+2. **full/perfect 혼동 교정**: "Full이라고 해서 반드시 모든 leaf가 같은 depth인 것은 아니다"
+   alertblock을 흔한 실수 콜아웃으로 그대로 반영.
+3. **perfect node 공식 convention 명시**: edge-height $h$ 기준 $n=2^{h+1}-1$과 level-count
+   기준 $n=2^H-1$을 모두 명시(교재마다 관례가 다름을 경고).
+4. **BST duplicate 정책 — distinct-key invariant**: `<=`/`>=` 모호성 대신 "본문과 코드는
+   duplicate를 거부한다"는 명시적 정책으로 통일.
+5. **LevelOrder — 표준 queue 알고리즘**: root 중복 처리 가능성이 있던 원래 순서를 표준
+   BFS-queue 형태(교재의 최종 pseudocode)로 이미 교정되어 있음 — 그대로 반영.
+6. **INSERT 12의 실제 경로 교정**: 절대 경로 `15→6→7→13→9→NIL`(코드로 재검증 완료, §4).
+7. **AVL balance factor 부호**: $BF(x)=h(left)-h(right)$로 통일(원본의 반대 부호 대신) —
+   alertblock으로 명시.
+8. **RB Tree 용어 표준화**: `x,p,p2,s` 대신 `z,p,g,u`(current/parent/grandparent/uncle).
+9. **B-Tree minimum degree $t$ · I/O 비용 명시**: disk 고정 수치 대신 $t\ge2$ 일반 정의와
+   page/I/O 관점(CPU comparison과 분리)으로 설명.
+10. **height/level/depth convention**: root depth 0, leaf height 0, empty tree height -1을
+    본문 전체에서 한 번도 어기지 않고 일관되게 사용(alertblock으로 명시적 경고 포함).
+
+## 6. 개념 다리 — 소스에 이미 존재, 이름으로 참조
+
+- **정렬 장 ↔ Array Representation/Heap**: `02_binary_tree.tex`의 "Array Representation은
+  언제 좋은가?"가 이미 "complete tree: index 관계로 parent/child를 계산 → Lecture 3 heap"으로
+  명시한다. 렌더된 장 번호가 확정되지 않았으므로 "정렬 장"으로만 지칭한다.
+- **재귀 장 ↔ DFS Traversal**: preorder/inorder/postorder의 재귀 구조와 recursion stack 비용
+  $O(h)$은 재귀 장에서 다룬 call stack·재귀 분석의 직접적 응용이다 — 이름으로 참조하며 중복
+  설명 대신 상호참조.
+- **동적 계획법 장 ↔ AVL Height-Fibonacci Bound**: appendix의 $N(h)=1+N(h-1)+N(h-2)$가
+  Fibonacci 형태의 recurrence이며, 이는 동적 계획법 장에서 다룬 Fibonacci recurrence와 같은
+  패턴이다 — 이름으로 참조.
+- **해시 테이블(추후 강의) 예고**: Dynamic Set 구조 선택 표와 종합 비교에서 hash table이
+  "expected $\Theta(1)$, order 없음"으로 이미 비교 대상에 포함되어 있다. 아직 변환되지 않은
+  강의이므로 클릭 가능한 장으로 언급하지 않고 일반 개념으로만 소개한다.
+
+## 7. 퀴즈 인벤토리
+
+| 위치 | 유형 | 문항 수 |
+|---|---|---|
+| `01_tree_basics.tex` Tree Basics Checkpoint | 계산/개념형 | 4 |
+| `02_binary_tree.tex` Array Representation Checkpoint | 개념형 | 1 |
+| `03_traversal.tex` Traversal Checkpoint | 계산형 | 4 |
+| `04_binary_tree_impl.tex` BinaryTree Code Checkpoint | 체크리스트 | 5 |
+| `05_dynamic_set.tex` Dynamic Set Checkpoint | 개념형 | 3 |
+| `06_bst_search.tex` BST 기본 연산 Checkpoint | 계산형 | 4 |
+| `07_bst_insert_delete.tex` INSERT·DELETE Checkpoint | 계산/개념형 | 3 |
+| `08_balanced_motivation.tex` Balance Preview Checkpoint | 개념형 | 1 |
+| `09_avl.tex` AVL Checkpoint | 계산/개념형 | 3 |
+| `11_btree.tex` B-Tree Checkpoint | 계산/개념형 | 4 |
+| `12_comparison.tex` 구조 선택 Checkpoint | 개념형 | 4 |
+| `13_summary_quiz.tex` Tree Basics/Traversal/BST/AVL·RB/B-Tree Quiz | 계산/개념형 | 4+3+6+4+4=21 |
+| `13_summary_quiz.tex` Quiz 정답 I·II | 정답 | 21문항 정답 |
+
+## 8. 웹 페이지 구성 방향
+
+content map의 Part A–L 구조(재구성 원칙: "화면 복제가 아니라 개념 흐름")를 그대로 절 경계로
+채택한다: A) Tree 기초, B) Balanced Tree 동기(원본은 나중 위치이나 §08_balanced_motivation의
+"section" 선언 자체가 Part B이므로 원본 순서를 그대로 따른다 — 실제로는 08번 파일이 09/10/11의
+서론 역할), C) Binary Tree/Traversal, D) Java 구현, E) Dynamic Set, F) BST, G) INSERT/DELETE,
+AVL/RB/B-Tree는 각각 자체 Part. CONTENT_MODEL 표준 템플릿(학습목표→문제→아이디어→의사코드→
+추적→정확성→복잡도→구현→흔한실수→Checkpoint→요약)을 대표 알고리즘 5개(BinaryTree traversal,
+BST search/insert/delete, AVL rotation, RedBlackTree(prose 중심), BTree)에 적용한다.
+AVL/RB/B-Tree의 before/after 이미지 쌍은 연속 이미지+캡션으로 트레이스를 표현한다(§2 참고).
+장 번호는 어디서도 하드코딩하지 않고 "정렬 장"/"재귀 장"/"동적 계획법 장"처럼 이름으로만
+참조한다.
+
+## 9. 파이프라인 특이사항 — extract_tikz.py에 반영한 새 메커니즘
+
+1. **`\travtree{}x7` 매크로**: `common/search_trees.tex`에 전체 tikzpicture가 정의되어 있어
+   사용처(section 파일)에는 `\begin{tikzpicture}` 텍스트가 전혀 없다 — `MACRO_PICTURES` 설정 +
+   `find_macro_calls`/`group_macro_calls_by_frame`으로 프레임 단위 그룹핑해 해결(03_traversal.tex
+   전용, 5개 그룹).
+2. **`alt=<N>{style1}{style2}` tikz-key 오버레이**: 기존 `\alt<N>{body1}{body2}` 커맨드와 문법은
+   같지만 트리거가 다르다(`\node[...,alt=<N>{...}{...}]`) — `ALT_HEAD_RE`를 두 형태 모두
+   매칭하도록 확장(01_tree_basics.tex, 11_btree.tex).
+3. **`\node<N>[...]{...}` beamer-tikz per-node 오버레이 축약형**: standalone 문서에는 beamer
+   오버레이 확장이 없어 그대로 두면 fatal LaTeX error — `normalize_node_overlay_shorthand()`로
+   `\only<N>{\node[...]{...};}` 형태로 사전 변환(01_tree_basics.tex 전용, 4곳).
+4. **`shapes.multipart` TikZ 라이브러리 누락**: `rectangle split`(linked representation 그림)이
+   이 라이브러리를 요구하는데 기존 PREAMBLE에 없었다 — 추가(전 강의 공통 PREAMBLE에 라이브러리만
+   추가하는 것이라 다른 강의에 영향 없음, 회귀 확인 완료).
+5. **병렬 컴파일**: `multiprocessing.Pool` 기반 `--jobs` 옵션 추가(기본값
+   `min(cpu_count, 8)`) — 89개 SVG 빌드 시간 관리. 캐시-미스만 병렬 컴파일하고 캐시 판정 자체는
+   순차 처리(매니페스트 일관성 유지).
+
+모든 변경사항은 01/02/03/04/05/08 강의에 대해 `--check`로 회귀 없음을 확인했다(캐시된 그대로,
+재빌드 0건).
