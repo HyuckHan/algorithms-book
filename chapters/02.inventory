@@ -1,0 +1,146 @@
+# Lecture 02 · 재귀 — 인벤토리 (M3, MIGRATION_STRATEGY §3.A)
+
+소스: `lecture-notes/lecture02/lecture02.tex`의 `\input` 순서. 웹 페이지 순서는 이 문서가 아니라
+CONTENT_MODEL 구조로 별도 설계(MIGRATION_STRATEGY §3.B) — 다만 content map이 이미 슬라이드를
+Part A–M으로 재편집해 두었으므로 그 Part 경계를 그대로 절 경계로 채택한다.
+
+## 0. 수치 요약과 SPEC.md 대조
+
+| 항목 | SPEC.md §1 표 | 실제 소스(재확인) | 비고 |
+|---|---|---|---|
+| 섹션(`\section`) | 13 | **13** | 일치 |
+| TikZ(`tikzpicture`) | 14 | **14** | 일치 |
+| 의사코드(`algorithmic`) | 0 | **0** | 일치 — 이 강의는 `algorithmic`을 전혀 쓰지 않는다 |
+| pgfplots(`axis`) | 0 | **0** | 일치 |
+| `lstlisting`(C 코드) | (표에 없음) | **10개**, 5개 파일에 분산 | 아래 §3 |
+| Java/C 기존 구현 | 0 | 0 | 일치(`lecture-notes/code/lecture02/` 자체가 없음) |
+
+L01과 달리 이번 강의는 SPEC.md 수치와 실측이 전부 일치한다. `lecture02/common.tex`가 실제로
+존재하며 `common/recursion.tex`를 `\input`하므로(스타일: `stack`, `peg`, `disk`, `wall`, `open`,
+`visited`, `path`, `dead`, `pixel`, `counted`, `tree node`, `chosen`), L01에서 만든
+"common.tex 없음" fallback은 이번에는 필요 없다.
+
+## 1. `\input` 순서별 절/frame/요소
+
+| # | 파일 | `\section` | TikZ | lstlisting | 비고 |
+|---|---|---|---|---|---|
+| 1 | `01_motivation.tex` | Part A. 재귀의 기본 원리 | 0 | 0 | mission/base/recursive/progress, 무한재귀 원인, 설계 체크리스트 |
+| 2 | `02_execution.tex` | (Part A 계속, 예제: sum) | 2 | 1 | `sum(n)` mission·C 구현, $sum(4)$ 호출/반환, **호출 스택 Push**(idx0), **호출 스택 Pop**(idx1), 활성 레코드, Checkpoint |
+| 3 | `03_correctness.tex` | (Part A 계속) | 0 | 0 | 귀납법=재귀 대응, `sum`/`factorial` 정확성, correctness vs efficiency |
+| 4 | `04_basic_examples.tex` | Part B. 재귀 알고리즘의 분석 (도입부) | 1 | 6 | factorial, power, **Fibonacci**(+ 호출 트리 idx0), string length/print/reverse/binary, Checkpoint표 |
+| 5 | `05_recurrences.tex` | (Part B 계속) | 1 | 0 | 왜 점화식인가, 선형/분기 재귀, 반복대치 2예제, **recursion tree**(idx0, $T(n)=2T(n/2)+n$), 추정후증명, 귀납가정 강화, 방법 비교표 |
+| 6 | `06_master_theorem.tex` | (Part B 계속) | 1 | 0 | $T(n)=aT(n/b)+f(n)$ 형식, $n^{\log_ba}$ 의미, **두 작업량의 경쟁**(idx0), 예제 1·2·3(leaf/root/balanced-mergesort), **Master Theorem 표준 3-case 표** |
+| 7 | `07_recursive_thinking.tex` | Part C. 재귀적으로 문제 설계하기 | 1 | 1 | 암시적→명시적 매개변수, 반복형 vs **재귀형 이진 탐색**(코드), **후보 구간 축소 추적**(idx0, 3단계), 비교표 |
+| 8 | `08_hanoi.tex` | (Part C 계속) | 3 | 0 | 규칙+3-peg(idx0), 3단계 구조, **n=3 핵심 상태**(idx1, 3단계), **H(3) 재귀 트리**(idx2), 점화식 $T(n)=2T(n-1)+1=\Theta(2^n)$ |
+| 9 | `09_maze.tex` | (Part C 계속) | 1 | 1 | mission, 재귀적 정의, visited 필요성, `find_path` 코드, **6×6 미로 추적**(idx0, 4단계), backtracking 패턴, 복잡도 $O(RC)$ |
+| 10 | `10_blob.tex` | (Part C 계속) | 2 | 0 | 4-neighbor vs 8-neighbor(idx0), Flood Fill mission, **Blob 추적**(idx1, 3단계), 복잡도 |
+| 11 | `11_power_set.tex` | (Part C 계속) | 1 | 1 | mission, `power_set` 코드, **상태공간 트리**(idx0, $\{a,b,c\}$), 출력 크기 하한 $\Omega(2^n)$, permutation/undo 확장 |
+| 12 | `12_recursion_vs_iteration.tex` | Part D. 재귀와 반복, 요약과 Quiz (전반부) | 0 | 0 | 비교표, tail recursion, "모든 재귀는 반복으로", 선택 기준 |
+| 13 | `13_summary_quiz.tex` | (Part D 계속) | 1 | 0 | **개념 지도**(idx0), 설계 Checklist, Quiz 2세트 + 정답 |
+
+**합계**: TikZ 14, algorithmic 0, lstlisting 10, `\section` 13.
+
+## 2. TikZ 14개 — 평탄화/시퀀스 방침
+
+| 파일 | idx | 내용 | 오버레이 | 처리 |
+|---|---|---|---|---|
+| `02_execution.tex` | 0 | 호출 스택 Push ($sum(4)$ 쌓임, `\visible<2->`/`\visible<3->` 누적) | 있음(2단계) | **flatten**(최종 5-frame 상태만) |
+| `02_execution.tex` | 1 | 호출 스택 Pop ($sum(4)$ 반환값 해소, `\only<1..5>`) | 있음(5단계) | **sequence**(교육상 핵심 — 실제 반환값이 단계별로 계산됨) |
+| `04_basic_examples.tex` | 0 | Fibonacci 호출 트리($F_5$, 중복 부분문제 강조) | 없음 | flatten |
+| `05_recurrences.tex` | 0 | 재귀 트리 $T(n)=2T(n/2)+n$ | 없음 | flatten |
+| `06_master_theorem.tex` | 0 | 두 작업량의 경쟁(재귀 작업 vs 현재 작업) | 없음 | flatten |
+| `07_recursive_thinking.tex` | 0 | 이진 탐색 후보 구간 축소($x=16$, `\only<1..3\|handout:N>`) | 있음(3단계) | **sequence**(교육상 핵심 — L01 이진 탐색과 대응) |
+| `08_hanoi.tex` | 0 | Hanoi 규칙 + 3-peg 초기 상태 | 없음 | flatten |
+| `08_hanoi.tex` | 1 | $n=3$ 핵심 상태(`\only<1..3\|handout:N>`) | 있음(3단계) | **sequence** |
+| `08_hanoi.tex` | 2 | $H(3)$ 재귀 호출 트리("move disk 3" 강조) | 없음 | flatten |
+| `09_maze.tex` | 0 | 6×6 미로 탐색·백트래킹(`\only<1..4\|handout:N>`) | 있음(4단계) | **sequence** |
+| `10_blob.tex` | 0 | 4-neighbor vs 8-neighbor 연결성 비교 | 없음 | flatten |
+| `10_blob.tex` | 1 | Blob Flood Fill 추적(`\only<1..3\|handout:N>`) | 있음(3단계) | **sequence** |
+| `11_power_set.tex` | 0 | 상태공간 트리 $\{a,b,c\}$ | 없음 | flatten |
+| `13_summary_quiz.tex` | 0 | 개념 지도 | 없음 | flatten |
+
+**합계 SVG 파일 수**: flatten 9 + sequence(2+3+3+4+3=15) = **24개**.
+
+### 파이프라인 참고
+
+- `02_execution.tex` idx0(Push)은 `\visible<N->{...}`(체감형 reveal)를 쓴다 — 현재
+  `extract_tikz.py`의 `render_only_at`/`overlay_steps`는 `\only`/`\alt`만 처리하므로 `\visible`도
+  같은 방식(`lo<=target<=hi`)으로 해석하도록 일반화해야 한다(L01에서 `\alt`를 추가한 것과 같은
+  이유 — 이번 강의가 `\visible`을 처음 쓴다). flatten 모드로만 쓰지만, `overlay_steps()`가
+  `\visible`을 인식하지 못하면 target 계산 자체가 틀려 최종 상태가 아니라 빈 base 상태만
+  남을 위험이 있으므로 반드시 고쳐야 한다.
+- 나머지 오버레이는 전부 `\only<N\|handout:M>` 형태로, L01에서 이미 고친 `|handout:` suffix
+  스트리핑이 그대로 적용된다.
+- `lecture02/common.tex`가 존재하므로 L01의 "common.tex 없음" fallback은 필요 없다.
+
+## 3. `lstlisting` 코드 인벤토리 (10개, algorithmic 없음)
+
+| 파일 | 함수 | 기존 C 재사용 가능 | 3언어 신규 대상(이번 세션) |
+|---|---|---|---|
+| `02_execution.tex` | `sum(n)` | ✅ | **예 — 대표 알고리즘 ①** |
+| `04_basic_examples.tex` | `factorial(n)` | ✅ | 아니오(본문에서 sum과 같은 패턴으로 언급만) |
+| `04_basic_examples.tex` | `power(x,n)` | ✅ | 아니오 |
+| `04_basic_examples.tex` | `length(s)` | ✅ | 아니오 |
+| `04_basic_examples.tex` | `print_chars(s)` | ✅ | 아니오 |
+| `04_basic_examples.tex` | `print_reverse(s)` | ✅ | 아니오 |
+| `04_basic_examples.tex` | `print_binary(n)` | ✅ | 아니오 |
+| `07_recursive_thinking.tex` | `bsearch(A,x,begin,end)` | ✅ | **예 — 대표 알고리즘 ③(재귀 이진 탐색)** |
+| `09_maze.tex` | `find_path(r,c)` | ✅(pseudocode 성격) | 아니오 |
+| `11_power_set.tex` | `power_set(k)` | ✅(C 스타일 pseudocode) | 아니오 |
+
+Hanoi(`08_hanoi.tex`)는 코드가 없다(다이어그램·점화식만) — CODE_INVENTORY 표와 일치. **대표
+알고리즘 ②(Hanoi)**는 C/Java/Python 모두 신규 작성 대상이다.
+
+## 4. 이번 세션의 3언어 대상 (사용자 지시 (5) — "대표" 알고리즘만)
+
+사용자 지시가 명시한 예시(factorial/sum, 하노이, 재귀 이진탐색)에 따라 아래 3개만 3언어
+파이프라인 검증 대상으로 삼는다. 나머지(factorial, power, string 계열, maze, blob, power set)는
+본문에서 개념·트레이스·복잡도로 다루되 코드 패널은 넣지 않는다(CONTENT_MODEL §3: "구현"은
+모든 페이지에 필수가 아님).
+
+| 알고리즘 | 소스 | 예제 입력/trace | 기대 결과 |
+|---|---|---|---|
+| Sum | `02_execution.tex` | $sum(4)$, 호출 스택 push/pop 그림과 일치 | $10$ |
+| Hanoi | `08_hanoi.tex` | $n=3$(그림과 일치), 이동 횟수 카운트 | $2^3-1=7$회 |
+| Recursive Binary Search | `07_recursive_thinking.tex` | $A=[2,5,8,12,16,23,38]$, $x=16$(그림과 일치) | index 4 |
+
+`factorial`은 `sum`과 동일한 선형 재귀 패턴이므로 본문에서 "같은 모양"으로만 언급하고 별도
+코드 패널은 만들지 않는다 — CODE_INVENTORY에 신규 대상으로 표시돼 있지만 이번 세션 범위 밖.
+
+## 5. content map(L02) 교정 항목 — 본문에 문서명 인용 없이 반영
+
+1. **Master Theorem은 표준 case 1·2·3 순서, 결과는 Θ로** — 원본 순서 오류 교정(§공통 규칙).
+2. **Hanoi 점화식·이동 횟수는 $2^n-1$**(원본의 `2n-1` 오기 교정), 출력 시 `%c`(문자) 포맷 사용
+   (원본 `%d` 오기 교정 — `print_binary`처럼 원소 값이 아니라 문자를 출력하는 함수와 혼동하지
+   않도록 주의).
+3. **Mergesort 예제의 midpoint는 `q=(p+r)/2`가 아니라 overflow-safe 형태**로 언급(L03과 표현
+   일관성 — L03 자체 수정은 범위 밖이므로 L02 본문에서만 정확히 씀).
+4. **Master Theorem Case 2 ↔ L03 Merge Sort 개념 다리**: 06_master_theorem.tex 예제 3이 이미
+   "Mergesort는 절반 정렬 2회와 선형 merge이므로 이 식을 따른다"고 명시한다. L02 본문에서 이
+   문장을 유지하고 "3장(정렬)의 Merge Sort"라는 이름으로 순방향 연결한다(L03은 이미
+   "(Master Theorem Case 2)"라고 역방향 연결해 두었으므로 방향이 서로 맞물린다). L03 자체는
+   수정하지 않는다(범위 밖).
+5. **Fibonacci 시간은 $\Theta(\varphi^n)$이 정확한 tight bound, $O(2^n)$은 느슨한 상한** — 두
+   표기를 구분해 쓴다(원본의 "깨진 증명" 제거 반영).
+6. **재귀 구현과 반복 구현의 시간·공간 trade-off**: tail recursion이 C/C++에서 보장되지 않음을
+   명시, "재귀 문법을 없앤다고 점근적 메모리 요구가 자동으로 사라지지 않는다"는 원문 강조를
+   보존.
+
+## 6. 퀴즈/Checkpoint 인벤토리
+
+| 위치 | 유형 | 문항 수 |
+|---|---|---|
+| `01_motivation.tex` §설계 체크리스트 | 자기점검형 | 5 |
+| `02_execution.tex` §호출 스택 Checkpoint | 참/거짓 | 3 |
+| `04_basic_examples.tex` §기본 예제 Checkpoint | 비교표 | 4행 |
+| `13_summary_quiz.tex` §재귀 설계 Checklist | 체크리스트 | 7 |
+| `13_summary_quiz.tex` §개념과 코드 추적 Quiz + 정답 | 서술형 | 7 |
+| `13_summary_quiz.tex` §점화식과 설계 Quiz + 정답 | 계산형 | 4 |
+
+## 7. 웹 페이지 구성 방향
+
+content map의 Part A–M 구조를 그대로 절 경계로 채택한다(이미 "의미 단위 재편집"이 되어 있어
+슬라이드 순서 복제가 아니다). CONTENT_MODEL의 알고리즘 템플릿(문제→아이디어→의사코드/코드→
+추적→정확성→복잡도→구현→흔한실수→Checkpoint→요약)은 Sum·Hanoi·Binary Search 세 절에
+적용하고, 나머지 절(Fibonacci·문자열·Maze·Blob·Power Set)은 트레이스·복잡도 중심으로 가볍게
+다룬다(구현 패널 없음). Master Theorem 절에서 L03 Merge Sort로의 개념 다리를 명시한다.
