@@ -4,7 +4,7 @@ description: "알고리즘과 프로그램을 구분하고, 의사코드로 Maxi
 lecture: 1
 order: 1
 slug: "01-introduction"
-status: "review"
+status: "verified"
 objectives:
   - "알고리즘, 프로그램, 의사코드를 구분한다."
   - "Maximum, Linear Search, Binary Search를 추적하고 설명한다."
