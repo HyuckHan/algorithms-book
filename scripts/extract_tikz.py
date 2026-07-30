@@ -185,11 +185,22 @@ FIGURE_CONFIG = {
         ("02_representation.tex", 0): {"slug": "02-matrix-direction"},
         ("02_representation.tex", 1): {"slug": "03-matrix-to-list", "mode": "sequence"},
         ("03_bfs.tex", 0): {"slug": "04-bfs-graph"},
-        ("03_bfs.tex", 1): {"slug": "05-bfs-queue-trace", "mode": "sequence"},
+        # These three are pure text-stack traces (no graph diagram sharing
+        # the canvas, unlike Prim/Dijkstra/Kruskal/back-edge, which embed
+        # their pq/callout boxes *alongside* a vertex diagram and are left
+        # alone) -- the shared common/graph_algorithms.tex `pq`/`callout`
+        # styles' inner sep (2mm/3mm) is generous enough that, with nothing
+        # else on the canvas to fill, 2-3 short single-line boxes stacked
+        # with the source's 1cm-unit vertical spacing render taller than
+        # their content needs. TIKZ_PATCH (see below, applied only to these
+        # three figures' own copy of the raw body, never to the read-only
+        # lecture-notes/ source or the shared style) tightens both the
+        # padding and the inter-box gap without touching any other figure.
+        ("03_bfs.tex", 1): {"slug": "05-bfs-queue-trace", "mode": "sequence", "patch": "trace_stack"},
         ("03_bfs.tex", 2): {"slug": "06-bfs-path-reconstruction"},
-        ("04_dfs.tex", 0): {"slug": "07-dfs-recursion-trace", "mode": "sequence"},
+        ("04_dfs.tex", 0): {"slug": "07-dfs-recursion-trace", "mode": "sequence", "patch": "trace_stack"},
         ("05_cycle_detection.tex", 0): {"slug": "08-back-edge-animation", "mode": "sequence"},
-        ("06_topological_sort.tex", 0): {"slug": "09-kahn-trace", "mode": "sequence"},
+        ("06_topological_sort.tex", 0): {"slug": "09-kahn-trace", "mode": "sequence", "patch": "trace_stack"},
         ("06_topological_sort.tex", 1): {"slug": "10-kahn-cycle-detection"},
         ("06_topological_sort.tex", 2): {"slug": "11-dfs-topo-finish-reverse", "mode": "sequence"},
         ("08_cut_property.tex", 0): {"slug": "12-cut-crossing-edge"},
@@ -205,6 +216,42 @@ FIGURE_CONFIG = {
         ("15_bellman_ford.tex", 0): {"slug": "22-bellman-ford-negative-cycle", "mode": "sequence"},
     },
 }
+
+# Named per-figure TikZ patches (FIGURE_CONFIG's "patch" key), applied to a
+# figure's own raw tikzpicture body -- a build-time text transform on our own
+# copy, never an edit to the read-only lecture-notes/ source or to the
+# shared common/graph_algorithms.tex tikzset (which would also reshape the
+# same styles used by Prim/Dijkstra/Kruskal/Bellman-Ford's diagram-embedded
+# pq/callout boxes -- see the "08" FIGURE_CONFIG comment above). Each entry
+# is (options-to-merge-into-the-tikzpicture-header, tikzset-override-to-
+# insert-right-after-it).
+TIKZ_PATCHES = {
+    # yscale tightens the 1cm-unit vertical gap the source hardcodes between
+    # the 2-3 stacked state-text nodes; .append style shrinks just `inner
+    # sep`/`font` on top of the existing pq/callout definitions (draw color,
+    # fill, rounded corners, border weight all carry over unchanged).
+    "trace_stack": (
+        "yscale=0.62",
+        "\\tikzset{pq/.append style={inner sep=0.8mm,font=\\footnotesize},"
+        "callout/.append style={inner sep=0.8mm,font=\\footnotesize}}",
+    ),
+}
+TIKZPICTURE_OPEN_RE = re.compile(r"\\begin\{tikzpicture\}(\[[^\]]*\])?")
+
+
+def apply_tikz_patch(raw, patch_name):
+    """Merge TIKZ_PATCHES[patch_name]'s options into the body's own
+    `\\begin{tikzpicture}[...]` header (preserving any options already
+    there, e.g. an `x=`/`y=` the figure sets itself) and insert its
+    style-override `\\tikzset{...}` immediately after."""
+    options, style_override = TIKZ_PATCHES[patch_name]
+
+    def repl(m):
+        existing = m.group(1)
+        merged = "[%s,%s]" % (existing[1:-1], options) if existing else "[%s]" % options
+        return "\\begin{tikzpicture}%s\n%s" % (merged, style_override)
+
+    return TIKZPICTURE_OPEN_RE.sub(repl, raw, count=1)
 
 
 def find_brace_block(text, open_pos):
@@ -547,6 +594,9 @@ def process_lecture(lecture, check_only, keep_build):
             cfg = config.get(key, {})
             slug = cfg.get("slug", "%s-%d" % (section_path.stem, idx))
             mode = cfg.get("mode", "flatten")
+            patch_name = cfg.get("patch")
+            if patch_name:
+                raw = apply_tikz_patch(raw, patch_name)
 
             steps = overlay_steps(raw)
             if mode == "sequence" and steps:

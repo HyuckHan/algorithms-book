@@ -185,31 +185,31 @@ $$
 ::: {.panel-tabset}
 ## 1단계
 
-![start 0. Queue: 0.](../figures/08-graphs/05-bfs-queue-trace-step1.svg){fig-alt="큐에 0만 있고 아직 아무것도 처리되지 않은 상태" width="80%"}
+![start 0. Queue: 0.](../figures/08-graphs/05-bfs-queue-trace-step1.svg){fig-alt="큐에 0만 있고 아직 아무것도 처리되지 않은 상태" width="22%"}
 
 ## 2단계
 
-![dequeue 0; discover 1,2,3. Queue: 1,2,3. Output: 0.](../figures/08-graphs/05-bfs-queue-trace-step2.svg){fig-alt="0이 dequeue되고 1,2,3이 큐에 들어간 상태" width="80%"}
+![dequeue 0; discover 1,2,3. Queue: 1,2,3. Output: 0.](../figures/08-graphs/05-bfs-queue-trace-step2.svg){fig-alt="0이 dequeue되고 1,2,3이 큐에 들어간 상태" width="22%"}
 
 ## 3단계
 
-![dequeue 1; discover 4. Queue: 2,3,4. Output: 0,1.](../figures/08-graphs/05-bfs-queue-trace-step3.svg){fig-alt="1이 dequeue되고 4가 큐에 들어간 상태" width="80%"}
+![dequeue 1; discover 4. Queue: 2,3,4. Output: 0,1.](../figures/08-graphs/05-bfs-queue-trace-step3.svg){fig-alt="1이 dequeue되고 4가 큐에 들어간 상태" width="22%"}
 
 ## 4단계
 
-![dequeue 2; discover 5. Queue: 3,4,5. Output: 0,1,2.](../figures/08-graphs/05-bfs-queue-trace-step4.svg){fig-alt="2가 dequeue되고 5가 큐에 들어간 상태" width="80%"}
+![dequeue 2; discover 5. Queue: 3,4,5. Output: 0,1,2.](../figures/08-graphs/05-bfs-queue-trace-step4.svg){fig-alt="2가 dequeue되고 5가 큐에 들어간 상태" width="22%"}
 
 ## 5단계
 
-![dequeue 3; discover 6. Queue: 4,5,6. Output: 0,1,2,3.](../figures/08-graphs/05-bfs-queue-trace-step5.svg){fig-alt="3이 dequeue되고 6이 큐에 들어간 상태" width="80%"}
+![dequeue 3; discover 6. Queue: 4,5,6. Output: 0,1,2,3.](../figures/08-graphs/05-bfs-queue-trace-step5.svg){fig-alt="3이 dequeue되고 6이 큐에 들어간 상태" width="22%"}
 
 ## 6단계
 
-![process 4,5,6; discover 7. Queue: 7. Output: 0,1,2,3,4,5,6.](../figures/08-graphs/05-bfs-queue-trace-step6.svg){fig-alt="4,5,6이 순서대로 처리되고 7이 큐에 들어간 상태" width="80%"}
+![process 4,5,6; discover 7. Queue: 7. Output: 0,1,2,3,4,5,6.](../figures/08-graphs/05-bfs-queue-trace-step6.svg){fig-alt="4,5,6이 순서대로 처리되고 7이 큐에 들어간 상태" width="22%"}
 
 ## 7단계
 
-![dequeue 7; discover none. Queue: empty. Output: 0,1,2,3,4,5,6,7.](../figures/08-graphs/05-bfs-queue-trace-step7.svg){fig-alt="7까지 모두 처리되어 큐가 빈 최종 상태" width="80%"}
+![dequeue 7; discover none. Queue: empty. Output: 0,1,2,3,4,5,6,7.](../figures/08-graphs/05-bfs-queue-trace-step7.svg){fig-alt="7까지 모두 처리되어 큐가 빈 최종 상태" width="22%"}
 :::
 
 $$
@@ -295,27 +295,27 @@ BFS와 같은 오름차순).
 ::: {.panel-tabset}
 ## 1단계
 
-![discover 0. Stack: 0.](../figures/08-graphs/07-dfs-recursion-trace-step1.svg){fig-alt="0만 discover되어 스택에 있는 상태" width="80%"}
+![discover 0. Stack: 0.](../figures/08-graphs/07-dfs-recursion-trace-step1.svg){fig-alt="0만 discover되어 스택에 있는 상태" width="22%"}
 
 ## 2단계
 
-![discover 1, then 4. Stack: 0,1,4.](../figures/08-graphs/07-dfs-recursion-trace-step2.svg){fig-alt="1과 4가 순서대로 discover되어 스택에 쌓인 상태" width="80%"}
+![discover 1, then 4. Stack: 0,1,4.](../figures/08-graphs/07-dfs-recursion-trace-step2.svg){fig-alt="1과 4가 순서대로 discover되어 스택에 쌓인 상태" width="22%"}
 
 ## 3단계
 
-![finish 5, then 2. Discovery: 0,1,4,2,5.](../figures/08-graphs/07-dfs-recursion-trace-step3.svg){fig-alt="5와 2가 finish되어 스택에서 제거된 상태" width="80%"}
+![finish 5, then 2. Discovery: 0,1,4,2,5.](../figures/08-graphs/07-dfs-recursion-trace-step3.svg){fig-alt="5와 2가 finish되어 스택에서 제거된 상태" width="22%"}
 
 ## 4단계
 
-![finish 3, then 6. Discovery: 0,1,4,2,5,7,6,3.](../figures/08-graphs/07-dfs-recursion-trace-step4.svg){fig-alt="3과 6이 finish된 상태" width="80%"}
+![finish 3, then 6. Discovery: 0,1,4,2,5,7,6,3.](../figures/08-graphs/07-dfs-recursion-trace-step4.svg){fig-alt="3과 6이 finish된 상태" width="22%"}
 
 ## 5단계
 
-![finish 7, then 4. Stack: 0,1.](../figures/08-graphs/07-dfs-recursion-trace-step5.svg){fig-alt="7과 4가 finish되어 스택이 0,1만 남은 상태" width="80%"}
+![finish 7, then 4. Stack: 0,1.](../figures/08-graphs/07-dfs-recursion-trace-step5.svg){fig-alt="7과 4가 finish되어 스택이 0,1만 남은 상태" width="22%"}
 
 ## 6단계
 
-![finish 1, then 0. Stack: empty.](../figures/08-graphs/07-dfs-recursion-trace-step6.svg){fig-alt="1과 0이 finish되어 스택이 빈 최종 상태" width="80%"}
+![finish 1, then 0. Stack: empty.](../figures/08-graphs/07-dfs-recursion-trace-step6.svg){fig-alt="1과 0이 finish되어 스택이 빈 최종 상태" width="22%"}
 :::
 
 $$
@@ -475,27 +475,27 @@ $O(E+V\log V)$). "random node"가 아니라 현재 zero-indegree container에서
 ::: {.panel-tabset}
 ## 1단계
 
-![Zero heap: [0]. Select: --. Output: [].](../figures/08-graphs/09-kahn-trace-step1.svg){fig-alt="zero-indegree heap에 0만 있는 초기 상태" width="80%"}
+![Zero heap: [0]. Select: --. Output: [].](../figures/08-graphs/09-kahn-trace-step1.svg){fig-alt="zero-indegree heap에 0만 있는 초기 상태" width="22%"}
 
 ## 2단계
 
-![Zero heap: [1,3]. Select: 0. Output: [0].](../figures/08-graphs/09-kahn-trace-step2.svg){fig-alt="0이 선택되고 1,3이 heap에 들어간 상태" width="80%"}
+![Zero heap: [1,3]. Select: 0. Output: [0].](../figures/08-graphs/09-kahn-trace-step2.svg){fig-alt="0이 선택되고 1,3이 heap에 들어간 상태" width="22%"}
 
 ## 3단계
 
-![Zero heap: [2,3,4]. Select: 1. Output: [0,1].](../figures/08-graphs/09-kahn-trace-step3.svg){fig-alt="1이 선택되고 2,4가 heap에 추가된 상태" width="80%"}
+![Zero heap: [2,3,4]. Select: 1. Output: [0,1].](../figures/08-graphs/09-kahn-trace-step3.svg){fig-alt="1이 선택되고 2,4가 heap에 추가된 상태" width="22%"}
 
 ## 4단계
 
-![Zero heap: [3,4]. Select: 2. Output: [0,1,2].](../figures/08-graphs/09-kahn-trace-step4.svg){fig-alt="2가 선택된 상태" width="80%"}
+![Zero heap: [3,4]. Select: 2. Output: [0,1,2].](../figures/08-graphs/09-kahn-trace-step4.svg){fig-alt="2가 선택된 상태" width="22%"}
 
 ## 5단계
 
-![Zero heap: [4]. Select: 3. Output: [0,1,2,3].](../figures/08-graphs/09-kahn-trace-step5.svg){fig-alt="3이 선택된 상태" width="80%"}
+![Zero heap: [4]. Select: 3. Output: [0,1,2,3].](../figures/08-graphs/09-kahn-trace-step5.svg){fig-alt="3이 선택된 상태" width="22%"}
 
 ## 6단계
 
-![Zero heap: [5]→[]. Select: 4 then 5. Output: [0,1,2,3,4,5].](../figures/08-graphs/09-kahn-trace-step6.svg){fig-alt="4와 5가 차례로 선택되어 heap이 빈 최종 상태" width="80%"}
+![Zero heap: [5]→[]. Select: 4 then 5. Output: [0,1,2,3,4,5].](../figures/08-graphs/09-kahn-trace-step6.svg){fig-alt="4와 5가 차례로 선택되어 heap이 빈 최종 상태" width="22%"}
 :::
 
 **Cycle Detection**: zero-indegree container가 비고 처리된 개수가 $|V|$보다 작으면 directed
