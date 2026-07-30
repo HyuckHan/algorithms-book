@@ -4,7 +4,7 @@ description: "정렬 없이 k번째로 작은 원소를 찾는다 — Quickselec
 lecture: 4
 order: 4
 slug: "04-selection"
-status: "review"
+status: "verified"
 objectives:
   - "Selection 문제를 rank(순서통계량)로 명세하고 정렬 기반 baseline과 비교한다."
   - "Quickselect가 partition 뒤 한쪽만 재귀하는 이유와, 정렬 장의 Lomuto partition을 그대로 재사용하는 지점을 설명한다."

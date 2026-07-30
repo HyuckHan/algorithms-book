@@ -4,7 +4,7 @@ description: "그래프 표현부터 BFS/DFS, 위상 정렬, 최소 신장 트�
 lecture: 8
 order: 5
 slug: "08-graphs"
-status: "review"
+status: "verified"
 objectives:
   - "$G=(V,E)$와 그래프 종류·용어를 정확히 정의하고, matrix/list 표현을 만들고 비용을 표현과 함께 말한다."
   - "BFS/DFS의 queue, stack, parent, distance, time을 추적하고 위상 정렬(Kahn/DFS)을 수행한다."
