@@ -78,6 +78,7 @@ LECTURE_CHAPTER = {
     "03": {"lecture_notes_dir": "lecture03", "chapter_html": "chapters/03-sorting.html"},
     "04": {"lecture_notes_dir": "lecture04", "chapter_html": "chapters/04-selection.html"},
     "05": {"lecture_notes_dir": "lecture05", "chapter_html": "chapters/05-dynamic-programming.html"},
+    "06": {"lecture_notes_dir": "lecture06", "chapter_html": "chapters/06-search-trees.html"},
     "08": {"lecture_notes_dir": "lecture08", "chapter_html": "chapters/08-graphs.html"},
 }
 
@@ -131,6 +132,31 @@ ALGO_IDENTIFIERS = {
         "deterministic-select": [
             "deterministic_select", "deterministicSelect", "DeterministicSelect",
             "select_range", "selectRange",
+        ],
+    },
+    # L06's five sections each get a whole Part (H2) to themselves (see
+    # SECTION_ID below). "inorder"/"contains"/"height" are deliberately
+    # excluded -- every one of the five tree types legitimately implements
+    # its own inorder traversal and contains/height helper, so listing them
+    # here would false-positive as "contamination" between every pair of
+    # sections. "rotate_left"/"rotate_right" are similarly excluded: AVL and
+    # Red-Black both have their own rotation helper by that name.
+    # "transplant"/"Transplant" is excluded too: BST's delete and
+    # Red-Black's delete each carry their own independent transplant-style
+    # helper (matching how CLRS's own RB-DELETE reuses the TRANSPLANT
+    # concept by name) -- parallel structure, not cross-algorithm
+    # contamination, confirmed by an actual gate-4 false-positive during
+    # this lecture's QA pass.
+    "06": {
+        "binary-tree": ["BinaryTree", "preorder", "postorder", "levelorder", "levelOrder", "level_order"],
+        "binary-search-tree": ["BinarySearchTree", "successor", "predecessor"],
+        "avl-tree": ["AVLTree", "rebalance", "avl_insert"],
+        "red-black-tree": [
+            "RedBlackTree", "insertFixup", "insert_fixup", "deleteFixup", "delete_fixup",
+        ],
+        "btree": [
+            "BTree", "splitChild", "split_child", "borrowPrev", "borrow_prev",
+            "borrowNext", "borrow_next",
         ],
     },
     # L05's four representative algorithms each get their own H3 subsection,
@@ -241,6 +267,17 @@ SECTION_ID = {
         "matrix-path": "matrix-minimum-path-sum",
         "lcs": "longest-common-subsequence-lcs",
         "max-subarray": "maximum-subarray-kadanes-algorithm",
+    },
+    # Confirmed against the actually-rendered _book/chapters/06-search-trees.html
+    # section ids -- each of the five representative algorithms gets a whole
+    # H2 Part to itself (matching L02/L04's whole-Part pattern), so the id is
+    # that Part's own id, not a nested per-algorithm H3.
+    "06": {
+        "binary-tree": "part-c.-traversal",
+        "binary-search-tree": "part-g.-bst-insert와-delete",
+        "avl-tree": "part-i.-avl-tree",
+        "red-black-tree": "part-j.-red-black-tree",
+        "btree": "part-k.-b-tree",
     },
     # Confirmed against the actually-rendered _book/chapters/08-graphs.html
     # H2/H3 ids, not guessed from the .qmd headings.

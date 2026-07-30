@@ -68,6 +68,12 @@ const SECTION_CHECKS = [
   // actually-rendered chapter, not guessed from the .qmd headings).
   "tabulation-bottom-up", "matrix-minimum-path-sum",
   "longest-common-subsequence-lcs", "maximum-subarray-kadanes-algorithm",
+  // L06's five representative algorithms each get a whole H2 Part to
+  // themselves (see qa_check.py's SECTION_ID mapping -- ids confirmed
+  // against the actually-rendered chapter, not guessed from the .qmd
+  // headings).
+  "part-c.-traversal", "part-g.-bst-insert와-delete", "part-i.-avl-tree",
+  "part-j.-red-black-tree", "part-k.-b-tree",
   // L08's 12 algorithm slugs collapse into 6 sections (see qa_check.py's
   // SECTION_ID mapping -- ids confirmed against the actually-rendered
   // chapter, not guessed from the .qmd headings).
