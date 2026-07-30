@@ -1,0 +1,150 @@
+# Lecture 07 — Step 0 Inventory (정체 확정)
+
+작성 목적: 변환 착수 전 이 강의의 실제 정체·범위·기존 자산을 확정해 이후 파이프라인 작업의
+기준으로 삼는다. `lecture-notes/`는 read-only이며 아래는 전부 열람 결과 요약이다.
+
+## (a) 주제 확정
+
+**Hash Table (해시 테이블)** — 아래 네 개의 독립 출처가 모두 일치하며 상충 신호 없음:
+
+- `docs/PER_LECTURE_NOTES.md` L07 항목: prime 규칙 교정, open addressing 공간 오해 교정,
+  chaining/open addressing, deletion marker, resizing amortized, expected vs worst 구분,
+  hash flooding.
+- `docs/MIGRATION_STRATEGY.md`: 우선순위 L03→L01→L02→L05→L08→L04→L06→**L07**→L09→L10,
+  내용 요약 동일.
+- `docs/CODE_INVENTORY.md` Lecture 07 절: ChainedSearch/HashSearch/HashPut/HashDelete 표.
+- `lecture-notes/docs/lecture07_content_map.md` 제목: "Lecture 7 Content Map — Hash Tables",
+  17개 Part(A–Q) 전체가 hashing 모델·해시 함수·collision·chaining·open addressing(선형/제곱/
+  이중 해시)·삭제·load factor·resize·구현·검색 트리와의 비교로 구성.
+- 원본 `lecture-notes/lecture07/sections/*.tex` 17개 파일을 전부 열람해 확인 — 문자열/정수
+  알고리즘이 아니라 명백히 hash table 전용 강의.
+
+**연결점 검증**: L06(탐색 트리) 챕터가 예고한 "hash table 추후"는 L07 원본 자체의 Part A
+("Lecture 6에서 이어지는 구조 선택" 표, `01_motivation.tex` 30–41행)에 이미 `hash table` 행이
+포함되어 있어 자연스럽게 회수된다 — expected Θ(1), order 없음, Θ(n) worst, CPU/memory cost
+model 문구가 원본에 그대로 존재. L08의 "heap/DP 다리", "10장 A*" 언급은 L08→L10 방향 예고이며
+L07의 책임 범위가 아님(확인만 하고 추가 조치 불필요).
+
+## (b) 다루는 알고리즘/개념 목록 (Part A–Q, 섹션 파일과 1:1 대응)
+
+원본 LaTeX `\section{}`은 5회만 등장(A/B/C/D/E로 라벨링되어 있으나 내용상 content map의
+Q까지 17개 Part와 어긋남 — L06과 동일한 패턴)이므로 **content map의 A–Q 레터링을 웹 Part
+구조의 기준으로 삼는다** (`\section`/`\subsection` 경계 아님).
+
+| Part | 제목 | 섹션 파일 | 핵심 내용 |
+|---|---|---|---|
+| A | 왜 Hash Table인가 | 01_motivation | exact-match vs ordered workload, L06 구조비교 표에 hash 행 추가 |
+| B | Hashing의 기본 모델 | 02_hashing_model | U/K/m/h, key→hash code→compression→bucket 파이프라인, direct addressing |
+| C | Hash Function 설계 | 03_hash_functions | deterministic/fast/uniform 조건, simple uniform hashing 가정, avg/expected/amortized/worst 구분 |
+| D | Integer와 String Hashing | 04_string_hashing | division `k mod m`, multiplication method, **Horner 다항식 문자열 해시(StringHash pseudocode)** |
+| E | Collision은 왜 생기는가 | 05_collision | pigeonhole principle, collision/probability/duplicate 구분, 4개 resolution 개요표 |
+| F | Separate Chaining | 06_chaining | ChainedSearch/ChainedPut pseudocode, chain 자료구조 선택, Θ(1+α) 분석 |
+| G | Open Addressing | 07_open_addressing | probe contract, EMPTY/OCCUPIED/DELETED 3-state, HashSearch/HashPut 공통 pseudocode |
+| H | Linear Probing | 08_linear_probing | `h(k,i)=(h'(k)+i) mod m`, 10-key trace, primary clustering, PGFPlots expected-probe 곡선 |
+| I | Quadratic Probing | 09_quadratic_probing | `h'+c1·i+c2·i²`, coverage 비보장 예시, secondary clustering |
+| J | Double Hashing | 10_double_hashing | `h1+i·h2`, gcd(h2,m)=1 조건, step-capacity 비서로소 실패 사례 |
+| K | 삭제 | 11_deletion | 잘못된 EMPTY 삭제 vs tombstone, HashDelete pseudocode, 두 종류 load factor |
+| L | Load Factor와 Expected Cost | 12_load_factor | α 정의, resize 유무별 expected/amortized/worst 표 |
+| M | Resize/Rehashing/Amortized | 13_rehashing | resize 절차, rehash 애니메이션, `1+2+…+n<2n`, capacity growth policy |
+| N | 구현과 API Contract | 14_implementation | Map API 정책, Java equals/hashCode contract, **mutable key failure**, C ownership |
+| O | Search Tree와 비교 | 15_comparison | BST/AVL/RB/B-Tree/hash 종합 비교, workload별 구조 선택 |
+| P | Summary와 Quiz | 16_summary_quiz | 3세트 퀴즈+정답 |
+| Q | Appendix | 17_appendix | incremental rehashing 미리보기, probe formula 주석, hash flooding 보안, code validation checklist |
+
+**의사코드 블록 (총 6개, 병합 불필요 — 전부 개별 완결된 `\Procedure`)**:
+1. `StringHash` (04) — Horner's rule
+2. `ChainedSearch` (06)
+3. `ChainedPut` (06) — `ChainedSearch`를 호출(둘 다 완결된 절차이므로 B-Tree 패턴처럼 억지 병합
+   불필요, 관계는 본문 설명으로 연결)
+4. `HashSearch` (07)
+5. `HashPut` (07)
+6. `HashDelete` (11)
+
+**중요 발견 — L05 버그 패턴이 이 강의에 5곳 모두 존재**: `StringHash`의
+`\Call{Code}{c}`, `ChainedPut`의 `\Call{ChainedSearch}{T,key}`, `HashSearch`/`HashPut`의
+`\Call{Probe}{key,i}`, `HashDelete`의 `\Call{FindSlot}{T,key}` — **다섯 곳 전부 `$...$` 수식
+모드 안에 위치**한 원본 그대로다. 기존 `hoist_call_out_of_math()`가 처리해야 하며, 이 강의는
+그 정규화 로직을 가장 많이 exercise하는 사례가 된다. qa_check.py의 raw-`\Call` 누출 게이트로
+반드시 재확인.
+
+**B-Tree식 "독립 서브루틴, 강제 병합 금지" 패턴 적용 대상**: `HashPut`/`HashSearch`가 부르는
+`Probe(key,i)`는 별도 `\Procedure`로 정의되지 않고 (linear/quadratic/double 세 방식으로 각각
+별도 프레임에서 수식으로만 제시), `HashDelete`가 부르는 `FindSlot`도 `HashSearch`의 순회 로직과
+동일하되 formal 정의가 없음 — 병합 대상이 아니라 **본문 설명으로 관계를 짚는** 대상.
+
+## (c) code/lecture07/ 언어별 구현 현황 (CODE_INVENTORY.md 대비 확인 결과)
+
+| 알고리즘 | C | Java | Python |
+|---|---|---|---|
+| StringHash(Horner 다항식) | ❌ 없음 — 신규 필요 | ❌ 없음(HashMap 내부에 묻힘) — 신규 필요 | ❌ 신규 |
+| ChainedHashTable(Search/Put/Remove) | ✅ `chained_hash_table.c` (정수 키, fuzz-tested) | ✅ `ChainedHashMap.java` (제네릭, fuzz-tested against `java.util.HashMap`) | ❌ 신규 |
+| OpenAddressHashTable(Search/Put/Delete, linear probing) | ✅ `open_address_hash_table.c` (tombstone 포함, fuzz-tested) | ✅ `OpenAddressHashMap.java` (tombstone, power-of-two capacity, fuzz-tested) | ❌ 신규 |
+| HashDelete(tombstone) | ✅ `open_remove()` — CODE_INVENTORY.md의 "확인 필요"는 **존재로 확정** | ✅ `OpenAddressHashMap.remove()` | ❌ 신규(위 항목에 포함) |
+| Mutable key 실패 사례 | 해당 없음(정수 키라 재현 불필요) | ✅ `MutableKeyExample.java` | 참고만(Python dict는 해시 가능 타입만 키 허용이라 동일 실패를 재현하려면 커스텀 `__hash__`/`__eq__` 클래스 필요 — 신규 시 작성) |
+| 검증/트레이스 재현 | fuzz test 내장(assert) | `HashTableExamplesTest.java`가 강의 원본의 정확한 수치(선형 삽입 순서 12/0/3/2/7/4/5/8/1/6, 제곱 탐사 4/5/8, 이중 해시 5경로, 삭제 예제, rehash 예제, probe formula)를 **정적으로 재검증** | 신규 시 동일 수치 테스트 이식 권장 |
+| Quadratic/Double probing 전용 Map 구현 | 없음(원본도 없음) | 없음(원본도 없음, `HashTableExamplesTest`가 정적 배열로만 검증) | 불필요 — pseudocode+트레이스+그림으로 설명, linear probing만 동작하는 Map으로 구현(원본 설계와 동일 범위) |
+
+**Python 신규 작성 범위**: (1) `string_hash.py`(Horner), (2) `chained_hash_table.py`,
+(3) `open_address_hash_table.py`(linear probing + tombstone) — C/Java와 동일한 알고리즘·예제
+입력으로 작성하고 실제 실행 결과를 캡처한다. Quadratic/Double hashing은 원본도 별도 Map 구현이
+없으므로(수식+트레이스로만 다룸) Python도 별도 자료구조를 새로 만들지 않는다.
+
+## (d) 콘텐츠 맵 교정 사항 (보존해야 할 것)
+
+- "무조건 평균 O(1)" 표현 금지 — 항상 "resize 없는 한 suitable hashing/controlled load 아래
+  expected Θ(1)", "resize 포함 PUT은 amortized expected Θ(1)"로 조건을 명시.
+- "값이 저장 자리를 결정한다" 표현 금지 — "key의 hash value가 후보 bucket을 정하고 collision
+  정책이 실제 위치를 정한다"로 교정(이미 원본 반영됨, 그대로 유지).
+- prime 관련 표현: division method에서 prime modulus는 "절대 규칙 아님, 패턴 회피에 유용할 수
+  있음" 수준으로 서술(원본 반영됨).
+- open addressing "추가 공간 없음" 오해 교정: linked node는 피하지만 empty capacity slack과
+  EMPTY/DELETED metadata가 필요함을 명시(원본에 반영됨).
+- EMPTY vs DELETED 구분을 끝까지 유지 — 두 종류 load factor(logical/probing) 구분.
+- **PGFPlots 주의**: `08_linear_probing.tex`의 expected-probe 그래프는 "고전적 linear-probing
+  공식을 직접 plot한 것"이며 **arbitrary open addressing의 general uniform-hashing bound와
+  다르다** — 캡션에 이 구분을 반드시 명시(원본 alertblock 그대로 옮길 것).
+- Java equals/hashCode contract, mutable key 위험은 원본 그대로 강조.
+- Hash flooding(보안 관점) 섹션은 Appendix(Q)에 있지만 요약(P)이나 본문에서 가볍게라도
+  언급할 가치가 있는지 저작 단계에서 판단.
+
+## (e) TikZ/pgfplots/매크로 인벤토리 (extract_tikz.py 확장 필요 항목)
+
+`lecture-notes/common/hash_tables.tex` 확인 결과, **매크로 정의 자체에 `\begin{tikzpicture}`를
+포함하는** 것이 2개 있음 — L06의 `\travtree`와 동일한 `MACRO_PICTURES` 패턴 필요:
+
+- `\htrowthirteen{13개 콤마 리스트}` (arity 1) — 13-슬롯 해시 테이블 한 줄을 그리는 매크로.
+  `05_collision`, `08_linear_probing`, `11_deletion`에서 다회 호출.
+- `\loadgauge{비율}{라벨1}{라벨2}` (arity 3) — load factor 게이지 바. `12_load_factor`에서 사용.
+- `\htlegend` (arity 0, 인자 없음) — EMPTY/DELETED/OCCUPIED 범례. 여러 개의 인라인 `\tikz`(각각
+  `\begin{tikzpicture}`가 아닌 `\tikz[...]node{...}` 축약형)로 구성된 작은 장식용 조각 3개의
+  나열이며, 뒤따르는 `\begin{description}` 텍스트와 내용이 중복됨 — 별도 SVG 추출보다 본문의
+  색상 범례 설명으로 대체하는 편이 나을 수 있음(저작 단계에서 결정, 억지로 매크로 기능
+  확장하지 않음).
+
+**표준 `\only<N>{...}` 스텝 시퀀스** (기존 스텝-SVG 메커니즘으로 처리 가능, 새 메커니즘 불필요):
+Part E(collision, 3단계), F(chaining insert 3단계 + search/delete 4단계), H(linear trace I·II
+각 3단계, primary clustering 3단계), I(quadratic trace 3단계), J(double hash 4단계), K(잘못된
+삭제 5단계, 올바른 삭제 4단계), M(rehash 애니메이션 — `\only<2-3>`로 겹치는 범위와 `\only<3>`
+추가 레이어가 함께 있는 4단계 복합 오버레이, L06/L08에서 이미 쓰인 범위-오버레이 합성 로직으로
+처리 가능).
+
+**`\alt<N|handout:M>{style}{style}` 노드 스타일 오버레이** (L06에서 이미 `ALT_HEAD_RE` 확장으로
+지원): `04_string_hashing.tex`의 multiplication trace 프레임에서 4회 사용 — 새 메커니즘 불필요,
+기존 지원으로 충분히 커버.
+
+**PGFPlots axis**: `08_linear_probing.tex`에 1개(load factor vs expected probes, 두 개 곡선).
+기존 axis 지원 로직 재사용, `FIGURE_CONFIG["07"]`만 추가하면 됨.
+
+**베타 정적 다이어그램(오버레이 없음)**: pipeline diagram(02), distribution bar chart(03),
+resize cost sequence bar chart(13), 각종 pigeonhole/clustering 개념도 — 특별 처리 불필요.
+
+## (f) `_quarto.yml` 위치
+
+원본 lecture 번호가 그대로 06 다음, 08(그래프) 이전이며 L06의 forward-reference도 이를
+뒷받침 → **`chapters/06-search-trees.qmd`와 `chapters/08-graphs.qmd` 사이**에 삽입한다.
+파일명은 기존 명명 규칙(`NN-주제.qmd`)을 따라 `chapters/07-hash-tables.qmd`, 코드/그림
+디렉터리는 `code/07-hash-tables/`, `figures/07-hash-tables/`로 명명한다.
+
+## 결론
+
+Step 0 확정: **Lecture 07 = Hash Tables**, 상충 신호 없음. 변환 단계로 진행한다.
