@@ -2,6 +2,10 @@
         if (n < 0 || n > 92) throw new IllegalArgumentException("n must be 0..92");
         if (n <= 1) return n;
         long prev2 = 0, prev1 = 1;
-        for (int i = 2; i <= n; i++) { long cur = Math.addExact(prev2, prev1); prev2 = prev1; prev1 = cur; }
+        for (int i = 2; i <= n; i++) {
+            long current = Math.addExact(prev2, prev1);
+            prev2 = prev1;
+            prev1 = current;
+        }
         return prev1;
     }

@@ -20,8 +20,16 @@ public final class MaximumSubarray {
     }
     // snippet:max-subarray-brute-force:end
 
-    private static int len(Result r){return r.end()-r.start()+1;}
-    private static boolean better(Result a,Result b){return a.sum()>b.sum()||(a.sum()==b.sum()&&(len(a)<len(b)||(len(a)==len(b)&&a.start()<b.start())));}
+    private static int length(Result r) {
+        return r.end() - r.start() + 1;
+    }
+
+    private static boolean better(Result a, Result b) {
+        if (a.sum() != b.sum()) return a.sum() > b.sum();
+        int aLen = length(a), bLen = length(b);
+        if (aLen != bLen) return aLen < bLen;
+        return a.start() < b.start();
+    }
 
     // bestEndingAt[i]/bestOverall (Kadane), matching the DP-template state
     // split. Reused verbatim from
@@ -29,10 +37,16 @@ public final class MaximumSubarray {
     // renamed to match this chapter's section heading. Nonempty, 0-based
     // inclusive interval. Theta(n) time, Theta(1) space.
     // snippet:max-subarray-kadane:start
-    public static Result maxSubarrayKadane(long[] a){
-        if(a==null||a.length==0)throw new IllegalArgumentException();
-        Result ending=new Result(a[0],0,0),best=ending;
-        for(int i=1;i<a.length;i++){Result extend=new Result(Math.addExact(ending.sum(),a[i]),ending.start(),i),restart=new Result(a[i],i,i);ending=better(restart,extend)?restart:extend;if(better(ending,best))best=ending;}
+    public static Result maxSubarrayKadane(long[] a) {
+        if (a == null || a.length == 0) throw new IllegalArgumentException();
+        Result ending = new Result(a[0], 0, 0);
+        Result best = ending;
+        for (int i = 1; i < a.length; i++) {
+            Result extend = new Result(Math.addExact(ending.sum(), a[i]), ending.start(), i);
+            Result restart = new Result(a[i], i, i);
+            ending = better(restart, extend) ? restart : extend;
+            if (better(ending, best)) best = ending;
+        }
         return best;
     }
     // snippet:max-subarray-kadane:end
