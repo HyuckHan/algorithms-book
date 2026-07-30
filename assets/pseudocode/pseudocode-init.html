@@ -63,6 +63,39 @@
     document.head.appendChild(script);
   };
 
+  // pseudocode.js renders each `$...$` math span by calling the *synchronous*
+  // `MathJax.tex2chtml()` in one uncaught forEach over every
+  // `<pre class="pseudocode">` on the page (see the vendored
+  // assets/pseudocode/pseudocode.js, the "math" case in its Renderer). That
+  // synchronous call throws ("MathJax retry -- an asynchronous action is
+  // required; try using one of the promise-based functions and await its
+  // resolution") whenever it needs to lazy-load font/macro data it hasn't
+  // loaded yet -- and since one throw aborts the whole forEach, every block
+  // *after* the first one needing new font data is left unrendered. This
+  // didn't surface on L01/L03 (fewer, simpler math spans already covered by
+  // whatever the page's own prose had already warmed up) but does on L05,
+  // whose 9 pseudocode blocks are dense with $dp[i][j]$-style bracket/
+  // subscript math not used elsewhere on the page. Fix: warm up every
+  // distinct `$...$` span via the *promise*-based `tex2chtmlPromise` (which
+  // can await the async font load properly) before pseudocode.js's own
+  // synchronous pass runs, so that pass hits no cache miss and never throws.
+  var warmUpMathJaxFonts = function () {
+    if (!(window.MathJax && MathJax.tex2chtmlPromise)) return Promise.resolve();
+    var mathSpans = new Set();
+    document.querySelectorAll("pre.pseudocode").forEach(function (pre) {
+      var re = /\$([^$]*)\$/g;
+      var m;
+      while ((m = re.exec(pre.textContent)) !== null) {
+        if (m[1]) mathSpans.add(m[1]);
+      }
+    });
+    return Promise.all(
+      Array.from(mathSpans).map(function (tex) {
+        return MathJax.tex2chtmlPromise(tex, { display: false }).catch(function () {});
+      })
+    );
+  };
+
   var render = function () {
     try {
       pseudocode.renderClass("pseudocode", { lineNumber: true, noEnd: false });
@@ -82,7 +115,7 @@
 
   var start = function () {
     loadPseudocode(function () {
-      mathJaxReady.then(render);
+      mathJaxReady.then(warmUpMathJaxFonts).then(render);
     });
   };
 

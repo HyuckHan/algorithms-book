@@ -56,6 +56,11 @@ const SECTION_CHECKS = [
   // so their code panel-tabset lives directly in that Part's own section id.
   "part-b.-재귀의-실행-호출-스택", "part-g.-재귀적으로-문제-설계하기", "part-h.-hanoi",
   "part-i.-미로-탐색maze과-backtracking", "part-k.-멱집합power-set",
+  // L05's four representative algorithms each get their own H3 subsection
+  // (see qa_check.py's SECTION_ID mapping -- ids confirmed against the
+  // actually-rendered chapter, not guessed from the .qmd headings).
+  "tabulation-bottom-up", "matrix-minimum-path-sum",
+  "longest-common-subsequence-lcs", "maximum-subarray-kadanes-algorithm",
 ].map((id) => ({ id, languages: ["python", "java", "c"] }));
 
 // Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)

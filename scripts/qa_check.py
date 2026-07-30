@@ -76,6 +76,7 @@ LECTURE_CHAPTER = {
     "01": {"lecture_notes_dir": "lecture01", "chapter_html": "chapters/01-introduction.html"},
     "02": {"lecture_notes_dir": "lecture02", "chapter_html": "chapters/02-recursion.html"},
     "03": {"lecture_notes_dir": "lecture03", "chapter_html": "chapters/03-sorting.html"},
+    "05": {"lecture_notes_dir": "lecture05", "chapter_html": "chapters/05-dynamic-programming.html"},
 }
 
 # Per-lecture, per-language identifiers for every from-scratch algorithm with
@@ -109,6 +110,28 @@ ALGO_IDENTIFIERS = {
         "recursive-binary-search": ["bsearch"],
         "maze": ["find_path", "findPath"],
         "power-set": ["power_set", "powerSet", "PowerSet"],
+    },
+    # L05's four representative algorithms each get their own H3 subsection,
+    # but (unlike L01-03) that subsection can hold *two* ALGORITHM_CONFIG
+    # demos together (e.g. Matrix Path's memo and bottom-up code+output
+    # panels both live under the same "Matrix Minimum Path Sum" H3) -- these
+    # are code identifiers (function/class names), not the algorithm's
+    # display name, so a generic word like "LCS" appearing in Part E's
+    # cross-algorithm comparison prose can't false-positive here.
+    "05": {
+        "fibonacci": [
+            "fibMemo", "fibBottomUp", "FibonacciDP", "memoRec",
+            "fib_memo", "fib_bottom_up", "memo_rec",
+        ],
+        "matrix-path": [
+            "minPathMemo", "minPathBottomUp", "MinPathSum",
+            "min_path_memo", "min_path_bottom_up", "min_path_memo_rec",
+        ],
+        "lcs": ["lcsBottomUp", "lcs_bottom_up"],
+        "max-subarray": [
+            "maxSubarrayBruteForce", "maxSubarrayKadane", "MaximumSubarray",
+            "max_subarray_brute_force", "max_subarray_kadane",
+        ],
     },
 }
 
@@ -146,6 +169,28 @@ SECTION_ID = {
         "maze": "part-i.-미로-탐색maze과-backtracking",
         "power-set": "part-k.-멱집합power-set",
     },
+    # Confirmed against the actually-rendered _book/chapters/05-dynamic-programming.html
+    # H3 ids (Quarto's Korean-safe slugger), not guessed from the .qmd headings.
+    "05": {
+        "fibonacci": "tabulation-bottom-up",
+        "matrix-path": "matrix-minimum-path-sum",
+        "lcs": "longest-common-subsequence-lcs",
+        "max-subarray": "maximum-subarray-kadanes-algorithm",
+    },
+}
+
+# lecture -> conceptual section name -> list of run_examples.py
+# ALGORITHM_CONFIG slugs whose pipeline must pass for that section. Defaults
+# to [name] itself (see SECTION_GATES below) for lectures where each section
+# holds exactly one ALGORITHM_CONFIG entry (L01-03); L05 sections can hold
+# two (e.g. Matrix Path's memo + bottom-up demos share one H3).
+PIPELINE_ALGORITHMS = {
+    "05": {
+        "fibonacci": ["fib-memo", "fib-bottom-up"],
+        "matrix-path": ["min-path-memo", "matrix-bottom-up"],
+        "lcs": ["lcs-bottom-up"],
+        "max-subarray": ["max-subarray-brute-force", "max-subarray-kadane"],
+    },
 }
 
 # Algorithms with their own isolated C/Java/Python section (panel-tabset),
@@ -154,7 +199,7 @@ SECTION_GATES = {
     lecture: [
         {
             "section_id": SECTION_ID[lecture][algo],
-            "algorithm": algo,
+            "algorithms": PIPELINE_ALGORITHMS.get(lecture, {}).get(algo, [algo]),
             "languages": ["python", "java", "c"],
             "forbidden": [
                 ident
@@ -397,17 +442,19 @@ def main():
                  (" (found: %s)" % contamination) if contamination else ""))
         ok = ok and contam_pass
 
-        pipeline = check_algorithm_pipeline(args.lecture, gate_cfg["algorithm"])
-        if pipeline is None:
-            print("  %s: no run_examples.py ALGORITHM_CONFIG entry for '%s' -> FAIL"
-                  % (label, gate_cfg["algorithm"]))
-            ok = False
-            continue
-        compile_run_pass = all(lang_ok for lang_ok, _ in pipeline["per_language"].values())
-        print("  %s: compile/run (c/java/python) -> %s" % (label, "PASS" if compile_run_pass else "FAIL"))
-        ok = ok and compile_run_pass
-        print("  %s: 3-language output match -> %s" % (label, "PASS" if pipeline["outputs_match"] else "FAIL"))
-        ok = ok and pipeline["outputs_match"]
+        for algo_name in gate_cfg["algorithms"]:
+            sub_label = "%s [%s]" % (label, algo_name)
+            pipeline = check_algorithm_pipeline(args.lecture, algo_name)
+            if pipeline is None:
+                print("  %s: no run_examples.py ALGORITHM_CONFIG entry for '%s' -> FAIL"
+                      % (sub_label, algo_name))
+                ok = False
+                continue
+            compile_run_pass = all(lang_ok for lang_ok, _ in pipeline["per_language"].values())
+            print("  %s: compile/run (c/java/python) -> %s" % (sub_label, "PASS" if compile_run_pass else "FAIL"))
+            ok = ok and compile_run_pass
+            print("  %s: 3-language output match -> %s" % (sub_label, "PASS" if pipeline["outputs_match"] else "FAIL"))
+            ok = ok and pipeline["outputs_match"]
 
     # Side-effect reporting (not gated on yet, see module docstring).
     if facts["hasRawMath"]:
