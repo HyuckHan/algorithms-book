@@ -4,7 +4,7 @@ description: "중복되는 부분 문제를 State→Transition→Base→Order→
 lecture: 5
 order: 4
 slug: "05-dynamic-programming"
-status: "review"
+status: "verified"
 objectives:
   - "재귀의 중복되는 부분 문제를 저장하는 것이 동적 계획법임을 설명한다."
   - "State, Transition, Base Case, Evaluation Order, Answer/Reconstruction 다섯 요소로 DP를 설계한다."
