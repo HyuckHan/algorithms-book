@@ -82,6 +82,7 @@ LECTURE_CHAPTER = {
     "07": {"lecture_notes_dir": "lecture07", "chapter_html": "chapters/07-hash-tables.html"},
     "08": {"lecture_notes_dir": "lecture08", "chapter_html": "chapters/08-graphs.html"},
     "09": {"lecture_notes_dir": "lecture09", "chapter_html": "chapters/09-string-matching.html"},
+    "10": {"lecture_notes_dir": "lecture10", "chapter_html": "chapters/10-state-space-search.html"},
 }
 
 # Per-lecture, per-language identifiers for every from-scratch algorithm with
@@ -249,6 +250,27 @@ ALGO_IDENTIFIERS = {
             "horspool_search", "horspoolSearch", "sm_horspool_all", "HorspoolDemo",
         ],
     },
+    # L10's 6 ALGORITHM_CONFIG entries: permutation-combination lives in its
+    # own H3 inside Part A; place-n-queens/subset-sum/color-graph-coloring
+    # are 3 sibling H3s inside Part B (not nested in each other, so no
+    # cross-scoping risk); knapsack-bnb and a-star each live directly under
+    # their own whole H2 Part (D and E) with no dedicated H3 (see SECTION_ID
+    # below). arithmetic-progression (Java-only, optional/\ssoptional -- see
+    # chapters/10.inventory (c)) has no run_examples.py ALGORITHM_CONFIG
+    # entry, so it's deliberately excluded here too (same reasoning as L07's
+    # mutable-key-example).
+    "10": {
+        "permutation-combination": [
+            "choose_permutation", "choosePermutation", "ChoosePermutation",
+            "choose_combination", "chooseCombination", "ChooseCombination",
+            "PermutationGenerator", "ss_permutation_count", "ss_combination_count",
+        ],
+        "place-n-queens": ["solve_n_queens", "NQueensSolver", "ss_n_queens_count"],
+        "subset-sum": ["subset_sum", "SubsetSumSolver", "ss_subset_sum_masks"],
+        "color-graph-coloring": ["color_graph", "GraphColoringSolver", "ss_color_graph"],
+        "knapsack-bnb": ["knapsack_bnb", "KnapsackBranchAndBound", "ss_knapsack_bnb"],
+        "a-star": ["a_star_grid", "AStarGrid", "ss_astar_grid"],
+    },
 }
 
 # lecture -> algorithm name (matches run_examples.py's ALGORITHM_CONFIG keys)
@@ -346,6 +368,20 @@ SECTION_ID = {
         "rabin-karp": "part-g.-rabin-karp-분석과-활용",
         "kmp": "part-l.-kmp-search",
         "horspool": "part-p.-boyer-moore-horspool",
+    },
+    # Confirmed against the actually-rendered _book/chapters/10-state-space-search.html
+    # section ids, not guessed from the .qmd headings. permutation-combination/
+    # place-n-queens/subset-sum/color-graph-coloring each live in their own H3
+    # (the id comes from the heading text, not the algorithm key); knapsack-bnb
+    # and a-star have no dedicated H3 and live directly under their own whole
+    # H2 Part (matching L02/L04's whole-Part pattern).
+    "10": {
+        "permutation-combination": "순열과-조합-생성",
+        "place-n-queens": "n-queens",
+        "subset-sum": "subset-sum",
+        "color-graph-coloring": "graph-coloring",
+        "knapsack-bnb": "part-d.-01-knapsack-branch-and-bound",
+        "a-star": "part-e.-a-search",
     },
 }
 

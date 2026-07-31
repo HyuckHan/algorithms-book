@@ -90,6 +90,13 @@ const SECTION_CHECKS = [
   // actually-rendered chapter, not guessed from the .qmd headings).
   "part-b.-naive-matching", "part-g.-rabin-karp-분석과-활용",
   "part-l.-kmp-search", "part-p.-boyer-moore-horspool",
+  // L10's 6 ALGORITHM_CONFIG entries (see qa_check.py's SECTION_ID mapping
+  // -- ids confirmed against the actually-rendered chapter, not guessed
+  // from the .qmd headings). 4 live in their own H3 (id from heading text);
+  // knapsack-bnb/a-star have no dedicated H3 and live under their own
+  // whole H2 Part.
+  "순열과-조합-생성", "n-queens", "subset-sum", "graph-coloring",
+  "part-d.-01-knapsack-branch-and-bound", "part-e.-a-search",
 ].map((id) => ({ id, languages: ["python", "java", "c"] }));
 
 // Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)
