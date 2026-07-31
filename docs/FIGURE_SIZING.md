@@ -63,6 +63,31 @@ M5(운영 하드닝)에서 전체 챕터를 놓고 일관된 크기 기준으로
 
 **패턴 요약**: L06/L08에서 이미 확인된 "원본이 작을수록 같은 %width도 더 크게 확대된다"는 원인이 여기서도 반복되지만, L07 특유의 원인이 하나 추가된다 — `\htrowthirteen`/`\loadgauge` 매크로(`lecture-notes/common/hash_tables.tex`)로 그리는 **가로로 얇고 세로로 짧은 "한 줄" 다이어그램**(13-slot 표, load gauge)이 이 목록의 절반 가까이를 차지한다. 이런 다이어그램은 폭은 있지만 높이가 아주 작아 %width 기준 배율 계산 자체가 다른 종류(정사각형에 가까운 tree/graph 다이어그램)와 시각적으로 다르게 느껴질 수 있다 — M5 일괄 조정 시 "한 줄 표" 종류를 별도 카테고리로 다룰지 검토할 가치가 있다.
 
+## Lecture 09 · String Matching
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음) — 이 강의는
+거의 모든 그림이 이 기준을 넘는다:
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 2.32x | `02-naive-worst-case-repeated-prefix-step3.svg` | B(Naive Matching) | 텍스트 두 줄뿐인 아주 작은 다이어그램, 55% width |
+| 1.95x | `01-naive-alignment-trace-step4.svg` | B(Naive Matching) | 7글자 텍스트 행 트레이스, 70% width |
+| 1.87x | `05-rolling-update-derivation-step3.svg` | E(Rolling Hash) | 수식 두 줄짜리 작은 다이어그램, 70% width |
+| 1.80x | `07-collision-is-candidate-step2.svg` | F(Modular Hash와 Collision) | 텍스트 두 줄짜리 작은 다이어그램, 55% width |
+| 1.70x | `08-candidate-to-valid-hit-step2.svg` | G(Rabin-Karp 분석과 활용) | 텍스트 두 줄짜리 작은 다이어그램, 60% width |
+| 1.53–1.57x | `15-tiger-shift-table-step2.svg`, `10-mismatch-fallback-trace-step4.svg` | O/I | 작은 텍스트/트레이스 다이어그램, 55–80% width |
+| 1.42–1.52x | `03-numeric-encoding-cad-step2.svg`, `06-rolling-update-flow.svg`, `04-hash-equality-insufficient.svg`, `18-horspool-trace-tiger-step4.svg`, `12-kmp-mismatch-recovery-trace-step5.svg` | D/E/D/P/L | 텍스트 위주 또는 7-글자 트레이스, 55–80% width |
+| 1.24–1.37x | `09-prefix-lps-discovery-step3.svg`, `16-absent-character-shift-step2.svg`, `17-rational-repeated-character-step3.svg`, `14-right-to-left-comparison-step2.svg`, `11-lps-construction-trace-step6.svg` | H/O/P/N/K | 8글자 이내 텍스트 행 트레이스, 55–70% width |
+| 1.20x | `13-kmp-overlapping-match-step2.svg` | L(KMP Search) | 텍스트 두 줄짜리 작은 다이어그램, 55% width |
+
+**패턴 요약**: L06/L07에서 확인된 "원본이 작을수록 같은 %width도 더 크게 확대된다"는 원인이
+이 강의에서 가장 두드러진다 — `\smrow`/`\smindices`/`\smshiftrow`로 그리는 text-character-row
+트레이스(예: `C,A,B,A,B,A,C` 7글자)와 `\smhash`/`\smnote` 상자 하나짜리 개념 다이어그램은
+원본 크기가 워낙 작아(자연 폭 150~400px) 55~80% width에서 거의 전부 1.2배를 넘는다. 18개
+그림 중 17개가 이 기준을 넘는 것은 이 강의 특유의 그림 스타일(짧은 문자열 트레이스가 대부분)
+때문으로 보이며, M5 일괄 조정 시 "문자열 트레이스" 종류를 L07의 "한 줄 표"처럼 별도
+카테고리로 다룰 필요가 있다.
+
 ## 다음 강의 추가 시
 
 새 강의를 변환할 때도 이 표 형식으로 이어서 기록한다(`## Lecture NN · 제목` 절 추가). M5에서
