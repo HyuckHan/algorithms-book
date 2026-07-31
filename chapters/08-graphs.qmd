@@ -1,6 +1,6 @@
 ---
 title: "그래프 알고리즘 · Graph Algorithms"
-description: "그래프 표현부터 BFS/DFS, 위상 정렬, 최소 신장 트리(Prim/Kruskal), 최단 경로(Dijkstra/Bellman-Ford)까지 — 3장의 heap과 5장의 DP를 다시 불러온다."
+description: "그래프 표현부터 BFS/DFS, 위상 정렬, 최소 신장 트리(Prim/Kruskal), 최단 경로(Dijkstra/Bellman-Ford)까지 — 정렬 장의 heap과 동적 계획법 장의 DP를 다시 불러온다."
 lecture: 8
 order: 5
 slug: "08-graphs"
@@ -543,7 +543,7 @@ finish time은 edge 방향을 존중하므로, finish 순서를 뒤집으면 유
 | time (min-heap) | $O(E+V\log V)$ | N/A |
 
 위상 정렬은 prerequisite, build/package dependency, task dependency, DAG 최단경로에 쓰인다
-(**5장(동적 계획법)의 DP evaluation order**와도 같은 개념이다 — Part M에서 다시 짚는다).
+(**동적 계획법 장의 DP evaluation order**와도 같은 개념이다 — Part M에서 다시 짚는다).
 위상 순서만으로 resource와 duration을 고려한 최소 parallel schedule이 자동으로 나오지는
 않는다는 점은 주의한다.
 
@@ -690,8 +690,8 @@ Dijkstra의 완화 조건과 마찬가지로 동점을 배제하지 않는다.
 
 ## Part I. Prim Algorithm
 
-::: {.callout-tip title="3장의 heap이 여기서 돌아온다"}
-Prim의 $Q$와(뒤에서 볼) Dijkstra의 우선순위 큐는 새 자료구조가 아니라 **3장(정렬)에서 다룬
+::: {.callout-tip title="정렬 장의 heap이 여기서 돌아온다"}
+Prim의 $Q$와(뒤에서 볼) Dijkstra의 우선순위 큐는 새 자료구조가 아니라 **정렬 장에서 다룬
 (min-)heap**이다 — 정렬이 아니라 *동적 최소원소 추출기*로 쓴다.
 
 | 연산 | 역할 | 비용 |
@@ -699,8 +699,8 @@ Prim의 $Q$와(뒤에서 볼) Dijkstra의 우선순위 큐는 새 자료구조�
 | ExtractMin() | 다음에 확정할 vertex 선택 | $\Theta(\log V)$ |
 | DecreaseKey(v,k) | 더 싼 연결 발견 시 갱신 | $\Theta(\log V)$ |
 
-전체 vertex $V$개를 꺼내고 edge $E$개마다 갱신하므로 $O((V+E)\log V)$다. 같은 heap이 10장의
-A\*에서는 $f=g+h$를 key로 하는 min-PQ로 다시 등장한다.
+전체 vertex $V$개를 꺼내고 edge $E$개마다 갱신하므로 $O((V+E)\log V)$다. 같은 heap이 상태공간
+탐색 장의 A\*에서는 $f=g+h$를 key로 하는 min-PQ로 다시 등장한다.
 :::
 
 State: `key[v]`(현재 tree에 $v$를 연결하는 cheapest 단일 edge weight), `parent[v]`(그 edge의
@@ -1035,11 +1035,11 @@ shortest-path correctness**다.
 - 위상 순서가 모든 predecessor를 먼저 처리한다.
 - 각 edge를 한 번만 relax하므로 adjacency list 기준 $\Theta(V+E)$다.
 
-::: {.callout-tip title="5장(동적 계획법)과의 연결"}
-위상 순서로 한 번씩 relax하는 이 evaluation order는 **5장의 DP evaluation order와 같은
-구조**다 — 위상 순서는 "모든 의존 state가 먼저 계산되어 있는 순서"라는 DP의 요구사항을 그대로
-만족시킨다. Relax 자체도 $dist[v]\gets\min(dist[v],\,dist[u]+w(u,v))$ 형태로, 5장에서 본
-"현재 state를 더 작은 state들로부터 갱신"하는 DP transition과 같은 모양이다.
+::: {.callout-tip title="동적 계획법 장과의 연결"}
+위상 순서로 한 번씩 relax하는 이 evaluation order는 **동적 계획법 장의 DP evaluation order와
+같은 구조**다 — 위상 순서는 "모든 의존 state가 먼저 계산되어 있는 순서"라는 DP의 요구사항을
+그대로 만족시킨다. Relax 자체도 $dist[v]\gets\min(dist[v],\,dist[u]+w(u,v))$ 형태로, 동적
+계획법 장에서 본 "현재 state를 더 작은 state들로부터 갱신"하는 DP transition과 같은 모양이다.
 :::
 
 **DAG Relaxation Trace** — $s\to a:3,\ s\to b:2,\ a\to c:-4,\ b\to c:1$, topo order $s,a,b,c$:
@@ -1119,8 +1119,8 @@ $dist$와 다른 값)일 수 있다.
 
 {{< include ../figures/08-graphs/pseudocode-dijkstra.qmd >}}
 
-::: {.callout-tip title="3장의 heap이 여기서도 다시 쓰인다"}
-Prim에서 다시 쓴 3장의 min-heap이 Dijkstra의 ExtractMin/Insert 자료구조로 그대로 이어진다 —
+::: {.callout-tip title="정렬 장의 heap이 여기서도 다시 쓰인다"}
+Prim에서 다시 쓴 정렬 장의 min-heap이 Dijkstra의 ExtractMin/Insert 자료구조로 그대로 이어진다 —
 "discovered ≠ finalized" 문제 때문에 stale entry를 만나면 조용히 버리고 계속 진행한다는 점만
 Prim의 단순 ExtractMin/DecreaseKey와 다르다.
 :::
@@ -1259,14 +1259,14 @@ $s\to a\to c\to d$.
 ![reachable negative cycle detected.](../figures/08-graphs/22-bellman-ford-negative-cycle-step2.svg){fig-alt="negative cycle이 검출되었다는 붉은 강조 상태" width="60%"}
 :::
 
-::: {.callout-tip title="Bellman-Ford의 DP 해석 — 5장(동적 계획법)의 회수"}
+::: {.callout-tip title="Bellman-Ford의 DP 해석 — 동적 계획법 장의 회수"}
 $$
 D_0(s)=0,\quad D_0(v)=\infty\ (v\ne s)
 $$
 $$
 D_k(v)=\min\left(D_{k-1}(v),\ \min_{(u,v)\in E}\{D_{k-1}(u)+w(u,v)\}\right).
 $$
-이 recurrence는 **5장에서 배운 DP 다섯 요소**로 그대로 읽힌다 — state는 $(k,v)$("최대
+이 recurrence는 **동적 계획법 장에서 배운 DP 다섯 요소**로 그대로 읽힌다 — state는 $(k,v)$("최대
 $k$개 edge를 쓸 때 $v$까지의 최단 거리"), transition은 위 $\min$ 식, base는 $D_0$, evaluation
 order는 $k=0,1,\dots,|V|-1$, answer는 $D_{|V|-1}(v)$다. **$D_{k-1}(v)$ 항(edge를 추가하지
 않는 선택)을 빠뜨리면 안 된다** — 이 식은 각 pass가 오직 이전 row만 읽는 synchronous DP이고,
@@ -1393,10 +1393,10 @@ SP/Dijkstra/Bellman-Ford)는 source-to-target 비용을 다룬다. 세 갈래 �
 - BFS는 enqueue 시 발견 표시, DFS는 discovery/finish/recursion stack을 구분한다 — 구체적
   순회 순서는 adjacency order에 의존하지만 BFS distance와 DFS의 정확성은 그렇지 않다.
 - 위상 정렬은 유일하지 않다 — Kahn과 DFS 기반 방법이 서로 다른 유효한 순서를 낼 수 있다.
-- MST(Prim/Kruskal)는 3장의 heap을 다시 쓰고, cut property의 exchange argument로 정당화된다
+- MST(Prim/Kruskal)는 정렬 장의 heap을 다시 쓰고, cut property의 exchange argument로 정당화된다
   — MST는 shortest-path tree가 아니다.
-- Dijkstra는 nonnegative weight를 전제하고, Bellman-Ford는 negative edge를 허용하며 5장의
-  DP recurrence로 재해석된다 — DAG에서는 위상 순서로 relax하면 negative edge도 안전하다.
+- Dijkstra는 nonnegative weight를 전제하고, Bellman-Ford는 negative edge를 허용하며 동적
+  계획법 장의 DP recurrence로 재해석된다 — DAG에서는 위상 순서로 relax하면 negative edge도 안전하다.
 
 ## 🧪 직접 해보기
 
@@ -1462,9 +1462,9 @@ SP/Dijkstra/Bellman-Ford)는 source-to-target 비용을 다룬다. 세 갈래 �
 distance를 층별로 계산하고, DFS는 discovery/finish time과 recursion stack으로 tree/back/
 forward/cross edge를 구분해 directed cycle(GRAY back edge)과 위상 정렬을 만들어낸다 — Kahn과
 DFS 기반 위상 정렬은 서로 다른 유효한 순서를 낼 수 있다. Minimum Spanning Tree는 cut
-property의 exchange argument로 정당화되며, Prim(vertex key + 3장의 heap)과 Kruskal(edge
+property의 exchange argument로 정당화되며, Prim(vertex key + 정렬 장의 heap)과 Kruskal(edge
 정렬 + DSU)은 같은 A–G 예제에서 같은 optimum weight 48에 도달한다 — MST는 source가 없고
 shortest-path tree와 다르다. 최단 경로는 relaxation 하나로 통일되지만 전제가 다르다: BFS는
-unweighted, DAG SP는 위상 순서 relax(5장의 DP evaluation order와 같은 구조), Dijkstra는
-nonnegative weight(3장의 heap을 다시 쓴다), Bellman-Ford는 negative edge를 허용하고 $|V|-1$
-pass 뒤 한 번 더 relax해 negative cycle을 검출하며 5장의 DP recurrence로 재해석된다.
+unweighted, DAG SP는 위상 순서 relax(동적 계획법 장의 DP evaluation order와 같은 구조), Dijkstra는
+nonnegative weight(정렬 장의 heap을 다시 쓴다), Bellman-Ford는 negative edge를 허용하고 $|V|-1$
+pass 뒤 한 번 더 relax해 negative cycle을 검출하며 동적 계획법 장의 DP recurrence로 재해석된다.

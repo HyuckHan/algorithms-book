@@ -385,7 +385,7 @@ Transplant sequence: $y=17$, $y.right=18$이므로 `TRANSPLANT`$(17,18)$로 $20.
 ## Part H. 왜 Balanced Tree인가?
 
 ::: {.callout-tip title="다리: 재귀 장의 재귀식 분석"}
-BST 연산은 모두 $\Theta(h)$다. 문제는 height $h$가 입력 순서에 따라 얼마든지 커질 수 있다는 점이다 — 재귀 장에서 다룬 "worst-case를 만드는 입력" 논증과 같은 방식으로, 정렬된 입력을 순서대로 삽입하면 tree가 사실상 linked list가 된다.
+BST 연산은 모두 $\Theta(h)$다 — $h$를 구하는 재귀식 분석 도구(재귀 트리·반복대치)는 재귀 장의 것을 그대로 쓴다. 문제는 height $h$ 자체가 입력 순서에 따라 얼마든지 커질 수 있다는 점이다 — 정렬 장의 Quick Sort가 이미 정렬되거나 치우친 입력에서 partition이 한쪽으로 쏠려 worst-case $\Theta(n^2)$이 되는 것과 같은 현상이다: 정렬된 입력을 순서대로 삽입하면 BST도 매번 한쪽으로만 자라 tree가 사실상 linked list($h=\Theta(n)$)가 된다.
 :::
 
 정렬된 키 `1,2,3,4,5,6,7`을 순서대로 삽입하면 매번 새 key가 가장 오른쪽에 붙어 height가 계속 늘어난다.

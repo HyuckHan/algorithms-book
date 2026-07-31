@@ -307,7 +307,7 @@ $a$는 생기는 하위 문제 수, $n/b$는 각 하위 문제 크기, $f(n)$은
 **정규성 조건**이 필요하다.
 
 ::: {.callout-tip title="다리: Merge Sort가 바로 이 Case 2다"}
-위 예제 3의 $T(n)=2T(n/2)+\Theta(n)$은 그림만 다를 뿐 **3장(정렬)의 Merge Sort**가 정확히
+위 예제 3의 $T(n)=2T(n/2)+\Theta(n)$은 그림만 다를 뿐 **정렬 장의 Merge Sort**가 정확히
 만족하는 식이다 — 절반씩 재귀 정렬(2개의 크기 $n/2$ 하위 문제) 후 $\Theta(n)$ 선형 시간에
 합친다. Case 2(level별 균형)에 해당하므로 결과는 $\Theta(n\log n)$이다. 이 장에서 배운
 Master Theorem 분류표를 그대로 재사용하는 첫 예가 정렬 장의 Merge Sort다.
@@ -696,7 +696,7 @@ $\Omega(2^n)$이 필요하다. 길이 $n$의 include 배열을 매번 출력하�
 - 재귀 코드의 정확성은 귀납법(base/hypothesis/step)과 한 줄씩 대응하고, 효율성은 별개의 점화식
   분석이 필요하다.
 - 점화식은 반복대치·재귀 트리·추정후증명·Master Theorem 중 구조에 맞는 방법으로 푼다. Master
-  Theorem Case 2($T(n)=2T(n/2)+\Theta(n)$)는 3장 Merge Sort에서 다시 등장한다.
+  Theorem Case 2($T(n)=2T(n/2)+\Theta(n)$)는 정렬 장 Merge Sort에서 다시 등장한다.
 - Hanoi의 이동 횟수는 $2n-1$이 아니라 $2^n-1$이다. Maze/Blob의 backtracking은 choose → explore
   → unchoose(또는 mark dead)로 요약된다.
 - 재귀 문법을 없앤다고 점근적 메모리 요구가 자동으로 사라지지 않는다 — 재귀 vs 반복은
@@ -748,7 +748,7 @@ $\Omega(2^n)$이 필요하다. 길이 $n$의 include 배열을 매번 출력하�
 방법이다. 호출 스택은 push(호출이 쌓임)와 pop(반환값이 전달되며 frame이 제거됨)으로 실행되고,
 정확성은 귀납법과, 효율성은 점화식과 대응한다. 선형 재귀(factorial, 문자열)와 분기 재귀
 (Fibonacci)는 같은 형태가 아니므로 깊이만으로 시간을 판단할 수 없고, 점화식은 반복대치·재귀
-트리·추정후증명·Master Theorem 중 알맞은 방법으로 푼다 — Master Theorem의 표준 3-case는 3장
+트리·추정후증명·Master Theorem 중 알맞은 방법으로 푼다 — Master Theorem의 표준 3-case는 정렬 장
 Merge Sort의 Case 2로 다시 쓰인다. Binary Search·Hanoi·Maze/Blob·Power Set은 각각 한 개의
 작은 문제, 두 개의 작은 호출과 현재 작업, backtracking(choose-explore-unchoose), 두 갈래
 선택 공간이라는 서로 다른 재귀 모양을 보여준다. 재귀와 반복은 계산 능력이 같지만

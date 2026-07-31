@@ -488,7 +488,7 @@ Heapsort의 아이디어는 세 단계다: (1) $\Theta(n)$에 max-heap을 만든
 | 실용 강점 | 보장·external | locality·expected 속도 | 보장·in-place |
 
 ::: {.callout-tip title="다리: Heap은 Priority Queue다"}
-지금까지 heap을 정렬 장치로 봤지만, 본질은 **Priority Queue ADT**다 — `Insert`, `ExtractMax`, `Maximum` 연산이 각각 $\Theta(\log n)$, $\Theta(\log n)$, $\Theta(1)$이다. Heapsort는 이 ADT의 한 응용일 뿐이다. Lecture 8의 Prim·Dijkstra와 Lecture 10의 A\*가 모두 이 min-priority queue를 핵심 자료구조로 다시 쓴다.
+지금까지 heap을 정렬 장치로 봤지만, 본질은 **Priority Queue ADT**다 — `Insert`, `ExtractMax`, `Maximum` 연산이 각각 $\Theta(\log n)$, $\Theta(\log n)$, $\Theta(1)$이다. Heapsort는 이 ADT의 한 응용일 뿐이다. 그래프 장의 Prim·Dijkstra와 상태공간 탐색 장의 A\*가 모두 이 min-priority queue를 핵심 자료구조로 다시 쓴다.
 :::
 
 ## Part E. Key 구조를 이용한 정렬과 실무 API

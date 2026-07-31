@@ -47,13 +47,13 @@ last_verified: "2026-07-30"
 무엇을 바꿔야 할까?
 :::
 
-2장(재귀)에서 이미 본 Fibonacci의 순진한 재귀는 정확하지만, 같은 부분 문제를 몇 번이고 다시
+재귀 장에서 이미 본 Fibonacci의 순진한 재귀는 정확하지만, 같은 부분 문제를 몇 번이고 다시
 계산한다. 동적 계획법(Dynamic Programming, DP)의 핵심은 **알고리즘의 답을 바꾸는 것이 아니라,
 이미 계산한 부분 문제의 답을 저장해서 다시 계산하지 않는 것**이다. 이번 장에서는 이 아이디어를
 Recurrence(재귀 관계식) → Memoization(메모이제이션) → Tabulation(테이블화)의 흐름으로
 정리하고, 이후 모든 DP 문제를 같은 다섯 요소 템플릿으로 설계한다.
 
-![Lecture 5 Road Map: 재귀에서 출발해 중복 부분 문제를 인식하고, Memoization·Tabulation을 거쳐 대표 문제(Matrix Path, LCS, Maximum Subarray)로 이어지는 흐름.](../figures/05-dynamic-programming/01-roadmap.svg){fig-alt="재귀에서 시작해 중복 부분 문제 인식, Memoization과 Tabulation, 대표 DP 문제로 이어지는 트리 형태의 로드맵 다이어그램" width="90%"}
+![학습 로드맵: 재귀에서 출발해 중복 부분 문제를 인식하고, Memoization·Tabulation을 거쳐 대표 문제(Matrix Path, LCS, Maximum Subarray)로 이어지는 흐름.](../figures/05-dynamic-programming/01-roadmap.svg){fig-alt="재귀에서 시작해 중복 부분 문제 인식, Memoization과 Tabulation, 대표 DP 문제로 이어지는 트리 형태의 로드맵 다이어그램" width="90%"}
 
 ![Recurrence(점화식) · Memoization(하향식 저장) · Tabulation(상향식 저장)의 관계: 셋 다 같은 재귀 관계식을 표현하되, 계산 순서와 저장 방식만 다르다.](../figures/05-dynamic-programming/02-recurrence-memo-tab.svg){fig-alt="Recurrence 노드에서 Memoization과 Tabulation 두 갈래로 뻗어나가는 관계도, 두 방식 모두 같은 재귀 관계식으로 되돌아옴을 화살표로 표시" width="80%"}
 
@@ -62,7 +62,7 @@ Recurrence(재귀 관계식) → Memoization(메모이제이션) → Tabulation(
 ### Fibonacci로 살펴보는 재귀의 비효율
 
 ::: {.callout-note title="정의: Fibonacci 컨벤션"}
-이 책에서 $F(0)=0$, $F(1)=1$, $F(n)=F(n-1)+F(n-2)$ $(n\ge2)$로 고정한다. (2장의 Fibonacci
+이 책에서 $F(0)=0$, $F(1)=1$, $F(n)=F(n-1)+F(n-2)$ $(n\ge2)$로 고정한다. (재귀 장의 Fibonacci
 호출 트리도 같은 컨벤션을 썼다.)
 :::
 
@@ -84,7 +84,7 @@ DP 설계는 항상 같은 다섯 질문에 답하는 것으로 시작한다.
 
 {{< include ../figures/05-dynamic-programming/pseudocode-fib-recursive.qmd >}}
 
-![$F(6)$의 순진한 재귀 호출 트리 — $F(3)$과 $F(2)$가 서로 다른 호출·activation record로 반복된다(2장의 $F(5)$ 호출 트리와 같은 현상, 여기서는 하나 더 큰 $n$으로 반복 정도가 커짐을 보여준다).](../figures/05-dynamic-programming/03-fib-call-tree.svg){fig-alt="F(6)을 루트로 F(5), F(4)가 자식이 되고 그 아래로 F(4), F(3), F(2), F(1)이 반복해서 나타나는 이진 트리, 반복되는 노드가 색으로 강조됨" width="70%"}
+![$F(6)$의 순진한 재귀 호출 트리 — $F(3)$과 $F(2)$가 서로 다른 호출·activation record로 반복된다(재귀 장의 $F(5)$ 호출 트리와 같은 현상, 여기서는 하나 더 큰 $n$으로 반복 정도가 커짐을 보여준다).](../figures/05-dynamic-programming/03-fib-call-tree.svg){fig-alt="F(6)을 루트로 F(5), F(4)가 자식이 되고 그 아래로 F(4), F(3), F(2), F(1)이 반복해서 나타나는 이진 트리, 반복되는 노드가 색으로 강조됨" width="70%"}
 
 중복 호출을 세어 보면 $F(3)$은 2번, $F(2)$는 3번, $F(1)$은 5번, $F(0)$은 3번 다시 계산된다 —
 입력이 커질수록 중복은 기하급수적으로 늘어난다. 비용은 $T(n)=T(n-1)+T(n-2)+\Theta(1)$이고, 느슨한
@@ -830,5 +830,5 @@ Transition → Base Case → Evaluation Order → Answer/Reconstruction 다섯 �
 같은 evaluation order를 반대 방향에서 접근한 것임을 확인했다. Matrix Path와 LCS는 2차원
 state와 reconstruction(경로·문자열 복원)을 보여주었고, Maximum Subarray(Kadane's Algorithm)는
 state와 answer를 분리해야 하는 이유를 보여주었다. Optimal substructure만으로는 DP가 아니며,
-부분 문제가 겹칠 때만 저장이 이득이 된다 — 이 구분이 3장의 분할정복(Master Theorem으로
+부분 문제가 겹칠 때만 저장이 이득이 된다 — 이 구분이 정렬 장의 분할정복(Master Theorem으로
 분석)과 이 장의 DP를 가르는 기준이다.
