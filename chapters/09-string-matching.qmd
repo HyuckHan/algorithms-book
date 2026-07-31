@@ -4,7 +4,7 @@ description: "occurrence와 alignment 정의부터 Naive, Rabin-Karp(rolling has
 lecture: 9
 order: 9
 slug: "09-string-matching"
-status: "review"
+status: "verified"
 objectives:
   - "text, pattern, alphabet, occurrence, shift를 정의하고 Naive의 alignment 수와 comparison 수를 구분한다."
   - "rolling hash로 O(1) window update를 유도하고, hash collision을 candidate로만 다뤄야 하는 이유를 설명한다."
