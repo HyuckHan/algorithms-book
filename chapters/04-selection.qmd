@@ -473,7 +473,7 @@ Introselect는 hybrid selection 전략의 family다. 보통은 빠른 partition 
 
 ## 개념 지도
 
-![Selection 개념 전체: Sort then Select(Θ(n log n)), Quickselect(Fixed-pivot worst Θ(n²), RandomizedSelect expected Θ(n)/worst Θ(n²)), DeterministicSelect(Median of Medians, worst Θ(n))로 정리한다.](../figures/04-selection/14-concept-map.svg){fig-alt="Selection을 중심으로 Sort then Select, Quickselect, DeterministicSelect 세 갈래로 나뉘고 각각 시간 복잡도로 이어지는 개념 지도" width="80%"}
+![Selection 개념 전체: Sort then Select(Θ(n log n)), Quickselect(Fixed-pivot worst Θ(n²), RandomizedSelect expected Θ(n)/worst Θ(n²)), DeterministicSelect(Median of Medians, worst Θ(n))로 정리한다.](../figures/04-selection/14-concept-map.svg){fig-alt="Selection을 중심으로 Sort then Select, Quickselect, DeterministicSelect 세 갈래로 나뉘고 각각 시간 복잡도로 이어지는 개념 지도" width="55%"}
 
 ## 💡 배움 포인트
 

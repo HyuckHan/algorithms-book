@@ -767,7 +767,7 @@ AVL/RB는 pointer와 CPU/cache locality가, B-Tree는 page와 I/O 수가 핵심 
 
 ## 개념 지도
 
-![Search Trees 개념 전체: BST(Θ(h)), Balanced(AVL/RB, rotation invariant), B-Tree(page index, split/borrow/merge)로 정리한다.](../figures/06-search-trees/60-concept-map.svg){fig-alt="Search Trees를 중심으로 BST, Balanced(AVL/RB), B-Tree 세 갈래로 나뉘고 각각 order traversal, rotation invariant, split borrow/merge로 이어지는 개념 지도" width="70%"}
+![Search Trees 개념 전체: BST(Θ(h)), Balanced(AVL/RB, rotation invariant), B-Tree(page index, split/borrow/merge)로 정리한다.](../figures/06-search-trees/60-concept-map.svg){fig-alt="Search Trees를 중심으로 BST, Balanced(AVL/RB), B-Tree 세 갈래로 나뉘고 각각 order traversal, rotation invariant, split borrow/merge로 이어지는 개념 지도" width="55%"}
 
 ## 💡 배움 포인트
 

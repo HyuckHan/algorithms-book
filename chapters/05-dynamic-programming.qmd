@@ -756,7 +756,7 @@ $A=[-8,-3,-6,-2,-5,-4]$일 때 답은? — 가장 큰 단일 원소 $-2$(0-based
 
 ## 개념 지도
 
-![DP를 중심으로 State·Transition·Order·Answer 네 요소가 뻗어나가고, 다시 "state 수 × transition 비용" 복잡도로 수렴하는 개념 지도.](../figures/05-dynamic-programming/16-concept-map.svg){fig-alt="Dynamic Programming을 중심 노드로 State, Transition, Order, Answer 네 갈래가 뻗어나가고 이들이 다시 복잡도 노드로 모이는 다이어그램" width="80%"}
+![DP를 중심으로 State·Transition·Order·Answer 네 요소가 뻗어나가고, 다시 "state 수 × transition 비용" 복잡도로 수렴하는 개념 지도.](../figures/05-dynamic-programming/16-concept-map.svg){fig-alt="Dynamic Programming을 중심 노드로 State, Transition, Order, Answer 네 갈래가 뻗어나가고 이들이 다시 복잡도 노드로 모이는 다이어그램" width="55%"}
 
 ## 💡 배움 포인트
 

@@ -646,7 +646,7 @@ C에서 함수 포인터는 callback이다 — `qsort`는 시그니처 `int comp
 
 ## 개념 지도
 
-![Sorting 개념 전체를 한눈에: Properties, Comparison sorting(Simple/Efficient), Key-structure(Counting/Radix)로 정리한다.](../figures/03-sorting/19-concept-map.svg){fig-alt="Sorting을 중심으로 Properties, Comparison sorting, Key-structure/Non-comparison 세 갈래로 나뉘고 각각 세부 항목으로 이어지는 개념 지도" width="80%"}
+![Sorting 개념 전체를 한눈에: Properties, Comparison sorting(Simple/Efficient), Key-structure(Counting/Radix)로 정리한다.](../figures/03-sorting/19-concept-map.svg){fig-alt="Sorting을 중심으로 Properties, Comparison sorting, Key-structure/Non-comparison 세 갈래로 나뉘고 각각 세부 항목으로 이어지는 개념 지도" width="55%"}
 
 ## 💡 배움 포인트
 

@@ -685,7 +685,7 @@ $\Omega(2^n)$이 필요하다. 길이 $n$의 include 배열을 매번 출력하�
 
 ## 개념 지도
 
-![recursive specification을 중심으로 call stack, induction, recurrence가 연결되고, induction에서 DFS/backtracking/divide로 이어지는 개념도.](../figures/02-recursion/14-concept-map.svg){fig-alt="recursive specification 상자에서 call stack, induction, recurrence 세 상자로 화살표가 뻗고, induction에서 DFS/backtracking/divide 상자로 이어지는 다이어그램" width="65%"}
+![recursive specification을 중심으로 call stack, induction, recurrence가 연결되고, induction에서 DFS/backtracking/divide로 이어지는 개념도.](../figures/02-recursion/14-concept-map.svg){fig-alt="recursive specification 상자에서 call stack, induction, recurrence 세 상자로 화살표가 뻗고, induction에서 DFS/backtracking/divide 상자로 이어지는 다이어그램" width="55%"}
 
 ## 💡 배움 포인트
 
