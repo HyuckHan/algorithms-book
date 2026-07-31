@@ -88,6 +88,29 @@ M5(운영 하드닝)에서 전체 챕터를 놓고 일관된 크기 기준으로
 때문으로 보이며, M5 일괄 조정 시 "문자열 트레이스" 종류를 L07의 "한 줄 표"처럼 별도
 카테고리로 다룰 필요가 있다.
 
+## Lecture 10 · State-Space Tree Search
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정) — 18개 중 17개가 이 기준을 넘는다(L09와 같은 패턴):
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 3.10x | `13-knapsack-best-first-trace-step7.svg` | D(Knapsack B&B) | `\pqview`/`\incbadge` 텍스트 상자 위주 트레이스, 80% width |
+| 3.04x | `09-subset-sum-trace-step5.svg` | B(Subset Sum) | 텍스트 두 줄짜리 작은 다이어그램, 70% width |
+| 2.86x | `11-arithmetic-progression-trace-step5.svg` | B(AP 선택 심화) | 텍스트 두 줄짜리 작은 다이어그램, 75% width |
+| 2.12x | `06-four-queens-board-trace-step6.svg` | B(N-Queens) | 4x4 보드 하나뿐인 작은 다이어그램, 75% width |
+| 1.80–1.93x | `14-knapsack-state-tree.svg`, `07-four-queens-partial-tree.svg` | D/B | node 4~5개짜리 작은 트리, 60~70% width |
+| 1.85x | `18-astar-path-reconstruction-step3.svg`, `16-astar-grid-heuristic.svg` | E(A*) | 5×7 격자 하나뿐인 다이어그램, 55% width |
+| 1.54–1.77x | `02-state-space-expansion-step4.svg`, `12-bound-based-pruning-step4.svg`, `10-graph-coloring-trace-step4.svg`, `04-permutation-state-tree-step4.svg` | A/C/B/A | node 4~7개짜리 작은 트리, 70% width |
+| 1.21–1.35x | `05-apply-undo-symmetry-step3.svg`, `01-state-space-tree-structure.svg`, `03-dfs-bfs-visit-order-step3.svg`, `08-subset-sum-include-exclude-tree.svg`, `17-astar-open-closed-trace-step6.svg` | B/A/A/B/E | node 6~7개짜리 다이어그램, 60~70% width |
+
+**패턴 요약**: L09에서 확인된 "원본이 작을수록 같은 %width도 더 크게 확대된다" 패턴이 그대로
+반복된다. 이 강의 특유의 원인은 `\ssbox`/`\ssnote`/`\pqview`/`\incbadge`(공유 스타일
+`common/state_space.tex`)로 그리는 **텍스트 상자 하나 또는 둘짜리 트레이스**(예: Knapsack PQ
+상태, Subset Sum trace, AP trace)가 목록 상위를 차지한다는 점이다 — 이는 L07의 "한 줄 표",
+L09의 "문자열 트레이스"에 이어 세 번째로 확인된 "원본 그림 자체가 텍스트 위주라 자연 폭이
+아주 작은" 카테고리다. M5 일괄 조정 시 이 세 카테고리(한 줄 표/문자열 트레이스/텍스트 상자
+트레이스)를 통합해 다루는 것을 검토한다.
+
 ## 다음 강의 추가 시
 
 새 강의를 변환할 때도 이 표 형식으로 이어서 기록한다(`## Lecture NN · 제목` 절 추가). M5에서
