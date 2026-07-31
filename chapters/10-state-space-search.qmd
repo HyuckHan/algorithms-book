@@ -4,7 +4,7 @@ description: "Backtracking, Branch-and-Bound, A* — state-space tree에서 정�
 lecture: 10
 order: 10
 slug: "10-state-space-search"
-status: "review"
+status: "verified"
 objectives:
   - "state, decision, candidate, feasible, optimal solution을 구분하고 같은 state space를 DFS, BFS, best-first로 탐색할 수 있음을 설명한다."
   - "Backtracking의 feasibility pruning과 Branch-and-Bound의 objective pruning을 구분하고, 순열·N-Queens·Subset Sum·Graph Coloring을 state-space tree로 모델링한다."
