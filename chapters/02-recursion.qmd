@@ -127,7 +127,7 @@ $sum(4)$를 손으로 실행하면 먼저 $4+3+2+1+sum(0)$까지 호출이 내�
 
 **호출 스택 Push**: 재귀 호출마다 새 frame이 쌓인다.
 
-![호출 스택 Push: $sum(4)$부터 $sum(0)$까지 frame이 쌓인 최종 상태.](../figures/02-recursion/01-call-stack-push.svg){fig-alt="sum(4), sum(3), sum(2), sum(1), sum(0) 다섯 개의 stack frame이 아래에서 위로 쌓인 다이어그램" width="55%"}
+![호출 스택 Push: $sum(4)$부터 $sum(0)$까지 frame이 쌓인 최종 상태.](../figures/02-recursion/01-call-stack-push.svg){fig-alt="sum(4), sum(3), sum(2), sum(1), sum(0) 다섯 개의 stack frame이 아래에서 위로 쌓인 다이어그램" width="30%"}
 
 **호출 스택 Pop**: base case에 도달하면 반환값이 caller로 전달되며 frame이 제거된다. 반환값
 전달과 frame 제거는 같은 순간에 일어난다.
@@ -135,23 +135,23 @@ $sum(4)$를 손으로 실행하면 먼저 $4+3+2+1+sum(0)$까지 호출이 내�
 ::: {.panel-tabset}
 ## 1단계
 
-![$sum(0)\Rightarrow0$. caller $sum(1)$로 복귀.](../figures/02-recursion/02-call-stack-pop-step1.svg){fig-alt="sum(4)부터 sum(1)까지 네 frame이 쌓이고 맨 위 sum(0)이 강조되어 0을 반환하는 상태" width="60%"}
+![$sum(0)\Rightarrow0$. caller $sum(1)$로 복귀.](../figures/02-recursion/02-call-stack-pop-step1.svg){fig-alt="sum(4)부터 sum(1)까지 네 frame이 쌓이고 맨 위 sum(0)이 강조되어 0을 반환하는 상태" width="30%"}
 
 ## 2단계
 
-![$sum(1)\Rightarrow1+0=1$. caller $sum(2)$가 계산을 재개.](../figures/02-recursion/02-call-stack-pop-step2.svg){fig-alt="sum(0) frame이 제거되고 sum(1)이 1을 반환하며 강조된 상태" width="60%"}
+![$sum(1)\Rightarrow1+0=1$. caller $sum(2)$가 계산을 재개.](../figures/02-recursion/02-call-stack-pop-step2.svg){fig-alt="sum(0) frame이 제거되고 sum(1)이 1을 반환하며 강조된 상태" width="30%"}
 
 ## 3단계
 
-![$sum(2)\Rightarrow2+1=3$. caller $sum(3)$이 계산을 재개.](../figures/02-recursion/02-call-stack-pop-step3.svg){fig-alt="sum(1) frame이 제거되고 sum(2)가 3을 반환하며 강조된 상태" width="60%"}
+![$sum(2)\Rightarrow2+1=3$. caller $sum(3)$이 계산을 재개.](../figures/02-recursion/02-call-stack-pop-step3.svg){fig-alt="sum(1) frame이 제거되고 sum(2)가 3을 반환하며 강조된 상태" width="30%"}
 
 ## 4단계
 
-![$sum(3)\Rightarrow3+3=6$. caller $sum(4)$가 계산을 재개.](../figures/02-recursion/02-call-stack-pop-step4.svg){fig-alt="sum(2) frame이 제거되고 sum(3)이 6을 반환하며 강조된 상태" width="60%"}
+![$sum(3)\Rightarrow3+3=6$. caller $sum(4)$가 계산을 재개.](../figures/02-recursion/02-call-stack-pop-step4.svg){fig-alt="sum(2) frame이 제거되고 sum(3)이 6을 반환하며 강조된 상태" width="30%"}
 
 ## 5단계
 
-![$sum(4)\Rightarrow4+6=10$. 최종 호출이 반환.](../figures/02-recursion/02-call-stack-pop-step5.svg){fig-alt="모든 frame이 제거되고 sum(4)만 남아 10을 반환하며 강조된 최종 상태" width="60%"}
+![$sum(4)\Rightarrow4+6=10$. 최종 호출이 반환.](../figures/02-recursion/02-call-stack-pop-step5.svg){fig-alt="모든 frame이 제거되고 sum(4)만 남아 10을 반환하며 강조된 최종 상태" width="30%"}
 :::
 
 **활성 레코드(Activation Record)**는 호출마다 독립적인 매개변수 $n$, 돌아갈 명령 위치, 보류된
@@ -254,7 +254,7 @@ $$T(1)=\Theta(1),\quad T(n)=2T(n/2)+n \;\Rightarrow\; T(n)=2^kT(n/2^k)+kn,\; k=\
 
 **재귀 트리**로 같은 식 $T(n)=2T(n/2)+n$을 보면 level별 일이 직접 보인다.
 
-![재귀 트리 $T(n)=2T(n/2)+n$: 각 level의 합이 모두 $n$이고, level 수는 $\log_2n$이다.](../figures/02-recursion/04-recursion-tree.svg){fig-alt="루트 n에서 시작해 n/2 두 개, n/4 네 개로 갈라지는 이진 트리, 오른쪽에 level 0은 n, level 1은 n, level 2는 n이라는 계산이 표시됨" width="65%"}
+![재귀 트리 $T(n)=2T(n/2)+n$: 각 level의 합이 모두 $n$이고, level 수는 $\log_2n$이다.](../figures/02-recursion/04-recursion-tree.svg){fig-alt="루트 n에서 시작해 n/2 두 개, n/4 네 개로 갈라지는 이진 트리, 오른쪽에 level 0은 n, level 1은 n, level 2는 n이라는 계산이 표시됨" width="60%"}
 
 네 개의 $n/4$는 서로 다른 호출이다. $n\log_2n+\text{leaf cost}=\Theta(n\log n)$.
 
@@ -544,19 +544,19 @@ visited를 unmark할 필요는 없다(경로 자체를 출력하려면 다른 �
 ::: {.panel-tabset}
 ## 1단계
 
-![후보 경로를 따라 전진.](../figures/02-recursion/10-maze-trace-step1.svg){fig-alt="6x6 격자에서 시작점 S부터 세 칸이 후보 경로로 표시된 상태" width="55%"}
+![후보 경로를 따라 전진.](../figures/02-recursion/10-maze-trace-step1.svg){fig-alt="6x6 격자에서 시작점 S부터 세 칸이 후보 경로로 표시된 상태" width="45%"}
 
 ## 2단계
 
-![막힌 가지를 dead end로 표시.](../figures/02-recursion/10-maze-trace-step2.svg){fig-alt="후보 경로 끝에 막다른 칸이 dead로 표시된 상태" width="55%"}
+![막힌 가지를 dead end로 표시.](../figures/02-recursion/10-maze-trace-step2.svg){fig-alt="후보 경로 끝에 막다른 칸이 dead로 표시된 상태" width="45%"}
 
 ## 3단계
 
-![되돌아가 다른 이웃을 탐색.](../figures/02-recursion/10-maze-trace-step3.svg){fig-alt="다른 방향으로 경로가 확장되고 추가 dead end가 표시된 상태" width="55%"}
+![되돌아가 다른 이웃을 탐색.](../figures/02-recursion/10-maze-trace-step3.svg){fig-alt="다른 방향으로 경로가 확장되고 추가 dead end가 표시된 상태" width="45%"}
 
 ## 4단계
 
-![출구까지 한 경로를 발견.](../figures/02-recursion/10-maze-trace-step4.svg){fig-alt="시작 S부터 출구 E까지 이어진 전체 경로가 표시된 최종 상태" width="55%"}
+![출구까지 한 경로를 발견.](../figures/02-recursion/10-maze-trace-step4.svg){fig-alt="시작 S부터 출구 E까지 이어진 전체 경로가 표시된 최종 상태" width="45%"}
 :::
 
 **Backtracking 패턴**: choose → explore → unchoose/mark dead. 선택이 실패하면 호출 전 상태로
@@ -584,15 +584,15 @@ visited를 unmark할 필요는 없다(경로 자체를 출력하려면 다른 �
 ::: {.panel-tabset}
 ## 1단계
 
-![시작 pixel을 mark. $count=1$.](../figures/02-recursion/12-blob-floodfill-step1.svg){fig-alt="격자에서 시작 pixel 하나가 count됨으로 표시된 상태" width="55%"}
+![시작 pixel을 mark. $count=1$.](../figures/02-recursion/12-blob-floodfill-step1.svg){fig-alt="격자에서 시작 pixel 하나가 count됨으로 표시된 상태" width="40%"}
 
 ## 2단계
 
-![위쪽 연결 영역을 확장. $count=4$.](../figures/02-recursion/12-blob-floodfill-step2.svg){fig-alt="시작 pixel 위쪽으로 연결된 세 pixel이 추가로 count된 상태" width="55%"}
+![위쪽 연결 영역을 확장. $count=4$.](../figures/02-recursion/12-blob-floodfill-step2.svg){fig-alt="시작 pixel 위쪽으로 연결된 세 pixel이 추가로 count된 상태" width="40%"}
 
 ## 3단계
 
-![모든 reachable pixel 완료. $count=7$.](../figures/02-recursion/12-blob-floodfill-step3.svg){fig-alt="8-neighbor로 연결된 일곱 pixel 전부가 count되어 표시된 최종 상태" width="55%"}
+![모든 reachable pixel 완료. $count=7$.](../figures/02-recursion/12-blob-floodfill-step3.svg){fig-alt="8-neighbor로 연결된 일곱 pixel 전부가 count되어 표시된 최종 상태" width="40%"}
 :::
 
 **복잡도**: 8-neighbor로 reachable한 pixel 수를 $k$라 하면 time $O(k)$, 전체 $R\times C$ grid
