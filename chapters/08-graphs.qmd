@@ -96,7 +96,7 @@ parallel edge/self-loop는 제외하며, adjacency order를 항상 명시한다.
 source, column $j$가 destination이다(undirected는 $A=A^\mathsf{T}$). Edge 존재 확인은
 $\Theta(1)$, 한 vertex의 이웃 나열은 $\Theta(V)$, 공간은 $\Theta(V^2)$다.
 
-![$A[0][1]=1$은 $0\to1$ edge를 뜻한다 — 행은 source, 열은 destination.](../figures/08-graphs/02-matrix-direction.svg){fig-alt="0에서 1로 향하는 방향 edge와 그 옆에 2x2 인접행렬이 나란히 표시된 다이어그램" width="40%"}
+![$A[0][1]=1$은 $0\to1$ edge를 뜻한다 — 행은 source, 열은 destination.](../figures/08-graphs/02-matrix-direction.svg){fig-alt="0에서 1로 향하는 방향 edge와 그 옆에 2x2 인접행렬이 나란히 표시된 다이어그램" width="30%"}
 
 ::: {.callout-warning title="흔한 실수: Weighted Matrix의 0 함정"}
 $$
@@ -117,15 +117,15 @@ Undirected에서는 논리적으로 하나인 edge $\{u,v\}$를 $u\to v$, $v\to 
 ::: {.panel-tabset}
 ## 1단계
 
-![Row 0: $0,1,1,0$ — nonzero column을 찾는다.](../figures/08-graphs/03-matrix-to-list-step1.svg){fig-alt="matrix에서 row 0의 값을 나열하고 nonzero column을 찾는 설명 콜아웃" width="70%"}
+![Row 0: $0,1,1,0$ — nonzero column을 찾는다.](../figures/08-graphs/03-matrix-to-list-step1.svg){fig-alt="matrix에서 row 0의 값을 나열하고 nonzero column을 찾는 설명 콜아웃" width="30%"}
 
 ## 2단계
 
-![$\operatorname{Adj}[0]=[1,2]$ — row 1, 2, 3도 같은 방식으로 반복한다.](../figures/08-graphs/03-matrix-to-list-step2.svg){fig-alt="Adj[0]이 [1,2]로 채워지고 나머지 row도 반복한다는 콜아웃" width="70%"}
+![$\operatorname{Adj}[0]=[1,2]$ — row 1, 2, 3도 같은 방식으로 반복한다.](../figures/08-graphs/03-matrix-to-list-step2.svg){fig-alt="Adj[0]이 [1,2]로 채워지고 나머지 row도 반복한다는 콜아웃" width="20%"}
 
 ## 3단계
 
-![matrix 스캔은 $\Theta(V^2)$, list 저장은 $\Theta(V+E)$.](../figures/08-graphs/03-matrix-to-list-step3.svg){fig-alt="matrix scan 비용과 list storage 비용을 비교하는 콜아웃" width="70%"}
+![matrix 스캔은 $\Theta(V^2)$, list 저장은 $\Theta(V+E)$.](../figures/08-graphs/03-matrix-to-list-step3.svg){fig-alt="matrix scan 비용과 list storage 비용을 비교하는 콜아웃" width="30%"}
 :::
 
 | | Matrix | List |
@@ -178,14 +178,14 @@ $$
 0:[1,2,3]\quad1:[0,4]\quad2:[0,4,5]\quad3:[0,6]\quad4:[1,2,7]\quad5:[2]\quad6:[3,7]\quad7:[4,6]
 $$
 
-![BFS를 추적할 고정 예제 그래프(8 vertex, 9 edge).](../figures/08-graphs/04-bfs-graph.svg){fig-alt="0부터 7까지 8개 vertex가 세 개의 열로 배치되고 9개 edge로 연결된 그래프" width="70%"}
+![BFS를 추적할 고정 예제 그래프(8 vertex, 9 edge).](../figures/08-graphs/04-bfs-graph.svg){fig-alt="0부터 7까지 8개 vertex가 세 개의 열로 배치되고 9개 edge로 연결된 그래프" width="60%"}
 
 **실행 추적** (source $=0$, Output에는 queue에서 제거되어 처리된 vertex만 기록):
 
 ::: {.panel-tabset}
 ## 1단계
 
-![start 0. Queue: 0.](../figures/08-graphs/05-bfs-queue-trace-step1.svg){fig-alt="큐에 0만 있고 아직 아무것도 처리되지 않은 상태" width="22%"}
+![start 0. Queue: 0.](../figures/08-graphs/05-bfs-queue-trace-step1.svg){fig-alt="큐에 0만 있고 아직 아무것도 처리되지 않은 상태" width="10%"}
 
 ## 2단계
 
@@ -193,15 +193,15 @@ $$
 
 ## 3단계
 
-![dequeue 1; discover 4. Queue: 2,3,4. Output: 0,1.](../figures/08-graphs/05-bfs-queue-trace-step3.svg){fig-alt="1이 dequeue되고 4가 큐에 들어간 상태" width="22%"}
+![dequeue 1; discover 4. Queue: 2,3,4. Output: 0,1.](../figures/08-graphs/05-bfs-queue-trace-step3.svg){fig-alt="1이 dequeue되고 4가 큐에 들어간 상태" width="20%"}
 
 ## 4단계
 
-![dequeue 2; discover 5. Queue: 3,4,5. Output: 0,1,2.](../figures/08-graphs/05-bfs-queue-trace-step4.svg){fig-alt="2가 dequeue되고 5가 큐에 들어간 상태" width="22%"}
+![dequeue 2; discover 5. Queue: 3,4,5. Output: 0,1,2.](../figures/08-graphs/05-bfs-queue-trace-step4.svg){fig-alt="2가 dequeue되고 5가 큐에 들어간 상태" width="20%"}
 
 ## 5단계
 
-![dequeue 3; discover 6. Queue: 4,5,6. Output: 0,1,2,3.](../figures/08-graphs/05-bfs-queue-trace-step5.svg){fig-alt="3이 dequeue되고 6이 큐에 들어간 상태" width="22%"}
+![dequeue 3; discover 6. Queue: 4,5,6. Output: 0,1,2,3.](../figures/08-graphs/05-bfs-queue-trace-step5.svg){fig-alt="3이 dequeue되고 6이 큐에 들어간 상태" width="20%"}
 
 ## 6단계
 
@@ -295,7 +295,7 @@ BFS와 같은 오름차순).
 ::: {.panel-tabset}
 ## 1단계
 
-![discover 0. Stack: 0.](../figures/08-graphs/07-dfs-recursion-trace-step1.svg){fig-alt="0만 discover되어 스택에 있는 상태" width="22%"}
+![discover 0. Stack: 0.](../figures/08-graphs/07-dfs-recursion-trace-step1.svg){fig-alt="0만 discover되어 스택에 있는 상태" width="20%"}
 
 ## 2단계
 
@@ -303,7 +303,7 @@ BFS와 같은 오름차순).
 
 ## 3단계
 
-![finish 5, then 2. Discovery: 0,1,4,2,5.](../figures/08-graphs/07-dfs-recursion-trace-step3.svg){fig-alt="5와 2가 finish되어 스택에서 제거된 상태" width="22%"}
+![finish 5, then 2. Discovery: 0,1,4,2,5.](../figures/08-graphs/07-dfs-recursion-trace-step3.svg){fig-alt="5와 2가 finish되어 스택에서 제거된 상태" width="20%"}
 
 ## 4단계
 
@@ -475,27 +475,27 @@ $O(E+V\log V)$). "random node"가 아니라 현재 zero-indegree container에서
 ::: {.panel-tabset}
 ## 1단계
 
-![Zero heap: [0]. Select: --. Output: [].](../figures/08-graphs/09-kahn-trace-step1.svg){fig-alt="zero-indegree heap에 0만 있는 초기 상태" width="22%"}
+![Zero heap: [0]. Select: --. Output: [].](../figures/08-graphs/09-kahn-trace-step1.svg){fig-alt="zero-indegree heap에 0만 있는 초기 상태" width="15%"}
 
 ## 2단계
 
-![Zero heap: [1,3]. Select: 0. Output: [0].](../figures/08-graphs/09-kahn-trace-step2.svg){fig-alt="0이 선택되고 1,3이 heap에 들어간 상태" width="22%"}
+![Zero heap: [1,3]. Select: 0. Output: [0].](../figures/08-graphs/09-kahn-trace-step2.svg){fig-alt="0이 선택되고 1,3이 heap에 들어간 상태" width="15%"}
 
 ## 3단계
 
-![Zero heap: [2,3,4]. Select: 1. Output: [0,1].](../figures/08-graphs/09-kahn-trace-step3.svg){fig-alt="1이 선택되고 2,4가 heap에 추가된 상태" width="22%"}
+![Zero heap: [2,3,4]. Select: 1. Output: [0,1].](../figures/08-graphs/09-kahn-trace-step3.svg){fig-alt="1이 선택되고 2,4가 heap에 추가된 상태" width="15%"}
 
 ## 4단계
 
-![Zero heap: [3,4]. Select: 2. Output: [0,1,2].](../figures/08-graphs/09-kahn-trace-step4.svg){fig-alt="2가 선택된 상태" width="22%"}
+![Zero heap: [3,4]. Select: 2. Output: [0,1,2].](../figures/08-graphs/09-kahn-trace-step4.svg){fig-alt="2가 선택된 상태" width="15%"}
 
 ## 5단계
 
-![Zero heap: [4]. Select: 3. Output: [0,1,2,3].](../figures/08-graphs/09-kahn-trace-step5.svg){fig-alt="3이 선택된 상태" width="22%"}
+![Zero heap: [4]. Select: 3. Output: [0,1,2,3].](../figures/08-graphs/09-kahn-trace-step5.svg){fig-alt="3이 선택된 상태" width="15%"}
 
 ## 6단계
 
-![Zero heap: [5]→[]. Select: 4 then 5. Output: [0,1,2,3,4,5].](../figures/08-graphs/09-kahn-trace-step6.svg){fig-alt="4와 5가 차례로 선택되어 heap이 빈 최종 상태" width="22%"}
+![Zero heap: [5]→[]. Select: 4 then 5. Output: [0,1,2,3,4,5].](../figures/08-graphs/09-kahn-trace-step6.svg){fig-alt="4와 5가 차례로 선택되어 heap이 빈 최종 상태" width="20%"}
 :::
 
 **Cycle Detection**: zero-indegree container가 비고 처리된 개수가 $|V|$보다 작으면 directed
@@ -510,19 +510,19 @@ cycle이다 — partial output을 full order로 반환하지 않는다.
 ::: {.panel-tabset}
 ## 1단계
 
-![Finish append: 5.](../figures/08-graphs/11-dfs-topo-finish-reverse-step1.svg){fig-alt="finish 순서에 5만 기록된 상태" width="70%"}
+![Finish append: 5.](../figures/08-graphs/11-dfs-topo-finish-reverse-step1.svg){fig-alt="finish 순서에 5만 기록된 상태" width="30%"}
 
 ## 2단계
 
-![Finish append: 5,2.](../figures/08-graphs/11-dfs-topo-finish-reverse-step2.svg){fig-alt="finish 순서에 5,2가 기록된 상태" width="70%"}
+![Finish append: 5,2.](../figures/08-graphs/11-dfs-topo-finish-reverse-step2.svg){fig-alt="finish 순서에 5,2가 기록된 상태" width="30%"}
 
 ## 3단계
 
-![Finish append: 5,2,4,1.](../figures/08-graphs/11-dfs-topo-finish-reverse-step3.svg){fig-alt="finish 순서에 5,2,4,1이 기록된 상태" width="70%"}
+![Finish append: 5,2,4,1.](../figures/08-graphs/11-dfs-topo-finish-reverse-step3.svg){fig-alt="finish 순서에 5,2,4,1이 기록된 상태" width="30%"}
 
 ## 4단계
 
-![Finish append: 5,2,4,1,3,0. Reverse: 0,3,1,4,2,5.](../figures/08-graphs/11-dfs-topo-finish-reverse-step4.svg){fig-alt="finish 순서가 완성되고 뒤집은 최종 위상 순서가 표시된 상태" width="70%"}
+![Finish append: 5,2,4,1,3,0. Reverse: 0,3,1,4,2,5.](../figures/08-graphs/11-dfs-topo-finish-reverse-step4.svg){fig-alt="finish 순서가 완성되고 뒤집은 최종 위상 순서가 표시된 상태" width="30%"}
 :::
 
 ::: {.callout-tip title="왜 reverse인가"}
@@ -659,7 +659,7 @@ local choice가 항상 global optimum은 아니다.
 **Cut**은 vertex 집합을 $(S,V-S)$로 나눈 것이고, edge $(u,v)$는 $u\in S,\ v\notin S$이면 그
 cut을 **crossing**한다.
 
-![$\{A,B\}$와 $\{C,D\}$ 사이 cut을 건너는 light edge $B$–$C$.](../figures/08-graphs/12-cut-crossing-edge.svg){fig-alt="A-B, C-D가 각 그룹 안에서 연결되고 B에서 C로 향하는 crossing edge가 강조되며 그 사이에 cut 선이 그려진 다이어그램" width="55%"}
+![$\{A,B\}$와 $\{C,D\}$ 사이 cut을 건너는 light edge $B$–$C$.](../figures/08-graphs/12-cut-crossing-edge.svg){fig-alt="A-B, C-D가 각 그룹 안에서 연결되고 B에서 C로 향하는 crossing edge가 강조되며 그 사이에 cut 선이 그려진 다이어그램" width="50%"}
 
 ::: {.callout-tip title="Cut Property"}
 현재 선택된 safe edge들과 양립하는 cut에서 가장 가벼운 crossing edge는 safe하다. Weight
@@ -719,27 +719,27 @@ $B{:}8/A,\ C{:}9/A,\ D{:}11/A$를 갱신):
 ::: {.panel-tabset}
 ## 1단계
 
-![Extract: B. Update: E=10/B. Selected: AB8.](../figures/08-graphs/13-prim-trace-step1.svg){fig-alt="A-G 그래프에서 B가 추출되고 AB edge가 MST에 추가된 상태" width="80%"}
+![Extract: B. Update: E=10/B. Selected: AB8.](../figures/08-graphs/13-prim-trace-step1.svg){fig-alt="A-G 그래프에서 B가 추출되고 AB edge가 MST에 추가된 상태" width="70%"}
 
 ## 2단계
 
-![Extract: C. Update: E=5/C, F=12/C. Selected: AC9.](../figures/08-graphs/13-prim-trace-step2.svg){fig-alt="C가 추출되고 AC edge가 추가된 상태" width="80%"}
+![Extract: C. Update: E=5/C, F=12/C. Selected: AC9.](../figures/08-graphs/13-prim-trace-step2.svg){fig-alt="C가 추출되고 AC edge가 추가된 상태" width="75%"}
 
 ## 3단계
 
-![Extract: E. Update: none. Selected: CE5.](../figures/08-graphs/13-prim-trace-step3.svg){fig-alt="E가 추출되고 CE edge가 추가된 상태" width="80%"}
+![Extract: E. Update: none. Selected: CE5.](../figures/08-graphs/13-prim-trace-step3.svg){fig-alt="E가 추출되고 CE edge가 추가된 상태" width="65%"}
 
 ## 4단계
 
-![Extract: D. Update: F=8/D, G=8/D. Selected: AD11.](../figures/08-graphs/13-prim-trace-step4.svg){fig-alt="D가 추출되고 AD edge가 추가된 상태" width="80%"}
+![Extract: D. Update: F=8/D, G=8/D. Selected: AD11.](../figures/08-graphs/13-prim-trace-step4.svg){fig-alt="D가 추출되고 AD edge가 추가된 상태" width="70%"}
 
 ## 5단계
 
-![Extract: F. Update: G=7/F. Selected: DF8.](../figures/08-graphs/13-prim-trace-step5.svg){fig-alt="F가 추출되고 DF edge가 추가된 상태" width="80%"}
+![Extract: F. Update: G=7/F. Selected: DF8.](../figures/08-graphs/13-prim-trace-step5.svg){fig-alt="F가 추출되고 DF edge가 추가된 상태" width="70%"}
 
 ## 6단계
 
-![Extract: G. Update: done. Selected: FG7.](../figures/08-graphs/13-prim-trace-step6.svg){fig-alt="G가 추출되어 MST가 완성된 상태" width="80%"}
+![Extract: G. Update: done. Selected: FG7.](../figures/08-graphs/13-prim-trace-step6.svg){fig-alt="G가 추출되어 MST가 완성된 상태" width="65%"}
 :::
 
 $$
@@ -812,31 +812,31 @@ $O(\alpha(V))$로, 실용적으로 거의 상수 시간이다.
 ::: {.panel-tabset}
 ## 1단계
 
-![accept CE. Selected: 1 edges. Weight: 5.](../figures/08-graphs/15-kruskal-trace-step1.svg){fig-alt="CE edge가 선택된 상태" width="80%"}
+![accept CE. Selected: 1 edges. Weight: 5.](../figures/08-graphs/15-kruskal-trace-step1.svg){fig-alt="CE edge가 선택된 상태" width="70%"}
 
 ## 2단계
 
-![accept FG. Selected: 2 edges. Weight: 12.](../figures/08-graphs/15-kruskal-trace-step2.svg){fig-alt="FG edge가 추가된 상태" width="80%"}
+![accept FG. Selected: 2 edges. Weight: 12.](../figures/08-graphs/15-kruskal-trace-step2.svg){fig-alt="FG edge가 추가된 상태" width="70%"}
 
 ## 3단계
 
-![accept AB. Selected: 3 edges. Weight: 20.](../figures/08-graphs/15-kruskal-trace-step3.svg){fig-alt="AB edge가 추가된 상태" width="80%"}
+![accept AB. Selected: 3 edges. Weight: 20.](../figures/08-graphs/15-kruskal-trace-step3.svg){fig-alt="AB edge가 추가된 상태" width="70%"}
 
 ## 4단계
 
-![accept DF. Selected: 4 edges. Weight: 28.](../figures/08-graphs/15-kruskal-trace-step4.svg){fig-alt="DF edge가 추가된 상태" width="80%"}
+![accept DF. Selected: 4 edges. Weight: 28.](../figures/08-graphs/15-kruskal-trace-step4.svg){fig-alt="DF edge가 추가된 상태" width="70%"}
 
 ## 5단계
 
-![reject DG. Selected: 4 edges. Weight: 28.](../figures/08-graphs/15-kruskal-trace-step5.svg){fig-alt="DG edge가 이미 D-F-G로 연결되어 있어 reject되는 상태" width="80%"}
+![reject DG. Selected: 4 edges. Weight: 28.](../figures/08-graphs/15-kruskal-trace-step5.svg){fig-alt="DG edge가 이미 D-F-G로 연결되어 있어 reject되는 상태" width="70%"}
 
 ## 6단계
 
-![accept AC. Selected: 5 edges. Weight: 37.](../figures/08-graphs/15-kruskal-trace-step6.svg){fig-alt="AC edge가 추가된 상태" width="80%"}
+![accept AC. Selected: 5 edges. Weight: 37.](../figures/08-graphs/15-kruskal-trace-step6.svg){fig-alt="AC edge가 추가된 상태" width="70%"}
 
 ## 7단계
 
-![reject BE; accept AD. Selected: 6 edges. Weight: 48.](../figures/08-graphs/15-kruskal-trace-step7.svg){fig-alt="BE는 reject되고 AD가 추가되어 MST가 완성된 상태" width="80%"}
+![reject BE; accept AD. Selected: 6 edges. Weight: 48.](../figures/08-graphs/15-kruskal-trace-step7.svg){fig-alt="BE는 reject되고 AD가 추가되어 MST가 완성된 상태" width="75%"}
 :::
 
 `DG`는 이미 $D$–$F$–$G$로 같은 component이기 때문에 reject된다 — Kruskal도 Prim과 똑같이
@@ -939,7 +939,7 @@ DSU 자체의 실행 결과(toy 예제, 위 애니메이션과 동일한 A, B, C
 모든 MST의 total weight는 같다.
 :::
 
-![$A$-$B$-$C$-$D$ 사각형, 모든 edge weight $1$ — cycle의 어느 edge를 빼도 total 3인 MST다.](../figures/08-graphs/16-mst-tie-square.svg){fig-alt="A,B,C,D가 정사각형으로 연결되고 모든 edge의 weight가 1로 표시된 다이어그램" width="40%"}
+![$A$-$B$-$C$-$D$ 사각형, 모든 edge weight $1$ — cycle의 어느 edge를 빼도 total 3인 MST다.](../figures/08-graphs/16-mst-tie-square.svg){fig-alt="A,B,C,D가 정사각형으로 연결되고 모든 edge의 weight가 1로 표시된 다이어그램" width="30%"}
 
 ::: {.callout-warning title="흔한 실수: MST는 Shortest-Path Tree가 아니다"}
 MST는 전체 selected edge 합이 최소이고, SPT(shortest-path tree)는 source-to-each-vertex path가
@@ -985,15 +985,15 @@ $$
 ::: {.panel-tabset}
 ## 1단계
 
-![$dist[u]=4,\ w(u,v)=-2$. Candidate $=2$, old $dist[v]=7$. compare.](../figures/08-graphs/17-relaxation-animation-step1.svg){fig-alt="dist[u]=4, w(u,v)=-2인 상태에서 후보값 2와 기존 dist[v]=7을 비교하는 상태" width="60%"}
+![$dist[u]=4,\ w(u,v)=-2$. Candidate $=2$, old $dist[v]=7$. compare.](../figures/08-graphs/17-relaxation-animation-step1.svg){fig-alt="dist[u]=4, w(u,v)=-2인 상태에서 후보값 2와 기존 dist[v]=7을 비교하는 상태" width="35%"}
 
 ## 2단계
 
-![update $dist[v]=2,\ parent[v]=u$.](../figures/08-graphs/17-relaxation-animation-step2.svg){fig-alt="dist[v]가 2로 갱신되고 parent가 u로 설정되는 상태" width="60%"}
+![update $dist[v]=2,\ parent[v]=u$.](../figures/08-graphs/17-relaxation-animation-step2.svg){fig-alt="dist[v]가 2로 갱신되고 parent가 u로 설정되는 상태" width="40%"}
 
 ## 3단계
 
-![한 번의 Relax가 final을 보장하지는 않는다.](../figures/08-graphs/17-relaxation-animation-step3.svg){fig-alt="한 번의 relax만으로는 최종값이 아닐 수 있음을 알리는 상태" width="60%"}
+![한 번의 Relax가 final을 보장하지는 않는다.](../figures/08-graphs/17-relaxation-animation-step3.svg){fig-alt="한 번의 relax만으로는 최종값이 아닐 수 있음을 알리는 상태" width="50%"}
 :::
 
 ::: {.callout-warning title="흔한 실수: INF guard 없는 덧셈"}
@@ -1047,15 +1047,15 @@ shortest-path correctness**다.
 ::: {.panel-tabset}
 ## 1단계
 
-![after $s$: $d[a]=3,d[b]=2$.](../figures/08-graphs/19-dag-relaxation-trace-step1.svg){fig-alt="s를 처리한 뒤 a와 b의 거리가 갱신된 상태" width="60%"}
+![after $s$: $d[a]=3,d[b]=2$.](../figures/08-graphs/19-dag-relaxation-trace-step1.svg){fig-alt="s를 처리한 뒤 a와 b의 거리가 갱신된 상태" width="40%"}
 
 ## 2단계
 
-![after $a$: $d[c]=-1$.](../figures/08-graphs/19-dag-relaxation-trace-step2.svg){fig-alt="a를 처리한 뒤 c의 거리가 -1로 갱신된 상태" width="60%"}
+![after $a$: $d[c]=-1$.](../figures/08-graphs/19-dag-relaxation-trace-step2.svg){fig-alt="a를 처리한 뒤 c의 거리가 -1로 갱신된 상태" width="40%"}
 
 ## 3단계
 
-![after $b$: candidate 3, no update. answer $d[c]=-1$, path $s\to a\to c$.](../figures/08-graphs/19-dag-relaxation-trace-step3.svg){fig-alt="b를 처리했지만 후보값 3이 기존 -1보다 크므로 갱신되지 않는 최종 상태" width="60%"}
+![after $b$: candidate 3, no update. answer $d[c]=-1$, path $s\to a\to c$.](../figures/08-graphs/19-dag-relaxation-trace-step3.svg){fig-alt="b를 처리했지만 후보값 3이 기존 -1보다 크므로 갱신되지 않는 최종 상태" width="40%"}
 :::
 
 **구현**: 세 언어 모두 같은 4-vertex DAG($s,a,b,c$)를 쓴다.
@@ -1135,27 +1135,27 @@ PQ는 $(distance, vertex)$ lexicographic 순서다. Stale entry는 extract 후 �
 ::: {.panel-tabset}
 ## 1단계
 
-![Extract: S(0). Update: A=4, B=2. Finalized: S.](../figures/08-graphs/20-dijkstra-trace-step1.svg){fig-alt="S가 finalize되고 A,B의 거리가 초기 갱신된 상태" width="80%"}
+![Extract: S(0). Update: A=4, B=2. Finalized: S.](../figures/08-graphs/20-dijkstra-trace-step1.svg){fig-alt="S가 finalize되고 A,B의 거리가 초기 갱신된 상태" width="70%"}
 
 ## 2단계
 
-![Extract: B(2). Update: A=3, C=10, D=12. Finalized: S,B.](../figures/08-graphs/20-dijkstra-trace-step2.svg){fig-alt="B가 finalize되고 A가 3으로 더 짧게 갱신된 상태" width="80%"}
+![Extract: B(2). Update: A=3, C=10, D=12. Finalized: S,B.](../figures/08-graphs/20-dijkstra-trace-step2.svg){fig-alt="B가 finalize되고 A가 3으로 더 짧게 갱신된 상태" width="75%"}
 
 ## 3단계
 
-![Extract: A(3). Update: C=8. Finalized: S,B,A.](../figures/08-graphs/20-dijkstra-trace-step3.svg){fig-alt="A가 finalize되고 C가 8로 갱신된 상태" width="80%"}
+![Extract: A(3). Update: C=8. Finalized: S,B,A.](../figures/08-graphs/20-dijkstra-trace-step3.svg){fig-alt="A가 finalize되고 C가 8로 갱신된 상태" width="70%"}
 
 ## 4단계
 
-![Extract: C(8). Update: D=10, E=14. Finalized: S,B,A,C.](../figures/08-graphs/20-dijkstra-trace-step4.svg){fig-alt="C가 finalize되고 D,E가 갱신된 상태" width="80%"}
+![Extract: C(8). Update: D=10, E=14. Finalized: S,B,A,C.](../figures/08-graphs/20-dijkstra-trace-step4.svg){fig-alt="C가 finalize되고 D,E가 갱신된 상태" width="70%"}
 
 ## 5단계
 
-![Extract: D(10). Update: E=13. Finalized: S,B,A,C,D.](../figures/08-graphs/20-dijkstra-trace-step5.svg){fig-alt="D가 finalize되고 E가 13으로 더 짧게 갱신된 상태" width="80%"}
+![Extract: D(10). Update: E=13. Finalized: S,B,A,C,D.](../figures/08-graphs/20-dijkstra-trace-step5.svg){fig-alt="D가 finalize되고 E가 13으로 더 짧게 갱신된 상태" width="70%"}
 
 ## 6단계
 
-![Extract: E(13). Update: done. Finalized: all.](../figures/08-graphs/20-dijkstra-trace-step6.svg){fig-alt="모든 vertex가 finalize된 최종 상태" width="80%"}
+![Extract: E(13). Update: done. Finalized: all.](../figures/08-graphs/20-dijkstra-trace-step6.svg){fig-alt="모든 vertex가 finalize된 최종 상태" width="65%"}
 :::
 
 $$
@@ -1170,7 +1170,7 @@ Minimum tentative $u$보다 더 짧은 path가 미확정 영역을 거쳐 온다
 vertex는 nonnegative prefix 때문에 $u$보다 작은 tentative bound를 가져야 한다 — 모순이다.
 :::
 
-![$s\to a$(2), $s\to b$(5), $b\to a$(-10) — $a$는 거리 2로 먼저 finalize되지만 실제 최단은 $s\to b\to a=-5$다.](../figures/08-graphs/21-dijkstra-negative-counterexample.svg){fig-alt="s에서 a로 직접(2), s에서 b로(5), b에서 a로 음수(-10) edge가 그려진 다이어그램" width="55%"}
+![$s\to a$(2), $s\to b$(5), $b\to a$(-10) — $a$는 거리 2로 먼저 finalize되지만 실제 최단은 $s\to b\to a=-5$다.](../figures/08-graphs/21-dijkstra-negative-counterexample.svg){fig-alt="s에서 a로 직접(2), s에서 b로(5), b에서 a로 음수(-10) edge가 그려진 다이어그램" width="35%"}
 
 ::: {.callout-warning title="흔한 실수: negative edge에 Dijkstra를 그대로 적용"}
 $a$는 distance 2로 먼저 finalize된다. 나중에 $b=5$에서 $b\to a=-10$을 보면 candidate는
@@ -1252,11 +1252,11 @@ $s\to a\to c\to d$.
 ::: {.panel-tabset}
 ## 1단계
 
-![$|V|-1$ pass 후 한 번 더 relax가 가능하다 — $a\to b$를 조사한다.](../figures/08-graphs/22-bellman-ford-negative-cycle-step1.svg){fig-alt="V-1 패스 이후에도 relax가 가능하다는 안내와 a에서 b로 가는 edge를 조사하는 상태" width="60%"}
+![$|V|-1$ pass 후 한 번 더 relax가 가능하다 — $a\to b$를 조사한다.](../figures/08-graphs/22-bellman-ford-negative-cycle-step1.svg){fig-alt="V-1 패스 이후에도 relax가 가능하다는 안내와 a에서 b로 가는 edge를 조사하는 상태" width="55%"}
 
 ## 2단계
 
-![reachable negative cycle detected.](../figures/08-graphs/22-bellman-ford-negative-cycle-step2.svg){fig-alt="negative cycle이 검출되었다는 붉은 강조 상태" width="60%"}
+![reachable negative cycle detected.](../figures/08-graphs/22-bellman-ford-negative-cycle-step2.svg){fig-alt="negative cycle이 검출되었다는 붉은 강조 상태" width="55%"}
 :::
 
 ::: {.callout-tip title="Bellman-Ford의 DP 해석 — 동적 계획법 장의 회수"}
