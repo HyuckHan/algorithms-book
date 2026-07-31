@@ -12,6 +12,105 @@ M5(운영 하드닝)에서 전체 챕터를 놓고 일관된 크기 기준으로
 확대되어 보인다 — 특히 노드 수가 적은(1~3개) 작은 다이어그램이 고정 %width 때문에 크게
 확대되는 경향이 있다(L08의 BFS/Kahn/DFS 상태 박스와 같은 근본 원인).
 
+## Lecture 01 · Introduction to Algorithms
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음):
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 1.56x | `06-maximum-trace.svg` | C(Maximum 찾기) | 배열 하나짜리 짧은 트레이스, 55% width |
+| 1.27x | `10-growth-curves.svg` | F(성장 차수(Orders of Growth)) | 곡선 비교 그래프, 60% width |
+| 1.25x | `13-concept-map.svg` | H(세 알고리즘의 복잡도와 구현) | 개념 지도 전체, 80% width — 다른 챕터의 개념 지도와 일관성 확인 필요 |
+
+**패턴 요약**: L01은 19개 그림 중 3개만 1.2x를 넘어, 지금까지 측정한 챕터 중 배율 문제가 가장
+적다. 대부분의 그림(알고리즘 입출력 설명, Linear/Binary Search 트레이스 등)이 이미 자연폭
+350~530px 안팎으로 넉넉해 45~70% width에서도 1.2x 미만으로 안정적이다. 유일한 특이 케이스는
+개념 지도(`13-concept-map`, 1.25x)로, L03/L04/L05/L06 등 타 챕터의 개념 지도와 함께 일관된
+기준으로 재조정할 필요가 있다.
+
+## Lecture 02 · Recursion
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음):
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 2.30–2.31x | `01-call-stack-push.svg`, `02-call-stack-pop-step1~5.svg`(6개) | B(재귀의 실행: 호출 스택) | 호출 스택 push/pop 애니메이션 각 프레임 — 스택 프레임 1~2개짜리 아주 작은 다이어그램을 55–60% width로 표시 |
+| 1.77x | `12-blob-floodfill-step1~3.svg`(3개) | J(Blob과 Flood Fill) | flood fill 진행 3단계, grid 일부만 강조하는 작은 다이어그램, 55% width |
+| 1.52–1.53x | `10-maze-trace-step1~4.svg`(4개) | I(미로 탐색(Maze)과 Backtracking) | 미로 grid 트레이스 4단계, 55% width |
+| 1.31x | `04-recursion-tree.svg` | E(점화식과 분석 방법) | 재귀 트리 다이어그램, 65% width |
+
+**패턴 요약**: L02는 27개 그림 중 14개가 1.2x를 넘고, 최대 2.31x(호출 스택 push/pop 프레임)에
+달한다. 두드러지는 고유 카테고리는 **호출 스택 프레임 애니메이션**(01/02, 스택 depth 1~2개짜리
+초소형 다이어그램)으로, L06 B-Tree/RB-Tree의 "node 1~3개짜리 삽입 초반 단계"와 같은 근본
+원인(원본이 작을수록 %width 배율이 커짐)을 공유하는 새로운 하위 사례다. Maze/Flood-fill
+트레이스도 grid 일부만 그리는 작은 다이어그램이라 같은 원인을 보인다. 반면 Fibonacci/Hanoi/
+Power-set 재귀 트리류(03,09,13)는 원본이 이미 크게 그려져 있어 1.2x를 넘지 않는다 — "재귀
+트리"라는 카테고리 자체가 문제가 아니라 개별 다이어그램의 절대 크기가 관건임을 보여준다.
+
+## Lecture 03 · Sorting
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음):
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 1.67x | `03-selection-trace-step1/5.svg`, `04-bubble-trace.svg`, `05-insertion-trace.svg`(4개) | B(기본 Comparison Sort) | Selection/Bubble/Insertion 각 정렬의 배열 트레이스, 자연폭 224px 안팎의 작은 다이어그램을 55% width로 표시 — 세 정렬이 같은 스타일이라 배율까지 거의 동일 |
+| 1.89x | `07-merge-recursion-tree.svg` | C(Divide-and-Conquer와 비교 하한) | merge sort 재귀 트리, 자연폭이 작아(198px) 55%에도 확대 |
+| 1.46x | `05-insertion-cards.svg` | B(기본 Comparison Sort) | 카드 정렬 비유 정적 다이어그램, 45% width |
+| 1.44x | `02-stability-demo.svg` | A(정렬 문제와 평가 기준) | stability 설명용 작은 다이어그램, 60% width |
+| 1.46x | `15-radix-trace.svg` | E(Key 구조를 이용한 정렬과 실무 API) | radix sort 자리수별 트레이스, 70% width |
+| 1.31x | `08-quick-partition-trace.svg` | C(Divide-and-Conquer와 비교 하한) | quick sort partition 트레이스, 70% width |
+| 1.22–1.24x | `10-heap-array-tree.svg`, `12-build-heap-trace.svg`, `13-heapsort-trace.svg` | D(Heap과 Heapsort) | heap의 array/tree 이중 표현 및 build-heap/heapsort 트레이스, 55–60% width |
+
+**패턴 요약**: L03은 20개 중 12개가 1.2x를 넘는다. 특유의 카테고리는 **Comparison Sort 배열
+트레이스**(Selection/Bubble/Insertion, 자연폭 ~224px, 55% width에서 공통적으로 1.67x)로,
+L09의 "문자열 트레이스"와 유사하게 짧은 배열 하나만 그리는 작은 원본이 근본 원인이다.
+Merge/Quick/Heap/Radix 트레이스도 정도는 덜하지만 같은 패턴을 반복한다.
+
+## Lecture 04 · Selection and Order Statistics
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음):
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 1.93x | `10-groups-of-five.svg` | D(Deterministic Linear Selection (Median of Medians)) | 5-원소 group 5개를 묶는 작은 다이어그램, 55% width |
+| 1.90x | `13-group-three-guarantee.svg` | D | median 이상 3개 원소 설명용 작은 다이어그램, 55% width |
+| 1.70x | `12-median-half-guarantee.svg` | D | median 절반 분할 설명, 55% width |
+| 1.41x | `11-median-of-medians-trace-step1.svg` | D | median-of-medians 트레이스 1단계, 60% width |
+| 1.34x | `06-common-first-partition.svg` | B(Quickselect) | 공통 첫 partition 다이어그램, 70% width |
+| 1.30x | `11-median-of-medians-trace-step5.svg` | D | 같은 트레이스 5단계, 60% width |
+| 1.25x | `08-randomized-trace-step7.svg` | B(Quickselect) | randomized quickselect 트레이스 마지막 단계, 65% width |
+| 1.24x | `14-concept-map.svg` | E(전략 비교와 요약) | 개념 지도, 80% width |
+| 1.23x | `03-quicksort-vs-quickselect.svg` | A(Selection 문제와 Order Statistics) | quicksort vs quickselect 비교 다이어그램, 60% width |
+| 1.23x | `05-right-rank-reason.svg` | B(Quickselect) | rank 재계산 설명 다이어그램, 60% width |
+
+**패턴 요약**: L04는 17개 중 10개가 1.2x를 넘고, 최대 1.93x(`10-groups-of-five`)다. 두드러지는
+카테고리는 **Median-of-Medians 설명용 소형 다이어그램**(10,12,13 — group 분할, 절반 보장,
+3개 보장을 보여주는 원본이 작은 그림들)으로 Part D에 집중되어 있다. 다른 챕터의 "1~3개짜리
+작은 다이어그램" 패턴과 같은 원인이며, 최댓값도 2x 미만에 그쳐 L02/L05/L08만큼 극단적이지는
+않다.
+
+## Lecture 05 · Dynamic Programming
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음):
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 3.09x | `11-matrix-representative-cell.svg` | C(Optimal Substructure와 대표 DP 문제) | matrix path-sum table에서 대표 cell 하나만 확대한 아주 작은 다이어그램(자연폭 121px), 55% width |
+| 2.51x | `06-greedy-counterexample-local.svg`, `07-greedy-counterexample-optimal.svg`(2개) | C | greedy가 실패하는 반례를 보여주는 작은 다이어그램 2개(자연폭 122px), 45% width |
+| 2.50x | `13-lcs-case1.svg` | C | LCS recurrence case 1만 보여주는 아주 작은 다이어그램(자연폭 95px), 35% width에도 확대 |
+| 1.71x | `04-memo-trace-step1~4.svg`, `05-bottomup-trace-step1~3.svg`(7개) | B(Memoization, Tabulation, DP 설계 절차) | Fibonacci memo/bottom-up 계산 과정 트레이스 7단계, 자연폭 ~318px에 80% width로 확대 |
+| 1.59–1.60x | `01-roadmap.svg`, `02-recurrence-memo-tab.svg` | A(왜 동적 계획법인가?) | 학습 로드맵과 memo/tabulation 대조 다이어그램, 80–90% width |
+| 1.41x | `15-lcs-backtrack-trace.svg` | D(LCS 복원과 Maximum Subarray) | LCS 역추적 트레이스, 90% width |
+| 1.29x | `16-concept-map.svg` | E(비교, 요약, Quiz) | 개념 지도, 80% width |
+| 1.22–1.24x | `08-matrix-dependency.svg`, `09-matrix-call-tree.svg`, `14-lcs-call-tree.svg` | C | matrix 의존관계 다이어그램, matrix/LCS call tree, 60–65% width |
+
+**패턴 요약**: L05는 24개 중 18개(75%)가 1.2x를 넘어 지금까지 측정한 챕터 중 가장 심각하다 —
+최대 3.09x(`11-matrix-representative-cell`). 두드러지는 카테고리는 **DP 테이블에서 대표
+cell/case 하나만 떼어 보여주는 초소형 설명 다이어그램**(06/07/11/13, 자연폭 95~122px)으로,
+"한 줄 표"·"문자열 트레이스"에 이어 확인되는 "원본이 극도로 작은" 카테고리의 또 다른 사례다.
+여기에 더해 memo/bottom-up 트레이스 7단계(04/05)가 80% width 고정으로 일괄 1.71x를 보여,
+Part B 전체가 과대 확대 상태다.
+
 ## Lecture 06 · Search Trees
 
 배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음):
@@ -62,6 +161,64 @@ M5(운영 하드닝)에서 전체 챕터를 놓고 일관된 크기 기준으로
 | 1.22x | `17-primary-clustering-step3.svg`, `28-resize-cost-sequence.svg`, `18-linear-probe-cost-curve.svg` | H/M/H | primary clustering 트레이스, resize cost 막대그래프, PGFPlots 곡선 — 각각 70%/60%/70% width |
 
 **패턴 요약**: L06/L08에서 이미 확인된 "원본이 작을수록 같은 %width도 더 크게 확대된다"는 원인이 여기서도 반복되지만, L07 특유의 원인이 하나 추가된다 — `\htrowthirteen`/`\loadgauge` 매크로(`lecture-notes/common/hash_tables.tex`)로 그리는 **가로로 얇고 세로로 짧은 "한 줄" 다이어그램**(13-slot 표, load gauge)이 이 목록의 절반 가까이를 차지한다. 이런 다이어그램은 폭은 있지만 높이가 아주 작아 %width 기준 배율 계산 자체가 다른 종류(정사각형에 가까운 tree/graph 다이어그램)와 시각적으로 다르게 느껴질 수 있다 — M5 일괄 조정 시 "한 줄 표" 종류를 별도 카테고리로 다룰지 검토할 가치가 있다.
+
+## Lecture 08 · Graph Algorithms
+
+**L08 재검증**: 상단 "측정 방법" 절 위에 "L08의 트레이스 상태 박스처럼 명백하고 verified
+직전인 경우뿐이다(이미 처리됨)"이라고 기록되어 있었으나, 이번에 68개 전체를 재측정한 결과
+**여전히 56개(82%)가 1.2x 이상이고 최대 3.66x**로, 추가 조정이 필요하다. 과거에 처리된 것은
+BFS 큐 트레이스(`05-bfs-queue-trace-step2/6/7`)와 DFS 재귀 트레이스(`07-dfs-recursion-
+trace-step2~6`)의 **일부 중간 단계**뿐이었던 것으로 보이며, 같은 트레이스의 최소 자연폭
+단계(`step1`)와 Prim/Kruskal/Dijkstra/Bellman-Ford/DSU/relaxation 등 Part I~O의 알고리즘
+트레이스 전체는 손대지 않은 채 남아 있다. 즉 "L08은 기처리로 1.3x 이하 확인"이라고 볼 수
+**없으며**, 다음 표의 항목들은 이번 M5 일괄 조정에 포함해야 한다.
+
+배율 ≥1.2x인 항목(본문 컬럼 680px 가정, 실제 뷰포트/테마에 따라 달라질 수 있음):
+
+| 배율 | 파일 | 위치(Part) | 왜 커 보이는가 |
+|---|---|---|---|
+| 3.66x | `03-matrix-to-list-step2.svg` | B(Graph Representation) | adjacency matrix→list 변환 2단계, 자연폭 130px의 아주 작은 다이어그램을 70% width로 표시 |
+| 2.87x | `03-matrix-to-list-step3.svg` | B(Graph Representation) | 같은 변환 3단계, 자연폭 166px |
+| 2.95x | `11-dfs-topo-finish-reverse-step1~3.svg`(3개) | F(Topological Sort) | DFS 종료순서 역순 트레이스, 자연폭 161px의 작은 다이어그램을 70% width로 표시 |
+| 2.90x | `11-dfs-topo-finish-reverse-step4.svg` | F(Topological Sort) | 같은 트레이스 4단계 |
+| 2.61x | `03-matrix-to-list-step1.svg` | B(Graph Representation) | 같은 변환 1단계, 자연폭 183px |
+| 2.26x | `05-bfs-queue-trace-step1.svg` | C(BFS) | BFS 큐 트레이스 첫 단계 — 큐에 원소가 1개뿐인 가장 작은 프레임(자연폭 66px), 22% width에도 크게 확대 |
+| 1.98x | `17-relaxation-animation-step1.svg` | L(Shortest Paths와 Relaxation) | relaxation 애니메이션 1단계, 자연폭 206px |
+| 1.81x | `21-dijkstra-negative-counterexample.svg` | N(Dijkstra Algorithm) | negative edge 반례 다이어그램, 55% width |
+| 1.78x | `09-kahn-trace-step1.svg` | F(Topological Sort) | Kahn's algorithm 트레이스 1단계 — in-degree 0 노드가 하나뿐인 초소형 프레임(자연폭 84px) |
+| 1.78x | `17-relaxation-animation-step2.svg` | L(Shortest Paths와 Relaxation) | 같은 애니메이션 2단계 |
+| 1.76x | `19-dag-relaxation-trace-step1~3.svg`(3개) | M(Unweighted·DAG Shortest Paths) | DAG relaxation 트레이스 3단계, 자연폭 231px |
+| 1.71x | `02-matrix-direction.svg` | B(Graph Representation) | 방향 그래프 matrix 표현, 자연폭 159px의 작은 다이어그램을 40% width로 표시 |
+| 1.62x | `09-kahn-trace-step2.svg`, `09-kahn-trace-step4.svg` | F(Topological Sort) | Kahn's algorithm 트레이스 2·4단계 |
+| 1.53x | `09-kahn-trace-step5.svg` | F(Topological Sort) | 같은 트레이스 5단계 |
+| 1.52x | `20-dijkstra-trace-step6.svg` | N(Dijkstra Algorithm) | Dijkstra 트레이스 마지막 단계, 80% width |
+| 1.51x | `13-prim-trace-step3.svg`, `13-prim-trace-step6.svg` | I(Prim Algorithm) | Prim MST 트레이스 3·6단계, 80% width |
+| 1.48x | `09-kahn-trace-step3.svg` | F(Topological Sort) | Kahn's algorithm 트레이스 3단계 |
+| 1.47–1.48x | `13-prim-trace-step1.svg`, `13-prim-trace-step5.svg` | I(Prim Algorithm) | Prim MST 트레이스 1·5단계 |
+| 1.46–1.48x | `15-kruskal-trace-step1~6.svg`(6개) | J(Kruskal과 Disjoint Set) | Kruskal MST 트레이스 1~6단계, 자연폭 368~370px에 80% width |
+| 1.46x | `04-bfs-graph.svg` | C(BFS) | BFS 대상 그래프 원본, 자연폭 329px에 70% width |
+| 1.46x | `17-relaxation-animation-step3.svg` | L(Shortest Paths와 Relaxation) | 같은 애니메이션 3단계 |
+| 1.50x | `16-mst-tie-square.svg` | K(MST Correctness와 비교) | MST tie-breaking 설명용 정사각형 다이어그램, 자연폭 182px에 40% width |
+| 1.43–1.52x | `20-dijkstra-trace-step1~5.svg`(5개) | N(Dijkstra Algorithm) | Dijkstra 트레이스 1~5단계, 자연폭 358~395px에 80% width |
+| 1.42x | `07-dfs-recursion-trace-step1.svg` | D(DFS) | DFS 재귀 트레이스 첫 단계 — 방문 노드 1개뿐인 초소형 프레임(자연폭 106px) |
+| 1.37x | `15-kruskal-trace-step7.svg` | J(Kruskal과 Disjoint Set) | Kruskal MST 트레이스 마지막 단계 |
+| 1.36x | `22-bellman-ford-negative-cycle-step1/2.svg`(2개) | O(Bellman–Ford Algorithm) | negative cycle 검출 트레이스 2단계, 자연폭 301px에 60% width |
+| 1.32x | `12-cut-crossing-edge.svg` | H(Greedy와 Cut Property) | cut property 설명 다이어그램, 55% width |
+| 1.30x | `09-kahn-trace-step6.svg` | F(Topological Sort) | Kahn's algorithm 트레이스 마지막 단계 |
+| 1.23x | `08-back-edge-animation-step1/2.svg`(2개) | E(DFS 활용과 Cycle Detection) | back edge 발견 애니메이션 2단계, 55% width |
+| 1.21x | `14-dsu-animation-step1~4.svg`(4개) | J(Kruskal과 Disjoint Set) | Disjoint Set union 애니메이션 4단계, 자연폭 451px에 80% width — 이 목록에서 배율은 가장 낮지만 여전히 1.2x 초과 |
+
+**패턴 요약**: L08은 68개 중 56개(82%)가 1.2x를 넘어 L05(75%)보다도 비율이 높고, 절대 배율
+최댓값(3.66x)도 이번에 측정한 챕터 중 가장 크다. 세 가지 원인이 겹친다 — (1) L06/L07/L09에서
+이미 확인된 "원본이 작을수록 배율이 커진다"는 근본 원인이 `matrix-to-list`, `bfs-queue-
+trace-step1`, `kahn-trace`, `dfs-recursion-trace-step1` 같은 **노드/원소 1~2개짜리 트레이스
+첫 단계**에서 가장 극단적으로 나타난다(2~3.7x). (2) Prim/Kruskal/Dijkstra/Bellman-Ford/DSU
+등 **weighted-graph 알고리즘 트레이스 전 단계가 거의 예외 없이 80% width로 고정**되어 있어,
+자연폭이 350~450px로 작지 않은데도 일괄 1.2~1.5x를 보인다 — 이는 "원본이 작아서"가 아니라
+"모든 트레이스 시리즈에 같은 큰 %width를 습관적으로 지정한" 별개의 원인이다. (3) 과거
+"L08은 기처리"라는 기록과 달리 이번 재측정에서 대다수가 여전히 초과 상태임이 드러나, 해당
+기록은 BFS/DFS 트레이스의 **일부 중간 단계**에만 해당하는 좁은 수정이었던 것으로 보인다 —
+M5 일괄 조정 시 L08을 다른 미처리 챕터와 동일하게 전체 재조정 대상으로 다뤄야 한다.
 
 ## Lecture 09 · String Matching
 
