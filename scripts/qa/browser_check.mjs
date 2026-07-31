@@ -85,6 +85,11 @@ const SECTION_CHECKS = [
   // actually-rendered chapter, not guessed from the .qmd headings).
   "part-d.-integer와-string-hashing", "part-f.-separate-chaining",
   "part-k.-삭제와-구현",
+  // L09's 4 ALGORITHM_CONFIG entries each get a whole H2 Part to themselves
+  // (see qa_check.py's SECTION_ID mapping -- ids confirmed against the
+  // actually-rendered chapter, not guessed from the .qmd headings).
+  "part-b.-naive-matching", "part-g.-rabin-karp-분석과-활용",
+  "part-l.-kmp-search", "part-p.-boyer-moore-horspool",
 ].map((id) => ({ id, languages: ["python", "java", "c"] }));
 
 // Internal repo document names (SPEC.md, docs/PER_LECTURE_NOTES.md, etc.)

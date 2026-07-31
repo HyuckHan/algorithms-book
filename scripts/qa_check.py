@@ -81,6 +81,7 @@ LECTURE_CHAPTER = {
     "06": {"lecture_notes_dir": "lecture06", "chapter_html": "chapters/06-search-trees.html"},
     "07": {"lecture_notes_dir": "lecture07", "chapter_html": "chapters/07-hash-tables.html"},
     "08": {"lecture_notes_dir": "lecture08", "chapter_html": "chapters/08-graphs.html"},
+    "09": {"lecture_notes_dir": "lecture09", "chapter_html": "chapters/09-string-matching.html"},
 }
 
 # Per-lecture, per-language identifiers for every from-scratch algorithm with
@@ -229,6 +230,25 @@ ALGO_IDENTIFIERS = {
             "open_put", "open_get", "open_remove", "findIndex", "find_index",
         ],
     },
+    # L09's 4 ALGORITHM_CONFIG entries each get a whole H2 Part to themselves
+    # (see SECTION_ID below). All 4 share one library file per language
+    # (string_matching.py/StringMatchers.java/string_matching.c, matching the
+    # source's own organization -- see chapters/09.inventory §c), but each
+    # snippet include extracts only that algorithm's own marked region, so
+    # there is no natural cross-reference between them to exclude (unlike
+    # L06's shared inorder/height or L04's partition3).
+    "09": {
+        "naive-match": ["naive_match", "naiveAll", "sm_naive_all", "NaiveMatchDemo"],
+        "rabin-karp": ["rabin_karp", "rabinKarp", "sm_rabin_karp_all", "RabinKarpDemo"],
+        "kmp": [
+            "build_lps", "buildLps", "sm_build_lps",
+            "kmp_search", "kmpSearch", "sm_kmp_all", "KmpDemo",
+        ],
+        "horspool": [
+            "build_horspool_shift", "buildHorspoolShift", "sm_build_horspool_shift",
+            "horspool_search", "horspoolSearch", "sm_horspool_all", "HorspoolDemo",
+        ],
+    },
 }
 
 # lecture -> algorithm name (matches run_examples.py's ALGORITHM_CONFIG keys)
@@ -317,6 +337,15 @@ SECTION_ID = {
         "string-hash": "part-d.-integer와-string-hashing",
         "chained-hash-table": "part-f.-separate-chaining",
         "open-address-hash-table": "part-k.-삭제와-구현",
+    },
+    # Confirmed against the actually-rendered _book/chapters/09-string-matching.html
+    # section ids, not guessed from the .qmd headings. Each of L09's 4
+    # ALGORITHM_CONFIG entries gets a whole H2 Part to itself.
+    "09": {
+        "naive-match": "part-b.-naive-matching",
+        "rabin-karp": "part-g.-rabin-karp-분석과-활용",
+        "kmp": "part-l.-kmp-search",
+        "horspool": "part-p.-boyer-moore-horspool",
     },
 }
 
