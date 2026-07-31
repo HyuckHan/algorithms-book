@@ -334,6 +334,42 @@ ALGORITHM_CONFIG = {
             },
         },
     },
+    # See chapters/09.inventory §(c). All 4 algorithms share one library file
+    # per language (string_matching.py/StringMatchers.java/string_matching.c,
+    # matching the source's own organization) but each gets its own small
+    # demo driver with its own main() -- Java only allows one main() per
+    # class, so each demo is its own class (NaiveMatchDemo.java etc.); C
+    # mirrors that with its own small demo .c file compiled together with
+    # the shared library .c (same multi-file-per-binary pattern as L08's
+    # graph.c + algorithm.c + demo.c). Every demo prints only
+    # algorithm-result values (matches / lps / shift table entries), never
+    # policy-dependent internals, so the printed token sequence matches
+    # exactly across all 3 languages.
+    "09": {
+        "dir": "09-string-matching",
+        "algorithms": {
+            "naive-match": {
+                "c": {"files": ["string_matching.c", "naive_demo.c"], "bin": "naive_demo"},
+                "java": {"file": "NaiveMatchDemo.java", "class": "NaiveMatchDemo"},
+                "python": {"file": "naive_demo.py"},
+            },
+            "rabin-karp": {
+                "c": {"files": ["string_matching.c", "rabin_karp_demo.c"], "bin": "rabin_karp_demo"},
+                "java": {"file": "RabinKarpDemo.java", "class": "RabinKarpDemo"},
+                "python": {"file": "rabin_karp_demo.py"},
+            },
+            "kmp": {
+                "c": {"files": ["string_matching.c", "kmp_demo.c"], "bin": "kmp_demo"},
+                "java": {"file": "KmpDemo.java", "class": "KmpDemo"},
+                "python": {"file": "kmp_demo.py"},
+            },
+            "horspool": {
+                "c": {"files": ["string_matching.c", "horspool_demo.c"], "bin": "horspool_demo"},
+                "java": {"file": "HorspoolDemo.java", "class": "HorspoolDemo"},
+                "python": {"file": "horspool_demo.py"},
+            },
+        },
+    },
 }
 
 

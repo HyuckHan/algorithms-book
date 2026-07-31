@@ -366,6 +366,38 @@ FIGURE_CONFIG = {
         ("13_rehashing.tex", 0): {"slug": "27-rehash-animation", "mode": "sequence"},
         ("13_rehashing.tex", 1): {"slug": "28-resize-cost-sequence"},
     },
+    # See chapters/09.inventory §(e) for the full index-by-index derivation.
+    # No MACRO_PICTURES entry needed: \smrow/\smindices/\smshiftrow
+    # (lecture-notes/common/string_matching.tex) are \node-drawing helpers
+    # used *inside* an existing tikzpicture, not whole-picture macros like
+    # L06's \travtree/L07's \htrowthirteen. No pgfplots axis in this lecture
+    # either. 01_problem/03_redundancy/10_lps_table/13_kmp_analysis/
+    # 17_comparison/18_implementation/19_summary_quiz/20_appendix have no
+    # tikzpicture at all (tables/formulas/text only) -- 19_summary_quiz in
+    # particular has no concept-map figure in the source (unlike L06/L07),
+    # so the web chapter doesn't invent one.
+    "09": {
+        ("02_naive.tex", 0): {"slug": "01-naive-alignment-trace", "mode": "sequence"},
+        ("02_naive.tex", 1): {"slug": "02-naive-worst-case-repeated-prefix", "mode": "sequence"},
+        ("04_rabin_karp_intro.tex", 0): {"slug": "03-numeric-encoding-cad", "mode": "sequence"},
+        # Static (no \only overlay), unlike its idx0 sibling.
+        ("04_rabin_karp_intro.tex", 1): {"slug": "04-hash-equality-insufficient"},
+        ("05_rolling_hash.tex", 0): {"slug": "05-rolling-update-derivation", "mode": "sequence"},
+        # Static flow diagram (remove -> multiply -> add), no \only overlay.
+        ("05_rolling_hash.tex", 1): {"slug": "06-rolling-update-flow"},
+        ("06_modular_collision.tex", 0): {"slug": "07-collision-is-candidate", "mode": "sequence"},
+        ("07_rabin_karp_analysis.tex", 0): {"slug": "08-candidate-to-valid-hit", "mode": "sequence"},
+        ("08_border.tex", 0): {"slug": "09-prefix-lps-discovery", "mode": "sequence"},
+        ("09_kmp_idea.tex", 0): {"slug": "10-mismatch-fallback-trace", "mode": "sequence"},
+        ("11_kmp_preprocessing.tex", 0): {"slug": "11-lps-construction-trace", "mode": "sequence"},
+        ("12_kmp_search.tex", 0): {"slug": "12-kmp-mismatch-recovery-trace", "mode": "sequence"},
+        ("12_kmp_search.tex", 1): {"slug": "13-kmp-overlapping-match", "mode": "sequence"},
+        ("14_boyer_moore_intro.tex", 0): {"slug": "14-right-to-left-comparison", "mode": "sequence"},
+        ("15_bad_character.tex", 0): {"slug": "15-tiger-shift-table", "mode": "sequence"},
+        ("15_bad_character.tex", 1): {"slug": "16-absent-character-shift", "mode": "sequence"},
+        ("16_horspool.tex", 0): {"slug": "17-rational-repeated-character", "mode": "sequence"},
+        ("16_horspool.tex", 1): {"slug": "18-horspool-trace-tiger", "mode": "sequence"},
+    },
 }
 
 # Named per-figure TikZ patches (FIGURE_CONFIG's "patch" key), applied to a
@@ -958,7 +990,7 @@ def _lecture_slug(lecture):
     names = {
         "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
         "04": "04-selection", "05": "05-dynamic-programming", "06": "06-search-trees",
-        "07": "07-hash-tables", "08": "08-graphs",
+        "07": "07-hash-tables", "08": "08-graphs", "09": "09-string-matching",
     }
     return names.get(lecture, "lecture%s" % lecture)
 

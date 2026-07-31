@@ -1,0 +1,15 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{KMPSearch}{$T,P$}\State \(n\gets|T|,m\gets|P|,result\gets[]\)
+\If{\(m=0\)}\State\Return policy-defined result\EndIf
+\State $lps\gets$\Call{BuildLPS}{$P$}$;\ i,j\gets0$
+\While{\(i&lt;n\)}
+\If{\(T[i]=P[j]\)}\State \(i\gets i+1;\ j\gets j+1\)
+\If{\(j=m\)}\State append \(i-m\); \(j\gets lps[j-1]\)\EndIf
+\ElsIf{\(j&gt;0\)}\State \(j\gets lps[j-1]\)
+\Else\State \(i\gets i+1\)\EndIf
+\EndWhile\State\Return \(result\)\EndProcedure
+\end{algorithmic}
+</pre>
+```

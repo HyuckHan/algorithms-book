@@ -312,6 +312,36 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    # See chapters/09.inventory §(c). All 4 algorithms live in ONE shared
+    # library file per language (string_matching.py/StringMatchers.java/
+    # string_matching.c), matching how the source itself is organized --
+    # each snippet extracts just that algorithm's marked region, same as
+    # L03's sorting.py packing multiple sorts with separate markers.
+    "09": {
+        "dir": "09-string-matching",
+        "snippets": {
+            "naive-match": [
+                ("python/string_matching.py", "py"),
+                ("java/StringMatchers.java", "java"),
+                ("c/string_matching.c", "c"),
+            ],
+            "rabin-karp": [
+                ("python/string_matching.py", "py"),
+                ("java/StringMatchers.java", "java"),
+                ("c/string_matching.c", "c"),
+            ],
+            "kmp": [
+                ("python/string_matching.py", "py"),
+                ("java/StringMatchers.java", "java"),
+                ("c/string_matching.c", "c"),
+            ],
+            "horspool": [
+                ("python/string_matching.py", "py"),
+                ("java/StringMatchers.java", "java"),
+                ("c/string_matching.c", "c"),
+            ],
+        },
+    },
 }
 
 

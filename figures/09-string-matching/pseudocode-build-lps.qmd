@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BuildLPS}{$P$}\State \(m\gets|P|;\ lps[0]\gets0;\ len\gets0;\ i\gets1\)
+\While{\(i&lt;m\)}
+\If{\(P[i]=P[len]\)}\State \(len\gets len+1;\ lps[i]\gets len;\ i\gets i+1\)
+\ElsIf{\(len&gt;0\)}\State \(len\gets lps[len-1]\)
+\Else\State \(lps[i]\gets0;\ i\gets i+1\)\EndIf
+\EndWhile\State\Return \(lps\)\EndProcedure
+\end{algorithmic}
+</pre>
+```

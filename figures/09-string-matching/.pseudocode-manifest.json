@@ -1,0 +1,26 @@
+{
+  "build-lps": {
+    "index": 0,
+    "source": "11_kmp_preprocessing.tex"
+  },
+  "build-shift-table": {
+    "index": 0,
+    "source": "16_horspool.tex"
+  },
+  "horspool-search": {
+    "index": 1,
+    "source": "16_horspool.tex"
+  },
+  "kmp-search": {
+    "index": 0,
+    "source": "12_kmp_search.tex"
+  },
+  "naive-match": {
+    "index": 0,
+    "source": "02_naive.tex"
+  },
+  "rabin-karp": {
+    "index": 0,
+    "source": "07_rabin_karp_analysis.tex"
+  }
+}

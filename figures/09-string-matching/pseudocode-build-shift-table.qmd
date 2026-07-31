@@ -1,0 +1,10 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BuildShiftTable}{$P$}\State \(m\gets|P|\)
+\ForAll{characters \(c\)}\State \(shift[c]\gets m\)\EndFor
+\For{\(j\gets0\) to \(m-2\)}\State \(shift[P[j]]\gets m-1-j\)\EndFor
+\State\Return \(shift\)\EndProcedure
+\end{algorithmic}
+</pre>
+```

@@ -224,6 +224,28 @@ PSEUDOCODE_CONFIG = {
         ("07_open_addressing.tex", 1): "hash-put",
         ("11_deletion.tex", 0): "hash-delete",
     },
+    # See chapters/09.inventory §(b). 2 of the 3 \Call occurrences sit inside
+    # $...$/\(...\) math (KMPSearch's \Call{BuildLPS}{P}, Horspool's
+    # \Call{BuildShiftTable}{P}) -- both fixed by hoist_call_out_of_math like
+    # every other lecture's instances. The third (RabinKarp's
+    # \Call{EqualAt}{$T,P,s$}) is already outside math in the source (only
+    # its own args are math-wrapped), so it needs no fix -- EqualAt itself
+    # has no \Procedure block at all (named-but-undefined, like L07's
+    # Probe/FindSlot), connected via qmd prose instead. BuildLPS and
+    # BuildShiftTable, by contrast, ARE each a complete standalone
+    # \Procedure elsewhere in this same lecture, so KMPSearch calling
+    # BuildLPS and Horspool calling BuildShiftTable are normal complete-to-
+    # complete procedure references (no merge, no special handling needed
+    # -- same as L06 BST's successor/predecessor or L07's ChainedPut/
+    # ChainedSearch).
+    "09": {
+        ("02_naive.tex", 0): "naive-match",
+        ("07_rabin_karp_analysis.tex", 0): "rabin-karp",
+        ("11_kmp_preprocessing.tex", 0): "build-lps",
+        ("12_kmp_search.tex", 0): "kmp-search",
+        ("16_horspool.tex", 0): "build-shift-table",
+        ("16_horspool.tex", 1): "horspool-search",
+    },
 }
 
 
@@ -409,7 +431,7 @@ def _lecture_slug(lecture):
     names = {
         "01": "01-introduction", "03": "03-sorting", "04": "04-selection",
         "05": "05-dynamic-programming", "06": "06-search-trees", "07": "07-hash-tables",
-        "08": "08-graphs",
+        "08": "08-graphs", "09": "09-string-matching",
     }
     return names.get(lecture, "lecture%s" % lecture)
 

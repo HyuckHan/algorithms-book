@@ -1,0 +1,24 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Horspool}{$T,P$}
+\State \(n\gets|T|;\ m\gets|P|;\ result\gets[]\)
+\If{\(m=0\)}\State\Return policy-defined result\EndIf
+\If{\(m&gt;n\)}\State\Return \(result\)\EndIf
+\State $shift\gets$\Call{BuildShiftTable}{$P$}$;\ s\gets0$
+\While{\(s\le n-m\)}
+  \State \(j\gets m-1\)
+  \While{\(j\ge0\) \textbf{ and } \(P[j]=T[s+j]\)}
+    \State \(j\gets j-1\)
+  \EndWhile
+  \If{\(j&lt;0\)}
+    \State append \(s\) to \(result\)
+  \EndIf
+  \State \(\triangleright\) \textit{every alignment advances, match or mismatch}
+  \State \(s\gets s+shift[T[s+m-1]]\)
+\EndWhile
+\State\Return \(result\)
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

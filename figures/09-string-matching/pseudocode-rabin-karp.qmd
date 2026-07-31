@@ -1,0 +1,15 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{RabinKarp}{$T,P,d,q$}\State \(n\gets|T|,m\gets|P|,result\gets[]\)
+\If{\(m=0\)}\State\Return policy-defined result\EndIf
+\If{\(m&gt;n\)}\State\Return \(result\)\EndIf
+\State \(h\gets d^{m-1}\bmod q;\ pHash,tHash\gets0\)
+\For{\(j\gets0\) to \(m-1\)}\State update \(pHash,tHash\) by Horner modulo \(q\)\EndFor
+\For{\(s\gets0\) to \(n-m\)}
+\If{\(pHash=tHash\) \textbf{ and } \Call{EqualAt}{$T,P,s$}}\State append \(s\)\EndIf
+\If{\(s&lt;n-m\)}\State roll \(tHash\); normalize modulo \(q\)\EndIf
+\EndFor\State\Return \(result\)\EndProcedure
+\end{algorithmic}
+</pre>
+```

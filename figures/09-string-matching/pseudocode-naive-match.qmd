@@ -1,0 +1,12 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{NaiveMatch}{$T,P$}\State \(n\gets|T|,\ m\gets|P|,\ result\gets[]\)
+\If{\(m=0\)}\State\Return policy-defined result\EndIf
+\For{\(s\gets0\) to \(n-m\)}\State \(j\gets0\)
+\While{\(j&lt;m\) \textbf{ and } \(T[s+j]=P[j]\)}\State \(j\gets j+1\)\EndWhile
+\If{\(j=m\)}\State append \(s\) to \(result\)\EndIf\EndFor
+\State\Return \(result\)\EndProcedure
+\end{algorithmic}
+</pre>
+```
