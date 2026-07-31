@@ -205,7 +205,7 @@ last_verified: "2026-07-30"
 | 4 | 15 | 12  | 업데이트: $12\to15$ |
 | 5 | 8  | 15  | 유지: $v=15$ |
 
-![Maximum 추적: 처리한 prefix의 최댓값을 $v$로 유지한다.](../figures/01-introduction/06-maximum-trace.svg){fig-alt="7,12,3,15,8 다섯 칸 배열 아래 처리한 prefix를 표시하는 중괄호가 그려진 다이어그램" width="55%"}
+![Maximum 추적: 처리한 prefix의 최댓값을 $v$로 유지한다.](../figures/01-introduction/06-maximum-trace.svg){fig-alt="7,12,3,15,8 다섯 칸 배열 아래 처리한 prefix를 표시하는 중괄호가 그려진 다이어그램" width="45%"}
 
 **왜 맞는가 (proof-sketch)**: loop invariant는 "반복의 각 단계가 끝날 때 $v=\max\{A[1],\ldots,A[i]\}$이다."
 
