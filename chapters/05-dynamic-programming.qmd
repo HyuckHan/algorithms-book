@@ -53,9 +53,9 @@ last_verified: "2026-07-30"
 Recurrence(재귀 관계식) → Memoization(메모이제이션) → Tabulation(테이블화)의 흐름으로
 정리하고, 이후 모든 DP 문제를 같은 다섯 요소 템플릿으로 설계한다.
 
-![학습 로드맵: 재귀에서 출발해 중복 부분 문제를 인식하고, Memoization·Tabulation을 거쳐 대표 문제(Matrix Path, LCS, Maximum Subarray)로 이어지는 흐름.](../figures/05-dynamic-programming/01-roadmap.svg){fig-alt="재귀에서 시작해 중복 부분 문제 인식, Memoization과 Tabulation, 대표 DP 문제로 이어지는 트리 형태의 로드맵 다이어그램" width="90%"}
+![학습 로드맵: 재귀에서 출발해 중복 부분 문제를 인식하고, Memoization·Tabulation을 거쳐 대표 문제(Matrix Path, LCS, Maximum Subarray)로 이어지는 흐름.](../figures/05-dynamic-programming/01-roadmap.svg){fig-alt="재귀에서 시작해 중복 부분 문제 인식, Memoization과 Tabulation, 대표 DP 문제로 이어지는 트리 형태의 로드맵 다이어그램" width="70%"}
 
-![Recurrence(점화식) · Memoization(하향식 저장) · Tabulation(상향식 저장)의 관계: 셋 다 같은 재귀 관계식을 표현하되, 계산 순서와 저장 방식만 다르다.](../figures/05-dynamic-programming/02-recurrence-memo-tab.svg){fig-alt="Recurrence 노드에서 Memoization과 Tabulation 두 갈래로 뻗어나가는 관계도, 두 방식 모두 같은 재귀 관계식으로 되돌아옴을 화살표로 표시" width="80%"}
+![Recurrence(점화식) · Memoization(하향식 저장) · Tabulation(상향식 저장)의 관계: 셋 다 같은 재귀 관계식을 표현하되, 계산 순서와 저장 방식만 다르다.](../figures/05-dynamic-programming/02-recurrence-memo-tab.svg){fig-alt="Recurrence 노드에서 Memoization과 Tabulation 두 갈래로 뻗어나가는 관계도, 두 방식 모두 같은 재귀 관계식으로 되돌아옴을 화살표로 표시" width="65%"}
 
 ## Part B. Memoization, Tabulation, DP 설계 절차
 
@@ -115,19 +115,19 @@ DP 설계는 항상 같은 다섯 질문에 답하는 것으로 시작한다.
 ::: {.panel-tabset}
 ## 1단계
 
-![호출 전 base states만 초기화된 상태 — $F(6)$은 아직 cache miss다.](../figures/05-dynamic-programming/04-memo-trace-step1.svg){fig-alt="0번과 1번 칸만 채워지고 나머지는 물음표로 표시된 캐시 상태" width="80%"}
+![호출 전 base states만 초기화된 상태 — $F(6)$은 아직 cache miss다.](../figures/05-dynamic-programming/04-memo-trace-step1.svg){fig-alt="0번과 1번 칸만 채워지고 나머지는 물음표로 표시된 캐시 상태" width="60%"}
 
 ## 2단계
 
-![$F(1)$, $F(0)$은 cache hit, $F(2)$가 새로 저장된다.](../figures/05-dynamic-programming/04-memo-trace-step2.svg){fig-alt="0,1,2번 칸이 채워지고 나머지는 물음표인 캐시 상태" width="80%"}
+![$F(1)$, $F(0)$은 cache hit, $F(2)$가 새로 저장된다.](../figures/05-dynamic-programming/04-memo-trace-step2.svg){fig-alt="0,1,2번 칸이 채워지고 나머지는 물음표인 캐시 상태" width="60%"}
 
 ## 3단계
 
-![재귀가 내려갔다 올라오며 각 non-base state가 정확히 한 번씩 채워진다.](../figures/05-dynamic-programming/04-memo-trace-step3.svg){fig-alt="0부터 4번 칸까지 채워지고 5,6번은 물음표인 캐시 상태" width="80%"}
+![재귀가 내려갔다 올라오며 각 non-base state가 정확히 한 번씩 채워진다.](../figures/05-dynamic-programming/04-memo-trace-step3.svg){fig-alt="0부터 4번 칸까지 채워지고 5,6번은 물음표인 캐시 상태" width="60%"}
 
 ## 4단계
 
-![answer $F(6)=8$ — $F(4)$가 다시 요청되어도 cache hit이라 재계산하지 않는다.](../figures/05-dynamic-programming/04-memo-trace-step4.svg){fig-alt="0번부터 6번까지 모두 채워지고 6번 칸이 정답으로 강조된 캐시 상태" width="80%"}
+![answer $F(6)=8$ — $F(4)$가 다시 요청되어도 cache hit이라 재계산하지 않는다.](../figures/05-dynamic-programming/04-memo-trace-step4.svg){fig-alt="0번부터 6번까지 모두 채워지고 6번 칸이 정답으로 강조된 캐시 상태" width="60%"}
 :::
 
 각 state는 정확히 한 번만 계산되고, 그 다음부터는 $\Theta(1)$ cache hit이다. 총 $(n+1)$개
@@ -145,15 +145,15 @@ state × $\Theta(1)$ transition = $\Theta(n)$.
 ::: {.panel-tabset}
 ## 1단계
 
-![Base case $dp[0]=0,\ dp[1]=1$만 채워진 상태.](../figures/05-dynamic-programming/05-bottomup-trace-step1.svg){fig-alt="0,1번 칸만 채워진 테이블 상태" width="80%"}
+![Base case $dp[0]=0,\ dp[1]=1$만 채워진 상태.](../figures/05-dynamic-programming/05-bottomup-trace-step1.svg){fig-alt="0,1번 칸만 채워진 테이블 상태" width="60%"}
 
 ## 2단계
 
-![왼쪽에서 오른쪽으로 진행하며 각 칸이 두 이전 칸에만 의존하는 순서.](../figures/05-dynamic-programming/05-bottomup-trace-step2.svg){fig-alt="0부터 3번 칸까지 채워진 테이블 상태" width="80%"}
+![왼쪽에서 오른쪽으로 진행하며 각 칸이 두 이전 칸에만 의존하는 순서.](../figures/05-dynamic-programming/05-bottomup-trace-step2.svg){fig-alt="0부터 3번 칸까지 채워진 테이블 상태" width="60%"}
 
 ## 3단계
 
-![answer $F(6)=8$, 시간 $\Theta(n)$.](../figures/05-dynamic-programming/05-bottomup-trace-step3.svg){fig-alt="0번부터 6번까지 모두 채워지고 6번 칸이 정답으로 강조된 테이블 상태" width="80%"}
+![answer $F(6)=8$, 시간 $\Theta(n)$.](../figures/05-dynamic-programming/05-bottomup-trace-step3.svg){fig-alt="0번부터 6번까지 모두 채워지고 6번 칸이 정답으로 강조된 테이블 상태" width="60%"}
 :::
 
 **Rolling Variables**: $dp[i]$는 오직 $dp[i-1]$과 $dp[i-2]$에만 의존하므로, 표 전체를 유지할
@@ -271,9 +271,9 @@ overlapping subproblems가 함께 있어야 한다.
 있는지 알 수 없다 — Matrix Path의 최적해는 도착점까지 전체 경로의 합을 최소화해야 하므로,
 지금 당장 작아 보이는 선택이 나중에 더 큰 값을 강제로 지나게 만들 수 있다.
 
-![매 칸에서 더 작은 다음 칸(오른쪽 우선)만 보고 이동하면 첫 row를 따라가다 두 개의 100을 모두 지나게 되어, 합이 $1+2+100+1+1=105$로 매우 나쁘다.](../figures/05-dynamic-programming/06-greedy-counterexample-local.svg){fig-alt="3x3 격자에서 지역적으로 작은 값을 따라가 합 105가 되는 경로가 강조된 다이어그램" width="45%"}
+![매 칸에서 더 작은 다음 칸(오른쪽 우선)만 보고 이동하면 첫 row를 따라가다 두 개의 100을 모두 지나게 되어, 합이 $1+2+100+1+1=105$로 매우 나쁘다.](../figures/05-dynamic-programming/06-greedy-counterexample-local.svg){fig-alt="3x3 격자에서 지역적으로 작은 값을 따라가 합 105가 되는 경로가 강조된 다이어그램" width="20%"}
 
-![전역 최적 경로는 첫 column을 따라 내려간 뒤 마지막 row를 따라가 두 100을 모두 피하고, 합 $1+3+1+1+1=7$을 달성한다.](../figures/05-dynamic-programming/07-greedy-counterexample-optimal.svg){fig-alt="같은 3x3 격자에서 전역 최적 경로(합 7)가 강조된 다이어그램" width="45%"}
+![전역 최적 경로는 첫 column을 따라 내려간 뒤 마지막 row를 따라가 두 100을 모두 피하고, 합 $1+3+1+1+1=7$을 달성한다.](../figures/05-dynamic-programming/07-greedy-counterexample-optimal.svg){fig-alt="같은 3x3 격자에서 전역 최적 경로(합 7)가 강조된 다이어그램" width="20%"}
 
 ### Matrix Minimum Path Sum
 
@@ -378,7 +378,7 @@ memo table은 $\Theta(nm)$ 공간, 재귀 호출 스택은 $\Theta(n+m)$이다. 
 
 대표적으로 $dp[3][3]$은 $M[3][3]+\min(dp[2][3],dp[3][2])=3+\min(25,31)=28$로 계산된다.
 
-![$dp[3][3]$ 계산의 확대: 위쪽 25와 왼쪽 31 중 더 작은 25를 골라 $M[3][3]=3$을 더한다.](../figures/05-dynamic-programming/11-matrix-representative-cell.svg){fig-alt="dp[3][3] 칸이 위쪽 25, 왼쪽 31 두 이전 칸으로부터 화살표를 받는 확대 다이어그램" width="55%"}
+![$dp[3][3]$ 계산의 확대: 위쪽 25와 왼쪽 31 중 더 작은 25를 골라 $M[3][3]=3$을 더한다.](../figures/05-dynamic-programming/11-matrix-representative-cell.svg){fig-alt="dp[3][3] 칸이 위쪽 25, 왼쪽 31 두 이전 칸으로부터 화살표를 받는 확대 다이어그램" width="20%"}
 
 경로 복원은 각 칸에서 어느 방향(위/왼쪽)이 선택되었는지 parent 배열에 남겨 두었다가 $(n,m)$에서
 $(1,1)$까지 거슬러 올라가며 재구성한다.
@@ -469,7 +469,7 @@ Substring은 원문에서 **연속된** 구간이고, subsequence는 순서만 �
 **Case 1 (마지막 문자가 같다)**: $X[i]=Y[j]\Rightarrow dp[i][j]=dp[i-1][j-1]+1$ — 공통 문자
 하나를 답 끝에 추가하고 두 prefix를 모두 줄인다.
 
-![match 시 대각선 값에 1을 더한다.](../figures/05-dynamic-programming/13-lcs-case1.svg){fig-alt="대각선 위 칸에서 화살표가 현재 칸으로 향하고 +1이 표시된 다이어그램" width="35%"}
+![match 시 대각선 값에 1을 더한다.](../figures/05-dynamic-programming/13-lcs-case1.svg){fig-alt="대각선 위 칸에서 화살표가 현재 칸으로 향하고 +1이 표시된 다이어그램" width="15%"}
 
 **Case 2 (마지막 문자가 다르다)**: $X[i]\ne Y[j]\Rightarrow dp[i][j]=\max\{dp[i-1][j],dp[i][j-1]\}$
 — 최적해는 $X[i]$를 쓰지 않는 경우 또는 $Y[j]$를 쓰지 않는 경우 중 적어도 하나에 포함된다.
@@ -586,7 +586,7 @@ answer: $dp[7][6]=4$.
 **Backtracking 규칙**: match면 대각선으로, mismatch면 더 큰 값 방향으로, **동점이면 위쪽을
 우선**한다.
 
-![$(7,6)$에서 시작해 대각선·위·왼쪽을 오가며 뒤로 거슬러 올라간 뒤, 선택된 문자를 역순으로 뒤집으면 "BCBA"가 된다.](../figures/05-dynamic-programming/15-lcs-backtrack-trace.svg){fig-alt="LCS 표 위에 (8,8)=A, (6,7)=B, (5,5)=C, (4,3)=B 네 칸이 강조되고 화살표로 역추적 경로가 표시된 다이어그램, 오른쪽에 선택된 문자 A,B,C,B를 역순으로 뒤집어 BCBA를 얻는 과정이 텍스트로 표시됨" width="90%"}
+![$(7,6)$에서 시작해 대각선·위·왼쪽을 오가며 뒤로 거슬러 올라간 뒤, 선택된 문자를 역순으로 뒤집으면 "BCBA"가 된다.](../figures/05-dynamic-programming/15-lcs-backtrack-trace.svg){fig-alt="LCS 표 위에 (8,8)=A, (6,7)=B, (5,5)=C, (4,3)=B 네 칸이 강조되고 화살표로 역추적 경로가 표시된 다이어그램, 오른쪽에 선택된 문자 A,B,C,B를 역순으로 뒤집어 BCBA를 얻는 과정이 텍스트로 표시됨" width="80%"}
 
 **검증**: 얻은 문자열이 실제로 $X$와 $Y$ 모두의 subsequence인지, 길이가 $dp[m][n]$과 일치하는지
 확인한다.
