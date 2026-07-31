@@ -1,0 +1,17 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Color}{$k$}
+\If{\(k=|V|\)}\State output color; \Return true\EndIf
+\State \(v\gets order[k]\)
+\For{\(c\gets1\) to \(m\)}
+\If{every colored \(u\in Adj[v]\) has \(color[u]\ne c\)}
+\State \(color[v]\gets c\)
+\If{\Call{Color}{k+1}}\State\Return true\EndIf
+\State \(color[v]\gets0\)
+\EndIf\EndFor
+\State\Return false
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

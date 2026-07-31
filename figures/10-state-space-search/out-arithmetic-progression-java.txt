@@ -1,0 +1,3 @@
+sequence: 1,3,5,7
+length: 4
+valid: true

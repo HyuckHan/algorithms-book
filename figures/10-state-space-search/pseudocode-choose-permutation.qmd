@@ -1,0 +1,15 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{ChoosePermutation}{$n,k,depth,used,choice$}
+\If{\(depth=k\)}\State output \(choice[0..k-1]\); \Return\EndIf
+\For{\(value\gets0\) to \(n-1\)}
+\If{\(\neg used[value]\)}
+\State \(used[value]\gets true;\ choice[depth]\gets value\)
+\State \Call{ChoosePermutation}{$n,k,depth+1,used,choice$}
+\State \(used[value]\gets false\)
+\EndIf\EndFor
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

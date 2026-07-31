@@ -1,0 +1,2 @@
+cost: 10
+dijkstra_cost: 10

@@ -342,6 +342,57 @@ SNIPPET_CONFIG = {
             ],
         },
     },
+    # See chapters/10.inventory §(c). All 6 core algorithms live in ONE
+    # shared library file per language (state_space_search.py; C is split
+    # into per-algorithm files matching lecture-notes/code/lecture10/c's own
+    # file layout; Java is split into per-algorithm Solver classes matching
+    # lecture-notes/code/lecture10/java's own layout). graph-coloring's C
+    # file is new (the source has none -- see chapters/10.inventory (c)),
+    # and permutation.c's ss_combination_count is also new (the source only
+    # ported ChoosePermutation to C, not ChooseCombination).
+    "10": {
+        "dir": "10-state-space-search",
+        "snippets": {
+            "permutation-combination": [
+                ("python/state_space_search.py", "py"),
+                ("java/PermutationGenerator.java", "java"),
+                ("c/permutation.c", "c"),
+            ],
+            "place-n-queens": [
+                ("python/state_space_search.py", "py"),
+                ("java/NQueensSolver.java", "java"),
+                ("c/n_queens.c", "c"),
+            ],
+            "subset-sum": [
+                ("python/state_space_search.py", "py"),
+                ("java/SubsetSumSolver.java", "java"),
+                ("c/subset_sum.c", "c"),
+            ],
+            "color-graph-coloring": [
+                ("python/state_space_search.py", "py"),
+                ("java/GraphColoringSolver.java", "java"),
+                ("c/graph_coloring.c", "c"),
+            ],
+            "knapsack-bnb": [
+                ("python/state_space_search.py", "py"),
+                ("java/KnapsackBranchAndBound.java", "java"),
+                ("c/knapsack_bnb.c", "c"),
+            ],
+            "a-star": [
+                ("python/state_space_search.py", "py"),
+                ("java/AStarGrid.java", "java"),
+                ("c/a_star_grid.c", "c"),
+            ],
+            # Java-only, optional (\ssoptional) supplementary example -- the
+            # source has no C port either (see chapters/10.inventory (c)),
+            # and this isn't one of the 6 core algorithms in ALGORITHM_CONFIG
+            # (no 3-language cross-check needed), same treatment as L07's
+            # mutable-key-example.
+            "arithmetic-progression": [
+                ("java/ArithmeticProgressionSearch.java", "java"),
+            ],
+        },
+    },
 }
 
 

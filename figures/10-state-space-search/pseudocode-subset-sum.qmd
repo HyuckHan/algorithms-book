@@ -1,0 +1,14 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{SubsetSum}{$i,currentSum,remainingSum$}
+\If{\(currentSum=W\)}\State report selection; \Return\EndIf
+\If{\(i=n\lor currentSum&gt;W\lor currentSum+remainingSum&lt;W\)}\State\Return\EndIf
+\State include \(w[i]\)
+\State \Call{SubsetSum}{$i+1,currentSum+w[i],remainingSum-w[i]$}
+\State undo include
+\State \Call{SubsetSum}{$i+1,currentSum,remainingSum-w[i]$}
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

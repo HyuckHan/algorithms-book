@@ -246,6 +246,29 @@ PSEUDOCODE_CONFIG = {
         ("16_horspool.tex", 0): "build-shift-table",
         ("16_horspool.tex", 1): "horspool-search",
     },
+    # See chapters/10.inventory §(b). Only 1 of 13 \Call occurrences sits
+    # inside math (04_backtracking.tex's \ForAll{\(decision\in\Call{Candidates}
+    # {state}\)}) -- fewest of any lecture so far, still fixed by
+    # hoist_call_out_of_math. Backtrack and BranchAndBound are conceptual
+    # skeletons only (IsComplete/IsFeasible/Report/Candidates/Apply/
+    # IsPromising/Undo and RepresentsFeasibleSolution/IsComplete/Expand/
+    # FeasibilityPossible are all named-but-undefined -- the L07 Probe/L09
+    # EqualAt pattern, connected via qmd prose to the concrete algorithms
+    # that instantiate them, not merged or given their own bodies).
+    # AStar calling Relax is a normal complete-to-complete procedure
+    # reference (both fully defined in 12_a_star.tex), same shape as L09's
+    # KMPSearch/BuildLPS.
+    "10": {
+        ("03_permutation_combination.tex", 0): "choose-permutation",
+        ("03_permutation_combination.tex", 1): "choose-combination",
+        ("04_backtracking.tex", 0): "backtrack-skeleton",
+        ("05_n_queens.tex", 0): "place-n-queens",
+        ("06_subset_sum.tex", 0): "subset-sum",
+        ("07_graph_coloring.tex", 0): "color-graph-coloring",
+        ("09_branch_and_bound.tex", 0): "branch-and-bound-skeleton",
+        ("12_a_star.tex", 0): "a-star",
+        ("12_a_star.tex", 1): "relax",
+    },
 }
 
 
@@ -431,7 +454,7 @@ def _lecture_slug(lecture):
     names = {
         "01": "01-introduction", "03": "03-sorting", "04": "04-selection",
         "05": "05-dynamic-programming", "06": "06-search-trees", "07": "07-hash-tables",
-        "08": "08-graphs", "09": "09-string-matching",
+        "08": "08-graphs", "09": "09-string-matching", "10": "10-state-space-search",
     }
     return names.get(lecture, "lecture%s" % lecture)
 

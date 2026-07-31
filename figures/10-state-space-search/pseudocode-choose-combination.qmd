@@ -1,0 +1,13 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{ChooseCombination}{$n,k,start,depth,choice$}
+\If{\(depth=k\)}\State output \(choice\); \Return\EndIf
+\For{\(value\gets start\) to \(n-(k-depth)\)}
+\State \(choice[depth]\gets value\)
+\State \Call{ChooseCombination}{$n,k,value+1,depth+1,choice$}
+\EndFor
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

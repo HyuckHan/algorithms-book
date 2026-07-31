@@ -370,6 +370,50 @@ ALGORITHM_CONFIG = {
             },
         },
     },
+    # See chapters/10.inventory §(c). The reused C library returns only
+    # counts/optimal-values/cost (never full solution lists), while the
+    # reused Java solvers return actual solutions -- every demo below is
+    # designed around the common denominator both languages can produce
+    # identically (counts for permutation/n-queens/subset-sum, the actual
+    # color array for graph-coloring since that C file is new and written
+    # to match Java exactly, optimal profit/weight for knapsack, path cost
+    # for A*), so run_examples.py's exact 3-language match holds without
+    # exposing internals one language has and the other doesn't.
+    "10": {
+        "dir": "10-state-space-search",
+        "algorithms": {
+            "permutation-combination": {
+                "c": {"files": ["permutation.c", "permutation_demo.c"], "bin": "permutation_demo"},
+                "java": {"file": "PermutationDemo.java", "class": "PermutationDemo"},
+                "python": {"file": "permutation_demo.py"},
+            },
+            "place-n-queens": {
+                "c": {"files": ["n_queens.c", "n_queens_demo.c"], "bin": "n_queens_demo"},
+                "java": {"file": "NQueensDemo.java", "class": "NQueensDemo"},
+                "python": {"file": "n_queens_demo.py"},
+            },
+            "subset-sum": {
+                "c": {"files": ["subset_sum.c", "subset_sum_demo.c"], "bin": "subset_sum_demo"},
+                "java": {"file": "SubsetSumDemo.java", "class": "SubsetSumDemo"},
+                "python": {"file": "subset_sum_demo.py"},
+            },
+            "color-graph-coloring": {
+                "c": {"files": ["graph_coloring.c", "graph_coloring_demo.c"], "bin": "graph_coloring_demo"},
+                "java": {"file": "GraphColoringDemo.java", "class": "GraphColoringDemo"},
+                "python": {"file": "graph_coloring_demo.py"},
+            },
+            "knapsack-bnb": {
+                "c": {"files": ["knapsack_bnb.c", "knapsack_demo.c"], "bin": "knapsack_demo"},
+                "java": {"file": "KnapsackDemo.java", "class": "KnapsackDemo"},
+                "python": {"file": "knapsack_demo.py"},
+            },
+            "a-star": {
+                "c": {"files": ["a_star_grid.c", "a_star_demo.c"], "bin": "a_star_demo"},
+                "java": {"file": "AStarDemo.java", "class": "AStarDemo"},
+                "python": {"file": "a_star_demo.py"},
+            },
+        },
+    },
 }
 
 

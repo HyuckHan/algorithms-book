@@ -87,6 +87,7 @@ PREAMBLE = r"""\documentclass[border=4pt]{standalone}
 \definecolor{AlgoOrangeText}{HTML}{B45309}
 \definecolor{AlgoGrayText}{HTML}{586F86}
 \usepackage{amsmath,amssymb,mathtools}
+\usepackage{array}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -397,6 +398,38 @@ FIGURE_CONFIG = {
         ("15_bad_character.tex", 1): {"slug": "16-absent-character-shift", "mode": "sequence"},
         ("16_horspool.tex", 0): {"slug": "17-rational-repeated-character", "mode": "sequence"},
         ("16_horspool.tex", 1): {"slug": "18-horspool-trace-tiger", "mode": "sequence"},
+    },
+    # See chapters/10.inventory §(e) for the full index-by-index derivation.
+    # No MACRO_PICTURES entry needed: \prunetriangle (lecture-notes/common/
+    # state_space.tex) is a \node-drawing helper used inside an existing
+    # tikzpicture, same shape as L09's \smrow -- not a whole-picture macro.
+    # No pgfplots either. 13_comparison/14_implementation/15_summary_quiz/
+    # 16_appendix have no tikzpicture at all (tables/text only) -- no
+    # concept-map figure in the source (same as L09), so none is invented.
+    "10": {
+        ("01_state_space_basics.tex", 0): {"slug": "01-state-space-tree-structure"},
+        ("02_exhaustive_search.tex", 0): {"slug": "02-state-space-expansion", "mode": "sequence"},
+        ("02_exhaustive_search.tex", 1): {"slug": "03-dfs-bfs-visit-order", "mode": "sequence"},
+        ("03_permutation_combination.tex", 0): {"slug": "04-permutation-state-tree", "mode": "sequence"},
+        ("04_backtracking.tex", 0): {"slug": "05-apply-undo-symmetry", "mode": "sequence"},
+        # 6-step (matches content map's "N-Queens 6단계").
+        ("05_n_queens.tex", 0): {"slug": "06-four-queens-board-trace", "mode": "sequence"},
+        ("05_n_queens.tex", 1): {"slug": "07-four-queens-partial-tree"},
+        ("06_subset_sum.tex", 0): {"slug": "08-subset-sum-include-exclude-tree"},
+        ("06_subset_sum.tex", 1): {"slug": "09-subset-sum-trace", "mode": "sequence"},
+        # 4-step (matches content map's "coloring 4단계").
+        ("07_graph_coloring.tex", 0): {"slug": "10-graph-coloring-trace", "mode": "sequence"},
+        ("08_arithmetic_progression.tex", 0): {"slug": "11-arithmetic-progression-trace", "mode": "sequence"},
+        ("09_branch_and_bound.tex", 0): {"slug": "12-bound-based-pruning", "mode": "sequence"},
+        # 7-step (matches content map's "Knapsack ... 7단계").
+        ("10_knapsack_bnb.tex", 0): {"slug": "13-knapsack-best-first-trace", "mode": "sequence"},
+        ("10_knapsack_bnb.tex", 1): {"slug": "14-knapsack-state-tree"},
+        ("11_search_orders.tex", 0): {"slug": "15-frontier-policy-animation", "mode": "sequence"},
+        ("12_a_star.tex", 0): {"slug": "16-astar-grid-heuristic"},
+        # 6-step (matches content map's "A* OPEN/CLOSED 6단계").
+        ("12_a_star.tex", 1): {"slug": "17-astar-open-closed-trace", "mode": "sequence"},
+        # 3-step (matches content map's "path reconstruction 3단계").
+        ("12_a_star.tex", 2): {"slug": "18-astar-path-reconstruction", "mode": "sequence"},
     },
 }
 
@@ -840,6 +873,9 @@ def find_all_newcommands(text):
     return out
 
 
+DIRECT_COMMON_INPUT_RE = re.compile(r"\\input\{common/[^}]+\.tex\}")
+
+
 def lecture_common_block(lecture):
     """The standalone preamble's lecture-specific TikZ-style block.
 
@@ -851,6 +887,15 @@ def lecture_common_block(lecture):
     own \\documentclass/\\begin{document}), extract just the tikzset/newcommand
     blocks and reproduce them literally -- the same reasoning already used
     above for pulling beamerthemealgorithms.sty's color \\definecolors by hand.
+
+    L10 is a third layout: it has no `lecture10/common.tex` at all and inputs
+    `common/state_space.tex` (its own dedicated shared style file, not shared
+    with any other lecture -- see lecture10_content_map.md's "다른 lecture
+    디렉터리의 common.tex를 더 이상 입력하지 않는다") directly in
+    `lecture10.tex`'s own preamble instead. Those `\\input{common/...}` lines
+    are reproduced verbatim rather than re-extracted: they already resolve
+    correctly under this script's `cwd=str(LECTURE_NOTES)` (see
+    compile_svg), the same way `\\input{lectureNN/common.tex}` above does.
     """
     common_tex = LECTURE_NOTES / ("lecture%s" % lecture) / "common.tex"
     if common_tex.exists():
@@ -863,11 +908,12 @@ def lecture_common_block(lecture):
     tikzset = find_macro_block(preamble, "tikzset")
     if tikzset:
         pieces.append(tikzset)
+    pieces.extend(DIRECT_COMMON_INPUT_RE.findall(preamble))
     if not pieces:
         raise ValueError(
-            "no lecture%s/common.tex and no tikzset/newcommand found in %s -- "
-            "figures may rely on styles this script doesn't know how to reproduce"
-            % (lecture, main_tex_path)
+            "no lecture%s/common.tex and no tikzset/newcommand/direct common/ "
+            "\\input found in %s -- figures may rely on styles this script "
+            "doesn't know how to reproduce" % (lecture, main_tex_path)
         )
     return "\n".join(pieces)
 
@@ -991,6 +1037,7 @@ def _lecture_slug(lecture):
         "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
         "04": "04-selection", "05": "05-dynamic-programming", "06": "06-search-trees",
         "07": "07-hash-tables", "08": "08-graphs", "09": "09-string-matching",
+        "10": "10-state-space-search",
     }
     return names.get(lecture, "lecture%s" % lecture)
 

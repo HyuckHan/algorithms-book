@@ -1,0 +1,17 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Backtrack}{$state$}
+\If{\Call{IsComplete}{state}}
+  \If{\Call{IsFeasible}{state}}\State \Call{Report}{state}\EndIf
+  \State\Return
+\EndIf
+\ForAll{$decision\in$\Call{Candidates}{$state$}}
+  \State \Call{Apply}{state,decision}
+  \If{\Call{IsPromising}{state}}\State \Call{Backtrack}{state}\EndIf
+  \State \Call{Undo}{state,decision}
+\EndFor
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

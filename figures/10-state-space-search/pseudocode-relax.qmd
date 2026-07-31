@@ -1,0 +1,16 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Relax}{$u$}
+  \ForAll{\((u,v,w)\in Adj[u]\)}
+    \If{\(v\in closed\)} \State \textbf{continue} \EndIf
+    \State \(tentative\gets g[u]+w\)
+    \If{\(tentative&lt;g[v]\)}
+      \State \(g[v]\gets tentative;\ parent[v]\gets u\)
+      \State insert \((g[v]+h(v),\,g[v],\,v)\)
+    \EndIf
+  \EndFor
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

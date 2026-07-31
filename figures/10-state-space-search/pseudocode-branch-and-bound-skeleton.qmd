@@ -1,0 +1,23 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{BranchAndBound}{$root$}
+\State \(incumbentValue\gets-\infty;\ PQ\gets\) max-heap by upperBound
+\State compute \(root.upperBound\); insert \(root\)
+\While{\(PQ\ne\varnothing\)}
+\State \(node\gets ExtractMax(PQ)\)
+\If{\(node.upperBound\le incumbentValue\)}\State\textbf{continue}\EndIf
+\If{\Call{RepresentsFeasibleSolution}{node} and \(node.value&gt;incumbentValue\)}
+\State update incumbent
+\EndIf
+\If{\Call{IsComplete}{node}}\State\textbf{continue}\EndIf
+\ForAll{\(child\in Expand(node)\)}
+\If{\Call{FeasibilityPossible}{child}}\State compute bound
+\If{\(child.upperBound&gt;incumbentValue\)}\State insert child\EndIf\EndIf
+\EndFor
+\EndWhile
+\State\Return incumbent
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

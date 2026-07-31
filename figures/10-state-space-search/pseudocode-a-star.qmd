@@ -1,0 +1,20 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{AStar}{$start,goal$}
+  \State \(g[*]\gets\infty;\ parent[*]\gets NIL;\ closed\gets\varnothing\)
+  \State \(g[start]\gets0\)
+  \State \(open\gets\) min-PQ; insert \((h(start),0,start)\)
+  \While{\(open\ne\varnothing\)}
+    \State \((key,entryG,u)\gets ExtractMin(open)\)
+    \If{\(entryG\ne g[u]\)} \State \textbf{continue} \Comment{stale \(g\) snapshot} \EndIf
+    \If{\(u\in closed\)} \State \textbf{continue} \EndIf
+    \State \(closed\gets closed\cup\{u\}\)
+    \If{\(u=goal\)} \State \Return \Call{Reconstruct}{parent,goal} \EndIf
+    \State \Call{Relax}{$u$} \Comment{다음 슬라이드}
+  \EndWhile
+  \State \Return NO\_PATH
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

@@ -1,0 +1,15 @@
+```{=html}
+<pre class="pseudocode" data-line-number="true">
+\begin{algorithmic}
+\Procedure{Place}{$row$}
+\If{\(row=n\)}\State output \(position\); \Return\EndIf
+\For{\(col\gets0\) to \(n-1\)}
+\If{\(\neg usedColumn[col]\land\neg diag_1[row-col+n-1]\land\neg diag_2[row+col]\)}
+\State mark three arrays; \(position[row]\gets col\)
+\State \Call{Place}{row+1}
+\State unmark three arrays
+\EndIf\EndFor
+\EndProcedure
+\end{algorithmic}
+</pre>
+```

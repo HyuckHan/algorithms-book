@@ -1,0 +1,38 @@
+{
+  "a-star": {
+    "index": 0,
+    "source": "12_a_star.tex"
+  },
+  "backtrack-skeleton": {
+    "index": 0,
+    "source": "04_backtracking.tex"
+  },
+  "branch-and-bound-skeleton": {
+    "index": 0,
+    "source": "09_branch_and_bound.tex"
+  },
+  "choose-combination": {
+    "index": 1,
+    "source": "03_permutation_combination.tex"
+  },
+  "choose-permutation": {
+    "index": 0,
+    "source": "03_permutation_combination.tex"
+  },
+  "color-graph-coloring": {
+    "index": 0,
+    "source": "07_graph_coloring.tex"
+  },
+  "place-n-queens": {
+    "index": 0,
+    "source": "05_n_queens.tex"
+  },
+  "relax": {
+    "index": 1,
+    "source": "12_a_star.tex"
+  },
+  "subset-sum": {
+    "index": 0,
+    "source": "06_subset_sum.tex"
+  }
+}
