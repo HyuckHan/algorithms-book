@@ -1,0 +1,147 @@
+# Lecture 09 — Step 0 Inventory (정체 확정)
+
+## (a) 주제 확정
+
+**String Matching (문자열 매칭)** — 아래 출처가 모두 일치:
+
+- `docs/PER_LECTURE_NOTES.md` L09: "1-based→0-based 교정, valid shift 범위, Rabin–Karp hash
+  collision verification 필수, LPS convention 통일(KMP), Horspool shift table."
+- `docs/MIGRATION_STRATEGY.md`: "L09 naive, Rabin–Karp, border/LPS·KMP, Boyer–Moore–Horspool."
+  우선순위 L03→L01→L02→L05→L08→L04→L06→L07→**L09**→L10 — L07 다음이 L09가 맞음.
+- `docs/CODE_INVENTORY.md` Lecture 09 절: NaiveMatch/RabinKarp/BuildLPS·KMPSearch/
+  BuildShiftTable·Horspool 4-알고리즘 표.
+- `lecture-notes/docs/lecture09_content_map.md` 제목: "Lecture 9 Content Map — String
+  Matching", 20개 Part(A–T)가 정확히 naive/Rabin–Karp/border·KMP/Boyer–Moore–Horspool 흐름.
+- 원본 `lecture-notes/lecture09/sections/*.tex` 20개 파일 전체 열람 확인 — 그래프나 상태공간
+  탐색이 아니라 명백히 문자열 매칭 전용 강의.
+
+**L08의 "10장 A*" 연결점 확인**: `docs/PER_LECTURE_NOTES.md`가 명시하듯 "A* min-PQ = Lecture3
+heap 연결"은 **L10(상태공간 트리 탐색: backtracking/branch-and-bound/A*)** 항목이다. L09는 이
+연결점과 무관하며, L09 자신의 책임 범위가 아니다(확인만 하고 추가 조치 불필요). L09는 오히려
+L08의 그래프/heap과는 독립적인 새로운 주제(문자열)를 여는 장이다.
+
+**웹북 위치**: 원본 lecture 번호가 그대로 08 다음, (아직 변환 전인) 10 이전이며 MIGRATION_STRATEGY
+우선순위도 이를 뒷받침 → `chapters/08-graphs.qmd` **뒤**에 추가한다(_quarto.yml 마지막에 append).
+
+## (b) 다루는 알고리즘/개념 목록 (Part A–T, 섹션 파일과 1:1 대응)
+
+원본 `\section{}`은 5회만 등장(Part A/B/C/D/E로 라벨링되나 content map은 A–T 20개로 세분) —
+L06/L07과 동일한 패턴이므로 content map의 A–T 레터링을 웹 Part 구조 기준으로 채택한다.
+
+| Part | 제목 | 섹션 파일 | 핵심 내용 |
+|---|---|---|---|
+| A | Exact String Matching 문제 | 01_problem | text/pattern/alphabet, occurrence 정의, shift 범위, API 정책(empty pattern, m>n 등) |
+| B | Naive Matching | 02_naive | NaiveMatch pseudocode, alignment trace, worst Θ(nm)/best Θ(n) |
+| C | 중복 비교는 왜 생기는가? | 03_redundancy | Naive의 정보 폐기, Rabin-Karp(hash 재사용) vs KMP(border 재사용) 비교 |
+| D | Rabin-Karp의 기본 아이디어 | 04_rabin_karp_intro | fingerprint, candidate/valid/spurious hit, numeric encoding(cad=53) |
+| E | Rolling Hash | 05_rolling_hash | Horner, O(1) rolling update 유도(leading 제거→shift→trailing 추가) |
+| F | Modular Hash와 Collision | 06_modular_collision | modulus 필요성, negative remainder, collision=candidate(오류 아님) |
+| G | Rabin-Karp 분석과 활용 | 07_rabin_karp_analysis | RabinKarp pseudocode(EqualAt 호출), 고정 예제(T/P/d/q), 검증된 rolling hash trace, Θ(n+m+(z+c)m) |
+| H | Prefix, Suffix와 Border | 08_border | proper prefix, border, BAABABAA 예제(LPS=3) |
+| I | KMP의 핵심 아이디어 | 09_kmp_idea | matched prefix 재사용, mismatch fallback, text index i는 감소하지 않음 |
+| J | LPS/Failure Table | 10_lps_table | lps[i] 정의, standard LPS vs sentinel failure(본문은 standard만) |
+| K | KMP Preprocessing | 11_kmp_preprocessing | BuildLPS pseudocode, i/len invariant, LPS construction trace |
+| L | KMP Search | 12_kmp_search | KMPSearch pseudocode(BuildLPS 호출), mismatch/recovery trace, overlapping match |
+| M | KMP Correctness와 Complexity | 13_kmp_analysis | search invariant, Θ(n+m) 유도 |
+| N | Boyer-Moore의 아이디어 | 14_boyer_moore_intro | right-to-left 비교, full BM vs Horspool 구분 |
+| O | Bad-Character Rule | 15_bad_character | shift[c] 공식, TIGER 예제, absent/present character |
+| P | Boyer-Moore-Horspool | 16_horspool | BuildShiftTable(RabinKarp같은 별도 pseudocode), Horspool pseudocode(BuildShiftTable 호출), RATIONAL 예제, worst Θ(nm) |
+| Q | 알고리즘 비교와 선택 | 17_comparison | 4-알고리즘 비교표, workload별 선택, Unicode(UTF-16/UTF-8) 주의 |
+| R | 구현·테스트 | 18_implementation | Java/C API, invariant validator, 6000-case differential test |
+| S | Summary와 Quiz | 19_summary_quiz | 4세트 퀴즈+정답(**tikzpicture/concept-map 없음** — 아래 참고) |
+| T | Appendix | 20_appendix | sentinel failure convention, bit complexity, Unicode detail, multi-pattern/2D 미리보기 |
+
+**의사코드 블록 (총 6개, 병합 불필요)**:
+1. `NaiveMatch` (02) — 완결된 단독 procedure.
+2. `RabinKarp` (07) — `\Call{EqualAt}{T,P,s}` 호출. **EqualAt은 formal `\Procedure`가 없는
+   이름뿐인 서브루틴** — L07의 `Probe`/`FindSlot`과 같은 패턴. 본문에서 "Naive의 문자별 비교와
+   동일"로 연결하고 억지로 별도 pseudocode 블록을 만들지 않는다.
+3. `BuildLPS` (11) — 완결된 단독 procedure.
+4. `KMPSearch` (12) — `\Call{BuildLPS}{P}` 호출. BuildLPS는 **formal하게 정의된 완결
+   procedure**이므로 L06 BST의 successor/predecessor 참조나 L07 ChainedPut→ChainedSearch와
+   같은 "완결된 절차 간 정상 참조" — 병합도 특수 처리도 불필요, 본문 설명만 연결.
+5. `BuildShiftTable` (16, 첫 algorithmic 블록) — 완결된 단독 procedure.
+6. `Horspool` (16, 두 번째 algorithmic 블록) — `\Call{BuildShiftTable}{P}` 호출. 4번과 같은
+   "완결된 절차 간 정상 참조" 패턴.
+
+**`\Call`-in-math 사전 점검**: 원본에 `\Call` 3회 등장, 그중 2회가 `$...$`/`\(...\)` 수식 모드
+안에 위치(L05 버그 패턴, `hoist_call_out_of_math()`로 처리 필요):
+- `12_kmp_search.tex`: `\(lps\gets\Call{BuildLPS}{P};\ i,j\gets0\)` — 수식 안.
+- `16_horspool.tex`: `\(shift\gets\Call{BuildShiftTable}{P};\ s\gets0\)` — 수식 안.
+- `07_rabin_karp_analysis.tex`의 `\Call{EqualAt}{$T,P,s$}`는 이미 수식 밖(인자만 별도로
+  `$T,P,s$`로 감쌈)이라 정상 형태 — 수정 불필요, 다만 fault-injection 검증은 위 2건으로 충분.
+
+## (c) code/lecture09/ 언어별 구현 현황 (CODE_INVENTORY.md 대비 확인 결과)
+
+| 알고리즘 | C | Java | Python |
+|---|---|---|---|
+| NaiveMatch | ✅ `sm_naive_all`/`sm_naive_first` (`string_matching.c`) | ✅ `StringMatchers.naiveAll`/`naiveFirst` | ❌ 신규 |
+| RabinKarp | ✅ `sm_rabin_karp_all` — CODE_INVENTORY의 "확인 필요"는 **존재로 확정**(overflow-safe modular add/sub/mul 포함) | ✅ `StringMatchers.rabinKarpAll` | ❌ 신규 |
+| BuildLPS / KMPSearch | ✅ `sm_build_lps`/`sm_kmp_all`/`sm_kmp_first` — **확인 필요 해소** | ✅ `StringMatchers.buildLps`/`kmpAll` | ❌ 신규 |
+| BuildShiftTable / Horspool | ✅ `sm_build_horspool_shift`/`sm_horspool_all` — **확인 필요 해소** | ✅ `StringMatchers.buildHorspoolShift`/`horspoolAll` | ❌ 신규 |
+
+**검증된 고정 예제**(그대로 재사용): `T="acebbceeaabceedb"`, `P="eeaab"`, base/d=5, modulus/q=113 →
+`pHash=63`, window hash sequence `[17,87,65,33,91,42,63,21,39,86,94,58]`, occurrence `[6]`.
+`LPS("BAABABAA")=[0,0,0,1,2,1,2,3]`. TIGER shift table `T=4,I=3,G=2,E=1,R=5,other=5`. RATIONAL
+`R=7,A=1,T=5,I=4,O=3,N=2,L=8,other=8`. Java `StringMatchingDemo.java`가 이 예제 그대로 4개
+알고리즘을 나란히 실행하는 참고 데모를 이미 갖고 있음(재작성 없이 동일 예제를 Python에도 적용).
+
+**Python 신규 작성 범위**: `naive_match`, `rabin_karp`(overflow-safe modular arithmetic 포함),
+`build_lps`+`kmp_search`, `build_horspool_shift`+`horspool_search` — Java/C와 동일하게 **한
+파일**(`string_matching.py`)에 4개 snippet 마커로 구성한다(Java `StringMatchers.java`, C
+`string_matching.c`가 이미 그렇게 되어 있어 원본 파일 구성을 그대로 따름). Java/C는 재사용하되
+CODE_INVENTORY 확인 결과 이미 4개 전부 존재하므로 그대로 채택, 데모 main()만 책 예제에 맞게
+정리한다(L07처럼 정책-의존적 내부 상태는 출력하지 않고 policy-invariant 결과만 출력).
+
+## (d) 콘텐츠 맵 교정 사항 (보존해야 할 것)
+
+- 전 구간 **0-based indexing** 통일(`T[0..n-1]`, `P[0..m-1]`, valid shift `0<=s<=n-m`).
+- `cad` 인코딩 값은 원본 오류 28이 아니라 **53**으로 교정.
+- hash equality만으로 match 확정 금지 — 반드시 **exact verification**(candidate → valid hit).
+- standard LPS(`lps[0]=0`, `j<-lps[j-1]`)만 사용하고 sentinel failure(`failure[0]=-1`) convention은
+  섞지 않는다(Appendix에서만 참고로 언급).
+- Rabin-Karp expected Θ(n+m)은 "verification 총비용도 linear라는 가정" 하에서만 성립 — collision이
+  없어도 true occurrence가 많으면(`T=AAAA...`, `P=AAAA...`) Θ(nm)이 될 수 있음을 명시.
+- KMP "각 text 문자를 정확히 한 번 비교"라는 과도한 표현 금지 — 정확히는 "i는 감소하지 않고,
+  전체 비교 수가 linear하게 bounded"라고 서술.
+- Horspool "실제 검사 위치가 n보다 작을 수 있다"는 것이지 **점근적으로 O(n)보다 작다는 뜻이
+  아님**을 명확히.
+- full Boyer-Moore(bad-character+good-suffix)와 Horspool(bad-character만)을 구분 — 이 강의의
+  구현/트레이스는 Horspool까지만 다룸.
+- negative remainder(Java/C `%`가 음수 가능) → normalizedMod/unsigned subtraction으로 안전하게.
+
+## (e) TikZ 인벤토리 (extract_tikz.py 확장 필요 항목)
+
+**MACRO_PICTURES 불필요**: `\smrow`/`\smindices`/`\smshiftrow`(공유 스타일 `common/
+string_matching.tex`)는 기존 tikzpicture **안에서** 쓰이는 \node-그리기 헬퍼일 뿐, L06 `\travtree`/
+L07 `\htrowthirteen`처럼 매크로 정의 자체가 `\begin{tikzpicture}`를 포함하지 않는다 — 그냥
+표준 TIKZ_RE로 전체 그림이 잡힌다.
+
+**PGFPlots 없음**: `\begin{axis}` 0회.
+
+**총 18개 tikzpicture** (문서 순서, 파일별 grep count로 교차 확인 완료):
+02_naive(2), 04_rabin_karp_intro(2), 05_rolling_hash(2), 06_modular_collision(1),
+07_rabin_karp_analysis(1), 08_border(1), 09_kmp_idea(1), 11_kmp_preprocessing(1),
+12_kmp_search(2), 14_boyer_moore_intro(1), 15_bad_character(2), 16_horspool(2).
+01/03/10/13/17/18/19/20은 그림이 전혀 없음(표·수식·텍스트만).
+
+**개념 지도(concept map) 없음**: L06/L07과 달리 `19_summary_quiz.tex`(Part S)에 tikzpicture가
+전혀 없다 — 원본에 concept-map 그림 자체가 없으므로 **새로 만들어 넣지 않는다**(hand-invented
+다이어그램 금지 원칙). 웹 챕터의 "개념 지도" 절은 생략하거나, 4-알고리즘 발전 흐름(직접 비교→
+rolling hash→prefix/suffix 재사용→character skip, 이미 03_redundancy.tex에 텍스트로 존재)을
+텍스트로만 정리한다.
+
+**오버레이**: 모든 그림이 표준 `\only<N>`/`\only<N-M>` 조합(가장 복잡한 것은 09_kmp_idea와
+12_kmp_search, 16_horspool의 "범위+개별" 혼합 오버레이) — 기존 overlay_steps()/render_overlay_at()
+로직이 이미 지원하는 형태, 새 메커니즘 불필요.
+
+## (f) `_quarto.yml` 위치
+
+`chapters/08-graphs.qmd` **뒤**(현재 마지막 챕터이므로 리스트 맨 끝에 추가). 파일명
+`chapters/09-string-matching.qmd`, 코드/그림 디렉터리 `code/09-string-matching/`,
+`figures/09-string-matching/`.
+
+## 결론
+
+Step 0 확정: **Lecture 09 = String Matching (문자열 매칭)**. L08의 "10장 A*" 예고는 L10의
+책임이며 L09와 무관함을 확인. 상충 신호 없음. 변환 단계로 진행한다.
