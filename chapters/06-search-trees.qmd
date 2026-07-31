@@ -54,7 +54,7 @@ Tree는 계층을 표현한다(file system, organization hierarchy, syntax tree)
 하나의 root가 있고, root를 제외한 각 node는 정확히 하나의 parent를 가지며, root에서 각 node까지 unique path가 있다.
 :::
 
-![Rooted tree 예제: A가 root, B와 C가 A의 child, D·E가 B의 child, F·G가 C의 child다.](../figures/06-search-trees/01-rooted-tree-definition.svg){fig-alt="A를 root로 B,C가 자식이고 B의 자식이 D,E, C의 자식이 F,G인 트리 다이어그램" width="45%"}
+![Rooted tree 예제: A가 root, B와 C가 A의 child, D·E가 B의 child, F·G가 C의 child다.](../figures/06-search-trees/01-rooted-tree-definition.svg){fig-alt="A를 root로 B,C가 자식이고 B의 자식이 D,E, C의 자식이 F,G인 트리 다이어그램" width="25%"}
 
 같은 그림에서 여러 관계를 구분해보자: A는 root이고 degree 2다. A는 parent이고 B와 C는 A의 child이자 서로 sibling이다. D와 E는 leaf이고 B는 internal node다. C의 subtree는 $\{C,F,G\}$이고 A는 G의 ancestor다.
 
@@ -84,8 +84,8 @@ node가 $n\ge1$개인 tree는 다음을 만족한다: (1) connected이며 cycle�
 
 각 node는 최대 두 child를 가지고, left child와 right child는 서로 구별된다 — child가 하나뿐이어도 left인지 right인지가 구조의 일부다.
 
-![A의 left child가 B인 경우.](../figures/06-search-trees/03-left-child-example.svg){fig-alt="A에서 B로 L 표시가 붙은 edge가 내려가는 다이어그램" width="30%"}
-![A의 right child가 B인 경우.](../figures/06-search-trees/04-right-child-example.svg){fig-alt="A에서 B로 R 표시가 붙은 edge가 내려가는 다이어그램" width="30%"}
+![A의 left child가 B인 경우.](../figures/06-search-trees/03-left-child-example.svg){fig-alt="A에서 B로 L 표시가 붙은 edge가 내려가는 다이어그램" width="10%"}
+![A의 right child가 B인 경우.](../figures/06-search-trees/04-right-child-example.svg){fig-alt="A에서 B로 R 표시가 붙은 edge가 내려가는 다이어그램" width="10%"}
 
 Binary tree 응용: expression tree(operator가 internal node, operand가 leaf), Huffman tree(prefix-free code를 만드는 weighted tree), heap(complete binary tree를 array로 저장), search tree(order invariant로 후보를 줄임).
 
@@ -109,7 +109,7 @@ $$n=1+2+\cdots+2^h=2^{h+1}-1$$
 
 **Linked representation**은 key/data, left, right가 필수고 parent는 optional이며 sparse arbitrary tree에 자연스럽다.
 
-![Linked node: parent/key/left/right 네 필드를 가진 레코드.](../figures/06-search-trees/06-linked-representation.svg){fig-alt="parent, key, left, right 네 칸으로 나뉜 레코드 다이어그램" width="30%"}
+![Linked node: parent/key/left/right 네 필드를 가진 레코드.](../figures/06-search-trees/06-linked-representation.svg){fig-alt="parent, key, left, right 네 칸으로 나뉜 레코드 다이어그램" width="25%"}
 
 parent pointer는 successor·predecessor·upward navigation을 쉽게 하지만, node당 memory가 늘고 rotation·transplant마다 일관되게 갱신해야 한다 — **pointer를 추가하면 연산은 편해지지만 invariant도 하나 늘어난다.**
 
@@ -287,8 +287,8 @@ Maximum은 left를 right로 바꾼 symmetric algorithm이다.
 
 **SUCCESSOR**는 두 case다: (1) $x.right\ne\NIL$이면 $\operatorname{minimum}(x.right)$, (2) right subtree가 없으면 parent를 올라가며 현재 node가 처음으로 ancestor의 left subtree에 놓이는 그 ancestor다. $x.key$보다 큰 key 중 가장 작은 key라는 정의와 일치한다.
 
-![SUCCESSOR 두 case: 15는 right subtree(18 아래)의 minimum인 17이 successor이고, 4는 위로 올라가 처음 left-turn 경계인 6이 successor다.](../figures/06-search-trees/15-successor-cases.svg){fig-alt="15와 17이 강조된 case1 트리와 나란히 4와 6이 강조된 case2 설명이 함께 표시된 다이어그램" width="55%"}
-![Case 2 보조 그림: 4에서 부모 3, 조부모 6으로 올라가며 처음 left child였던 지점(3)의 부모(6)가 successor.](../figures/06-search-trees/16-successor-case2-ancestor-chain.svg){fig-alt="6,3,4 세 노드가 위로 올라가는 화살표로 연결된 보조 다이어그램" width="30%"}
+![SUCCESSOR 두 case: 15는 right subtree(18 아래)의 minimum인 17이 successor이고, 4는 위로 올라가 처음 left-turn 경계인 6이 successor다.](../figures/06-search-trees/15-successor-cases.svg){fig-alt="15와 17이 강조된 case1 트리와 나란히 4와 6이 강조된 case2 설명이 함께 표시된 다이어그램" width="25%"}
+![Case 2 보조 그림: 4에서 부모 3, 조부모 6으로 올라가며 처음 left child였던 지점(3)의 부모(6)가 successor.](../figures/06-search-trees/16-successor-case2-ancestor-chain.svg){fig-alt="6,3,4 세 노드가 위로 올라가는 화살표로 연결된 보조 다이어그램" width="15%"}
 
 $$succ(15)=17,\quad succ(6)=7,\quad succ(4)=6,\quad succ(20)=\NIL$$
 
@@ -442,26 +442,26 @@ Left rotation은 모든 left/right를 바꾼 symmetric operation이다.
 **LL case**: left-heavy $z=30$, left-left → `RIGHT-ROTATE`$(30)$.
 
 ![LL 위반: 30(BF=+2)의 left child 20, 20의 left child 10.](../figures/06-search-trees/25-ll-case-before.svg){fig-alt="30이 위반 표시, 자식 20(강조), 20의 자식 10인 트리" width="30%"}
-![LL 교정 후: 20이 root(BF=0), 10·30이 좌우 child.](../figures/06-search-trees/26-ll-case-after.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="30%"}
+![LL 교정 후: 20이 root(BF=0), 10·30이 좌우 child.](../figures/06-search-trees/26-ll-case-after.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="25%"}
 
 **RR case**: right-heavy $z=10$, right-right → `LEFT-ROTATE`$(10)$.
 
 ![RR 위반: 10(BF=-2)의 right child 20, 20의 right child 30.](../figures/06-search-trees/27-rr-case-before.svg){fig-alt="10이 위반 표시, 자식 20(강조), 20의 자식 30인 트리" width="30%"}
-![RR 교정 후: 20이 root(BF=0), 10·30이 좌우 child.](../figures/06-search-trees/28-rr-case-after.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="30%"}
+![RR 교정 후: 20이 root(BF=0), 10·30이 좌우 child.](../figures/06-search-trees/28-rr-case-after.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="25%"}
 
 두 경우 모두 before/after inorder $=10,20,30$이고, 교정 후 $h(10)=h(30)=0$, $h(20)=1$, 모든 $BF=0$이다.
 
 **LR case**(double rotation): `LEFT-ROTATE`$(10)$ 후 `RIGHT-ROTATE`$(30)$.
 
-![LR 1단계: 30(BF=+2)의 left child 10, 10의 right child 20 — 안쪽 shape를 확인한다.](../figures/06-search-trees/29-lr-case-step1.svg){fig-alt="30이 위반, 자식 10(강조), 10의 자식 20인 트리" width="30%"}
-![LR 2단계: 10을 left-rotate해 LL 형태로 바꾼다.](../figures/06-search-trees/30-lr-case-step2.svg){fig-alt="30 아래 20(강조), 20의 자식 10으로 바뀐 중간 상태" width="30%"}
-![LR 3단계: 30을 right-rotate해 완료.](../figures/06-search-trees/31-lr-case-step3.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="30%"}
+![LR 1단계: 30(BF=+2)의 left child 10, 10의 right child 20 — 안쪽 shape를 확인한다.](../figures/06-search-trees/29-lr-case-step1.svg){fig-alt="30이 위반, 자식 10(강조), 10의 자식 20인 트리" width="15%"}
+![LR 2단계: 10을 left-rotate해 LL 형태로 바꾼다.](../figures/06-search-trees/30-lr-case-step2.svg){fig-alt="30 아래 20(강조), 20의 자식 10으로 바뀐 중간 상태" width="25%"}
+![LR 3단계: 30을 right-rotate해 완료.](../figures/06-search-trees/31-lr-case-step3.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="25%"}
 
 **RL case**(double rotation): `RIGHT-ROTATE`$(30)$ 후 `LEFT-ROTATE`$(10)$.
 
-![RL 1단계: 10(BF=-2)의 right child 30, 30의 left child 20 — 안쪽 shape를 확인한다.](../figures/06-search-trees/32-rl-case-step1.svg){fig-alt="10이 위반, 자식 30(강조), 30의 자식 20인 트리" width="30%"}
-![RL 2단계: 30을 right-rotate해 RR 형태로 바꾼다.](../figures/06-search-trees/33-rl-case-step2.svg){fig-alt="10 아래 20(강조), 20의 자식 30으로 바뀐 중간 상태" width="30%"}
-![RL 3단계: 10을 left-rotate해 완료.](../figures/06-search-trees/34-rl-case-step3.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="30%"}
+![RL 1단계: 10(BF=-2)의 right child 30, 30의 left child 20 — 안쪽 shape를 확인한다.](../figures/06-search-trees/32-rl-case-step1.svg){fig-alt="10이 위반, 자식 30(강조), 30의 자식 20인 트리" width="15%"}
+![RL 2단계: 30을 right-rotate해 RR 형태로 바꾼다.](../figures/06-search-trees/33-rl-case-step2.svg){fig-alt="10 아래 20(강조), 20의 자식 30으로 바뀐 중간 상태" width="25%"}
+![RL 3단계: 10을 left-rotate해 완료.](../figures/06-search-trees/34-rl-case-step3.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="25%"}
 
 두 double rotation 모두 before/after inorder $=10,20,30$이고, 교정 후 $h(10)=h(30)=0$, $h(20)=1$, 모든 $BF=0$이다.
 
@@ -525,7 +525,7 @@ ordinary BST delete 후 upward height update를 하는 것은 같지만, subtree
 
 **NIL은 data leaf가 아니다** — ordinary leaf는 key를 가진 internal node이고, NIL은 모든 missing child를 나타내는 black sentinel이다. 구현은 shared sentinel 하나를 쓸 수 있다.
 
-![NIL sentinel: 10(B)의 두 child 5(R)·15(R)가 각각 NIL(sentinel) 두 개씩을 가리킨다.](../figures/06-search-trees/35-nil-sentinel.svg){fig-alt="10B를 루트로 5R,15R이 자식이고 각각 NIL 사각형 두 개를 가리키는 트리" width="45%"}
+![NIL sentinel: 10(B)의 두 child 5(R)·15(R)가 각각 NIL(sentinel) 두 개씩을 가리킨다.](../figures/06-search-trees/35-nil-sentinel.svg){fig-alt="10B를 루트로 5R,15R이 자식이고 각각 NIL 사각형 두 개를 가리키는 트리" width="40%"}
 
 $$bh(x)=x\text{를 제외하고 descendant NIL까지 만나는 black node 수}$$
 
@@ -556,7 +556,7 @@ RB INSERT 용어: $z$(current), $p$(parent), $g$(grandparent), $u$(uncle)다. �
 
 **RB Insert 41, 38, 31**: uncle black, outer case로 곧바로 처리된다.
 
-![41,38 삽입 후 31 삽입 직전: 41(B) 아래 38(R).](../figures/06-search-trees/39-rb-insert-41-38-31-step1.svg){fig-alt="41B 아래 38R 하나만 있는 트리" width="25%"}
+![41,38 삽입 후 31 삽입 직전: 41(B) 아래 38(R).](../figures/06-search-trees/39-rb-insert-41-38-31-step1.svg){fig-alt="41B 아래 38R 하나만 있는 트리" width="15%"}
 ![31 삽입 직후: 38(R) 아래 31(R) — uncle black, outer.](../figures/06-search-trees/40-rb-insert-41-38-31-step2.svg){fig-alt="41B 아래 38R, 38의 자식 31R인 트리, uncle black outer라는 콜아웃" width="30%"}
 ![right rotate 41 후: 38(B)이 root, 31·41이 red 자식.](../figures/06-search-trees/41-rb-insert-41-38-31-step3.svg){fig-alt="38B를 루트로 31R,41R이 자식인 트리, right rotate 41이라는 콜아웃" width="30%"}
 
@@ -572,7 +572,7 @@ RB INSERT 용어: $z$(current), $p$(parent), $g$(grandparent), $u$(uncle)다. �
 
 **RB Insert 8과 최종 검증**: 8 삽입이 12/31에서 uncle-red recolor를 한 번 더 일으킨 뒤, root는 black이고 red-red가 없으며 모든 path의 black-height가 같다.
 
-![최종 tree(41,38,31,12,19,8 삽입 완료): root 38(B), 모든 invariant 충족.](../figures/06-search-trees/46-rb-insert-8-final.svg){fig-alt="38B를 루트로 19R(자식 12B(자식 8R), 31B), 41B인 최종 트리" width="55%"}
+![최종 tree(41,38,31,12,19,8 삽입 완료): root 38(B), 모든 invariant 충족.](../figures/06-search-trees/46-rb-insert-8-final.svg){fig-alt="38B를 루트로 19R(자식 12B(자식 8R), 31B), 41B인 최종 트리" width="50%"}
 
 ::: {.callout-tip title="RB INSERT Fixup 요약"}
 공통: $p=z.parent$, $g=p.parent$, $u=$ uncle. $u$가 red이면 $p,u$를 black, $g$를 red로 하고 $z\gets g$.
@@ -650,8 +650,8 @@ B-Tree의 삽입은 **세 procedure가 함께 구성하는 하나의 흐름**이
 
 **Insert 10, 20, 5, 6**: 세 번째 삽입에서 root가 가득 차(5,10,20) split이 일어난다.
 
-![10 삽입 후 20 삽입: root가 [10,20]인 상태.](../figures/06-search-trees/49-btree-insert-step1.svg){fig-alt="10 하나만 있는 노드" width="20%"}
-![](../figures/06-search-trees/50-btree-insert-step2.svg){fig-alt="10,20 두 키가 있는 노드" width="20%"}
+![10 삽입 후 20 삽입: root가 [10,20]인 상태.](../figures/06-search-trees/49-btree-insert-step1.svg){fig-alt="10 하나만 있는 노드" width="10%"}
+![](../figures/06-search-trees/50-btree-insert-step2.svg){fig-alt="10,20 두 키가 있는 노드" width="15%"}
 ![5 삽입 후 root가 [5,10,20]로 가득 참(root full).](../figures/06-search-trees/51-btree-insert-step3.svg){fig-alt="5,10,20 세 키로 가득 찬 노드, root full이라는 콜아웃" width="25%"}
 ![10 promotion 후 6 삽입: 10이 새 root, [5,6]과 [20]이 두 child.](../figures/06-search-trees/52-btree-insert-step4.svg){fig-alt="10을 루트로 5,6과 20 두 child로 분리된 트리, 10 promotion 후 6 삽입이라는 콜아웃" width="35%"}
 
