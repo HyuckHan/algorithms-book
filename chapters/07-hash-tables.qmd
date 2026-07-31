@@ -4,7 +4,7 @@ description: "key에서 hash code, compression, bucket index로 이어지는 파
 lecture: 7
 order: 7
 slug: "07-hash-tables"
-status: "review"
+status: "verified"
 objectives:
   - "key, hash code, bucket index, compression을 구분하고 hash table의 강점과 한계(순서 없음, worst case)를 조건과 함께 말한다."
   - "division·multiplication·polynomial(Horner) hash를 계산하고, collision이 필연적인 이유(pigeonhole)를 설명한다."
