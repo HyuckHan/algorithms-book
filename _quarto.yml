@@ -25,6 +25,7 @@ book:
     - chapters/07-hash-tables.qmd
     - chapters/08-graphs.qmd
     - chapters/09-string-matching.qmd
+    - chapters/10-state-space-search.qmd
 format:
   html:
     theme: [cosmo, assets/theme.scss]
