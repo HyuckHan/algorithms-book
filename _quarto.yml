@@ -13,7 +13,7 @@ book:
   author: "Hyuck Han"
   search: true
   page-navigation: true
-  repo-url: https://github.com/HyuckHan/algorithms-book
+  #repo-url: https://github.com/HyuckHan/algorithms-book
   chapters:
     - index.qmd
     - chapters/01-introduction.qmd
