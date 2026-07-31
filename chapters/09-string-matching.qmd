@@ -94,13 +94,13 @@ $T=\texttt{AAAAA}, P=\texttt{AAA}$의 all-match 결과는?
 
 {{< include ../figures/09-string-matching/pseudocode-naive-match.qmd >}}
 
-![Naive alignment trace: $s=0$에서 $C\ne A$ mismatch → $s=1$에서 비교 시작 → $A=B=A$ prefix 확인 → match 확정까지 4단계.](../figures/09-string-matching/01-naive-alignment-trace-step4.svg){fig-alt="C,A,B,A,B,A,C 텍스트 위에서 s=1에 A,B,A 패턴을 맞춰 세 문자가 모두 일치해 match로 확정되는 4단계 트레이스의 마지막 상태" width="70%"}
+![Naive alignment trace: $s=0$에서 $C\ne A$ mismatch → $s=1$에서 비교 시작 → $A=B=A$ prefix 확인 → match 확정까지 4단계.](../figures/09-string-matching/01-naive-alignment-trace-step4.svg){fig-alt="C,A,B,A,B,A,C 텍스트 위에서 s=1에 A,B,A 패턴을 맞춰 세 문자가 모두 일치해 match로 확정되는 4단계 트레이스의 마지막 상태" width="45%"}
 
 $$\#alignments=n-m+1,\qquad\#comparisons\le(n-m+1)m$$
 
 alignment 하나가 곧 comparison 하나는 아니다 — mismatch 위치에 따라 같은 alignment의 비용이 달라진다.
 
-![`T=AAAAAAAAAAB`, `P=AAAAAB`에서 각 shift가 5개의 A를 재확인하다가 $s=5$에서 match하는 최악 예 3단계.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step3.svg){fig-alt="AAAAA 반복 뒤 mismatch가 나는 최악 사례에서 s=5에 이르러 occurrence를 찾는 3단계 트레이스의 마지막 상태" width="55%"}
+![`T=AAAAAAAAAAB`, `P=AAAAAB`에서 각 shift가 5개의 A를 재확인하다가 $s=5$에서 match하는 최악 예 3단계.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step3.svg){fig-alt="AAAAA 반복 뒤 mismatch가 나는 최악 사례에서 s=5에 이르러 occurrence를 찾는 3단계 트레이스의 마지막 상태" width="30%"}
 
 ::: {.callout-warning title="중복 비교의 원인"}
 일치했던 prefix 정보를 다음 shift에서 버리는 것이 중복 비교의 원인이다.
@@ -183,13 +183,13 @@ $$\text{equal strings}\Rightarrow\text{equal hash},\qquad\text{equal hash}\not\R
 
 $$\Sigma=\{a,b,c,d,e\},\quad code(a)=0,\ldots,code(e)=4,\quad d=5$$
 
-![`cad`를 5진법 자리값 $(2,0,3)_5$로 인코딩해 $2\cdot5^2+0\cdot5+3=53$을 계산하는 2단계.](../figures/09-string-matching/03-numeric-encoding-cad-step2.svg){fig-alt="cad를 5진법 자리값으로 표현한 뒤 2*25+0*5+3=53을 계산하는 2단계 트레이스의 마지막 상태" width="55%"}
+![`cad`를 5진법 자리값 $(2,0,3)_5$로 인코딩해 $2\cdot5^2+0\cdot5+3=53$을 계산하는 2단계.](../figures/09-string-matching/03-numeric-encoding-cad-step2.svg){fig-alt="cad를 5진법 자리값으로 표현한 뒤 2*25+0*5+3=53을 계산하는 2단계 트레이스의 마지막 상태" width="45%"}
 
 ::: {.callout-warning title="원본 교정"}
 원본의 `cad=28`은 계산 오류이며 정확한 값은 **53**이다.
 :::
 
-![$h(P)=17$과 $h(window)=17$이 같아 candidate로 표시되지만, 실제 일치는 character-by-character verification으로만 확정된다.](../figures/09-string-matching/04-hash-equality-insufficient.svg){fig-alt="h(P)=17과 h(window)=17이 candidate 화살표로 이어지고 character-by-character verification이 필요하다는 설명이 붙은 다이어그램" width="60%"}
+![$h(P)=17$과 $h(window)=17$이 같아 candidate로 표시되지만, 실제 일치는 character-by-character verification으로만 확정된다.](../figures/09-string-matching/04-hash-equality-insufficient.svg){fig-alt="h(P)=17과 h(window)=17이 candidate 화살표로 이어지고 character-by-character verification이 필요하다는 설명이 붙은 다이어그램" width="50%"}
 
 ::: {.callout-warning title="흔한 실수"}
 hash equality만으로 match를 확정하면 exact matcher가 아니다 — 반드시 verification이 필요하다.
@@ -215,9 +215,9 @@ power를 매번 만들지 않고 initial pattern/window value를 $\Theta(m)$에 
 
 $$current=value(T[s..s+m-1]),\qquad h=d^{m-1}$$
 
-![rolling update 유도 3단계: leading contribution 제거 → 남은 digit을 왼쪽으로 shift → 새 trailing character 추가.](../figures/09-string-matching/05-rolling-update-derivation-step3.svg){fig-alt="current에서 leading 항을 빼고 d를 곱한 뒤 trailing 문자를 더해 next 값을 얻는 3단계 트레이스의 마지막 상태" width="70%"}
+![rolling update 유도 3단계: leading contribution 제거 → 남은 digit을 왼쪽으로 shift → 새 trailing character 추가.](../figures/09-string-matching/05-rolling-update-derivation-step3.svg){fig-alt="current에서 leading 항을 빼고 d를 곱한 뒤 trailing 문자를 더해 next 값을 얻는 3단계 트레이스의 마지막 상태" width="45%"}
 
-![window가 한 칸 움직일 때 old 기여 제거 → ×d → new 문자 추가로 이어지는 정적 흐름도.](../figures/09-string-matching/06-rolling-update-flow.svg){fig-alt="old T[s] 기여 제거, x d, new T[s+m] 추가 세 상자가 화살표로 이어진 흐름도" width="70%"}
+![window가 한 칸 움직일 때 old 기여 제거 → ×d → new 문자 추가로 이어지는 정적 흐름도.](../figures/09-string-matching/06-rolling-update-flow.svg){fig-alt="old T[s] 기여 제거, x d, new T[s+m] 추가 세 상자가 화살표로 이어진 흐름도" width="60%"}
 
 이전 window value와 미리 계산한 $h=d^{m-1}$만 있으면 재사용할 수 있다.
 
@@ -247,7 +247,7 @@ $$\operatorname{normalizedMod}(x,q)=((x\bmod q)+q)\bmod q$$
 Java/C의 remainder는 $-3\bmod5$처럼 음수일 수 있다. 안전한 구현은 unsigned modular subtraction을 쓰거나, update 후 `hash<0`이면 $q$를 더한다.
 :::
 
-![$h(P)=h(W)$이면 candidate일 뿐이고, $P\ne W$로 판명되면 collision(spurious hit)임을 보여주는 2단계.](../figures/09-string-matching/07-collision-is-candidate-step2.svg){fig-alt="hash가 같아 candidate로 표시된 뒤 실제로는 문자열이 달라 collision으로 확정되는 2단계 트레이스의 마지막 상태" width="55%"}
+![$h(P)=h(W)$이면 candidate일 뿐이고, $P\ne W$로 판명되면 collision(spurious hit)임을 보여주는 2단계.](../figures/09-string-matching/07-collision-is-candidate-step2.svg){fig-alt="hash가 같아 candidate로 표시된 뒤 실제로는 문자열이 달라 collision으로 확정되는 2단계 트레이스의 마지막 상태" width="35%"}
 
 ::: {.callout-tip title="Exactness"}
 collision이 많으면 느려질 뿐, verification이 있으면 결과의 정확성은 유지된다.
@@ -271,7 +271,7 @@ $$value(P)=3001,\quad pHash=3001\bmod113=63,\quad h=5^4\bmod113=60$$
 
 한 update 예: $s=0\to1$: $(5(17-0\cdot60)+2)\bmod113=87$.
 
-![$s=6$에서 $tHash=pHash=63$인 candidate가 실제 문자 5개 모두 일치해 occurrence 6으로 확정되는 2단계.](../figures/09-string-matching/08-candidate-to-valid-hit-step2.svg){fig-alt="s=6에서 hash가 일치한 candidate가 eeaab 대 eeaab 검증을 거쳐 occurrence로 확정되는 2단계 트레이스의 마지막 상태" width="60%"}
+![$s=6$에서 $tHash=pHash=63$인 candidate가 실제 문자 5개 모두 일치해 occurrence 6으로 확정되는 2단계.](../figures/09-string-matching/08-candidate-to-valid-hit-step2.svg){fig-alt="s=6에서 hash가 일치한 candidate가 eeaab 대 eeaab 검증을 거쳐 occurrence로 확정되는 2단계 트레이스의 마지막 상태" width="45%"}
 
 구현은 substring을 새로 할당하지 않고 $T[s+j]$와 $P[j]$를 직접 비교한다.
 
@@ -347,7 +347,7 @@ $$\underbrace{\texttt{BAA}}_{\text{prefix}}\texttt{BAB}\underbrace{\texttt{BAA}}
 전체 문자열 자신은 proper prefix가 아니므로 border 후보에서 제외한다.
 :::
 
-![`BAAB`(border B, LPS 1) → `BAABA`(border BA, LPS 2) → `BAABABAA`(border BAA, LPS 3)로 이어지는 3단계.](../figures/09-string-matching/09-prefix-lps-discovery-step3.svg){fig-alt="BAAB, BAABA, BAABABAA 세 prefix에서 각각 border를 찾아 LPS 1,2,3을 확정하는 3단계 트레이스의 마지막 상태" width="60%"}
+![`BAAB`(border B, LPS 1) → `BAABA`(border BA, LPS 2) → `BAABABAA`(border BAA, LPS 3)로 이어지는 3단계.](../figures/09-string-matching/09-prefix-lps-discovery-step3.svg){fig-alt="BAAB, BAABA, BAABABAA 세 prefix에서 각각 border를 찾아 LPS 1,2,3을 확정하는 3단계 트레이스의 마지막 상태" width="55%"}
 
 prefix와 suffix가 같아도 전체 prefix보다 짧아야 한다.
 
@@ -370,7 +370,7 @@ prefix와 suffix가 같아도 전체 prefix보다 짧아야 한다.
 
 현재까지 $j$ characters가 일치했다면 $P[0..j-1]=T[i-j..i-1]$이다. 다음 $T[i]$에서 mismatch가 나도, 이 matched prefix의 suffix 중 pattern prefix인 부분은 재사용할 수 있다.
 
-![old $j=5$: `BAABA` matched, `X` mismatch → $lps[4]=2$로 border `BA` 재사용 → new $j=2$, 같은 text index $i=5$ → `X`를 $P[2]$와 재비교하는 4단계.](../figures/09-string-matching/10-mismatch-fallback-trace-step4.svg){fig-alt="BAABA까지 매칭된 뒤 X에서 mismatch가 나 lps[4]=2인 border BA로 fallback해 같은 text index에서 재비교하는 4단계 트레이스의 마지막 상태" width="80%"}
+![old $j=5$: `BAABA` matched, `X` mismatch → $lps[4]=2$로 border `BA` 재사용 → new $j=2$, 같은 text index $i=5$ → `X`를 $P[2]$와 재비교하는 4단계.](../figures/09-string-matching/10-mismatch-fallback-trace-step4.svg){fig-alt="BAABA까지 매칭된 뒤 X에서 mismatch가 나 lps[4]=2인 border BA로 fallback해 같은 text index에서 재비교하는 4단계 트레이스의 마지막 상태" width="65%"}
 
 ::: {.callout-warning title="과도한 표현 금지"}
 "각 text 문자를 정확히 한 번 비교"하는 것은 아니다.
@@ -446,7 +446,7 @@ $$T=\texttt{BAABXBAABABAA},\qquad P=\texttt{BAABABAA},\qquad lps=[0,0,0,1,2,1,2,
 
 첫 네 문자 `BAAB` 뒤 $T[4]=\texttt{X}$에서 mismatch가 나고, 실제 occurrence는 shift 5다.
 
-![$i=4,j=4$에서 X≠A mismatch → $j\gets lps[3]=1$ → 다시 mismatch, $j\gets lps[0]=0$ → $i\gets5$ → shift 5에서 전체 매칭 완료까지 5단계.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step5.svg){fig-alt="BAABX 뒤 mismatch가 나 lps 값을 따라 두 번 fallback한 뒤 shift 5에서 BAABABAA 전체가 매칭되는 5단계 트레이스의 마지막 상태" width="80%"}
+![$i=4,j=4$에서 X≠A mismatch → $j\gets lps[3]=1$ → 다시 mismatch, $j\gets lps[0]=0$ → $i\gets5$ → shift 5에서 전체 매칭 완료까지 5단계.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step5.svg){fig-alt="BAABX 뒤 mismatch가 나 lps 값을 따라 두 번 fallback한 뒤 shift 5에서 BAABABAA 전체가 매칭되는 5단계 트레이스의 마지막 상태" width="70%"}
 
 $$T=\texttt{AAAAA},\quad P=\texttt{AAA},\quad lps=[0,1,2]$$
 
@@ -549,7 +549,7 @@ $$shift[c]=m-1-\max\{j<m-1:P[j]=c\}$$
 
 그런 $j$가 없으면 $m$이다.
 
-![`TIGER`의 shift table: $T=4,I=3,G=2$까지 계산하고 $E=1,R=5,\text{other}=5$까지 마무리하는 2단계.](../figures/09-string-matching/15-tiger-shift-table-step2.svg){fig-alt="TIGER 각 문자의 shift 값을 하나씩 계산해 T=4,I=3,G=2,E=1,R=5,other=5를 완성하는 2단계 트레이스의 마지막 상태" width="55%"}
+![`TIGER`의 shift table: $T=4,I=3,G=2$까지 계산하고 $E=1,R=5,\text{other}=5$까지 마무리하는 2단계.](../figures/09-string-matching/15-tiger-shift-table-step2.svg){fig-alt="TIGER 각 문자의 shift 값을 하나씩 계산해 T=4,I=3,G=2,E=1,R=5,other=5를 완성하는 2단계 트레이스의 마지막 상태" width="45%"}
 
 마지막 $R$은 preprocessing loop에서 제외한다.
 
@@ -583,7 +583,7 @@ full algorithm은 bad-character shift와 good-suffix shift를 모두 계산하�
 $shift[c]\ge1$이므로 mismatch도 $s$를 반드시 증가시키며 infinite loop가 불가능하다.
 :::
 
-![`CATIGER`에서 `TIGER`의 끝 G/R mismatch 뒤 shift 2로 이동 → 오른쪽부터 전체 검증까지 4단계.](../figures/09-string-matching/18-horspool-trace-tiger-step4.svg){fig-alt="CATIGER에서 TIGER 끝 문자 mismatch 후 shift 2로 이동해 오른쪽부터 왼쪽으로 전체 문자를 검증하는 4단계 트레이스의 마지막 상태" width="80%"}
+![`CATIGER`에서 `TIGER`의 끝 G/R mismatch 뒤 shift 2로 이동 → 오른쪽부터 전체 검증까지 4단계.](../figures/09-string-matching/18-horspool-trace-tiger-step4.svg){fig-alt="CATIGER에서 TIGER 끝 문자 mismatch 후 shift 2로 이동해 오른쪽부터 왼쪽으로 전체 문자를 검증하는 4단계 트레이스의 마지막 상태" width="70%"}
 
 비교는 pattern의 마지막 문자부터 시작하고, 새 window에서도 오른쪽부터 왼쪽으로 검증한다.
 
