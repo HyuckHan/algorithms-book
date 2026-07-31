@@ -139,7 +139,7 @@ $$k=q-p+1$$
 
 공통 입력 $A=[31,8,48,73,11,3,20,29,65,15]$에 $A[r]=15$로 Lomuto Partition을 한 번 적용하면 $p=1,\ r=10,\ q=4,\ k=4$가 된다. 이 결과를 공유한 뒤 Example 1(고정 pivot으로 2번째 값)과 Example 2(RandomizedSelect로 7번째 값, Part C에서 formal하게 다룰 알고리즘의 미리보기)가 서로 다른 pivot 정책으로 갈라진다.
 
-![공통 첫 partition: pivot 15가 index 4에 위치하고 p=1, r=10, i∈{2,7}, q=4, k=4다.](../figures/04-selection/06-common-first-partition.svg){fig-alt="8,11,3,15,31,48,20,29,65,73 배열에서 15가 pivot으로 강조되고 p=1,r=10,i∈{2,7},q=4,k=4라는 콜아웃이 붙은 다이어그램" width="70%"}
+![공통 첫 partition: pivot 15가 index 4에 위치하고 p=1, r=10, i∈{2,7}, q=4, k=4다.](../figures/04-selection/06-common-first-partition.svg){fig-alt="8,11,3,15,31,48,20,29,65,73 배열에서 15가 pivot으로 강조되고 p=1,r=10,i∈{2,7},q=4,k=4라는 콜아웃이 붙은 다이어그램" width="65%"}
 
 **Example 1: Fixed-pivot으로 2번째 값 찾기.** $[8,11,3]$에서 pivot 3으로 partition하면 $q=1,\ k=1<i=2$이므로 $A[2..3]=[11,8]$에서 새 rank 1을 찾는다. 그다음 $[11,8]$에서 pivot 8($A[r]$)로 partition하면 $q=2,\ k=q-p+1=1=i$이므로 pivot이 정답이다 — 원래 배열의 2nd order-statistic 값은 **8**이다.
 
@@ -310,11 +310,11 @@ random choice에 의존하지 않고 partition이 너무 기울어지지 않게 
 
 DeterministicSelect의 전체 단계: (1) $n\le5$이면 직접 정렬해 반환, (2) 최대 5개씩 group 구성, (3) 각 group의 median 수집, (4) medians의 median $M$을 재귀 선택, (5) $M$으로 원본을 3-way partition, (6) 목표 rank가 있는 한쪽만 재귀. 크기 5 이하의 정렬은 $\Theta(1)$이고 group 수는 $\lceil n/5\rceil$이므로 median 수집은 전체 $\Theta(n)$이다.
 
-![25개 원소를 5개씩 5개 group(G1–G5)으로 묶는다.](../figures/04-selection/10-groups-of-five.svg){fig-alt="22,4,17,9,31부터 20,3,29,7,24까지 5행 5열로 배치되고 각 행이 G1부터 G5까지 라벨된 group box로 묶인 다이어그램" width="55%"}
+![25개 원소를 5개씩 5개 group(G1–G5)으로 묶는다.](../figures/04-selection/10-groups-of-five.svg){fig-alt="22,4,17,9,31부터 20,3,29,7,24까지 5행 5열로 배치되고 각 행이 G1부터 G5까지 라벨된 group box로 묶인 다이어그램" width="35%"}
 
 각 group을 정렬하면 3번째 값이 그 group의 median(lower median, $\lceil 5/2\rceil=3$rd)이다. 다섯 group의 median $17,12,14,16,20$을 모아 다시 정렬하면 $12,14,16,17,20$이고, 그 median(=medians의 median) $M=16$이 원본의 pivot이 된다.
 
-![Group Sort → Median → Median of Medians: 각 group을 정렬해 3번째 값을 median으로 뽑고, 다섯 median의 median M=16을 원본의 pivot으로 쓴다.](../figures/04-selection/11-median-of-medians-trace-step1.svg){fig-alt="G1..G5 각 group의 원소들이 나열되고 가운데 열(3번째 값)이 강조된 1단계 상태" width="60%"}
+![Group Sort → Median → Median of Medians: 각 group을 정렬해 3번째 값을 median으로 뽑고, 다섯 median의 median M=16을 원본의 pivot으로 쓴다.](../figures/04-selection/11-median-of-medians-trace-step1.svg){fig-alt="G1..G5 각 group의 원소들이 나열되고 가운데 열(3번째 값)이 강조된 1단계 상태" width="55%"}
 ![](../figures/04-selection/11-median-of-medians-trace-step5.svg){fig-alt="다섯 median 12,14,16,17,20 중 16이 M으로 강조되고 원본의 pivot이라는 콜아웃이 붙은 마지막 상태" width="60%"}
 
 ::: {.callout-warning title="흔한 실수: 이 M이 항상 진짜 중앙값은 아니다"}
@@ -337,11 +337,11 @@ $$A[p..lt-1]<M,\quad A[lt..gt]=M,\quad A[gt+1..r]>M$$
 
 medians를 정렬했을 때 $M$은 lower median이므로, 적어도 절반은 $M$ 이상이고 대칭적으로 적어도 절반은 $M$ 이하다.
 
-![다섯 median 중 절반(12,14)은 M=16 이하, 절반(17,20)은 M 이상이다.](../figures/04-selection/12-median-half-guarantee.svg){fig-alt="12,14가 guaranteed less로, M=16이 중앙에, 17,20이 guaranteed greater로 표시된 다이어그램" width="55%"}
+![다섯 median 중 절반(12,14)은 M=16 이하, 절반(17,20)은 M 이상이다.](../figures/04-selection/12-median-half-guarantee.svg){fig-alt="12,14가 guaranteed less로, M=16이 중앙에, 17,20이 guaranteed greater로 표시된 다이어그램" width="40%"}
 
 full group을 정렬했을 때 median이 $M$ 이상이면, 그 median과 오른쪽 두 값(더 큰 값들)까지 총 **3개**가 $M$ 이상이다.
 
-![median이 M=16 이상인 group에서는 median과 그 오른쪽 두 값, 총 3개가 M 이상이다.](../figures/04-selection/13-group-three-guarantee.svg){fig-alt="unknown 값 두 개, median 16, guaranteed greater 값 두 개가 나열되고 오른쪽 세 개가 M 이상이라는 중괄호 표시가 붙은 다이어그램" width="55%"}
+![median이 M=16 이상인 group에서는 median과 그 오른쪽 두 값, 총 3개가 M 이상이다.](../figures/04-selection/13-group-three-guarantee.svg){fig-alt="unknown 값 두 개, median 16, guaranteed greater 값 두 개가 나열되고 오른쪽 세 개가 M 이상이라는 중괄호 표시가 붙은 다이어그램" width="35%"}
 
 median의 절반 $\times$ full group 규모 $n/5$ $\times$ group당 보장 3개를 곱하면
 
