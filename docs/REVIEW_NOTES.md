@@ -27,7 +27,7 @@
 |4| L02 Part B 01-call-stack-push.svg|그림|Push 최종만 / Pop 단계별 불일치|Push도 단계별(step1~5 신규)|작업 큼: 새 SVG 5개 / ANIMATION_AUDIT.md 참조|
 |11|L03 트레이스 그림 8개(bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix-trace)|그림(애니메이션 붕괴)|`FIGURE_CONFIG`에 `mode: sequence`가 없어 원본 여러 프레임이 최종 상태 SVG 1장으로만 컴파일됨(SVG 자체가 1장뿐, qmd 문제 아님)|`mode: sequence` 추가 후 재추출, tabset으로 삽입|open|L02 push(4번)와 동일 원인. 상세는 ANIMATION_AUDIT.md §L03 참조|
 |12|L03/L04/L06 시퀀스 그림 8개(selection-trace/merge-pointers/fixed-pivot-trace/randomized-trace/median-of-medians-trace/tree-terminology-trace/insert-trace/degenerate-bst-trace)|그림(애니메이션 붕괴)|스텝 SVG는 전부 생성돼 있으나 qmd에 처음+마지막 2장만 나란히 삽입되고 중간 프레임 누락|나머지 스텝을 tabset으로 복원|done|L06 순회(9번)와 동일 패턴(프레임 뭉침). 8개 전부 단계별 tabset으로 복원 완료(원본 콜아웃/테이블 텍스트를 각 step 캡션으로 재배치). 상세는 ANIMATION_AUDIT.md 참조|
-|13|L07/L09/L10 시퀀스 그림 42개(3개 챕터의 시퀀스 그림 전체)|그림(애니메이션 붕괴)|스텝 SVG는 전부 생성돼 있으나 qmd는 마지막 스텝 1장만 삽입, 나머지는 캡션 텍스트로만 서술|각 그림을 tabset으로 복원|판단중|이번 감사에서 발견된 가장 큰 규모의 패턴 — 챕터 단위 변환 컨벤션 차이로 추정. 상세는 ANIMATION_AUDIT.md 참조. L07 12건 tabset 복원 완료, L09(16건)·L10(13건) 남음|
+|13|L07/L09/L10 시퀀스 그림 42개(3개 챕터의 시퀀스 그림 전체)|그림(애니메이션 붕괴)|스텝 SVG는 전부 생성돼 있으나 qmd는 마지막 스텝 1장만 삽입, 나머지는 캡션 텍스트로만 서술|각 그림을 tabset으로 복원|done|이번 감사에서 발견된 가장 큰 규모의 패턴 — 챕터 단위 변환 컨벤션 차이로 추정. 상세는 ANIMATION_AUDIT.md 참조. L07·L09·L10 42건 전부 tabset 복원 완료(원본 \smhash/\smnote/\ssnote/\pqview 등 콜아웃 텍스트를 각 step 캡션으로 재배치)|
 |14|L07 `26-logical-vs-probing-load-step2.svg`|내용|캡션·fig-alt가 "logical load와 probing load를 나란히 보여주는 게이지"라고 서술하지만 실제 삽입된 step2.svg는 probing gauge 단독 렌더링(logical gauge는 이미지에 없음)|캡션을 실제 이미지 내용에 맞게 수정하거나 두 게이지를 한 그림에 모아 재추출|done|13번과 같은 근본 원인(step1 누락)에서 파생된 캡션-이미지 불일치. ANIMATION_AUDIT.md §L07 참조 — step1(logical)/step2(probing) 각각을 tabset으로 분리 삽입해 캡션을 실제 이미지와 일치시킴|
 <!--
 새 항목 추가 예시 (이 주석은 지우지 말 것):
@@ -50,3 +50,5 @@ batch로 처리한 항목은 여기에 커밋 해시와 함께 기록한다(추�
 | 2026-08-02 | 12(부분: L04) | `a4f771d` | 07-fixed-pivot-trace, 08-randomized-trace, 11-median-of-medians-trace tabset 복원 |
 | 2026-08-02 | 9, 10, 12(부분: L06) | `f69d4b1` | 08/09/10-*-trace(순회), 14-search-trace, 02-tree-terminology-trace, 17-insert-trace, 22-degenerate-bst-trace tabset 복원 |
 | 2026-08-02 | 13(부분: L07), 14 | `449e17b` | L07 시퀀스 그림 12개 tabset 복원 + 26-logical-vs-probing-load 캡션 교정 |
+| 2026-08-02 | 13(부분: L09) | `e960999` | L09 시퀀스 그림 16개 tabset 복원 |
+| 2026-08-02 | 13(완료: L10) | `02f4910` | L10 시퀀스 그림 13개 tabset 복원 — 13번 전체 완료 |
