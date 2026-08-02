@@ -24,10 +24,7 @@
 |---|---|---|---|---|---|---|---|
 | 1 | L05 `12-matrix-reconstruction.svg` | 그림-재컴파일 | 화살표가 불명확(clear하지 않음) | 화살표 방향·굵기·대비 선명하게 | open | [CC] | C |
 | 2 | L05 `11-matrix-representative-cell.svg` | 그림-재컴파일 | 화살표는 OK, "chosen" 레이블이 불명확 | chosen 표시(위치/대비/연결선) 명확하게 | open | [CC] | C |
-| 4 | L06 Part D "Java 구현 노트" | 표현 | size·height 정의가 한 줄에 나란히 있어 우변이 목차와 겹침(가로 넘침) | 두 정의를 별도 display 수식으로 분리(height base case h(NIL)=-1은 height 줄 유지) | open | [CC] | B |
 | 5 | L06 SUCCESSOR 절 그림+캡션 | 그림-재컴파일+내용 | (a) 원본은 트리 1개인데 변환 시 3-4 서브트리가 6 왼쪽에 통합 안 되고 오른쪽에 별도 그림으로 분리 (b) `succ(6)=7` 값 오류 | (a) 3-4를 6의 왼쪽 서브트리로 통합해 트리 1개로 복원 (b) `succ(6)=15`로 교정 | open | [CC] | C |
-| 6 | L06 Part G TreeInsert 의사코드 7행 | 표현 | `return DUPLICATE`의 DUPLICATE만 폰트가 다름(다른 sentinel과 불일치) | 다른 sentinel 반환값(NIL 등)과 같은 폰트로 통일 | open | [CC] | B |
-| 7 | L06 `14-search-trace` 왼쪽 상단 주석 | 표현 | "full BST; inactive subtree..." 주석 폰트가 다른 레이블보다 유난히 작음 | 최소 폰트 크기로 키워 다른 그림 주석과 일관되게 | open | [CC] | B |
 | 8 | L07 `01-hash-pipeline.svg` | 그림-재컴파일 | 화살표 위 레이블(hash-code function, compression function)이 인접 상자와 겹쳐 글자 뭉개짐("johin","codepression") | 레이블을 화살표 위 공간에 겹치지 않게(간격/위치/줄바꿈) | open | [CC] | C |
 | 9 | L07 `10-chaining-insert-trace-step1`만 | 그림-재컴파일 | step1에서 "10" 노드가 slot 3에서 멀리 떨어져 허공에 뜬 것처럼 보임 | step1의 10 노드를 slot 3에 가깝게/명확히 연결 | open | [CC] | C |
 | 10 | L07 `15-linear-trace2-wraparound-step3` | 그림-재컴파일 | wrap 화살표가 slot 0을 명확히 안 가리키고 0-1 사이를 가리킴 | 화살표 끝점을 slot 0에 정확히 | open | [CC] | C |
@@ -51,8 +48,10 @@
 | L07 시퀀스 12건 + 캡션 | `449e17b` | L07 12개 tabset 복원 + `26-logical-vs-probing-load` 캡션 교정(step1 logical/step2 probing 분리) |
 | L04 median-of-medians 설명(#3) | `1d4b4e8` | Part D "구현" 문단에 `_insertion_sort` 역할 설명 문단 추가 |
 | L08 애니메이션 설명 3개 + matrix-to-list 해제(#13-16) | `393c05f` | #14 DSU, #15 relaxation, #16 DAG relaxation 문단 추가(애니메이션 유지); #13 03-matrix-to-list tabset 해제(본문 인라인 예시 + Θ(V²)/Θ(V+E) 트레이드오프 문장으로 대체, step SVG는 디스크에 유지) |
+| L06 size/height 분리 + DUPLICATE 폰트(#4, #6) | `433e748` | Part D size(x)/height(x)를 별도 display 수식 2개로 분리(목차 겹침 해소); TreeInsert `\texttt{DUPLICATE}` → `$\mathtt{DUPLICATE}$`(NIL/NotFound와 같은 MathJax 경로로 통일, 헤드리스 브라우저로 data-semantic-font="monospace" 일치 확인) |
+| L06 search-trace 주석 확대(#7) | `6cf7861` | `14-search-trace` 좌상단 주석의 `font=\scriptsize` 제거. lecture-notes/는 읽기 전용이라 `scripts/extract_tikz.py`에 새 `text_patch` 메커니즘(TIKZ_PATCHES와 동일한 빌드타임 전용 원칙) 추가해 패치, 4개 step SVG 전부 재추출. 자연폭 479→509px로 늘었으나 기존 55% width에서 ratio 0.73x로 1.3x 이내 유지(폭 변경 불필요) |
 
-*주: L06 `14-search-trace`는 애니메이션 tabset은 done(`f69d4b1`)이나, 왼쪽 상단 주석 폰트 문제는 위 #7로 별도 open.*
+*주: L06 `14-search-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`) 모두 done.*
 
 ## 처리 이력 (커밋 추적)
 
@@ -68,6 +67,8 @@
 | 2026-08-02 | L10 revert | `699cafa` | reverts `02f4910` — 보류(H2). step SVG 유지 |
 | 2026-08-02 | L04 #3 | `1d4b4e8` | insertion sort 역할 설명 추가 |
 | 2026-08-02 | L08 #13-16 | `393c05f` | DSU/relaxation/DAG relaxation 설명 추가 + matrix-to-list tabset 해제 |
+| 2026-08-02 | L06 #4, #6 | `433e748` | size/height 수식 분리, DUPLICATE 폰트 통일 |
+| 2026-08-02 | L06 #7 | `6cf7861` | search-trace 주석 폰트 확대(text_patch 신설, 4개 SVG 재추출) |
 
 ---
 
