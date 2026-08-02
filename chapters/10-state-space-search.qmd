@@ -74,25 +74,7 @@ complete라고 해서 feasible은 아니며, feasible이라고 해서 optimal도
 
 $$\text{binary depth }n:\ 2^n\text{ leaves},\quad 2^{n+1}-1\text{ nodes}\qquad\text{permutation leaves}:n!$$
 
-State-space expansion 4단계: root만 생성 → 필요한 두 child 생성 → DFS는 L subtree부터 → prune node의 후손은 생성하지 않음.
-
-::: {.panel-tabset}
-## 1단계
-
-![root만 생성.](../figures/10-state-space-search/02-state-space-expansion-step1.svg){fig-alt="root 하나만 있는 1단계 상태" width="50%"}
-
-## 2단계
-
-![필요한 두 child 생성.](../figures/10-state-space-search/02-state-space-expansion-step2.svg){fig-alt="root에서 두 child가 생성된 상태" width="50%"}
-
-## 3단계
-
-![DFS는 L subtree부터.](../figures/10-state-space-search/02-state-space-expansion-step3.svg){fig-alt="L subtree가 먼저 확장되어 두 grandchild가 생긴 상태" width="50%"}
-
-## 4단계
-
-![prune node의 후손은 생성하지 않음.](../figures/10-state-space-search/02-state-space-expansion-step4.svg){fig-alt="root에서 두 child, 다시 각 child에서 두 grandchild로 확장되며 마지막 하나는 prune되어 후손이 생성되지 않는 4단계 트레이스의 마지막 상태" width="50%"}
-:::
+![State-space expansion 4단계: root만 생성 → 필요한 두 child 생성 → DFS는 L subtree부터 → prune node의 후손은 생성하지 않음.](../figures/10-state-space-search/02-state-space-expansion-step4.svg){fig-alt="root에서 두 child, 다시 각 child에서 두 grandchild로 확장되며 마지막 하나는 prune되어 후손이 생성되지 않는 4단계 트레이스의 마지막 상태" width="50%"}
 
 | Order | Container | 장점 | 위험 |
 |---|---|---|---|
@@ -104,21 +86,7 @@ State-space expansion 4단계: root만 생성 → 필요한 두 child 생성 →
 Backtracking과 Branch-and-Bound의 차이는 DFS/BFS가 아니라 pruning의 의미다.
 :::
 
-같은 tree, 다른 방문 순서: DFS는 R,A,C,D,B,E,F, BFS는 R,A,B,C,D,E,F 순으로 방문하지만 best-first는 tree 구조가 같고 frontier 정책만 다르다.
-
-::: {.panel-tabset}
-## 1단계
-
-![DFS: R,A,C,D,B,E,F.](../figures/10-state-space-search/03-dfs-bfs-visit-order-step1.svg){fig-alt="DFS 방문 순서 R,A,C,D,B,E,F가 표시된 1단계 상태" width="60%"}
-
-## 2단계
-
-![BFS: R,A,B,C,D,E,F.](../figures/10-state-space-search/03-dfs-bfs-visit-order-step2.svg){fig-alt="BFS 방문 순서 R,A,B,C,D,E,F가 표시된 상태" width="60%"}
-
-## 3단계
-
-![Best-first는 score가 결정: tree는 같고 frontier 정책만 다르다.](../figures/10-state-space-search/03-dfs-bfs-visit-order-step3.svg){fig-alt="같은 7-node 트리에서 DFS 순서와 BFS 순서를 비교하고 best-first는 frontier 정책만 다르다는 콜아웃이 붙은 3단계 트레이스의 마지막 상태" width="60%"}
-:::
+![같은 tree, 다른 방문 순서: DFS는 R,A,C,D,B,E,F, BFS는 R,A,B,C,D,E,F 순으로 방문하지만 best-first는 tree 구조가 같고 frontier 정책만 다르다.](../figures/10-state-space-search/03-dfs-bfs-visit-order-step3.svg){fig-alt="같은 7-node 트리에서 DFS 순서와 BFS 순서를 비교하고 best-first는 frontier 정책만 다르다는 콜아웃이 붙은 3단계 트레이스의 마지막 상태" width="60%"}
 
 $$\text{complete enumeration}\quad+\quad\text{sound pruning}\quad=\quad\text{정답을 보존한 state-space search}$$
 
@@ -138,25 +106,7 @@ pruning이 전혀 작동하지 않으면 원래 exponential tree를 탐색한다
 
 {{< include ../figures/10-state-space-search/pseudocode-choose-permutation.qmd >}}
 
-Permutation state tree: state=선택한 prefix → decision=unused value → used가 duplicate branch를 차단 → leaf마다 길이 k output.
-
-::: {.panel-tabset}
-## 1단계
-
-![state = 선택한 prefix.](../figures/10-state-space-search/04-permutation-state-tree-step1.svg){fig-alt="state가 지금까지 선택한 prefix로 정의되는 1단계 상태" width="55%"}
-
-## 2단계
-
-![decision = unused value.](../figures/10-state-space-search/04-permutation-state-tree-step2.svg){fig-alt="다음 decision이 unused value 중 하나로 확장되는 상태" width="55%"}
-
-## 3단계
-
-![used가 duplicate branch를 차단.](../figures/10-state-space-search/04-permutation-state-tree-step3.svg){fig-alt="이미 사용된 값이 다시 선택되지 않도록 used로 차단되는 상태" width="55%"}
-
-## 4단계
-
-![leaf마다 길이 $k$ output.](../figures/10-state-space-search/04-permutation-state-tree-step4.svg){fig-alt="빈 리스트에서 시작해 unused value를 선택하며 확장되고 leaf마다 길이 k인 output을 만드는 4단계 트레이스의 마지막 상태" width="55%"}
-:::
+![Permutation state tree: state=선택한 prefix → decision=unused value → used가 duplicate branch를 차단 → leaf마다 길이 k output.](../figures/10-state-space-search/04-permutation-state-tree-step4.svg){fig-alt="빈 리스트에서 시작해 unused value를 선택하며 확장되고 leaf마다 길이 k인 output을 만드는 4단계 트레이스의 마지막 상태" width="55%"}
 
 $$P(n,k)=\frac{n!}{(n-k)!},\qquad P(5,4)=120$$
 
@@ -229,21 +179,7 @@ Partial solution을 보통 DFS로 확장하되, constraint상 feasible descendan
 
 `Backtrack`은 개념 골격이다 — `IsComplete`/`IsFeasible`/`Report`/`Candidates`/`Apply`/`IsPromising`/`Undo`는 모두 이름만 정해두고, 아래 N-Queens/Subset Sum/Graph Coloring이 각각 자신의 state에 맞게 이 자리들을 구체화한다.
 
-Apply와 Undo의 대칭: decision을 state에 반영 → promising이면 재귀 → return 후 Undo하면 sibling은 동일한 parent state에서 시작한다.
-
-::: {.panel-tabset}
-## 1단계
-
-![decision을 state에 반영.](../figures/10-state-space-search/05-apply-undo-symmetry-step1.svg){fig-alt="Apply로 decision이 state에 반영되는 1단계 상태" width="60%"}
-
-## 2단계
-
-![promising이면 재귀.](../figures/10-state-space-search/05-apply-undo-symmetry-step2.svg){fig-alt="promising 자식 state로 재귀 호출이 들어가는 상태" width="60%"}
-
-## 3단계
-
-![return 후 Undo: sibling은 동일한 parent state에서 시작한다.](../figures/10-state-space-search/05-apply-undo-symmetry-step3.svg){fig-alt="state S에서 Apply로 자식 상태로 갔다가 recurse한 뒤 Undo로 다시 정확히 원래 state S로 돌아오는 3단계 트레이스의 마지막 상태" width="60%"}
-:::
+![Apply와 Undo의 대칭: decision을 state에 반영 → promising이면 재귀 → return 후 Undo하면 sibling은 동일한 parent state에서 시작한다.](../figures/10-state-space-search/05-apply-undo-symmetry-step3.svg){fig-alt="state S에서 Apply로 자식 상태로 갔다가 recurse한 뒤 Undo로 다시 정확히 원래 state S로 돌아오는 3단계 트레이스의 마지막 상태" width="60%"}
 
 $$\neg Promising(s)\ \Longrightarrow\ \text{descendants}(s)\text{에 feasible solution이 없다}$$
 
@@ -275,33 +211,7 @@ Backtracking의 correctness는 DFS 자체가 아니라 Apply/Undo invariant와 s
 
 $$c_1=c_2\quad\text{or}\quad|r_1-r_2|=|c_1-c_2|\quad\Longrightarrow\quad conflict$$
 
-4-Queens: row 0 candidate col 1 → position=[1] → position=[1,3] promising → row 2 col 2 diagonal conflict, backtrack → row 2 col 0 promising → 완성 [1,3,0,2].
-
-::: {.panel-tabset}
-## 1단계
-
-![row 0, candidate col 1.](../figures/10-state-space-search/06-four-queens-board-trace-step1.svg){fig-alt="row 0에서 col 1이 후보로 표시된 1단계 상태" width="45%"}
-
-## 2단계
-
-![$position=[1]$, depth 1.](../figures/10-state-space-search/06-four-queens-board-trace-step2.svg){fig-alt="row 0 col 1에 퀸이 놓여 position=[1]이 된 상태" width="45%"}
-
-## 3단계
-
-![$position=[1,3]$, promising.](../figures/10-state-space-search/06-four-queens-board-trace-step3.svg){fig-alt="row 1 col 3에도 퀸이 놓여 position=[1,3]이 promising으로 표시된 상태" width="45%"}
-
-## 4단계
-
-![row 2, col 2: diagonal conflict, candidate backtrack.](../figures/10-state-space-search/06-four-queens-board-trace-step4.svg){fig-alt="row 2 col 2에서 대각선 충돌이 표시되어 backtrack하는 상태" width="45%"}
-
-## 5단계
-
-![row 2, col 0: promising.](../figures/10-state-space-search/06-four-queens-board-trace-step5.svg){fig-alt="row 2 col 0에 퀸이 놓여 promising으로 표시된 상태" width="45%"}
-
-## 6단계
-
-![$\checkmark\ [1,3,0,2]$.](../figures/10-state-space-search/06-four-queens-board-trace-step6.svg){fig-alt="4x4 체스판에 퀸을 하나씩 놓으며 충돌 시 backtrack하고 최종적으로 [1,3,0,2] 해를 완성하는 6단계 트레이스의 마지막 상태" width="45%"}
-:::
+![4-Queens: row 0 candidate col 1 → position=[1] → position=[1,3] promising → row 2 col 2 diagonal conflict, backtrack → row 2 col 0 promising → 완성 [1,3,0,2].](../figures/10-state-space-search/06-four-queens-board-trace-step6.svg){fig-alt="4x4 체스판에 퀸을 하나씩 놓으며 충돌 시 backtrack하고 최종적으로 [1,3,0,2] 해를 완성하는 6단계 트레이스의 마지막 상태" width="45%"}
 
 ![4-Queens partial state tree: [1,3,0] conflict로 dead, [1,3,0,2]와 [2,0,3,1] 두 solution.](../figures/10-state-space-search/07-four-queens-partial-tree.svg){fig-alt="빈 상태에서 [1], [1,3]으로 확장되고 [1,3,0]은 conflict로 dead, [1,3,0,2]가 valid인 부분 상태 트리, 또 다른 가지 [2,0,3,1]도 valid로 표시된 다이어그램" width="40%"}
 
@@ -382,29 +292,7 @@ $$currentSum>W\ \Longrightarrow\ P\qquad currentSum+remainingSum<W\ \Longrightar
 
 ![Include/Exclude tree: [3,4,5,6], W=9 — {3,6}과 {4,5} 두 solution, 나머지는 overshoot(dead)로 제거된다.](../figures/10-state-space-search/08-subset-sum-include-exclude-tree.svg){fig-alt="i0,s0,r18에서 시작해 3을 포함하는 가지와 제외하는 가지로 나뉘고 최종적으로 {3,6}과 {4,5} 두 valid subset을 찾는 다이어그램" width="65%"}
 
-Subset Sum trace: i=0,s=0,r=18 → include 3 → include 4,5는 s=12>9로 prune → exclude 후 {3,6} 확정 → 다른 branch {4,5}도 확정.
-
-::: {.panel-tabset}
-## 1단계
-
-![$i=0,s=0,r=18$: invariant 시작.](../figures/10-state-space-search/09-subset-sum-trace-step1.svg){fig-alt="i=0,s=0,r=18인 초기 invariant가 표시된 1단계 상태" width="25%"}
-
-## 2단계
-
-![include 3: $i=1,s=3,r=15$.](../figures/10-state-space-search/09-subset-sum-trace-step2.svg){fig-alt="3을 포함해 i=1,s=3,r=15가 된 상태" width="25%"}
-
-## 3단계
-
-![include 4,5: $s=12>9\Rightarrow P$.](../figures/10-state-space-search/09-subset-sum-trace-step3.svg){fig-alt="4,5를 포함해 s=12로 overshoot되어 prune되는 상태" width="25%"}
-
-## 4단계
-
-![exclude 4,5; include 6: $\{3,6\}\Rightarrow F$.](../figures/10-state-space-search/09-subset-sum-trace-step4.svg){fig-alt="4,5를 제외하고 6을 포함해 {3,6} solution이 확정되는 상태" width="25%"}
-
-## 5단계
-
-![다른 branch: $\{4,5\}\Rightarrow F$.](../figures/10-state-space-search/09-subset-sum-trace-step5.svg){fig-alt="i=0에서 시작해 3을 포함한 뒤 4,5를 포함하면 overshoot으로 prune되고 결국 두 solution을 모두 찾는 5단계 트레이스의 마지막 상태" width="25%"}
-:::
+![Subset Sum trace: i=0,s=0,r=18 → include 3 → include 4,5는 s=12>9로 prune → exclude 후 {3,6} 확정 → 다른 branch {4,5}도 확정.](../figures/10-state-space-search/09-subset-sum-trace-step5.svg){fig-alt="i=0에서 시작해 3을 포함한 뒤 4,5를 포함하면 overshoot으로 prune되고 결국 두 solution을 모두 찾는 5단계 트레이스의 마지막 상태" width="25%"}
 
 완전탐색은 모든 16 leaves를 검사해 동일한 solution $\{3,6\},\{4,5\}$를 찾지만, pruned search는 overshoot와 unreachable subtree를 제거하고도 같은 solution set을 낸다 — generated, expanded, pruned node 수를 함께 기록해야 pruning 효과를 비교할 수 있다.
 
@@ -462,25 +350,7 @@ Apply/Undo 뒤 두 식이 항상 성립해야 한다.
 | Promising | 이미 colored인 neighbor와 다른 color |
 | Complete | 모든 vertex가 colored |
 
-작은 4-vertex graph coloring trace: A:1 → B:2 → C:1은 A와 conflict로 prune → C:3, D:2로 valid 3-coloring 완성.
-
-::: {.panel-tabset}
-## 1단계
-
-![A에 color 1 배정.](../figures/10-state-space-search/10-graph-coloring-trace-step1.svg){fig-alt="A에 color 1이 배정된 1단계 상태" width="55%"}
-
-## 2단계
-
-![B에 color 2 배정.](../figures/10-state-space-search/10-graph-coloring-trace-step2.svg){fig-alt="A는 color 1, B는 color 2로 배정된 상태" width="55%"}
-
-## 3단계
-
-![C에 color 1 시도 → A와 conflict $\Rightarrow$ prune.](../figures/10-state-space-search/10-graph-coloring-trace-step3.svg){fig-alt="C에 color 1을 시도했으나 A와 conflict로 prune되는 상태" width="55%"}
-
-## 4단계
-
-![C에 color 3, D에 color 2 → valid 3-coloring.](../figures/10-state-space-search/10-graph-coloring-trace-step4.svg){fig-alt="A,B,C,D 네 vertex 그래프에서 A에 색 1, B에 색 2를 배정한 뒤 C에 색 1을 시도했다가 conflict로 prune하고 결국 C:3, D:2로 3-coloring을 완성하는 4단계 트레이스의 마지막 상태" width="55%"}
-:::
+![작은 4-vertex graph coloring trace: A:1 → B:2 → C:1은 A와 conflict로 prune → C:3, D:2로 valid 3-coloring 완성.](../figures/10-state-space-search/10-graph-coloring-trace-step4.svg){fig-alt="A,B,C,D 네 vertex 그래프에서 A에 색 1, B에 색 2를 배정한 뒤 C에 색 1을 시도했다가 conflict로 prune하고 결국 C:3, D:2로 3-coloring을 완성하는 4단계 트레이스의 마지막 상태" width="55%"}
 
 {{< include ../figures/10-state-space-search/pseudocode-color-graph-coloring.qmd >}}
 
@@ -546,29 +416,7 @@ $$selectedCount+(n-i)\le incumbent\quad\Longrightarrow\quad P$$
 $[1,3,4,5]$까지 확장한 뒤 판정하지 않고, $[1,3,4]$에서 즉시 feasibility prune한다 — 이미 선택한 prefix의 adjacent difference($3-1=2$, $4-3=1$)가 다르면 이후 값을 추가해도 기존 두 차이는 바뀌지 않기 때문이다.
 :::
 
-등차수열 trace: choose 1 → choose 3(d=2) → try 4는 차이 2,1로 prune → choose 5,7으로 [1,3,5,7] 완성 → INC=4.
-
-::: {.panel-tabset}
-## 1단계
-
-![choose 1: $[1]$(difference unset).](../figures/10-state-space-search/11-arithmetic-progression-trace-step1.svg){fig-alt="1만 선택되고 difference가 아직 정해지지 않은 1단계 상태" width="30%"}
-
-## 2단계
-
-![choose 3: $[1,3],d=2$(difference fixed).](../figures/10-state-space-search/11-arithmetic-progression-trace-step2.svg){fig-alt="1,3이 선택되어 difference 2가 고정된 상태" width="30%"}
-
-## 3단계
-
-![try 4: differences $2,1\Rightarrow P$(constraint prune).](../figures/10-state-space-search/11-arithmetic-progression-trace-step3.svg){fig-alt="4를 시도했으나 차이가 2,1로 달라 prune되는 상태" width="30%"}
-
-## 4단계
-
-![choose 5,7: $[1,3,5,7]$(same difference 2).](../figures/10-state-space-search/11-arithmetic-progression-trace-step4.svg){fig-alt="5,7이 이어 선택되어 같은 차이 2를 유지하는 상태" width="30%"}
-
-## 5단계
-
-![complete feasible: $INC\gets4$.](../figures/10-state-space-search/11-arithmetic-progression-trace-step5.svg){fig-alt="1을 선택하고 3을 선택해 차이 2를 고정한 뒤 4를 시도하다 차이가 달라 prune하고 5,7을 이어 선택해 길이 4의 등차수열을 완성하는 5단계 트레이스의 마지막 상태" width="30%"}
-:::
+![등차수열 trace: choose 1 → choose 3(d=2) → try 4는 차이 2,1로 prune → choose 5,7으로 [1,3,5,7] 완성 → INC=4.](../figures/10-state-space-search/11-arithmetic-progression-trace-step5.svg){fig-alt="1을 선택하고 3을 선택해 차이 2를 고정한 뒤 4를 시도하다 차이가 달라 prune하고 5,7을 이어 선택해 길이 4의 등차수열을 완성하는 5단계 트레이스의 마지막 상태" width="30%"}
 
 selected length가 1이고 남은 원소가 3개라면 최대 길이는 $1+3=4$이므로 $1+3\le4$면 동률만 가능해 더 긴 해는 불가능하다.
 
@@ -642,25 +490,7 @@ Maximization UB가 실제 가능한 최고값보다 작으면 optimal branch를 
 
 `BranchAndBound`도 개념 골격이다 — `RepresentsFeasibleSolution`/`IsComplete`/`Expand`/`FeasibilityPossible`는 이름만 정해두고, Part D의 Knapsack B&B가 이 자리들을 구체화한다.
 
-Bound-based pruning: root UB 20에서 두 child(UB 16, UB 12) 확장 → UB 16 쪽에서 feasible solution(value 14) 발견 → INC=14 갱신 → UB 12 child는 14보다 클 수 없어 prune.
-
-::: {.panel-tabset}
-## 1단계
-
-![root 확장.](../figures/10-state-space-search/12-bound-based-pruning-step1.svg){fig-alt="root가 UB 16, UB 12 두 child로 확장되는 1단계 상태" width="50%"}
-
-## 2단계
-
-![feasible solution 발견: value 14.](../figures/10-state-space-search/12-bound-based-pruning-step2.svg){fig-alt="UB 16 쪽에서 value 14인 feasible solution이 발견된 상태" width="50%"}
-
-## 3단계
-
-![incumbent 갱신: $INC=14$.](../figures/10-state-space-search/12-bound-based-pruning-step3.svg){fig-alt="INC가 14로 갱신되는 상태" width="50%"}
-
-## 4단계
-
-![더 좋아질 수 없는 B subtree prune(UB 12 $\le$ 14).](../figures/10-state-space-search/12-bound-based-pruning-step4.svg){fig-alt="UB 20인 root에서 UB 16과 UB 12 두 child로 확장되고 UB 16 쪽에서 value 14인 feasible solution을 찾아 incumbent를 갱신한 뒤 UB 12 child가 prune되는 4단계 트레이스의 마지막 상태" width="50%"}
-:::
+![Bound-based pruning: root UB 20에서 두 child(UB 16, UB 12) 확장 → UB 16 쪽에서 feasible solution(value 14) 발견 → INC=14 갱신 → UB 12 child는 14보다 클 수 없어 prune.](../figures/10-state-space-search/12-bound-based-pruning-step4.svg){fig-alt="UB 20인 root에서 UB 16과 UB 12 두 child로 확장되고 UB 16 쪽에서 value 14인 feasible solution을 찾아 incumbent를 갱신한 뒤 UB 12 child가 prune되는 4단계 트레이스의 마지막 상태" width="50%"}
 
 $$\text{total work}\approx\text{expanded nodes}\times\text{bound cost}$$
 
@@ -704,37 +534,7 @@ $W=16$. 검증된 optimum: A와 C, weight 12, profit 90.
 weight/profit 합은 넓은 정수형과 덧셈 guard를 사용하고, ratio 비교는 cross multiplication을 안전하게 처리한다.
 :::
 
-Knapsack best-first trace: root UB115 → A 포함 UB115 → A 제외 UB82 → B 포함/제외 → exclude-B에서 C 포함해 w12,p90 확정 → exclude-A(UB82≤90)는 prune → PQ empty, optimum 90.
-
-::: {.panel-tabset}
-## 1단계
-
-![root $(w0,p0,UB115)$. PQ: root:115.](../figures/10-state-space-search/13-knapsack-best-first-trace-step1.svg){fig-alt="root 하나만 있고 PQ에 root:115가 있는 1단계 상태" width="30%"}
-
-## 2단계
-
-![include A: $(2,40,UB115)$. PQ: A:115.](../figures/10-state-space-search/13-knapsack-best-first-trace-step2.svg){fig-alt="A를 포함한 노드가 확장되고 PQ에 A:115가 있는 상태" width="30%"}
-
-## 3단계
-
-![exclude A: $(0,0,UB82)$. PQ: A:115, ¬A:82.](../figures/10-state-space-search/13-knapsack-best-first-trace-step3.svg){fig-alt="A를 제외한 노드도 확장되어 PQ에 A:115, ¬A:82가 있는 상태" width="30%"}
-
-## 4단계
-
-![include B / exclude B child 생성. PQ: AB:115, A¬B:98, ¬A:82.](../figures/10-state-space-search/13-knapsack-best-first-trace-step4.svg){fig-alt="A 포함 노드에서 B 포함/제외 child가 생성되는 상태" width="30%"}
-
-## 5단계
-
-![expand exclude-B; include C: $w12,p90$. INC=90: selected $\{A,C\}$.](../figures/10-state-space-search/13-knapsack-best-first-trace-step5.svg){fig-alt="exclude-B를 확장해 C를 포함하면 w12,p90인 feasible solution이 확정되는 상태" width="30%"}
-
-## 6단계
-
-![exclude-A $UB82\le90\Rightarrow P$. objective-bound prune.](../figures/10-state-space-search/13-knapsack-best-first-trace-step6.svg){fig-alt="exclude-A 노드가 UB82≤90이라 prune되는 상태" width="30%"}
-
-## 7단계
-
-![PQ empty: optimum 90. optimal weight 12, profit 90.](../figures/10-state-space-search/13-knapsack-best-first-trace-step7.svg){fig-alt="root에서 A 포함/제외로 나뉘고 B, C를 거쳐 weight 12 profit 90인 최적해를 찾은 뒤 남은 후보를 모두 prune하는 7단계 트레이스의 마지막 상태" width="30%"}
-:::
+![Knapsack best-first trace: root UB115 → A 포함 UB115 → A 제외 UB82 → B 포함/제외 → exclude-B에서 C 포함해 w12,p90 확정 → exclude-A(UB82≤90)는 prune → PQ empty, optimum 90.](../figures/10-state-space-search/13-knapsack-best-first-trace-step7.svg){fig-alt="root에서 A 포함/제외로 나뉘고 B, C를 거쳐 weight 12 profit 90인 최적해를 찾은 뒤 남은 후보를 모두 prune하는 7단계 트레이스의 마지막 상태" width="30%"}
 
 ![핵심 state tree: 0/0/115 root에서 2/40/115(A 포함), 0/0/82(A 제외, bound)로 갈라지고 A 포함 branch가 7/70/115, 2/40/98을 거쳐 12/90에 도달한다(node label: weight/profit/UB).](../figures/10-state-space-search/14-knapsack-state-tree.svg){fig-alt="root 0/0/115에서 A 포함(2/40/115)과 A 제외(0/0/82, bound) 두 갈래로 나뉘고 A 포함 쪽이 다시 7/70/115와 2/40/98로 갈라져 최종 12/90에 도달하는 트리 다이어그램" width="45%"}
 
@@ -792,21 +592,7 @@ Branch-and-Bound는 어느 frontier 정책을 써도 optimum이 바뀌지 않는
 | LIFO | stack | 가장 최근 live node | DFS-like |
 | Best-bound | PQ | 가장 좋은 UB/LB | 평가 집중 |
 
-Frontier policy: live node A(UB12), B(UB18), C(UB15)에서 FIFO는 A를, LIFO는 C를, best-bound(max)는 B를 다음으로 선택한다 — sound bound이면 어느 순서도 optimality를 유지한다.
-
-::: {.panel-tabset}
-## FIFO
-
-![FIFO $\to A$.](../figures/10-state-space-search/15-frontier-policy-animation-step1.svg){fig-alt="live node A,B,C 중 FIFO가 A를 선택하는 1단계 상태" width="65%"}
-
-## LIFO
-
-![LIFO $\to C$.](../figures/10-state-space-search/15-frontier-policy-animation-step2.svg){fig-alt="LIFO가 C를 선택하는 상태" width="65%"}
-
-## Best-bound
-
-![Best-bound max $\to B$; sound bound이면 어느 순서도 optimality 유지.](../figures/10-state-space-search/15-frontier-policy-animation-step3.svg){fig-alt="A,B,C 세 live node에서 FIFO, LIFO, best-bound가 각각 다른 node를 다음으로 선택하지만 optimality는 유지된다는 설명이 붙은 3단계 트레이스의 마지막 상태" width="65%"}
-:::
+![Frontier policy: live node A(UB12), B(UB18), C(UB15)에서 FIFO는 A를, LIFO는 C를, best-bound(max)는 B를 다음으로 선택한다 — sound bound이면 어느 순서도 optimality를 유지한다.](../figures/10-state-space-search/15-frontier-policy-animation-step3.svg){fig-alt="A,B,C 세 live node에서 FIFO, LIFO, best-bound가 각각 다른 node를 다음으로 선택하지만 optimality는 유지된다는 설명이 붙은 3단계 트레이스의 마지막 상태" width="65%"}
 
 LIFO가 좋은 깊은 해를 빨리 찾으면 이후 많은 node를 prune할 수 있고, best-bound는 bound가 정확할 때 좋은 branch에 집중하며, FIFO는 shallow structure를 고르게 보지만 frontier가 커질 수 있다.
 
@@ -845,49 +631,9 @@ OPEN에서 $f$가 최소인 state를 확장한다. 본문은 nonnegative edge co
 
 ![5×7 grid: 장애물(회색)을 피해 S에서 G로 가는 경로를 찾는다.](../figures/10-state-space-search/16-astar-grid-heuristic.svg){fig-alt="5행 7열 격자에서 여섯 개의 장애물 칸이 회색으로 표시되고 왼쪽 위에 S, 오른쪽 아래에 G가 있는 다이어그램" width="35%"}
 
-A* OPEN/CLOSED trace: S를 추출해 CLOSED로 → neighbor들이 OPEN에 들어감 → 현재 최소 f를 계속 추출 → wall이 frontier를 아래로 유도 → goal 발견(g=10) → non-stale minimum으로 G를 추출해 종료.
+![A* OPEN/CLOSED trace: S를 추출해 CLOSED로 → neighbor들이 OPEN에 들어감 → 현재 최소 f를 계속 추출 → wall이 frontier를 아래로 유도 → goal 발견(g=10) → non-stale minimum으로 G를 추출해 종료.](../figures/10-state-space-search/17-astar-open-closed-trace-step6.svg){fig-alt="시작 지점부터 장애물을 피해 격자를 확장하며 CLOSED로 확정된 칸들이 늘어나고 최종적으로 목표 지점을 g=10에 추출하는 6단계 트레이스의 마지막 상태" width="65%"}
 
-::: {.panel-tabset}
-## 1단계
-
-![S: $g=0,h=10,f=10$. OPEN=$\{S\}$, CLOSED=$\varnothing$.](../figures/10-state-space-search/17-astar-open-closed-trace-step1.svg){fig-alt="S만 OPEN에 있고 CLOSED가 빈 1단계 상태" width="65%"}
-
-## 2단계
-
-![Extract S; add S to CLOSED. neighbors enter OPEN.](../figures/10-state-space-search/17-astar-open-closed-trace-step2.svg){fig-alt="S가 CLOSED로 옮겨지고 이웃들이 OPEN에 들어간 상태" width="65%"}
-
-## 3단계
-
-![current minimum $f$; tie: row, then column. OPEN key는 $g+h$.](../figures/10-state-space-search/17-astar-open-closed-trace-step3.svg){fig-alt="현재 최소 f를 가진 셀이 추출되는 상태" width="65%"}
-
-## 4단계
-
-![wall이 frontier를 아래로 유도. CLOSED는 reopen하지 않음.](../figures/10-state-space-search/17-astar-open-closed-trace-step4.svg){fig-alt="벽 때문에 frontier가 아래쪽으로 유도되며 CLOSED 칸들이 늘어난 상태" width="65%"}
-
-## 5단계
-
-![goal discovered: $g=10$. goal 발견 $\ne$ 종료.](../figures/10-state-space-search/17-astar-open-closed-trace-step5.svg){fig-alt="목표 지점이 g=10으로 발견되지만 아직 종료되지 않은 상태" width="65%"}
-
-## 6단계
-
-![Extract current G; add G to CLOSED. non-stale minimum key; optimal cost 10.](../figures/10-state-space-search/17-astar-open-closed-trace-step6.svg){fig-alt="시작 지점부터 장애물을 피해 격자를 확장하며 CLOSED로 확정된 칸들이 늘어나고 최종적으로 목표 지점을 g=10에 추출하는 6단계 트레이스의 마지막 상태" width="65%"}
-:::
-
-Path reconstruction: goal에서 parent chain을 거꾸로 따라가 S까지의 전체 경로를 복원한다.
-
-::: {.panel-tabset}
-## 1단계
-
-![goal에서 parent 추적.](../figures/10-state-space-search/18-astar-path-reconstruction-step1.svg){fig-alt="목표 지점에서 parent 추적이 시작되는 1단계 상태" width="35%"}
-
-## 2단계
-
-![goal부터 전체 parent chain을 역추적.](../figures/10-state-space-search/18-astar-path-reconstruction-step2.svg){fig-alt="목표 지점부터 parent chain을 따라 경로가 역추적되는 상태" width="35%"}
-
-## 3단계
-
-![S에서 G까지 전체 경로가 복원된다.](../figures/10-state-space-search/18-astar-path-reconstruction-step3.svg){fig-alt="목표 지점에서 시작 지점까지 parent 체인을 따라 복원된 전체 경로가 화살표로 표시된 3단계 트레이스의 마지막 상태" width="35%"}
-:::
+![Path reconstruction: goal에서 parent chain을 거꾸로 따라가 S까지의 전체 경로를 복원한다.](../figures/10-state-space-search/18-astar-path-reconstruction-step3.svg){fig-alt="목표 지점에서 시작 지점까지 parent 체인을 따라 복원된 전체 경로가 화살표로 표시된 3단계 트레이스의 마지막 상태" width="35%"}
 
 ::: {.callout-note title="정의: Admissible Heuristic"}
 $$0\le h(n)\le h^*(n),\qquad h(goal)=0$$
