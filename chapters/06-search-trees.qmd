@@ -382,10 +382,19 @@ Maximum은 left를 right로 바꾼 symmetric algorithm이다.
 
 **SUCCESSOR**는 두 case다: (1) $x.right\ne\NIL$이면 $\operatorname{minimum}(x.right)$, (2) right subtree가 없으면 parent를 올라가며 현재 node가 처음으로 ancestor의 left subtree에 놓이는 그 ancestor다. $x.key$보다 큰 key 중 가장 작은 key라는 정의와 일치한다.
 
-![SUCCESSOR 두 case: 15는 right subtree(18 아래)의 minimum인 17이 successor이고, 4는 위로 올라가 처음 left-turn 경계인 6이 successor다.](../figures/06-search-trees/15-successor-cases.svg){fig-alt="15와 17이 강조된 case1 트리와 나란히 4와 6이 강조된 case2 설명이 함께 표시된 다이어그램" width="25%"}
-![Case 2 보조 그림: 4에서 부모 3, 조부모 6으로 올라가며 처음 left child였던 지점(3)의 부모(6)가 successor.](../figures/06-search-trees/16-successor-case2-ancestor-chain.svg){fig-alt="6,3,4 세 노드가 위로 올라가는 화살표로 연결된 보조 다이어그램" width="15%"}
+SUCCESSOR 두 case를 같은 트리 $\{3,4,6,15,17,18,20\}$ 위에서 확인한다: 15는 right subtree(18 아래)의 minimum인 17이 successor이고, 4는 위로 올라가 처음 left-turn 경계인 6이 successor다.
 
-$$succ(15)=17,\quad succ(6)=7,\quad succ(4)=6,\quad succ(20)=\NIL$$
+::: {.panel-tabset}
+## Case 1
+
+![$succ(15)=min(18\ subtree)=17$: right subtree가 있으므로 그 안의 minimum.](../figures/06-search-trees/15-successor-cases-step1.svg){fig-alt="15와 17이 강조되고 6,3,4는 inactive로 표시된 case 1 트리 상태" width="30%"}
+
+## Case 2
+
+![$succ(4)=6$: 4에서 부모 3, 조부모 6으로 올라가며 처음 left child였던 지점(3)의 부모(6)가 successor.](../figures/06-search-trees/15-successor-cases-step2.svg){fig-alt="4에서 3을 거쳐 6까지 올라가는 active edge가 강조되고 15,18,17,20은 inactive로 표시된 case 2 트리 상태" width="30%"}
+:::
+
+$$succ(15)=17,\quad succ(6)=15,\quad succ(4)=6,\quad succ(20)=\NIL$$
 
 parent pointer가 있으면 upward walk가 직접 가능하고, 없으면 root부터 search path를 기억하거나 다시 탐색해야 한다. predecessor는 left/right와 min/max를 바꾼 symmetric operation이다.
 
