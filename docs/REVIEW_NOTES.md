@@ -22,8 +22,6 @@
 
 | # | 위치 | 종류 | 발견 내용 | 방향 | 상태 | 처리자 | batch |
 |---|---|---|---|---|---|---|---|
-| 11 | L02 `01-call-stack-push` | 그림-애니메이션 | mode:sequence 없어 SVG 1장만 생성(원본은 누적 애니메이션). 실제 복원 시 3단계(sum(4)만→+2→+2) | mode:sequence 추가·재추출 후 tabset 삽입 | open | [CC] | D |
-| 12 | L03 트레이스 8개(bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix) | 그림-애니메이션 | mode:sequence 없어 각각 최종 SVG 1장만 생성 | mode:sequence 추가·재추출 후 tabset 삽입 | open | [CC] | D |
 
 ## 보류 항목 (원본 세심 검토 후 별도 처리 — batch H)
 
@@ -48,6 +46,8 @@
 | L05/L07 화살표·레이블 국소 수정(#1,2,8,9,10) | `2a9f15e` | #1 matrix-reconstruction 화살표 간격·색 대비, #2 matrix-representative-cell "chosen" 폰트, #8 hash-pipeline 레이블 겹침(간격+줄바꿈), #9 chaining-insert-trace step1 노드 연결, #10 linear-trace2-wraparound step3 화살표 각도 |
 | L05 #2 재수정 — 25 셀 강조(방법 A) | `ce58f0c` | 폰트만 키운 첫 수정(`2a9f15e`)이 불충분하다는 피드백으로 재작업. 25를 `dp dependency`(파랑)에서 `dp current`(주황, 28과 동일 스타일)로 재-스타일링해 "선택된 값→결과" 흐름을 색으로 통일, 31은 비강조 유지. "chosen" 레이블을 화살표 옆에서 25 셀 바로 위로 재배치. 레이블 이동으로 자연폭이 줄어(125.9pt→77.5pt) 기존 20% width에서 ratio 1.32x로 상한 초과 → 19%(1.25x)로 축소 |
 | L06 트리 그림 크기 재조정(batch E) | `7aa946a` | batch B·C 재추출(주석 폰트 확대, succ 트리 병합 등)로 자연폭이 커진 그림들의 ratio가 0.55~0.84x까지 떨어져 상한(1.3x) 대비 너무 작아짐. 순회(08·09·10·11) 40%→50%, search/insert-trace(14·17) 55%→80%(짝 통일), delete-case3(20·21) 55%→70%, right-rotation(23·24) 35%→55%/50%, RB-insert(40·41·43) 30~35%→40~50%, B-tree(48·51·52·54·56·57·58·59) 25~60%→40~80% — 총 41개 이미지 태그 조정, SVG 재추출 불필요(width만 변경). 조정 후 전부 0.98~1.13x로 수렴, 이미 1.0~1.3x였던 그림은 그대로 유지 |
+| L02 push 애니메이션 복원(#11, batch D) | `b252c8f` | `FIGURE_CONFIG`에 mode:sequence 누락으로 `\visible<2->/<3->` 누적 애니메이션이 최종 상태 1장으로 붕괴. 소스에 명시적 `<1>`이 없어 `overlay_steps()` 경계 탐지가 {2,3}만 잡는 함정 확인 → `process_lecture()`에 "steps" override 메커니즘 신설, `[1,2,3]`으로 실제 3프레임(sum(4)만→+2→+2) 재추출. qmd를 pop과 동일한 3-tab panel-tabset·30% width(ratio 1.26x)로 교체해 push/pop 시각적 대칭 확보 |
+| L03 트레이스 8개 애니메이션 복원(#12, batch D) | `236cc5b` | bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix 8개 `FIGURE_CONFIG`에 mode:sequence 추가(전부 소스에 명시적 `<1>` 있어 steps override 불필요). 재추출 결과 4/5/4/4/5/5/4/3 프레임으로 소스와 정확히 일치 확인(각 트레이스의 배열/트리 상태를 알고리즘으로 재검산 — insertion·heapsort·counting-sort·radix 최종 결과가 실제 정렬/카운트 결과와 일치). qmd 8개를 각각 step별 캡션이 있는 panel-tabset으로 교체, 기존 %width 유지(재추출 후에도 ratio 1.13~1.25x로 변동 없음). 부수적으로 05-insertion-trace가 바로 위 05-insertion-cards 이미지와 빈 줄 없이 붙어있어 pandoc이 새 tabset을 별도 블록으로 인식 못하는 문제(quarto의 "stray :::" 경고)를 발견해 빈 줄 추가로 수정 |
 
 *주: L06 `14-search-trace`·`17-insert-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`, `976b3fc`) 모두 done.*
 
@@ -72,6 +72,8 @@
 | 2026-08-02 | L05/L07 #1,2,8,9,10 (batch C) | `2a9f15e` | matrix-reconstruction/representative-cell 화살표·레이블, hash-pipeline 레이블 겹침, chaining-insert-trace step1, linear-trace2-wraparound step3 화살표 수정. `TEXT_PATCHES` 리스트 지원 확장 |
 | 2026-08-02 | L05 #2 재수정 | `ce58f0c` | "chosen" 폰트만 키운 첫 수정이 불충분해 재작업: 25 셀을 28과 같은 주황(`dp current`)으로 강조, 레이블을 25 셀 위로 재배치, width 20%→19%(1.32x→1.25x) |
 | 2026-08-02 | L06 그림 크기 재조정 (batch E) | `7aa946a` | 트리 트레이스·rotation·RB-insert·B-tree 41개 이미지 %width 조정(SVG 재추출 없음), 전부 0.98~1.13x로 수렴 |
+| 2026-08-02 | L02 #11 (batch D) | `b252c8f` | push mode:sequence 추가 + "steps" override 메커니즘 신설, 3프레임 재추출, pop과 대칭되는 tabset 복원 |
+| 2026-08-02 | L03 #12 (batch D) | `236cc5b` | 8개 트레이스 mode:sequence 추가, 4/5/4/4/5/5/4/3 프레임 재추출·검산, 8개 tabset 복원 |
 
 ---
 
