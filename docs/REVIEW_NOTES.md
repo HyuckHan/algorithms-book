@@ -26,7 +26,7 @@
 | 3 | L09 `figures/09-string-matching/03-numeric-encoding-cad-step2.svg|내용|"원본의 28은 계산 오류" 문구 노출|삭제 — cad=53만 남김|방침확정|[방침] "원본 대비 교정" 노출 전반에 적용. 정독하며 같은 유형(L09 0-based, L10 pick/AP/C구현 "원본 교정", 기타)을 이 아래에 계속 수집|
 |4| L02 Part B 01-call-stack-push.svg|그림|Push 최종만 / Pop 단계별 불일치|Push도 단계별(step1~5 신규)|작업 큼: 새 SVG 5개 / ANIMATION_AUDIT.md 참조|
 |11|L03 트레이스 그림 8개(bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix-trace)|그림(애니메이션 붕괴)|`FIGURE_CONFIG`에 `mode: sequence`가 없어 원본 여러 프레임이 최종 상태 SVG 1장으로만 컴파일됨(SVG 자체가 1장뿐, qmd 문제 아님)|`mode: sequence` 추가 후 재추출, tabset으로 삽입|open|L02 push(4번)와 동일 원인. 상세는 ANIMATION_AUDIT.md §L03 참조|
-|12|L03/L04/L06 시퀀스 그림 8개(selection-trace/merge-pointers/fixed-pivot-trace/randomized-trace/median-of-medians-trace/tree-terminology-trace/insert-trace/degenerate-bst-trace)|그림(애니메이션 붕괴)|스텝 SVG는 전부 생성돼 있으나 qmd에 처음+마지막 2장만 나란히 삽입되고 중간 프레임 누락|나머지 스텝을 tabset으로 복원|open|L06 순회(9번)와 동일 패턴(프레임 뭉침). 상세는 ANIMATION_AUDIT.md 참조|
+|12|L03/L04/L06 시퀀스 그림 8개(selection-trace/merge-pointers/fixed-pivot-trace/randomized-trace/median-of-medians-trace/tree-terminology-trace/insert-trace/degenerate-bst-trace)|그림(애니메이션 붕괴)|스텝 SVG는 전부 생성돼 있으나 qmd에 처음+마지막 2장만 나란히 삽입되고 중간 프레임 누락|나머지 스텝을 tabset으로 복원|done|L06 순회(9번)와 동일 패턴(프레임 뭉침). 8개 전부 단계별 tabset으로 복원 완료(원본 콜아웃/테이블 텍스트를 각 step 캡션으로 재배치). 상세는 ANIMATION_AUDIT.md 참조|
 |13|L07/L09/L10 시퀀스 그림 42개(3개 챕터의 시퀀스 그림 전체)|그림(애니메이션 붕괴)|스텝 SVG는 전부 생성돼 있으나 qmd는 마지막 스텝 1장만 삽입, 나머지는 캡션 텍스트로만 서술|각 그림을 tabset으로 복원|open|이번 감사에서 발견된 가장 큰 규모의 패턴 — 챕터 단위 변환 컨벤션 차이로 추정. 상세는 ANIMATION_AUDIT.md 참조|
 |14|L07 `26-logical-vs-probing-load-step2.svg`|내용|캡션·fig-alt가 "logical load와 probing load를 나란히 보여주는 게이지"라고 서술하지만 실제 삽입된 step2.svg는 probing gauge 단독 렌더링(logical gauge는 이미지에 없음)|캡션을 실제 이미지 내용에 맞게 수정하거나 두 게이지를 한 그림에 모아 재추출|open|13번과 같은 근본 원인(step1 누락)에서 파생된 캡션-이미지 불일치. ANIMATION_AUDIT.md §L07 참조|
 <!--
@@ -36,8 +36,8 @@
 |6| L06 Part D "Java 구현 노트"	표현|표현|size·height 정의가 한 줄에 나란히 있어 우변이 길어져 목차와 겹침(가로 넘침)|두 정의를 별도 display 수식으로 분리|height의 base case h(NIL)=-1은 height 줄에 유지| Open| |
 |7|L06 SUCCESSOR 절 그림+캡션|	그림+내용(오류)| (a) 원본은 트리 1개인데 변환 시 3-4 서브트리가 6의 왼쪽에 통합 안 되고 오른쪽에 별도 그림으로 분리됨 (b) succ(6)=7 값 오류|(a) 3-4를 6의 왼쪽 서브트리로 통합해 트리 1개로 복원 (b) succ(6)=15로 교정	변환 오류.|Open| TikZ 소스에서 트리 구조 복원(texlive). 통합 후 succ 값 전체 재검산|
 |8|L06 Part G TreeInsert 의사코드 7행|	표현|	return DUPLICATE의 DUPLICATE만 폰트가 다름(다른 sentinel/반환값과 불일치)|	다른 의사코드의 sentinel 반환값(NIL, NOT_FOUND 등)과 같은 폰트로 통일|Open|pseudocode.js 소스에서 \text{}/\texttt{} 감싸기 방식 불일치 추정. 전 챕터 sentinel 리터럴 폰트 일관성 점검|
-|9|	L06 순회 Preorder·Inorder·Postorder 그림|	그림(애니메이션 붕괴)|	원본은 방문 순서 애니메이션(A→A,B→...)인데, 변환에서 프레임들이 좌우로 뭉친 정적 그림이 됨. "두 벌 복제"로 보였던 게 실은 프레임 붕괴|	Pop처럼 단계별 tabset으로 복원(방문 순서대로, 현재 강조+방문완료 회색+visited 누적)|Open|	L02 push(4번)와 같은 카테고리: Beamer 오버레이 애니메이션→tabset 변환 실패. Pop/Level-order queue는 성공. 파이프라인 불일치. ANIMATION_AUDIT.md 참조|
-|10|	L06 14-search-trace-step*.svg|	그림(애니메이션 붕괴)|	원본은 step1~4 검색 애니메이션인데 웹북엔 step1·step4만 있고 step2·step3 누락. + 왼쪽 상단 주석 폰트도 작음|	누락된 step2·step3 복원해 4단계 tabset으로. 주석 폰트도 키움|Open|9번·4번과 같은 애니메이션 붕괴. 정독으로 못 잡는 유형(누락 프레임). → 애니메이션 변환 감사 필요. ANIMATION_AUDIT.md 참조 — 이번 감사로 완료(전수 감사 결과 89개 그림 중 51개 완전 붕괴, 11개 프레임 뭉침 추가 발견)|
+|9|	L06 순회 Preorder·Inorder·Postorder 그림|	그림(애니메이션 붕괴)|	원본은 방문 순서 애니메이션(A→A,B→...)인데, 변환에서 프레임들이 좌우로 뭉친 정적 그림이 됨. "두 벌 복제"로 보였던 게 실은 프레임 붕괴|	Pop처럼 단계별 tabset으로 복원(방문 순서대로, 현재 강조+방문완료 회색+visited 누적)|done|	L02 push(4번)와 같은 카테고리: Beamer 오버레이 애니메이션→tabset 변환 실패. Pop/Level-order queue는 성공. 파이프라인 불일치. ANIMATION_AUDIT.md 참조 — preorder/inorder/postorder 전부 단계별 tabset(visited 누적 캡션)으로 복원 완료|
+|10|	L06 14-search-trace-step*.svg|	그림(애니메이션 붕괴)|	원본은 step1~4 검색 애니메이션인데 웹북엔 step1·step4만 있고 step2·step3 누락. + 왼쪽 상단 주석 폰트도 작음|	누락된 step2·step3 복원해 4단계 tabset으로. 주석 폰트도 키움|open|9번·4번과 같은 애니메이션 붕괴. 정독으로 못 잡는 유형(누락 프레임). → 애니메이션 변환 감사 필요. ANIMATION_AUDIT.md 참조 — 4단계 tabset 복원 완료(step2·3 원본 콜아웃 텍스트로 캡션 작성). 단 "왼쪽 상단 주석 폰트가 작다"는 별도 지적은 이번에 다루지 않음 — 여전히 open|
 -->
 
 ## 처리 이력

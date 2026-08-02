@@ -58,8 +58,25 @@ Tree는 계층을 표현한다(file system, organization hierarchy, syntax tree)
 
 같은 그림에서 여러 관계를 구분해보자: A는 root이고 degree 2다. A는 parent이고 B와 C는 A의 child이자 서로 sibling이다. D와 E는 leaf이고 B는 internal node다. C의 subtree는 $\{C,F,G\}$이고 A는 G의 ancestor다.
 
-![Tree 용어 추적: 같은 트리에서 root/degree → parent/child/sibling → leaf/internal → subtree/ancestor 순으로 하이라이트를 옮긴다.](../figures/06-search-trees/02-tree-terminology-trace-step1.svg){fig-alt="A가 주황으로 강조되고 root, degree 2라는 콜아웃이 붙은 1단계 상태" width="45%"}
-![](../figures/06-search-trees/02-tree-terminology-trace-step4.svg){fig-alt="C,F,G가 주황으로 강조되고 C의 subtree, A는 G의 ancestor라는 콜아웃이 붙은 마지막 상태" width="45%"}
+Tree 용어 추적: 같은 트리에서 root/degree → parent/child/sibling → leaf/internal → subtree/ancestor 순으로 하이라이트를 옮긴다.
+
+::: {.panel-tabset}
+## 1단계
+
+![A: root, degree 2.](../figures/06-search-trees/02-tree-terminology-trace-step1.svg){fig-alt="A가 주황으로 강조되고 root, degree 2라는 콜아웃이 붙은 1단계 상태" width="45%"}
+
+## 2단계
+
+![A는 parent; B와 C는 child이자 sibling.](../figures/06-search-trees/02-tree-terminology-trace-step2.svg){fig-alt="B와 C가 강조되고 A는 parent, B·C는 child이자 sibling이라는 콜아웃이 붙은 상태" width="45%"}
+
+## 3단계
+
+![D와 E는 leaf; B는 internal node.](../figures/06-search-trees/02-tree-terminology-trace-step3.svg){fig-alt="D,E가 강조되고 D·E는 leaf, B는 internal node라는 콜아웃이 붙은 상태" width="45%"}
+
+## 4단계
+
+![C의 subtree={C,F,G}; A는 G의 ancestor.](../figures/06-search-trees/02-tree-terminology-trace-step4.svg){fig-alt="C,F,G가 주황으로 강조되고 C의 subtree, A는 G의 ancestor라는 콜아웃이 붙은 마지막 상태" width="45%"}
+:::
 
 **Ancestor·Descendant**는 parent/child를 여러 edge로 확장한 transitive relation이다 — A는 E의 ancestor이고 E는 A의 descendant다. **Subtree**는 한 node와 모든 descendant, 그리고 그 edge로 이루어진 tree다(예: node B와 $\{B,D,E\}$). Node degree는 child 수이고, tree degree는 모든 node degree의 최댓값이다.
 
@@ -136,22 +153,81 @@ complete tree라면 array로도 표현할 수 있다 — index 관계로 parent/
 
 {{< include ../figures/06-search-trees/pseudocode-preorder.qmd >}}
 
-![Preorder 5단계: A 방문 → B 방문 → D,E 방문(왼쪽 먼저 끝까지) → C 방문 → F,G 방문.](../figures/06-search-trees/08-preorder-trace-step1.svg){fig-alt="A만 강조되고 visited: A인 1단계 상태" width="40%"}
-![](../figures/06-search-trees/08-preorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: A,B,D,E,C,F,G인 마지막 상태" width="40%"}
+Preorder 5단계: A 방문 → B 방문 → D,E 방문(왼쪽 먼저 끝까지) → C 방문 → F,G 방문.
+
+::: {.panel-tabset}
+## 1단계
+
+![A 방문. visited: A.](../figures/06-search-trees/08-preorder-trace-step1.svg){fig-alt="A만 강조되고 visited: A인 1단계 상태" width="40%"}
+
+## 2단계
+
+![B 방문. visited: A, B.](../figures/06-search-trees/08-preorder-trace-step2.svg){fig-alt="A는 처리 완료로, B가 강조되어 visited: A, B인 상태" width="40%"}
+
+## 3단계
+
+![D, E 방문(왼쪽 먼저 끝까지). visited: A, B, D, E.](../figures/06-search-trees/08-preorder-trace-step3.svg){fig-alt="A,B는 처리 완료로, D,E가 강조되어 visited: A, B, D, E인 상태" width="40%"}
+
+## 4단계
+
+![C 방문. visited: A, B, D, E, C.](../figures/06-search-trees/08-preorder-trace-step4.svg){fig-alt="A,B,D,E는 처리 완료로, C가 강조되어 visited: A, B, D, E, C인 상태" width="40%"}
+
+## 5단계
+
+![F, G 방문. visited: A, B, D, E, C, F, G.](../figures/06-search-trees/08-preorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: A,B,D,E,C,F,G인 마지막 상태" width="40%"}
+:::
 
 **Inorder**: left subtree를 마친 뒤 node, 그다음 right subtree를 처리한다.
 
 {{< include ../figures/06-search-trees/pseudocode-inorder.qmd >}}
 
-![Inorder 4단계: D 방문 → B,E 방문 → A 방문 → F,C,G 방문.](../figures/06-search-trees/09-inorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="40%"}
-![](../figures/06-search-trees/09-inorder-trace-step4.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,B,E,A,F,C,G인 마지막 상태" width="40%"}
+Inorder 4단계: D 방문 → B,E 방문 → A 방문 → F,C,G 방문.
+
+::: {.panel-tabset}
+## 1단계
+
+![D 방문. visited: D.](../figures/06-search-trees/09-inorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="40%"}
+
+## 2단계
+
+![B, E 방문. visited: D, B, E.](../figures/06-search-trees/09-inorder-trace-step2.svg){fig-alt="D는 처리 완료로, B,E가 강조되어 visited: D, B, E인 상태" width="40%"}
+
+## 3단계
+
+![A 방문. visited: D, B, E, A.](../figures/06-search-trees/09-inorder-trace-step3.svg){fig-alt="D,B,E는 처리 완료로, A가 강조되어 visited: D, B, E, A인 상태" width="40%"}
+
+## 4단계
+
+![F, C, G 방문. visited: D, B, E, A, F, C, G.](../figures/06-search-trees/09-inorder-trace-step4.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,B,E,A,F,C,G인 마지막 상태" width="40%"}
+:::
 
 **Postorder**: 두 subtree의 결과가 준비된 뒤 node를 처리한다.
 
 {{< include ../figures/06-search-trees/pseudocode-postorder.qmd >}}
 
-![Postorder 5단계: D 방문 → E,B 방문 → F,G,C 방문 → A 방문.](../figures/06-search-trees/10-postorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="40%"}
-![](../figures/06-search-trees/10-postorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,E,B,F,G,C,A인 마지막 상태" width="40%"}
+Postorder 5단계: D 방문 → E,B 방문 → F,G,C 방문 → A 방문.
+
+::: {.panel-tabset}
+## 1단계
+
+![D 방문. visited: D.](../figures/06-search-trees/10-postorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="40%"}
+
+## 2단계
+
+![E, B 방문. visited: D, E, B.](../figures/06-search-trees/10-postorder-trace-step2.svg){fig-alt="D는 처리 완료로, E,B가 강조되어 visited: D, E, B인 상태" width="40%"}
+
+## 3단계
+
+![F, G, C 방문. visited: D, E, B, F, G, C.](../figures/06-search-trees/10-postorder-trace-step3.svg){fig-alt="D,E,B는 처리 완료로, F,G,C가 강조되어 visited: D, E, B, F, G, C인 상태" width="40%"}
+
+## 4단계
+
+![A 방문. visited: D, E, B, F, G, C, A.](../figures/06-search-trees/10-postorder-trace-step4.svg){fig-alt="A만 남아 강조되고 나머지는 처리 완료로 표시된 상태" width="40%"}
+
+## 5단계
+
+![후위 순회 완료.](../figures/06-search-trees/10-postorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,E,B,F,G,C,A인 마지막 상태" width="40%"}
+:::
 
 **복잡도(DFS 세 traversal 공통)**: 각 node에서 $\Theta(1)$ work를 정확히 한 번 수행하므로 시간은 $\Theta(n)$이다. recursion stack은 현재 root-to-node path이므로 $O(h)$ — balanced tree는 $O(\log n)$, degenerate tree는 $O(n)$이다.
 
@@ -276,8 +352,25 @@ inorder $2,3,4,6,7,9,13,14,15,17,18,20$은 정렬 순서와 같다 — left subt
 
 {{< include ../figures/06-search-trees/pseudocode-tree-search-iterative.qmd >}}
 
-![SEARCH 13: root에서 시작해 13<15로 left, 13>6로 right, 13>7로 right, 13=13으로 종료(4단계).](../figures/06-search-trees/14-search-trace-step1.svg){fig-alt="15가 강조되고 13<15: right subtree를 버리고 left로라는 콜아웃이 붙은 1단계, 나머지 노드는 inactive" width="55%"}
-![](../figures/06-search-trees/14-search-trace-step4.svg){fig-alt="13이 최종 강조되고 13=13: found라는 콜아웃이 붙은 마지막 상태, active edge 경로가 표시됨" width="55%"}
+SEARCH 13: root에서 시작해 13<15로 left, 13>6로 right, 13>7로 right, 13=13으로 종료(4단계).
+
+::: {.panel-tabset}
+## 1단계
+
+![13<15: right subtree를 버리고 left로.](../figures/06-search-trees/14-search-trace-step1.svg){fig-alt="15가 강조되고 13<15: right subtree를 버리고 left로라는 콜아웃이 붙은 1단계, 나머지 노드는 inactive" width="55%"}
+
+## 2단계
+
+![13>6: left subtree를 버리고 right로.](../figures/06-search-trees/14-search-trace-step2.svg){fig-alt="6이 강조되고 13>6: left subtree를 버리고 right로라는 콜아웃이 붙은 상태, 15에서 6까지 active edge 표시" width="55%"}
+
+## 3단계
+
+![13>7: left/NIL을 버리고 right로.](../figures/06-search-trees/14-search-trace-step3.svg){fig-alt="7이 강조되고 13>7: left/NIL을 버리고 right로라는 콜아웃이 붙은 상태, 15에서 7까지 active edge 표시" width="55%"}
+
+## 4단계
+
+![13=13: found.](../figures/06-search-trees/14-search-trace-step4.svg){fig-alt="13이 최종 강조되고 13=13: found라는 콜아웃이 붙은 마지막 상태, active edge 경로가 표시됨" width="55%"}
+:::
 
 **MINIMUM·MAXIMUM**: minimum은 left child를 NIL까지 따라간다(예제에서 2), maximum은 right child를 NIL까지 따라간다(예제에서 20). 시간은 $\Theta(h)$이고, empty tree의 Java API는 `OptionalInt.empty()`를 반환한다.
 
@@ -309,8 +402,33 @@ INSERT는 두 cursor를 쓴다: $x$는 search cursor(다음 비교 node), $y$는
 
 {{< include ../figures/06-search-trees/pseudocode-tree-insert.qmd >}}
 
-![INSERT 12: x=15,y=NIL(12&lt;15) → x=6,y=15(12&gt;6) → x=7,y=6(12&gt;7) → x=13,y=7(12&lt;13) → x=9,y=13(12&gt;9) → x=NIL,y=9, 9의 right child로 attach(6단계, 절대 경로 15→6→7→13→9→NIL).](../figures/06-search-trees/17-insert-trace-step1.svg){fig-alt="15가 강조되고 x=15,y=NIL, 12&lt;15라는 콜아웃이 붙은 1단계, 나머지는 inactive" width="55%"}
-![](../figures/06-search-trees/17-insert-trace-step6.svg){fig-alt="9까지의 경로가 active edge로 표시되고 새 노드 12가 9의 right child로 추가된 마지막 상태" width="55%"}
+INSERT 12: x=15,y=NIL(12&lt;15) → x=6,y=15(12&gt;6) → x=7,y=6(12&gt;7) → x=13,y=7(12&lt;13) → x=9,y=13(12&gt;9) → x=NIL,y=9, 9의 right child로 attach(6단계, 절대 경로 15→6→7→13→9→NIL).
+
+::: {.panel-tabset}
+## 1단계
+
+![x=15, y=NIL, 12<15.](../figures/06-search-trees/17-insert-trace-step1.svg){fig-alt="15가 강조되고 x=15,y=NIL, 12&lt;15라는 콜아웃이 붙은 1단계, 나머지는 inactive" width="55%"}
+
+## 2단계
+
+![x=6, y=15, 12>6.](../figures/06-search-trees/17-insert-trace-step2.svg){fig-alt="6이 강조되고 x=6,y=15, 12&gt;6이라는 콜아웃이 붙은 상태, 15에서 6까지 active edge 표시" width="55%"}
+
+## 3단계
+
+![x=7, y=6, 12>7.](../figures/06-search-trees/17-insert-trace-step3.svg){fig-alt="7이 강조되고 x=7,y=6, 12&gt;7이라는 콜아웃이 붙은 상태, 6에서 7까지 active edge 표시" width="55%"}
+
+## 4단계
+
+![x=13, y=7, 12<13.](../figures/06-search-trees/17-insert-trace-step4.svg){fig-alt="13이 강조되고 x=13,y=7, 12&lt;13이라는 콜아웃이 붙은 상태, 7에서 13까지 active edge 표시" width="55%"}
+
+## 5단계
+
+![x=9, y=13, 12>9.](../figures/06-search-trees/17-insert-trace-step5.svg){fig-alt="9가 강조되고 x=9,y=13, 12&gt;9라는 콜아웃이 붙은 상태, 13에서 9까지 active edge 표시" width="55%"}
+
+## 6단계
+
+![x=NIL, y=9. 9의 right child로 attach.](../figures/06-search-trees/17-insert-trace-step6.svg){fig-alt="9까지의 경로가 active edge로 표시되고 새 노드 12가 9의 right child로 추가된 마지막 상태" width="55%"}
+:::
 
 search path의 비교가 lower/upper bound를 좁히고, 마지막 $y$의 올바른 NIL side에 연결하면 모든 ancestor bound가 유지된다 — path length만큼 비교하므로 $\Theta(h)$다.
 
@@ -390,8 +508,29 @@ BST 연산은 모두 $\Theta(h)$다 — $h$를 구하는 재귀식 분석 도구
 
 정렬된 키 `1,2,3,4,5,6,7`을 순서대로 삽입하면 매번 새 key가 가장 오른쪽에 붙어 height가 계속 늘어난다.
 
-![정렬 입력 1..7 삽입 5단계: 매번 오른쪽 끝에 새 node가 붙어 결국 edge-height 6인 사슬(chain)이 된다.](../figures/06-search-trees/22-degenerate-bst-trace-step1.svg){fig-alt="1만 있는 트리, after insert 1, edge-height=0이라는 콜아웃이 붙은 1단계" width="50%"}
-![](../figures/06-search-trees/22-degenerate-bst-trace-step5.svg){fig-alt="1부터 7까지 오른쪽으로 계속 이어진 사슬 모양 트리, edge-height=6, worst-case Θ(n)이라는 콜아웃이 붙은 마지막 상태" width="50%"}
+정렬 입력 1..7 삽입 5단계: 매번 오른쪽 끝에 새 node가 붙어 결국 edge-height 6인 사슬(chain)이 된다.
+
+::: {.panel-tabset}
+## 1단계
+
+![after insert 1. edge-height=0.](../figures/06-search-trees/22-degenerate-bst-trace-step1.svg){fig-alt="1만 있는 트리, after insert 1, edge-height=0이라는 콜아웃이 붙은 1단계" width="50%"}
+
+## 2단계
+
+![after insert 2. edge-height=1.](../figures/06-search-trees/22-degenerate-bst-trace-step2.svg){fig-alt="1-2 사슬 트리, after insert 2, edge-height=1이라는 콜아웃이 붙은 상태" width="50%"}
+
+## 3단계
+
+![after insert 3. search path가 계속 길어짐.](../figures/06-search-trees/22-degenerate-bst-trace-step3.svg){fig-alt="1-2-3 사슬 트리, after insert 3, search path가 계속 길어진다는 콜아웃이 붙은 상태" width="50%"}
+
+## 4단계
+
+![after inserts 4, 5. latest node 5.](../figures/06-search-trees/22-degenerate-bst-trace-step4.svg){fig-alt="1부터 5까지 이어진 사슬 트리, after inserts 4,5, latest node 5라는 콜아웃이 붙은 상태" width="50%"}
+
+## 5단계
+
+![after inserts 6, 7. edge-height=6, operations worst-case Θ(n).](../figures/06-search-trees/22-degenerate-bst-trace-step5.svg){fig-alt="1부터 7까지 오른쪽으로 계속 이어진 사슬 모양 트리, edge-height=6, worst-case Θ(n)이라는 콜아웃이 붙은 마지막 상태" width="50%"}
+:::
 
 같은 key set `{1,...,7}`이라도 삽입 순서 `4,2,6,1,3,5,7`이면 height 2, 연산 $\Theta(\log n)$이 된다 — **plain BST는 input order에 따라 shape가 바뀌며 balance를 보장하지 않는다.**
 
