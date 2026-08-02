@@ -232,7 +232,7 @@ FIGURE_CONFIG = {
         ("03_traversal.tex", 4): {"slug": "11-level-order-reference-tree"},
         ("03_traversal.tex", 5): {"slug": "12-expression-tree"},
         ("06_bst_search.tex", 0): {"slug": "13-fixed-bst-example"},
-        ("06_bst_search.tex", 1): {"slug": "14-search-trace", "mode": "sequence"},
+        ("06_bst_search.tex", 1): {"slug": "14-search-trace", "mode": "sequence", "text_patch": "search_trace_annotation_font"},
         ("06_bst_search.tex", 2): {"slug": "15-successor-cases"},
         ("06_bst_search.tex", 3): {"slug": "16-successor-case2-ancestor-chain"},
         ("07_bst_insert_delete.tex", 0): {"slug": "17-insert-trace", "mode": "sequence"},
@@ -468,6 +468,36 @@ def apply_tikz_patch(raw, patch_name):
         return "\\begin{tikzpicture}%s\n%s" % (merged, style_override)
 
     return TIKZPICTURE_OPEN_RE.sub(repl, raw, count=1)
+
+
+# Named per-figure raw-text patches (FIGURE_CONFIG's "text_patch" key) -- for
+# cases TIKZ_PATCHES can't reach because the fix targets a literal option
+# baked directly onto one \node (not a shared named style a tikzset override
+# could cascade into). Each entry is (regex pattern, replacement), applied
+# once to the figure's own raw tikzpicture body -- same build-time-only,
+# never-touch-lecture-notes/ contract as TIKZ_PATCHES above.
+TEXT_PATCHES = {
+    # 06_bst_search.tex's SEARCH 13 trace ("14-search-trace"): the top-left
+    # orienting annotation ("full BST; inactive subtree는 탐색하지 않음")
+    # hardcodes font=\scriptsize directly on its own \node -- unlike every
+    # other label/callout in the same picture (node values, the bottom
+    # \node[callout]{...} steps), which all use the ambient default size via
+    # no override at all. Drop the override so this annotation matches
+    # (docs/REVIEW_NOTES.md #7). This node has no \only wrapper, so it's
+    # shared unchanged across all 4 overlay steps -- one patch, four SVGs.
+    "search_trace_annotation_font": (r"font=\\scriptsize,", ""),
+}
+
+
+def apply_text_patch(raw, patch_name):
+    """Apply TEXT_PATCHES[patch_name]'s (pattern, replacement) once to `raw`.
+    Raises if the pattern isn't found, so a future upstream source edit that
+    removes the target text doesn't silently make this a no-op."""
+    pattern, replacement = TEXT_PATCHES[patch_name]
+    new_raw, count = re.subn(pattern, replacement, raw, count=1)
+    if count == 0:
+        raise ValueError("text patch %r: pattern not found in raw body" % patch_name)
+    return new_raw
 
 
 def find_brace_block(text, open_pos):
@@ -972,6 +1002,7 @@ def process_lecture(lecture, check_only, keep_build, jobs=None):
             slug = cfg.get("slug", "%s-%d" % (section_path.stem, idx))
             mode = cfg.get("mode", "flatten")
             patch_name = cfg.get("patch")
+            text_patch_name = cfg.get("text_patch")
 
             if kind.startswith("macro:"):
                 # Each entry in `raw` (a list) is already one fully-resolved
@@ -979,6 +1010,8 @@ def process_lecture(lecture, check_only, keep_build, jobs=None):
                 # shared body (see find_figures's docstring) -- so there is
                 # no overlay_steps()/render_overlay_at() step here at all.
                 bodies = [apply_tikz_patch(b, patch_name) if patch_name else b for b in raw]
+                if text_patch_name:
+                    bodies = [apply_text_patch(b, text_patch_name) for b in bodies]
                 if len(bodies) > 1:
                     targets = [(None, "%s-step%d" % (slug, i + 1), b) for i, b in enumerate(bodies)]
                 else:
@@ -986,6 +1019,8 @@ def process_lecture(lecture, check_only, keep_build, jobs=None):
             else:
                 if patch_name:
                     raw = apply_tikz_patch(raw, patch_name)
+                if text_patch_name:
+                    raw = apply_text_patch(raw, text_patch_name)
                 steps = overlay_steps(raw)
                 if mode == "sequence" and steps:
                     targets = [(step, "%s-step%d" % (slug, i + 1), raw) for i, step in enumerate(steps)]
