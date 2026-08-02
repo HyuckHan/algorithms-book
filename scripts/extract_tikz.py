@@ -103,24 +103,30 @@ PREAMBLE = r"""\documentclass[border=4pt]{standalone}
 # should be flattened to a single final-state SVG or rendered as a step
 # sequence. Figures not listed default to flatten with an auto-generated slug.
 FIGURE_CONFIG = {
+    # docs/REVIEW_NOTES.md #12: the 8 "-trace" entries below (bubble,
+    # insertion, quick-partition, heapify, build-heap, heapsort,
+    # counting-sort, radix) were missing "mode": "sequence" -- each source
+    # has 3-5 explicit \only<N> states (all with an explicit <1>, unlike
+    # L02 push's \visible<2->/<3-> gap, so no "steps" override is needed
+    # here), but flatten mode compiled only the final one.
     "03": {
         ("01_motivation.tex", 0): {"slug": "01-sorting-roadmap"},
         ("02_sorting_properties.tex", 0): {"slug": "02-stability-demo"},
         ("03_selection.tex", 0): {"slug": "03-selection-trace", "mode": "sequence"},
-        ("04_bubble.tex", 0): {"slug": "04-bubble-trace"},
+        ("04_bubble.tex", 0): {"slug": "04-bubble-trace", "mode": "sequence"},
         ("05_insertion.tex", 0): {"slug": "05-insertion-cards"},
-        ("05_insertion.tex", 1): {"slug": "05-insertion-trace"},
+        ("05_insertion.tex", 1): {"slug": "05-insertion-trace", "mode": "sequence"},
         ("07_merge_sort.tex", 0): {"slug": "07-merge-divide"},
         ("07_merge_sort.tex", 1): {"slug": "07-merge-pointers", "mode": "sequence"},
         ("07_merge_sort.tex", 2): {"slug": "07-merge-recursion-tree"},
-        ("08_quick_sort.tex", 0): {"slug": "08-quick-partition-trace"},
+        ("08_quick_sort.tex", 0): {"slug": "08-quick-partition-trace", "mode": "sequence"},
         ("09_lower_bound.tex", 0): {"slug": "09-decision-tree"},
         ("10_heap_basics.tex", 0): {"slug": "10-heap-array-tree"},
-        ("11_heapify.tex", 0): {"slug": "11-heapify-trace"},
-        ("12_build_heap.tex", 0): {"slug": "12-build-heap-trace"},
-        ("13_heap_sort.tex", 0): {"slug": "13-heapsort-trace"},
-        ("14_counting_sort.tex", 0): {"slug": "14-counting-sort-trace"},
-        ("15_radix_sort.tex", 0): {"slug": "15-radix-trace"},
+        ("11_heapify.tex", 0): {"slug": "11-heapify-trace", "mode": "sequence"},
+        ("12_build_heap.tex", 0): {"slug": "12-build-heap-trace", "mode": "sequence"},
+        ("13_heap_sort.tex", 0): {"slug": "13-heapsort-trace", "mode": "sequence"},
+        ("14_counting_sort.tex", 0): {"slug": "14-counting-sort-trace", "mode": "sequence"},
+        ("15_radix_sort.tex", 0): {"slug": "15-radix-trace", "mode": "sequence"},
         ("19_summary_quiz.tex", 0): {"slug": "19-concept-map"},
     },
     "01": {
