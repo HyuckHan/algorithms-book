@@ -1,56 +1,123 @@
 # REVIEW_NOTES — 정독 중 발견 사항 로그
 
-이 문서는 **책 전체를 천천히 정독하면서 발견한 수정 필요 사항을 모으기 위한** 로그다.
-발견할 때마다 즉시 고치지 않고 여기 한 줄씩 쌓아뒀다가, 어느 정도 모이면
-(예: 한 챕터 정독 완료 시, 또는 10~20개 누적 시) batch로 한꺼번에 처리한다.
-개별 수정을 매번 하면 렌더·배포·커밋이 파편화되므로, 모아서 처리하는 것이 목적이다.
+이 문서는 **책 전체를 정독하며 발견한 수정 필요 사항을 모으는** 로그다. 발견 즉시 고치지 않고
+쌓아뒀다가 카테고리별 batch로 처리한다(렌더·배포·커밋 파편화 방지).
+
+> **2026-08-02 재정리**: 번호 중복·주석 매몰로 뒤섞였던 이전 버전을 하나의 유니크 번호 체계로
+> 통합했다. 이 문서가 유일한 진실의 원천(source of truth)이다. 이전의 활성/주석 이중 번호는 폐기.
 
 ## 사용법
 
-- **발견할 때마다** 아래 표에 한 줄 추가한다. 완벽하게 적으려 하지 말고 빠르게 던지듯 적는다.
-- **"원하는 방향"이 애매하면 비워둬도 된다** — 나중에 함께 판단한다.
-- **종류**는 처리 방식을 가르므로 되도록 채운다:
-  - `그림` = SVG/TikZ 소스 수정 (재컴파일 필요, texlive 필요)
-  - `내용` = 본문 서술·설명의 정확성/논리 문제 (.qmd 또는 TikZ 내 텍스트)
-  - `표현` = 문구 다듬기·일관성 (경미)
-  - `코드` = 3언어 구현/출력 관련
-- **상태**: `open`(미처리) → `판단중`(방향 논의 필요) → `수정지시됨`(Claude Code에 전달) → `done`(반영·확인 완료)
-- **판단이 필요한 항목**(왜 이렇게 됐는지 근거를 먼저 확인해야 하는 것)은 상태를 `판단중`으로 두고 비고에 메모.
+- **종류**가 처리 방식을 가른다:
+  - `그림-재컴파일` = TikZ 소스 수정 → SVG 재추출 (texlive 필요)
+  - `그림-애니메이션` = mode:sequence 추가·재추출 또는 tabset 삽입
+  - `내용` = 본문 서술·정확성 (.qmd 또는 TikZ 내 텍스트)
+  - `표현` = 문구·폰트·수식 조판
+  - `설명보강` = 본문 문단 추가
+- **상태**: `open` → `판단중` → `수정지시됨` → `done`
+- **처리자**: `[CC]` Claude Code / `[나]` 사용자 직접 / `[?]` 미정
+- **batch 그룹**: A=설명보강, B=표현·폰트·수식, C=TikZ 그림수정, D=애니메이션 재생성, H=보류
 
-## 발견 사항
+## 발견 사항 (현재 유효)
 
-| # | 위치 (챕터 · 파일/줄) | 종류 | 발견 내용 | 원하는 방향 | 상태 | 비고 |
-|---|---|---|---|---|---|---|
-| 1 | L05 `figures/05-dynamic-programming/12-matrix-reconstruction.svg` | 그림 | 화살표가 불명확(clear하지 않음) | 화살표 방향·굵기·대비를 더 선명하게 | open | matrix path 복원 다이어그램 |
-| 2 | L05 `figures/05-dynamic-programming/11-matrix-representative-cell.svg` | 그림 | 화살표는 잘 보이나 "chosen" 레이블이 불명확 | chosen 표시(위치/대비/연결선)를 더 명확하게 | open | 화살표 자체는 OK |
-| 3 | L09 `figures/09-string-matching/03-numeric-encoding-cad-step2.svg|내용|"원본의 28은 계산 오류" 문구 노출|삭제 — cad=53만 남김|방침확정|[방침] "원본 대비 교정" 노출 전반에 적용. 정독하며 같은 유형(L09 0-based, L10 pick/AP/C구현 "원본 교정", 기타)을 이 아래에 계속 수집|
-|4| L02 Part B 01-call-stack-push.svg|그림|Push 최종만 / Pop 단계별 불일치|Push도 단계별(step1~5 신규)|작업 큼: 새 SVG 5개 / ANIMATION_AUDIT.md 참조|
-|11|L03 트레이스 그림 8개(bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix-trace)|그림(애니메이션 붕괴)|`FIGURE_CONFIG`에 `mode: sequence`가 없어 원본 여러 프레임이 최종 상태 SVG 1장으로만 컴파일됨(SVG 자체가 1장뿐, qmd 문제 아님)|`mode: sequence` 추가 후 재추출, tabset으로 삽입|open|L02 push(4번)와 동일 원인. 상세는 ANIMATION_AUDIT.md §L03 참조|
-|12|L03/L04/L06 시퀀스 그림 8개(selection-trace/merge-pointers/fixed-pivot-trace/randomized-trace/median-of-medians-trace/tree-terminology-trace/insert-trace/degenerate-bst-trace)|그림(애니메이션 붕괴)|스텝 SVG는 전부 생성돼 있으나 qmd에 처음+마지막 2장만 나란히 삽입되고 중간 프레임 누락|나머지 스텝을 tabset으로 복원|done|L06 순회(9번)와 동일 패턴(프레임 뭉침). 8개 전부 단계별 tabset으로 복원 완료(원본 콜아웃/테이블 텍스트를 각 step 캡션으로 재배치). 상세는 ANIMATION_AUDIT.md 참조|
-|13|L07/L09/L10 시퀀스 그림 42개(3개 챕터의 시퀀스 그림 전체)|그림(애니메이션 붕괴)|스텝 SVG는 전부 생성돼 있으나 qmd는 마지막 스텝 1장만 삽입, 나머지는 캡션 텍스트로만 서술|각 그림을 tabset으로 복원|보류|이번 감사에서 발견된 가장 큰 규모의 패턴 — 챕터 단위 변환 컨벤션 차이로 추정. 상세는 ANIMATION_AUDIT.md 참조. **L07 12건은 tabset 복원 완료(유지, done)**. **L09(16건)·L10(13건)은 tabset 복원했다가 `git revert`로 되돌림** — 원본(Codex 신규 서사) 대조 검증을 위해 보류, step SVG 파일은 디스크에 그대로 남아 있어 검증 후 재복원 가능. revert 커밋: L09 `11323f1`(reverts `e960999`), L10 `699cafa`(reverts `02f4910`)|
-|14|L07 `26-logical-vs-probing-load-step2.svg`|내용|캡션·fig-alt가 "logical load와 probing load를 나란히 보여주는 게이지"라고 서술하지만 실제 삽입된 step2.svg는 probing gauge 단독 렌더링(logical gauge는 이미지에 없음)|캡션을 실제 이미지 내용에 맞게 수정하거나 두 게이지를 한 그림에 모아 재추출|done|13번과 같은 근본 원인(step1 누락)에서 파생된 캡션-이미지 불일치. ANIMATION_AUDIT.md §L07 참조 — step1(logical)/step2(probing) 각각을 tabset으로 분리 삽입해 캡션을 실제 이미지와 일치시킴|
-<!--
-새 항목 추가 예시 (이 주석은 지우지 말 것):
-| 4 | L?? `파일 또는 챕터·줄` | 그림/내용/표현/코드 | 무엇이 문제인지 | 어떻게 됐으면 하는지(비워도 됨) | open | 참고 메모 |
-| 5 | L04 Part D "구현" 문단| 내용 | 구현 문단이 코드 첫 함수 _insertion_sort의 역할을 언급 안 해, 개념 설명과 코드가 어긋나 보임|구현 문단에 "각 5-원소 그룹 median을 insertion sort로 뽑으며, 그룹이 상수 크기(5)라 O(1)" 한 문장 추가|Open | 버그 아님, 설명 보강. 값·코드는 정확|
-|6| L06 Part D "Java 구현 노트"	표현|표현|size·height 정의가 한 줄에 나란히 있어 우변이 길어져 목차와 겹침(가로 넘침)|두 정의를 별도 display 수식으로 분리|height의 base case h(NIL)=-1은 height 줄에 유지| Open| |
-|7|L06 SUCCESSOR 절 그림+캡션|	그림+내용(오류)| (a) 원본은 트리 1개인데 변환 시 3-4 서브트리가 6의 왼쪽에 통합 안 되고 오른쪽에 별도 그림으로 분리됨 (b) succ(6)=7 값 오류|(a) 3-4를 6의 왼쪽 서브트리로 통합해 트리 1개로 복원 (b) succ(6)=15로 교정	변환 오류.|Open| TikZ 소스에서 트리 구조 복원(texlive). 통합 후 succ 값 전체 재검산|
-|8|L06 Part G TreeInsert 의사코드 7행|	표현|	return DUPLICATE의 DUPLICATE만 폰트가 다름(다른 sentinel/반환값과 불일치)|	다른 의사코드의 sentinel 반환값(NIL, NOT_FOUND 등)과 같은 폰트로 통일|Open|pseudocode.js 소스에서 \text{}/\texttt{} 감싸기 방식 불일치 추정. 전 챕터 sentinel 리터럴 폰트 일관성 점검|
-|9|	L06 순회 Preorder·Inorder·Postorder 그림|	그림(애니메이션 붕괴)|	원본은 방문 순서 애니메이션(A→A,B→...)인데, 변환에서 프레임들이 좌우로 뭉친 정적 그림이 됨. "두 벌 복제"로 보였던 게 실은 프레임 붕괴|	Pop처럼 단계별 tabset으로 복원(방문 순서대로, 현재 강조+방문완료 회색+visited 누적)|done|	L02 push(4번)와 같은 카테고리: Beamer 오버레이 애니메이션→tabset 변환 실패. Pop/Level-order queue는 성공. 파이프라인 불일치. ANIMATION_AUDIT.md 참조 — preorder/inorder/postorder 전부 단계별 tabset(visited 누적 캡션)으로 복원 완료|
-|10|	L06 14-search-trace-step*.svg|	그림(애니메이션 붕괴)|	원본은 step1~4 검색 애니메이션인데 웹북엔 step1·step4만 있고 step2·step3 누락. + 왼쪽 상단 주석 폰트도 작음|	누락된 step2·step3 복원해 4단계 tabset으로. 주석 폰트도 키움|open|9번·4번과 같은 애니메이션 붕괴. 정독으로 못 잡는 유형(누락 프레임). → 애니메이션 변환 감사 필요. ANIMATION_AUDIT.md 참조 — 4단계 tabset 복원 완료(step2·3 원본 콜아웃 텍스트로 캡션 작성). 단 "왼쪽 상단 주석 폰트가 작다"는 별도 지적은 이번에 다루지 않음 — 여전히 open|
--->
+| # | 위치 | 종류 | 발견 내용 | 방향 | 상태 | 처리자 | batch |
+|---|---|---|---|---|---|---|---|
+| 1 | L05 `12-matrix-reconstruction.svg` | 그림-재컴파일 | 화살표가 불명확(clear하지 않음) | 화살표 방향·굵기·대비 선명하게 | open | [CC] | C |
+| 2 | L05 `11-matrix-representative-cell.svg` | 그림-재컴파일 | 화살표는 OK, "chosen" 레이블이 불명확 | chosen 표시(위치/대비/연결선) 명확하게 | open | [CC] | C |
+| 4 | L06 Part D "Java 구현 노트" | 표현 | size·height 정의가 한 줄에 나란히 있어 우변이 목차와 겹침(가로 넘침) | 두 정의를 별도 display 수식으로 분리(height base case h(NIL)=-1은 height 줄 유지) | open | [CC] | B |
+| 5 | L06 SUCCESSOR 절 그림+캡션 | 그림-재컴파일+내용 | (a) 원본은 트리 1개인데 변환 시 3-4 서브트리가 6 왼쪽에 통합 안 되고 오른쪽에 별도 그림으로 분리 (b) `succ(6)=7` 값 오류 | (a) 3-4를 6의 왼쪽 서브트리로 통합해 트리 1개로 복원 (b) `succ(6)=15`로 교정 | open | [CC] | C |
+| 6 | L06 Part G TreeInsert 의사코드 7행 | 표현 | `return DUPLICATE`의 DUPLICATE만 폰트가 다름(다른 sentinel과 불일치) | 다른 sentinel 반환값(NIL 등)과 같은 폰트로 통일 | open | [CC] | B |
+| 7 | L06 `14-search-trace` 왼쪽 상단 주석 | 표현 | "full BST; inactive subtree..." 주석 폰트가 다른 레이블보다 유난히 작음 | 최소 폰트 크기로 키워 다른 그림 주석과 일관되게 | open | [CC] | B |
+| 8 | L07 `01-hash-pipeline.svg` | 그림-재컴파일 | 화살표 위 레이블(hash-code function, compression function)이 인접 상자와 겹쳐 글자 뭉개짐("johin","codepression") | 레이블을 화살표 위 공간에 겹치지 않게(간격/위치/줄바꿈) | open | [CC] | C |
+| 9 | L07 `10-chaining-insert-trace-step1`만 | 그림-재컴파일 | step1에서 "10" 노드가 slot 3에서 멀리 떨어져 허공에 뜬 것처럼 보임 | step1의 10 노드를 slot 3에 가깝게/명확히 연결 | open | [CC] | C |
+| 10 | L07 `15-linear-trace2-wraparound-step3` | 그림-재컴파일 | wrap 화살표가 slot 0을 명확히 안 가리키고 0-1 사이를 가리킴 | 화살표 끝점을 slot 0에 정확히 | open | [CC] | C |
+| 11 | L02 `01-call-stack-push` | 그림-애니메이션 | mode:sequence 없어 SVG 1장만 생성(원본은 누적 애니메이션). 실제 복원 시 3단계(sum(4)만→+2→+2) | mode:sequence 추가·재추출 후 tabset 삽입 | open | [CC] | D |
+| 12 | L03 트레이스 8개(bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix) | 그림-애니메이션 | mode:sequence 없어 각각 최종 SVG 1장만 생성 | mode:sequence 추가·재추출 후 tabset 삽입 | open | [CC] | D |
 
-## 처리 이력
+## 보류 항목 (원본 세심 검토 후 별도 처리 — batch H)
 
-batch로 처리한 항목은 여기에 커밋 해시와 함께 기록한다(추적용).
+| # | 위치 | 종류 | 발견 내용 | 방향 | 상태 |
+|---|---|---|---|---|---|
+| H1 | L09 전체 애니메이션 (16건) | 그림-애니메이션 | tabset 복원했다가 revert(`11323f1`). step SVG는 디스크에 유지 | 원본(Codex 신규 서사) 대조 검증 후 재복원 판단 | 보류 |
+| H2 | L10 전체 애니메이션 (13건) | 그림-애니메이션 | tabset 복원했다가 revert(`699cafa`). step SVG는 디스크에 유지 | 원본 대조 검증 후 재복원 판단 | 보류 |
+| H3 | L09 `03-numeric-encoding-cad` "원본 28 오류" 문구 | 내용 | 원본 교정 노출(웹북 독립성 저해) | 문구 삭제, cad=53만. [방침] "원본 대비 교정" 노출 전반에 적용 — 정독하며 같은 유형(L09 0-based, L10 pick/AP/C구현) 수집 | 보류 |
 
-| 처리일 | 대상 항목(#) | 커밋 | 비고 |
+## 완료 항목 (done — 참고용 보존)
+
+| 항목 | 커밋 | 내용 |
+|---|---|---|
+| L03/L04 프레임 뭉침 5개 | `d8278f8`, `a4f771d` | selection-trace, merge-pointers / fixed-pivot, randomized, median-of-medians tabset 복원 |
+| L06 순회·검색·뭉침 | `f69d4b1` | preorder/inorder/postorder, search-trace, tree-terminology, insert-trace, degenerate-bst tabset 복원 |
+| L07 시퀀스 12건 + 캡션 | `449e17b` | L07 12개 tabset 복원 + `26-logical-vs-probing-load` 캡션 교정(step1 logical/step2 probing 분리) |
+| L04 median-of-medians 설명(#3) | `1d4b4e8` | Part D "구현" 문단에 `_insertion_sort` 역할 설명 문단 추가 |
+| L08 애니메이션 설명 3개 + matrix-to-list 해제(#13-16) | `393c05f` | #14 DSU, #15 relaxation, #16 DAG relaxation 문단 추가(애니메이션 유지); #13 03-matrix-to-list tabset 해제(본문 인라인 예시 + Θ(V²)/Θ(V+E) 트레이드오프 문장으로 대체, step SVG는 디스크에 유지) |
+
+*주: L06 `14-search-trace`는 애니메이션 tabset은 done(`f69d4b1`)이나, 왼쪽 상단 주석 폰트 문제는 위 #7로 별도 open.*
+
+## 처리 이력 (커밋 추적)
+
+| 처리일 | 대상 | 커밋 | 비고 |
 |---|---|---|---|
-| 2026-08-02 | 12(부분: L03) | `d8278f8` | 03-selection-trace, 07-merge-pointers tabset 복원 |
-| 2026-08-02 | 12(부분: L04) | `a4f771d` | 07-fixed-pivot-trace, 08-randomized-trace, 11-median-of-medians-trace tabset 복원 |
-| 2026-08-02 | 9, 10, 12(부분: L06) | `f69d4b1` | 08/09/10-*-trace(순회), 14-search-trace, 02-tree-terminology-trace, 17-insert-trace, 22-degenerate-bst-trace tabset 복원 |
-| 2026-08-02 | 13(부분: L07), 14 | `449e17b` | L07 시퀀스 그림 12개 tabset 복원 + 26-logical-vs-probing-load 캡션 교정 |
-| 2026-08-02 | 13(부분: L09) | `e960999` | L09 시퀀스 그림 16개 tabset 복원 |
-| 2026-08-02 | 13(완료: L10) | `02f4910` | L10 시퀀스 그림 13개 tabset 복원 — 13번 전체 완료 |
-| 2026-08-02 | 13(되돌림: L09) | `11323f1` | L09 tabset 복원(`e960999`)을 revert — 원본 대조 검증 위해 보류. step SVG는 유지 |
-| 2026-08-02 | 13(되돌림: L10) | `699cafa` | L10 tabset 복원(`02f4910`)을 revert — 원본 대조 검증 위해 보류. step SVG는 유지. L06 순회·검색(9·10번), L07(13번 일부)은 영향 없음 |
+| 2026-08-02 | L03 뭉침 | `d8278f8` | selection-trace, merge-pointers |
+| 2026-08-02 | L04 뭉침 | `a4f771d` | fixed-pivot, randomized, median-of-medians |
+| 2026-08-02 | L06 순회·검색·뭉침 | `f69d4b1` | 순회 3개, search-trace, tree-terminology, insert-trace, degenerate-bst |
+| 2026-08-02 | L07 시퀀스 + 캡션 | `449e17b` | L07 12개 + logical-vs-probing 캡션 |
+| 2026-08-02 | L09 복원 | `e960999` | (이후 revert) |
+| 2026-08-02 | L10 복원 | `02f4910` | (이후 revert) |
+| 2026-08-02 | L09 revert | `11323f1` | reverts `e960999` — 보류(H1). step SVG 유지 |
+| 2026-08-02 | L10 revert | `699cafa` | reverts `02f4910` — 보류(H2). step SVG 유지 |
+| 2026-08-02 | L04 #3 | `1d4b4e8` | insertion sort 역할 설명 추가 |
+| 2026-08-02 | L08 #13-16 | `393c05f` | DSU/relaxation/DAG relaxation 설명 추가 + matrix-to-list tabset 해제 |
+
+---
+
+## 설명 보강 문단 (#3, #14, #15, #16) — 반영 완료(`1d4b4e8`, `393c05f`), 참고용 보존
+
+애니메이션(tabset)은 진행형이고 값이 정확하므로 **유지**하고, 아래 문단을 지정 위치에 추가한다.
+인라인 수식은 `$...$`, 함수·코드명은 백틱. 값·그림·tabset 구조는 변경하지 않는다.
+
+### #3 L04 insertion sort 설명 (Part D "구현" 문단에 삽입)
+
+> 각 5-원소 그룹의 median은 `_insertion_sort`로 그룹을 정렬한 뒤 가운데 원소를 취해 구한다.
+> 그룹 크기가 상수(5)이므로 이 정렬은 $O(1)$이고, 그룹이 $\lceil n/5 \rceil$개이므로 전체
+> 그룹 정렬 비용은 $\Theta(n)$이다.
+
+*(위 문장을 "구현" 문단에서 `_insertion_sort`가 코드에 처음 등장하기 직전 맥락에 자연스럽게 삽입.)*
+
+### #14 DSU 추가 문단 (DSU Animation tabset 바로 위)
+
+> Kruskal은 간선을 가중치 순으로 훑으며 "이 간선을 넣으면 사이클이 생기는가"를 매번 판정해야
+> 한다. 이 판정을 빠르게 해주는 자료구조가 **Disjoint Set Union(DSU)**이다. 각 정점이 속한
+> 컴포넌트를 대표원소(root)로 표현하고 두 연산을 제공한다 — `Find(x)`는 $x$가 속한 컴포넌트의
+> root를 반환하고, `Union(x, y)`는 두 컴포넌트를 하나로 합친다. 간선 $(u, v)$를 검사할 때
+> $Find(u) \ne Find(v)$이면 두 정점이 다른 컴포넌트에 있다는 뜻이므로 사이클 없이 안전하게
+> 채택(accept)하고 `Union`으로 합친다. 같으면($Find(u) = Find(v)$) 이미 연결된 컴포넌트라
+> 사이클이 생기므로 버린다(reject). 아래 애니메이션은 4개 정점 $\{A\}\{B\}\{C\}\{D\}$가 간선을
+> 하나씩 처리하며 컴포넌트가 병합되는 과정을 보여준다.
+
+### #15 relaxation 추가 문단 (relaxation 조건 수식 아래, tabset 위)
+
+> relaxation은 "$u$를 거쳐 $v$로 가는 경로가 지금까지 알던 것보다 짧은가"를 판정하는 연산이다.
+> $dist[u] + w(u, v)$가 **candidate**($u$ 경유 새 거리)이고, 이것이 기존 $dist[v]$보다 작으면
+> 더 짧은 경로를 찾은 것이므로 $dist[v]$를 갱신하고 $parent[v]$를 $u$로 바꾼다. 아래 애니메이션은
+> $dist[u]=4$, $w(u, v)=-2$인 상황을 예로 든다 — candidate는 $4+(-2)=2$이고 기존 $dist[v]=7$보다
+> 작으므로, 비교 후 $dist[v]$가 $2$로 갱신된다.
+
+*(선택) Bellman-Ford 복선을 원하면 마지막에: "가중치가 음수여도 relaxation 판정 자체는 동일하게 작동한다." — 단 #16이 음수를 이미 강조하므로 중복 주의.)*
+
+### #16 DAG relaxation 추가 문단 (DAG Relaxation Trace tabset 바로 위)
+
+> DAG(방향 비순환 그래프)에서는 정점을 **topological order**로 나열한 뒤 그 순서대로 한 번씩
+> relax하면 최단 거리가 확정된다 — 각 정점을 처리할 때 그 정점으로 들어오는 모든 경로가 이미
+> 처리돼 있기 때문이다. 사이클이 없으므로 Dijkstra의 우선순위 큐도, Bellman-Ford의 반복도 필요
+> 없다. 아래 예는 topo order `s, a, b, c`를 따른다 — $s$를 relax하면 $d[a]=3$, $d[b]=2$가 되고,
+> $a$를 거쳐 $d[c]=3+(-4)=-1$(경로 $s \to a \to c$)이 확정된다. $b$를 거치는 후보 $d[b]+1=3$은
+> 이미 확정된 $-1$보다 크므로 갱신하지 않는다. 음수 간선($-4$)이 있어도 topological order 덕분에
+> 단 한 번의 pass로 정답을 얻는다.
+
+### 처리 시 주의
+
+- 삽입 위치는 각 문단 제목의 괄호 참조. 독자가 "설명 → 애니메이션 확인" 순서로 읽게.
+- 렌더 후 수식이 raw LaTeX로 노출되지 않는지 확인(여기서는 `\Call` 미사용).
+- 기존 잘 된 애니메이션 설명(BFS/DFS/Dijkstra trace)의 문체·밀도와 톤 맞춤.
+
