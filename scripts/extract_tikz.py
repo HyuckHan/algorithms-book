@@ -519,18 +519,32 @@ TEXT_PATCHES = {
     # its figure (4 steps for search-trace, 6 for insert-trace).
     "trace_orienting_annotation_font": (r"font=\\scriptsize,", ""),
     # 05_matrix_path.tex's "대표 Cell 계산" figure ("11-matrix-representative-
-    # cell", docs/REVIEW_NOTES.md #2): the arrow from dp[2][3]=25 down to the
-    # current cell is correctly the "chosen" dependency (25<31), but its
-    # "chosen" label is font=\scriptsize -- visibly smaller than the cell
-    # values themselves, which use "dp cell"'s font=\small -- making it hard
-    # to read at a glance. (Tried repositioning it first via `pos=`, but the
-    # arrow's start point sits inside the "25" node itself, so anything
-    # other than the default midpoint pushes the label into/near the digit
-    # instead of the open gap between cells -- font size alone is the fix.)
-    "matrix_representative_cell_chosen_label": (
-        r"node\[right,font=\\scriptsize\]\{chosen\}",
-        r"node[right,font=\\small]{chosen}",
-    ),
+    # cell", docs/REVIEW_NOTES.md #2, redone after the first pass -- a
+    # font-size-only bump on the "chosen" label -- still read as unclear:
+    # the label sat wedged between the 25 cell and the arrow with nothing
+    # marking *which* cell was actually selected. 25 and 31 both use the
+    # plain "dp dependency" (blue) style, identical to each other, so
+    # min(25,31)=25 wasn't visible in the figure itself -- only inferable
+    # from the label text. Two changes: (1) re-style the 25 node from
+    # "dp dependency" to "dp current" (same orange fill/border already used
+    # for the 28 result cell in this same picture, defined in
+    # common/dynamic_programming.tex) so the selected value and the value it
+    # produces are visually tied together the same way the 28 highlight
+    # already ties itself to "this is the answer"; 31 is left as plain
+    # "dp dependency" since it's the rejected candidate. (2) drop the
+    # edge-attached label (which forced font size to compete with the arrow
+    # for space) and place "chosen" as its own node directly above the 25
+    # cell instead -- cell height is 8mm ("dp cell"'s minimum height) so at
+    # this picture's y=1cm-per-unit default, the cell's top edge is at
+    # y=1.4; anchoring a plain `above` node at (1,1.45) puts the label
+    # clear of both the cell and the (1,1)--(1,.45) arrow below it.
+    "matrix_representative_cell_chosen_label": [
+        (r"\\node\[dp dependency\]at\(1,1\)\{25\}", r"\\node[dp current]at(1,1){25}"),
+        (
+            r"\\draw\[dp edge\]\(1,1\)--node\[right,font=\\scriptsize\]\{chosen\} \(1,\.45\);",
+            r"\\draw[dp edge](1,1)--(1,.45);\n\\node[above,font=\\small]at(1,1.45){chosen};",
+        ),
+    ],
     # 06_chaining.tex's "Chaining Animation: Insert" figure
     # ("10-chaining-insert-trace", step1 only, docs/REVIEW_NOTES.md #9):
     # step1's edge is drawn to a hardcoded coordinate (1.8,-3) that doesn't
