@@ -143,13 +143,63 @@ $$k=q-p+1$$
 
 **Example 1: Fixed-pivot으로 2번째 값 찾기.** $[8,11,3]$에서 pivot 3으로 partition하면 $q=1,\ k=1<i=2$이므로 $A[2..3]=[11,8]$에서 새 rank 1을 찾는다. 그다음 $[11,8]$에서 pivot 8($A[r]$)로 partition하면 $q=2,\ k=q-p+1=1=i$이므로 pivot이 정답이다 — 원래 배열의 2nd order-statistic 값은 **8**이다.
 
-![Example 1 5단계: pivot 3으로 k=1을 제거해 rank 1로 갱신하고, pivot 8에서 k=i=1이 되어 8을 반환한다.](../figures/04-selection/07-fixed-pivot-trace-step1.svg){fig-alt="8,11,3이 active, 15부터 73까지가 discard로 표시된 1단계 상태" width="55%"}
-![](../figures/04-selection/07-fixed-pivot-trace-step5.svg){fig-alt="8이 target으로 강조되고 나머지가 모두 discard된 마지막 상태, answer=8" width="55%"}
+Example 1 5단계: pivot 3으로 k=1을 제거해 rank 1로 갱신하고, pivot 8에서 k=i=1이 되어 8을 반환한다.
+
+::: {.panel-tabset}
+## 1단계
+
+![현재 last element 3 외에 다른 pivot을 고르지 않는다.](../figures/04-selection/07-fixed-pivot-trace-step1.svg){fig-alt="8,11,3이 active, 15부터 73까지가 discard로 표시되고 pivot 3이 강조된 1단계 상태" width="55%"}
+
+## 2단계
+
+![더 작은 pivot instance 하나를 제거했으므로 rank 2-1=1.](../figures/04-selection/07-fixed-pivot-trace-step2.svg){fig-alt="pivot 3보다 작은 원소가 제거되고 rank가 1로 갱신되는 상태" width="55%"}
+
+## 3단계
+
+![새 subarray에서도 fixed policy는 마지막 원소 8을 사용한다.](../figures/04-selection/07-fixed-pivot-trace-step3.svg){fig-alt="11,8만 남은 subarray에서 마지막 원소 8이 새 pivot으로 강조된 상태" width="55%"}
+
+## 4단계
+
+![pivot 8의 subarray-relative rank가 목표 rank와 같다.](../figures/04-selection/07-fixed-pivot-trace-step4.svg){fig-alt="pivot 8의 partition 결과 k=i=1이 확인되는 상태" width="55%"}
+
+## 5단계
+
+![원래 배열의 2nd order-statistic value는 8이다.](../figures/04-selection/07-fixed-pivot-trace-step5.svg){fig-alt="8이 target으로 강조되고 나머지가 모두 discard된 마지막 상태, answer=8" width="55%"}
+:::
 
 **Example 2: RandomizedSelect로 7번째 값 찾기(미리보기).** $A[5..10]=[31,48,20,29,65,73]$, $i=7-4=3$에서 무작위로 $s=8$(값 29)을 뽑아 $A[r]$과 swap한 뒤 같은 Lomuto를 적용하면 $q=6,\ k=2<i$이므로 $A[7..10]$에서 새 rank 1. 다시 무작위로 $s=7$(값 31)을 뽑아 partition하면 $q=7,\ k=1=i$이므로 pivot이 정답이다 — 원래 배열의 7th order-statistic 값은 **31**이다. 무작위 pivot을 뽑는다는 점만 다를 뿐, partition 뒤 처리 방식은 fixed-pivot과 동일하다(formal 의사코드와 성능 분석은 Part C).
 
-![Example 2 7단계: 무작위 draw s=8(pivot 29), s=7(pivot 31)을 차례로 A[r]과 swap한 뒤 같은 Lomuto를 적용해 31을 반환한다.](../figures/04-selection/08-randomized-trace-step1.svg){fig-alt="31,48,20,29,65,73이 active인 상태에서 p=5,r=10,i=3, 무작위 draw s=8, pivot 29라는 콜아웃이 붙은 1단계 상태" width="65%"}
-![](../figures/04-selection/08-randomized-trace-step7.svg){fig-alt="31이 target으로 강조되고 73,65,48이 discard된 마지막 상태, answer=31" width="65%"}
+Example 2 7단계: 무작위 draw s=8(pivot 29), s=7(pivot 31)을 차례로 A[r]과 swap한 뒤 같은 Lomuto를 적용해 31을 반환한다.
+
+::: {.panel-tabset}
+## 1단계
+
+![선택한 pivot index와 value를 먼저 명시한다: s=8, pivot=29.](../figures/04-selection/08-randomized-trace-step1.svg){fig-alt="31,48,20,29,65,73이 active인 상태에서 p=5,r=10,i=3, 무작위 draw s=8, pivot 29라는 콜아웃이 붙은 1단계 상태" width="65%"}
+
+## 2단계
+
+![임의 내부 pivot은 반드시 Lomuto 위치 A[r]로 옮긴다.](../figures/04-selection/08-randomized-trace-step2.svg){fig-alt="pivot 29가 A[r] 위치로 swap되는 상태" width="65%"}
+
+## 3단계
+
+![더 작은 두 instance를 제거하므로 rank 3-2=1.](../figures/04-selection/08-randomized-trace-step3.svg){fig-alt="pivot 29보다 작은 두 원소가 제거되고 rank가 1로 갱신되는 상태" width="65%"}
+
+## 4단계
+
+![다음 random draw는 현재 subarray 안에서 다시 이루어진다: s=7, pivot=31.](../figures/04-selection/08-randomized-trace-step4.svg){fig-alt="남은 subarray에서 새로 무작위 draw s=7, pivot 31이 선택된 상태" width="65%"}
+
+## 5단계
+
+![31을 A[r]로 옮긴 뒤에만 Lomuto를 호출한다.](../figures/04-selection/08-randomized-trace-step5.svg){fig-alt="pivot 31이 A[r] 위치로 swap되는 상태" width="65%"}
+
+## 6단계
+
+![k=i이므로 pivot instance가 정답이다.](../figures/04-selection/08-randomized-trace-step6.svg){fig-alt="pivot 31의 partition 결과 k=i가 확인되는 상태" width="65%"}
+
+## 7단계
+
+![원래 배열의 7th order-statistic value는 31이다.](../figures/04-selection/08-randomized-trace-step7.svg){fig-alt="31이 target으로 강조되고 73,65,48이 discard된 마지막 상태, answer=31" width="65%"}
+:::
 
 두 trace의 pivot 정책 비교: fixed-pivot Quickselect는 매 call에서 $A[r]$을 쓰지만($[8,11,3]$에서 pivot 3, $[11,8]$에서 pivot 8), RandomizedSelect는 uniform index $s$를 뽑아 $A[s]\leftrightarrow A[r]$로 swap한 뒤 같은 Lomuto를 적용한다. Quickselect는 한쪽만 남기는 구조이고, pivot을 고르는 정책은 별도의 알고리즘 설계 결정이다.
 
@@ -314,8 +364,29 @@ DeterministicSelect의 전체 단계: (1) $n\le5$이면 직접 정렬해 반환,
 
 각 group을 정렬하면 3번째 값이 그 group의 median(lower median, $\lceil 5/2\rceil=3$rd)이다. 다섯 group의 median $17,12,14,16,20$을 모아 다시 정렬하면 $12,14,16,17,20$이고, 그 median(=medians의 median) $M=16$이 원본의 pivot이 된다.
 
-![Group Sort → Median → Median of Medians: 각 group을 정렬해 3번째 값을 median으로 뽑고, 다섯 median의 median M=16을 원본의 pivot으로 쓴다.](../figures/04-selection/11-median-of-medians-trace-step1.svg){fig-alt="G1..G5 각 group의 원소들이 나열되고 가운데 열(3번째 값)이 강조된 1단계 상태" width="55%"}
-![](../figures/04-selection/11-median-of-medians-trace-step5.svg){fig-alt="다섯 median 12,14,16,17,20 중 16이 M으로 강조되고 원본의 pivot이라는 콜아웃이 붙은 마지막 상태" width="60%"}
+Group Sort → Median → Median of Medians: 각 group을 정렬해 3번째 값을 median으로 뽑고, 다섯 median의 median M=16을 원본의 pivot으로 쓴다.
+
+::: {.panel-tabset}
+## 1단계
+
+![각 group을 정렬한다.](../figures/04-selection/11-median-of-medians-trace-step1.svg){fig-alt="G1..G5 각 group의 원소들이 나열되고 가운데 열(3번째 값)이 강조된 1단계 상태" width="55%"}
+
+## 2단계
+
+![정렬된 각 group의 3번째 값(lower median)을 취한다.](../figures/04-selection/11-median-of-medians-trace-step2.svg){fig-alt="각 group의 3번째 값이 median으로 표시되는 상태" width="55%"}
+
+## 3단계
+
+![다섯 group의 median 17,12,14,16,20을 모은다.](../figures/04-selection/11-median-of-medians-trace-step3.svg){fig-alt="다섯 group에서 뽑힌 median 17,12,14,16,20이 한 줄로 모이는 상태" width="55%"}
+
+## 4단계
+
+![모은 median들을 정렬해 median of medians M=16을 계산한다.](../figures/04-selection/11-median-of-medians-trace-step4.svg){fig-alt="다섯 median을 정렬한 뒤 가운데 값 16이 M으로 강조되는 상태" width="55%"}
+
+## 5단계
+
+![M=16이 원본 배열의 pivot이 된다.](../figures/04-selection/11-median-of-medians-trace-step5.svg){fig-alt="다섯 median 12,14,16,17,20 중 16이 M으로 강조되고 원본의 pivot이라는 콜아웃이 붙은 마지막 상태" width="60%"}
+:::
 
 ::: {.callout-warning title="흔한 실수: 이 M이 항상 진짜 중앙값은 아니다"}
 위 25개 예제에서는 $M=16$이 우연히 전체 배열의 진짜 median(13th)과 같지만, 이는 이 예제 고유의 우연이지 Median of Medians의 일반적 성질이 아니다. 이 기법이 보장하는 것은 "충분히 좋은 pivot"(양쪽에서 일정 비율을 제거)이지 "정확한 median"이 아니다.
