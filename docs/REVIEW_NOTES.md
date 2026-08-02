@@ -49,3 +49,4 @@ batch로 처리한 항목은 여기에 커밋 해시와 함께 기록한다(추�
 | 2026-08-02 | 12(부분: L03) | `d8278f8` | 03-selection-trace, 07-merge-pointers tabset 복원 |
 | 2026-08-02 | 12(부분: L04) | `a4f771d` | 07-fixed-pivot-trace, 08-randomized-trace, 11-median-of-medians-trace tabset 복원 |
 | 2026-08-02 | 9, 10, 12(부분: L06) | `f69d4b1` | 08/09/10-*-trace(순회), 14-search-trace, 02-tree-terminology-trace, 17-insert-trace, 22-degenerate-bst-trace tabset 복원 |
+| 2026-08-02 | 13(부분: L07), 14 | `449e17b` | L07 시퀀스 그림 12개 tabset 복원 + 26-logical-vs-probing-load 캡션 교정 |
