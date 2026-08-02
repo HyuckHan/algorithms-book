@@ -232,10 +232,10 @@ FIGURE_CONFIG = {
         ("03_traversal.tex", 4): {"slug": "11-level-order-reference-tree"},
         ("03_traversal.tex", 5): {"slug": "12-expression-tree"},
         ("06_bst_search.tex", 0): {"slug": "13-fixed-bst-example"},
-        ("06_bst_search.tex", 1): {"slug": "14-search-trace", "mode": "sequence", "text_patch": "search_trace_annotation_font"},
+        ("06_bst_search.tex", 1): {"slug": "14-search-trace", "mode": "sequence", "text_patch": "trace_orienting_annotation_font"},
         ("06_bst_search.tex", 2): {"slug": "15-successor-cases"},
         ("06_bst_search.tex", 3): {"slug": "16-successor-case2-ancestor-chain"},
-        ("07_bst_insert_delete.tex", 0): {"slug": "17-insert-trace", "mode": "sequence"},
+        ("07_bst_insert_delete.tex", 0): {"slug": "17-insert-trace", "mode": "sequence", "text_patch": "trace_orienting_annotation_font"},
         ("07_bst_insert_delete.tex", 1): {"slug": "18-delete-case1-leaf", "mode": "sequence"},
         ("07_bst_insert_delete.tex", 2): {"slug": "19-delete-case2-one-child", "mode": "sequence"},
         ("07_bst_insert_delete.tex", 3): {"slug": "20-delete-case3-successor-setup"},
@@ -477,15 +477,25 @@ def apply_tikz_patch(raw, patch_name):
 # once to the figure's own raw tikzpicture body -- same build-time-only,
 # never-touch-lecture-notes/ contract as TIKZ_PATCHES above.
 TEXT_PATCHES = {
-    # 06_bst_search.tex's SEARCH 13 trace ("14-search-trace"): the top-left
-    # orienting annotation ("full BST; inactive subtree는 탐색하지 않음")
-    # hardcodes font=\scriptsize directly on its own \node -- unlike every
-    # other label/callout in the same picture (node values, the bottom
+    # Shared by 06_bst_search.tex's SEARCH 13 trace ("14-search-trace") and
+    # 07_bst_insert_delete.tex's INSERT 12 trace ("17-insert-trace"): both
+    # have a top-left orienting annotation ("full BST; inactive subtree는
+    # 탐색하지 않음" / "full BST; orange path만 따라감") that hardcodes
+    # font=\scriptsize directly on its own \node -- unlike every other
+    # label/callout in the same picture (node values, the bottom
     # \node[callout]{...} steps), which all use the ambient default size via
-    # no override at all. Drop the override so this annotation matches
-    # (docs/REVIEW_NOTES.md #7). This node has no \only wrapper, so it's
-    # shared unchanged across all 4 overlay steps -- one patch, four SVGs.
-    "search_trace_annotation_font": (r"font=\\scriptsize,", ""),
+    # no override at all. Drop the override so the annotation matches
+    # (docs/REVIEW_NOTES.md #7). Checked every other L06 figure for the same
+    # `font=\scriptsize`-on-a-\node anti-pattern (grep across
+    # lecture-notes/lecture06/sections/*.tex): the only other hits are
+    # 02_binary_tree.tex's tiny 2-node L/R edge-label examples and its
+    # perfect/complete-tree asides, which are single-state static figures
+    # using \scriptsize deliberately for a one-letter edge label or a short
+    # side-note -- not this "orienting caption on a multi-step trace"
+    # pattern, so they're left alone. Neither of these two nodes has an
+    # \only wrapper, so one patch application covers all overlay steps of
+    # its figure (4 steps for search-trace, 6 for insert-trace).
+    "trace_orienting_annotation_font": (r"font=\\scriptsize,", ""),
 }
 
 
