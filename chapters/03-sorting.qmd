@@ -104,8 +104,29 @@ $$\langle a_1,\dots,a_n\rangle \longmapsto \langle a'_1,\dots,a'_n\rangle,\qquad
 | 3 | 13, 10, **14**, 29, 37 | pass 3: 14는 이미 제자리다 |
 | 4 | 10, 13, 14, 29, 37 | pass 4: 13과 10을 swap하여 정렬 완료 |
 
-![Selection Sort 4단계 추적. 주황은 이번 pass에서 선택된 최댓값, 회색은 확정된 sorted suffix다.](../figures/03-sorting/03-selection-trace-step1.svg){fig-alt="5칸 배열 29,10,14,37,13에서 37이 주황으로 강조된 1단계 상태" width="40%"}
-![](../figures/03-sorting/03-selection-trace-step5.svg){fig-alt="10,13,14,29,37로 완전히 정렬되어 모두 회색으로 표시된 마지막 상태" width="40%"}
+Selection Sort 5단계 추적. 주황은 이번 pass에서 선택된 최댓값, 회색은 확정된 sorted suffix다.
+
+::: {.panel-tabset}
+## 시작
+
+![최댓값 37을 찾는다: 29, 10, 14, 37, 13.](../figures/03-sorting/03-selection-trace-step1.svg){fig-alt="5칸 배열 29,10,14,37,13에서 37이 주황으로 강조된 1단계 상태" width="40%"}
+
+## Pass 1
+
+![37을 맨 뒤와 swap: 29, 10, 14, 13, 37.](../figures/03-sorting/03-selection-trace-step2.svg){fig-alt="37이 맨 뒤로 이동해 회색으로 확정되고 나머지 29,10,14,13에서 다음 최댓값을 찾는 상태" width="40%"}
+
+## Pass 2
+
+![나머지에서 최댓값 29를 찾아 13과 swap: 13, 10, 14, 29, 37.](../figures/03-sorting/03-selection-trace-step3.svg){fig-alt="29가 회색으로 확정되고 나머지 13,10,14에서 다음 최댓값을 찾는 상태" width="40%"}
+
+## Pass 3
+
+![14는 이미 제자리라 swap 없이 확정: 13, 10, 14, 29, 37.](../figures/03-sorting/03-selection-trace-step4.svg){fig-alt="14가 swap 없이 회색으로 확정되고 나머지 13,10에서 다음 최댓값을 찾는 상태" width="40%"}
+
+## Pass 4
+
+![13과 10을 swap하여 정렬 완료: 10, 13, 14, 29, 37.](../figures/03-sorting/03-selection-trace-step5.svg){fig-alt="10,13,14,29,37로 완전히 정렬되어 모두 회색으로 표시된 마지막 상태" width="40%"}
+:::
 
 **왜 맞는가 (proof-sketch)**: loop invariant — pass 시작 시 $A[last+1..n]$은 이미 최종 위치의 가장 큰 원소들이고 $A[1..last]$는 나머지의 permutation이다. 매 pass가 $A[1..last]$의 최댓값을 찾아 $A[last]$와 swap하면 invariant가 한 칸 넓어지고, $last=1$에서 전체가 정렬된다.
 
@@ -277,8 +298,25 @@ Merge는 정렬된 두 구간 $A[low..mid]$, $A[mid+1..high]$를 $A[low..high]$�
 
 {{< include ../figures/03-sorting/pseudocode-merge.qmd >}}
 
-![두 정렬된 배열 L=[10,14,29,37], R=[5,8,13,21]을 두 pointer로 병합한다.](../figures/03-sorting/07-merge-pointers-step1.svg){fig-alt="L과 R 두 배열 위에서 R의 5가 선택되어 out 배열의 첫 칸에 놓이는 1단계 상태" width="55%"}
-![](../figures/03-sorting/07-merge-pointers-step4.svg){fig-alt="out 배열이 5,8,10,13,14,21,29,37로 완전히 채워진 마지막 상태" width="55%"}
+두 정렬된 배열 L=[10,14,29,37], R=[5,8,13,21]을 두 pointer로 병합한다.
+
+::: {.panel-tabset}
+## 1단계
+
+![out=[]에서 R의 5부터 선택.](../figures/03-sorting/07-merge-pointers-step1.svg){fig-alt="L과 R 두 배열 위에서 R의 5가 선택되어 out 배열의 첫 칸에 놓이는 1단계 상태" width="55%"}
+
+## 2단계
+
+![out=[5,8] 다음 L의 10을 선택.](../figures/03-sorting/07-merge-pointers-step2.svg){fig-alt="out에 5,8이 채워지고 L의 10이 강조되어 다음으로 선택되는 상태" width="55%"}
+
+## 3단계
+
+![out=[5,8,10,13] 다음 L의 14를 선택.](../figures/03-sorting/07-merge-pointers-step3.svg){fig-alt="out에 5,8,10,13이 채워지고 L의 14가 강조되어 다음으로 선택되는 상태" width="55%"}
+
+## 4단계
+
+![한쪽이 비면 나머지 suffix를 그대로 붙인다: out=[5,8,10,13,14,21,29,37].](../figures/03-sorting/07-merge-pointers-step4.svg){fig-alt="out 배열이 5,8,10,13,14,21,29,37로 완전히 채워진 마지막 상태" width="55%"}
+:::
 
 **왜 맞는가 (proof-sketch)**: $L[i]\le R[j]$이면 왼쪽 record를 먼저 선택하므로 동률일 때도 relative order가 보존되어 **stable**이다. 각 원소는 정확히 한 번만 output으로 이동하므로 merge 자체는 $\Theta(|L|+|R|)$이다.
 
