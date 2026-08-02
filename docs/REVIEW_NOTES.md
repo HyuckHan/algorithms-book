@@ -46,6 +46,7 @@
 | L06 search-trace + insert-trace 주석 확대(#7) | `6cf7861`, `976b3fc` | `14-search-trace`·`17-insert-trace` 좌상단 주석의 `font=\scriptsize` 제거. lecture-notes/는 읽기 전용이라 `scripts/extract_tikz.py`에 `text_patch` 메커니즘(TIKZ_PATCHES와 동일한 빌드타임 전용 원칙) 추가, 두 그림이 공유하는 `trace_orienting_annotation_font` 패치 하나로 처리. L06 전체 트레이스 그림(순회 3개·tree-terminology-trace·degenerate-bst-trace 포함)을 전수 확인해 이 패턴은 이 두 그림에만 있음을 확인(나머지는 `callout` 스타일 그대로라 폰트 문제 없음). 재추출 후 calibrated 측정(scriptsize/footnotesize/small/normalsize 384dpi 기준 렌더 비교)으로 두 주석 모두 normalsize로 확인. 자연폭 변화(search 479→509px, insert 511~529→524~556px)에도 기존 55% width에서 ratio 0.67~0.73x로 1.3x 이내 유지(폭 변경 불필요) |
 | L06 SUCCESSOR 트리 통합 + succ(6) 교정(#5) | `da08ca1` | 분리돼 있던 두 tikzpicture(Case1 5-node 트리 / Case2 6-3-4 별도 그림)를 `full_override` 메커니즘으로 7-node 트리 하나(2-tab tabset)로 병합. succ(6)=7→15 교정, BST/successor 알고리즘 기준 4개 값 전부 재검산 |
 | L05/L07 화살표·레이블 국소 수정(#1,2,8,9,10) | `2a9f15e` | #1 matrix-reconstruction 화살표 간격·색 대비, #2 matrix-representative-cell "chosen" 폰트, #8 hash-pipeline 레이블 겹침(간격+줄바꿈), #9 chaining-insert-trace step1 노드 연결, #10 linear-trace2-wraparound step3 화살표 각도 |
+| L05 #2 재수정 — 25 셀 강조(방법 A) | `ce58f0c` | 폰트만 키운 첫 수정(`2a9f15e`)이 불충분하다는 피드백으로 재작업. 25를 `dp dependency`(파랑)에서 `dp current`(주황, 28과 동일 스타일)로 재-스타일링해 "선택된 값→결과" 흐름을 색으로 통일, 31은 비강조 유지. "chosen" 레이블을 화살표 옆에서 25 셀 바로 위로 재배치. 레이블 이동으로 자연폭이 줄어(125.9pt→77.5pt) 기존 20% width에서 ratio 1.32x로 상한 초과 → 19%(1.25x)로 축소 |
 
 *주: L06 `14-search-trace`·`17-insert-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`, `976b3fc`) 모두 done.*
 
@@ -68,6 +69,7 @@
 | 2026-08-02 | L06 #7(재진단, 확장) | `976b3fc` | 재진단으로 search-trace 수정이 실제 유효했음(normalsize) 확인 + insert-trace(미수정 상태였음) 동일 패치 적용, 6개 SVG 재추출. L06 전체 트레이스 전수 확인 완료 |
 | 2026-08-02 | L06 #5 (batch C) | `da08ca1` | SUCCESSOR 트리 구조 통합(2개 tikzpicture→1개 7-node 트리) + succ(6)=7→15 교정. `FULL_BODY_PATCHES` 메커니즘 신설 |
 | 2026-08-02 | L05/L07 #1,2,8,9,10 (batch C) | `2a9f15e` | matrix-reconstruction/representative-cell 화살표·레이블, hash-pipeline 레이블 겹침, chaining-insert-trace step1, linear-trace2-wraparound step3 화살표 수정. `TEXT_PATCHES` 리스트 지원 확장 |
+| 2026-08-02 | L05 #2 재수정 | `ce58f0c` | "chosen" 폰트만 키운 첫 수정이 불충분해 재작업: 25 셀을 28과 같은 주황(`dp current`)으로 강조, 레이블을 25 셀 위로 재배치, width 20%→19%(1.32x→1.25x) |
 
 ---
 
