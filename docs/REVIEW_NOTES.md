@@ -16,7 +16,7 @@
   - `설명보강` = 본문 문단 추가
 - **상태**: `open` → `판단중` → `수정지시됨` → `done`
 - **처리자**: `[CC]` Claude Code / `[나]` 사용자 직접 / `[?]` 미정
-- **batch 그룹**: A=설명보강, B=표현·폰트·수식, C=TikZ 그림수정, D=애니메이션 재생성, H=보류
+- **batch 그룹**: A=설명보강, B=표현·폰트·수식, C=TikZ 그림수정, D=애니메이션 재생성, E=그림 크기(%width) 조정, H=보류
 
 ## 발견 사항 (현재 유효)
 
@@ -47,6 +47,7 @@
 | L06 SUCCESSOR 트리 통합 + succ(6) 교정(#5) | `da08ca1` | 분리돼 있던 두 tikzpicture(Case1 5-node 트리 / Case2 6-3-4 별도 그림)를 `full_override` 메커니즘으로 7-node 트리 하나(2-tab tabset)로 병합. succ(6)=7→15 교정, BST/successor 알고리즘 기준 4개 값 전부 재검산 |
 | L05/L07 화살표·레이블 국소 수정(#1,2,8,9,10) | `2a9f15e` | #1 matrix-reconstruction 화살표 간격·색 대비, #2 matrix-representative-cell "chosen" 폰트, #8 hash-pipeline 레이블 겹침(간격+줄바꿈), #9 chaining-insert-trace step1 노드 연결, #10 linear-trace2-wraparound step3 화살표 각도 |
 | L05 #2 재수정 — 25 셀 강조(방법 A) | `ce58f0c` | 폰트만 키운 첫 수정(`2a9f15e`)이 불충분하다는 피드백으로 재작업. 25를 `dp dependency`(파랑)에서 `dp current`(주황, 28과 동일 스타일)로 재-스타일링해 "선택된 값→결과" 흐름을 색으로 통일, 31은 비강조 유지. "chosen" 레이블을 화살표 옆에서 25 셀 바로 위로 재배치. 레이블 이동으로 자연폭이 줄어(125.9pt→77.5pt) 기존 20% width에서 ratio 1.32x로 상한 초과 → 19%(1.25x)로 축소 |
+| L06 트리 그림 크기 재조정(batch E) | `7aa946a` | batch B·C 재추출(주석 폰트 확대, succ 트리 병합 등)로 자연폭이 커진 그림들의 ratio가 0.55~0.84x까지 떨어져 상한(1.3x) 대비 너무 작아짐. 순회(08·09·10·11) 40%→50%, search/insert-trace(14·17) 55%→80%(짝 통일), delete-case3(20·21) 55%→70%, right-rotation(23·24) 35%→55%/50%, RB-insert(40·41·43) 30~35%→40~50%, B-tree(48·51·52·54·56·57·58·59) 25~60%→40~80% — 총 41개 이미지 태그 조정, SVG 재추출 불필요(width만 변경). 조정 후 전부 0.98~1.13x로 수렴, 이미 1.0~1.3x였던 그림은 그대로 유지 |
 
 *주: L06 `14-search-trace`·`17-insert-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`, `976b3fc`) 모두 done.*
 
@@ -70,6 +71,7 @@
 | 2026-08-02 | L06 #5 (batch C) | `da08ca1` | SUCCESSOR 트리 구조 통합(2개 tikzpicture→1개 7-node 트리) + succ(6)=7→15 교정. `FULL_BODY_PATCHES` 메커니즘 신설 |
 | 2026-08-02 | L05/L07 #1,2,8,9,10 (batch C) | `2a9f15e` | matrix-reconstruction/representative-cell 화살표·레이블, hash-pipeline 레이블 겹침, chaining-insert-trace step1, linear-trace2-wraparound step3 화살표 수정. `TEXT_PATCHES` 리스트 지원 확장 |
 | 2026-08-02 | L05 #2 재수정 | `ce58f0c` | "chosen" 폰트만 키운 첫 수정이 불충분해 재작업: 25 셀을 28과 같은 주황(`dp current`)으로 강조, 레이블을 25 셀 위로 재배치, width 20%→19%(1.32x→1.25x) |
+| 2026-08-02 | L06 그림 크기 재조정 (batch E) | `7aa946a` | 트리 트레이스·rotation·RB-insert·B-tree 41개 이미지 %width 조정(SVG 재추출 없음), 전부 0.98~1.13x로 수렴 |
 
 ---
 
