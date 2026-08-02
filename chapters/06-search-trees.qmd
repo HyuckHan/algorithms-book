@@ -299,7 +299,9 @@ Prefix(preorder) `* + x y / + a b c`, infix(inorder) `(x + y) * ((a + b) / c)`, 
 
 BinaryTree의 API contract: generic data는 non-null, empty tree height $=-1$, leaf height $=0$이다. constructor는 subtree를 **deep copy**해 ownership을 분리한다 — subtree root를 공유하면 한 tree의 변경이 다른 tree에 보일 수 있기 때문이다. traversal은 immutable `List<E>`를 반환한다.
 
-$$\operatorname{size}(x)=1+\operatorname{size}(x.left)+\operatorname{size}(x.right),\qquad \operatorname{height}(x)=1+\max(h(x.left),h(x.right)),\ h(\NIL)=-1$$
+$$\operatorname{size}(x)=1+\operatorname{size}(x.left)+\operatorname{size}(x.right)$$
+
+$$\operatorname{height}(x)=1+\max(h(x.left),h(x.right)),\ h(\NIL)=-1$$
 
 둘 다 모든 node를 보므로 $\Theta(n)$이고, height를 자주 쓰는 balanced tree는 node에 height를 저장하고 갱신한다(Part I에서 다시 나온다). subtree API는 두 선택지가 있다 — shared view는 빠르지만 mutation aliasing 문제가 있고, deep copy는 비용 $\Theta(k)$지만 ownership이 명확하다. 이 구현은 교육용 안전성을 위해 deep copy를 쓴다.
 
