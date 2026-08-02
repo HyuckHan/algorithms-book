@@ -177,8 +177,8 @@ FIGURE_CONFIG = {
         ("05_matrix_path.tex", 0): {"slug": "08-matrix-dependency"},
         ("05_matrix_path.tex", 1): {"slug": "09-matrix-call-tree"},
         ("05_matrix_path.tex", 2): {"slug": "10-matrix-row-progression", "mode": "sequence"},
-        ("05_matrix_path.tex", 3): {"slug": "11-matrix-representative-cell"},
-        ("05_matrix_path.tex", 4): {"slug": "12-matrix-reconstruction"},
+        ("05_matrix_path.tex", 3): {"slug": "11-matrix-representative-cell", "text_patch": "matrix_representative_cell_chosen_label"},
+        ("05_matrix_path.tex", 4): {"slug": "12-matrix-reconstruction", "patch": "matrix_reconstruction_path_contrast"},
         ("07_lcs.tex", 0): {"slug": "13-lcs-case1"},
         ("07_lcs.tex", 1): {"slug": "14-lcs-call-tree"},
         ("08_lcs_reconstruction.tex", 0): {"slug": "15-lcs-backtrack-trace"},
@@ -329,7 +329,7 @@ FIGURE_CONFIG = {
     # find_figures() sorts all three kinds together by source position, so
     # the index below is that combined order, not a per-kind index.
     "07": {
-        ("02_hashing_model.tex", 0): {"slug": "01-hash-pipeline"},
+        ("02_hashing_model.tex", 0): {"slug": "01-hash-pipeline", "text_patch": "hash_pipeline_label_overlap"},
         ("02_hashing_model.tex", 1): {"slug": "02-hash-candidate-bucket"},
         ("03_hash_functions.tex", 0): {"slug": "03-distribution-comparison"},
         # \alt=<1..4>{style}{style} on 4 nodes -- a genuine 4-step trace
@@ -341,7 +341,7 @@ FIGURE_CONFIG = {
         ("05_collision.tex", 1): {"slug": "07-insert-29-collision-trace", "mode": "sequence"},
         ("05_collision.tex", 2): {"slug": "08-pigeonhole-principle"},
         ("06_chaining.tex", 0): {"slug": "09-chaining-structure"},
-        ("06_chaining.tex", 1): {"slug": "10-chaining-insert-trace", "mode": "sequence"},
+        ("06_chaining.tex", 1): {"slug": "10-chaining-insert-trace", "mode": "sequence", "text_patch": "chaining_insert_step1_edge_target"},
         ("06_chaining.tex", 2): {"slug": "11-chaining-search-delete-trace", "mode": "sequence"},
         ("06_chaining.tex", 3): {"slug": "12-chaining-worst-case"},
         # 07_open_addressing.tex: \htlegend (arity-0, three bare-\tikz
@@ -353,7 +353,7 @@ FIGURE_CONFIG = {
         # Tombstone에 즉시 쓰지 않는가?" example row) -- must not be missed.
         ("07_open_addressing.tex", 0): {"slug": "13-tombstone-reuse-example"},  # macro:htrowthirteen
         ("08_linear_probing.tex", 0): {"slug": "14-linear-trace1-collision", "mode": "sequence"},
-        ("08_linear_probing.tex", 1): {"slug": "15-linear-trace2-wraparound", "mode": "sequence"},
+        ("08_linear_probing.tex", 1): {"slug": "15-linear-trace2-wraparound", "mode": "sequence", "text_patch": "linear_trace2_wrap_arrow_target"},
         ("08_linear_probing.tex", 2): {"slug": "16-linear-final-table"},  # macro:htrowthirteen
         ("08_linear_probing.tex", 3): {"slug": "17-primary-clustering", "mode": "sequence"},
         ("08_linear_probing.tex", 4): {"slug": "18-linear-probe-cost-curve"},  # pgfplots axis
@@ -455,6 +455,24 @@ TIKZ_PATCHES = {
         "\\tikzset{pq/.append style={inner sep=0.8mm,font=\\footnotesize},"
         "callout/.append style={inner sep=0.8mm,font=\\footnotesize}}",
     ),
+    # 05_matrix_path.tex's "최소 경로 Reconstruction" figure
+    # ("12-matrix-reconstruction", docs/REVIEW_NOTES.md #1): the path arrows
+    # (`dp path` style) are drawn cell-edge-to-cell-edge, and at the source's
+    # y=.85cm row spacing (cell height 8mm) that leaves only ~0.5mm of
+    # vertical gap for the down-arrows -- barely enough room for anything
+    # more than the arrowhead itself, plus `dp path`'s AlgoOrange draw color
+    # is the same color as the orange highlight-box border each arrow
+    # crosses, so it visually merges into it. `y=1cm` (appended after the
+    # figure's own `x=1.15cm,y=.85cm`, pgfkeys last-write-wins) opens the gap
+    # to ~2mm, matching the horizontal gap; `dp path` is only ever used in
+    # this one figure (grep confirms), so redefining it here doesn't affect
+    # anything else -- switched to AlgoBlueTwo, the same directional-arrow
+    # color already used by this lecture's `dp edge` style, for contrast
+    # against the orange highlight boxes.
+    "matrix_reconstruction_path_contrast": (
+        "y=1cm",
+        "\\tikzset{dp path/.style={-Latex,ultra thick,draw=AlgoBlueTwo}}",
+    ),
 }
 TIKZPICTURE_OPEN_RE = re.compile(r"\\begin\{tikzpicture\}(\[[^\]]*\])?")
 
@@ -500,17 +518,72 @@ TEXT_PATCHES = {
     # \only wrapper, so one patch application covers all overlay steps of
     # its figure (4 steps for search-trace, 6 for insert-trace).
     "trace_orienting_annotation_font": (r"font=\\scriptsize,", ""),
+    # 05_matrix_path.tex's "대표 Cell 계산" figure ("11-matrix-representative-
+    # cell", docs/REVIEW_NOTES.md #2): the arrow from dp[2][3]=25 down to the
+    # current cell is correctly the "chosen" dependency (25<31), but its
+    # "chosen" label is font=\scriptsize -- visibly smaller than the cell
+    # values themselves, which use "dp cell"'s font=\small -- making it hard
+    # to read at a glance. (Tried repositioning it first via `pos=`, but the
+    # arrow's start point sits inside the "25" node itself, so anything
+    # other than the default midpoint pushes the label into/near the digit
+    # instead of the open gap between cells -- font size alone is the fix.)
+    "matrix_representative_cell_chosen_label": (
+        r"node\[right,font=\\scriptsize\]\{chosen\}",
+        r"node[right,font=\\small]{chosen}",
+    ),
+    # 06_chaining.tex's "Chaining Animation: Insert" figure
+    # ("10-chaining-insert-trace", step1 only, docs/REVIEW_NOTES.md #9):
+    # step1's edge is drawn to a hardcoded coordinate (1.8,-3) that doesn't
+    # actually reach the "10" node (drawn independently at (3,-3)) -- unlike
+    # steps 2/3, which correctly connect actual named nodes
+    # (`\draw[chain edge](b3)--(a);`). Name the node and connect to it the
+    # same way, so "10" no longer looks disconnected/floating.
+    "chaining_insert_step1_edge_target": (
+        r"\\node\[chain active\]at\(3,-3\)\{10\};\\draw\[chain edge\]\(b3\)--\(1\.8,-3\);",
+        r"\\node[chain active](a10)at(3,-3){10};\\draw[chain edge](b3)--(a10);",
+    ),
+    # 08_linear_probing.tex's "Linear Trace II: Wrap-Around" figure
+    # ("15-linear-trace2-wraparound", step3 only, docs/REVIEW_NOTES.md #10):
+    # the wrap-around arrow's symmetric `bend left=35` makes it arrive at
+    # s0.north at a shallow diagonal, so the arrowhead visually reads as
+    # pointing left of slot 0 rather than into it. Explicit out/in angles
+    # keep the same departure from s12 but make the arrival near-vertical
+    # (in=100, just past straight-up) so the tip lands clearly on slot 0.
+    "linear_trace2_wrap_arrow_target": (
+        r"to\[bend left=35\]",
+        r"to[out=165,in=100]",
+    ),
+    # 02_hashing_model.tex's "Key -> Hash Code -> Compression -> Bucket"
+    # figure ("01-hash-pipeline", docs/REVIEW_NOTES.md #8): the 4 boxes sit
+    # only 6mm apart, and the "hash-code function"/"compression function"
+    # arrow labels are single-line \scriptsize text wider than that gap, so
+    # they overflow sideways into the neighboring boxes ("johin",
+    # "codepression"). Widen the horizontal gap and wrap each label onto two
+    # shorter lines so it fits within the (now-wider) gap even at narrow
+    # webbook column widths.
+    "hash_pipeline_label_overlap": [
+        (r"node distance=6mm and 6mm", r"node distance=22mm and 6mm"),
+        (r"node\[above,font=\\scriptsize\]\{hash-code function\}", r"node[above,font=\\scriptsize,yshift=2.5mm]{\\shortstack{hash-code\\\\function}}"),
+        (r"node\[above,font=\\scriptsize\]\{compression function\}", r"node[above,font=\\scriptsize,yshift=2.5mm]{\\shortstack{compression\\\\function}}"),
+    ],
 }
 
 
 def apply_text_patch(raw, patch_name):
-    """Apply TEXT_PATCHES[patch_name]'s (pattern, replacement) once to `raw`.
-    Raises if the pattern isn't found, so a future upstream source edit that
-    removes the target text doesn't silently make this a no-op."""
-    pattern, replacement = TEXT_PATCHES[patch_name]
-    new_raw, count = re.subn(pattern, replacement, raw, count=1)
-    if count == 0:
-        raise ValueError("text patch %r: pattern not found in raw body" % patch_name)
+    """Apply TEXT_PATCHES[patch_name] to `raw`: one (pattern, replacement)
+    tuple, or a list of them applied in order. Each substitution is applied
+    once (count=1) and raises if its pattern isn't found, so a future
+    upstream source edit that removes the target text doesn't silently make
+    this a no-op."""
+    entry = TEXT_PATCHES[patch_name]
+    subs = [entry] if isinstance(entry, tuple) else entry
+    new_raw = raw
+    for pattern, replacement in subs:
+        new_raw, count = re.subn(pattern, replacement, new_raw, count=1)
+        if count == 0:
+            raise ValueError(
+                "text patch %r: pattern %r not found in raw body" % (patch_name, pattern)
+            )
     return new_raw
 
 
