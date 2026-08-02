@@ -475,6 +475,8 @@ $$T(n)=\Theta(n)\quad\text{(worst case)}$$
 
 **구현**: 코드는 group median을 별도 배열 $B$ 대신 $A[lo..lo+groups)$ 구간에 in-place로 모아 공간과 호출 오버헤드를 줄인다 — 3-way partition은 Part C와 같은 로직이다. `rank`는 0-based이며 최악의 경우에도 $\Theta(n)$을 보장한다(코드 주석 참고).
 
+각 5-원소 그룹의 median은 `_insertion_sort`로 그룹을 정렬한 뒤 가운데 원소를 취해 구한다. 그룹 크기가 상수(5)이므로 이 정렬은 $O(1)$이고, 그룹이 $\lceil n/5 \rceil$개이므로 전체 그룹 정렬 비용은 $\Theta(n)$이다.
+
 ::: {.panel-tabset}
 ## Python
 ```{.python}
