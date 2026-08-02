@@ -221,7 +221,7 @@ Prefix(preorder) `* + x y / + a b c`, infix(inorder) `(x + y) * ((a + b) / c)`, 
 
 ## Part D. Java 구현 노트
 
-BinaryTree의 API contract: generic data는 non-null, empty tree height $=-1$, leaf height $=0$이다. constructor는 subtree를 **deep copy**해 ownership을 분리한다 — 원본처럼 subtree root를 공유하면 한 tree의 변경이 다른 tree에 보일 수 있기 때문이다. traversal은 immutable `List<E>`를 반환한다.
+BinaryTree의 API contract: generic data는 non-null, empty tree height $=-1$, leaf height $=0$이다. constructor는 subtree를 **deep copy**해 ownership을 분리한다 — subtree root를 공유하면 한 tree의 변경이 다른 tree에 보일 수 있기 때문이다. traversal은 immutable `List<E>`를 반환한다.
 
 $$\operatorname{size}(x)=1+\operatorname{size}(x.left)+\operatorname{size}(x.right),\qquad \operatorname{height}(x)=1+\max(h(x.left),h(x.right)),\ h(\NIL)=-1$$
 
@@ -412,7 +412,7 @@ $BF=+2$는 left-heavy, $BF=-2$는 right-heavy를 뜻한다(empty height $=-1$, l
 :::
 
 ::: {.callout-warning title="흔한 실수: BF 부호 convention"}
-이 장은 원본의 right-left 대신 **$BF=h(left)-h(right)$**(left-right)를 쓴다. 모든 case와 코드가 이 부호를 따른다.
+이 장은 right-left 대신 **$BF=h(left)-h(right)$**(left-right)를 쓴다. 모든 case와 코드가 이 부호를 따른다.
 :::
 
 height를 매번 subtree 순회로 계산하면 update 하나가 비싸지므로, **height를 node에 저장**하고 rotation 뒤 영향을 받은 node의 height를 아래에서 위 순서로 재계산한다.
@@ -586,7 +586,7 @@ RB INSERT 용어: $z$(current), $p$(parent), $g$(grandparent), $u$(uncle)다. �
 :::
 
 ::: {.callout-warning title="RB DELETE 범위"}
-RB Tree가 delete를 지원하지만, 이 장의 본문 추적 목표는 **insertion fixup**이다. sibling color와 near/far nephew에 따라 case가 더 많아지며, 상세 fixup 로직은 실제 구현 코드(아래 panel-tabset)와 Appendix 수준에서만 다룬다.
+RB Tree가 delete를 지원하지만, 이 장의 목표는 **insertion fixup**이다. sibling color와 near/far nephew에 따라 case가 더 많아지며, 상세 fixup 로직은 실제 구현 코드(아래 panel-tabset)와 Appendix 수준에서만 다룬다.
 :::
 
 **구현**: RB Tree는 이 장에서 **전용 pseudocode 블록이 없다**(insertion/deletion을 prose와 그림으로만 설명) — 대신 코드가 위에서 다룬 z/p/g/u fixup 로직을 그대로 구현한다. 세 언어 모두 `41,38,31,12,19,8` 삽입 예제를 쓴다.
