@@ -48,6 +48,7 @@
 | L06 트리 그림 크기 재조정(batch E) | `7aa946a` | batch B·C 재추출(주석 폰트 확대, succ 트리 병합 등)로 자연폭이 커진 그림들의 ratio가 0.55~0.84x까지 떨어져 상한(1.3x) 대비 너무 작아짐. 순회(08·09·10·11) 40%→50%, search/insert-trace(14·17) 55%→80%(짝 통일), delete-case3(20·21) 55%→70%, right-rotation(23·24) 35%→55%/50%, RB-insert(40·41·43) 30~35%→40~50%, B-tree(48·51·52·54·56·57·58·59) 25~60%→40~80% — 총 41개 이미지 태그 조정, SVG 재추출 불필요(width만 변경). 조정 후 전부 0.98~1.13x로 수렴, 이미 1.0~1.3x였던 그림은 그대로 유지 |
 | L02 push 애니메이션 복원(#11, batch D) | `b252c8f` | `FIGURE_CONFIG`에 mode:sequence 누락으로 `\visible<2->/<3->` 누적 애니메이션이 최종 상태 1장으로 붕괴. 소스에 명시적 `<1>`이 없어 `overlay_steps()` 경계 탐지가 {2,3}만 잡는 함정 확인 → `process_lecture()`에 "steps" override 메커니즘 신설, `[1,2,3]`으로 실제 3프레임(sum(4)만→+2→+2) 재추출. qmd를 pop과 동일한 3-tab panel-tabset·30% width(ratio 1.26x)로 교체해 push/pop 시각적 대칭 확보 |
 | L03 트레이스 8개 애니메이션 복원(#12, batch D) | `236cc5b` | bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix 8개 `FIGURE_CONFIG`에 mode:sequence 추가(전부 소스에 명시적 `<1>` 있어 steps override 불필요). 재추출 결과 4/5/4/4/5/5/4/3 프레임으로 소스와 정확히 일치 확인(각 트레이스의 배열/트리 상태를 알고리즘으로 재검산 — insertion·heapsort·counting-sort·radix 최종 결과가 실제 정렬/카운트 결과와 일치). qmd 8개를 각각 step별 캡션이 있는 panel-tabset으로 교체, 기존 %width 유지(재추출 후에도 ratio 1.13~1.25x로 변동 없음). 부수적으로 05-insertion-trace가 바로 위 05-insertion-cards 이미지와 빈 줄 없이 붙어있어 pandoc이 새 tabset을 별도 블록으로 인식 못하는 문제(quarto의 "stray :::" 경고)를 발견해 빈 줄 추가로 수정 |
+| L03 bubble/quick-partition 비교-스텝 누락 보강(#17, batch D) | `6bf7c7c` | #12 복원 직후 발견: 두 트레이스는 원본 소스 자체가 "swap이 일어난 스텝"만 `\only` 프레임으로 그렸고 "비교했지만 swap 안 함"은 프레임 자체가 없었음(진단: 파이프라인 문제(a)가 아니라 원본 저작 단계 누락(b)). bubble 4→5프레임(29-37 무교환 비교 프레임 추가), quick-partition 4→10프레임(j=1..9 스캔 스텝 전부 + 최종 상태, scan pointer j를 처음으로 시각화)으로 `full_override` 전면 재작성. `common/sorting.tex`에 정의돼 있었지만 lecture-notes/ 전체에서 한 번도 쓰이지 않던 `sort compared`(빗금 패턴) 스타일을 "비교만, swap 없음"에 사용해 `sort current`(단색 주황, swap 있음)와 구분. 모든 프레임 값을 알고리즘으로 직접 재검산, 최종 상태는 원본과 정확히 일치 |
 
 *주: L06 `14-search-trace`·`17-insert-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`, `976b3fc`) 모두 done.*
 
@@ -74,6 +75,7 @@
 | 2026-08-02 | L06 그림 크기 재조정 (batch E) | `7aa946a` | 트리 트레이스·rotation·RB-insert·B-tree 41개 이미지 %width 조정(SVG 재추출 없음), 전부 0.98~1.13x로 수렴 |
 | 2026-08-02 | L02 #11 (batch D) | `b252c8f` | push mode:sequence 추가 + "steps" override 메커니즘 신설, 3프레임 재추출, pop과 대칭되는 tabset 복원 |
 | 2026-08-02 | L03 #12 (batch D) | `236cc5b` | 8개 트레이스 mode:sequence 추가, 4/5/4/4/5/5/4/3 프레임 재추출·검산, 8개 tabset 복원 |
+| 2026-08-02 | L03 #17 (batch D) | `6bf7c7c` | bubble/quick-partition 비교-스텝 누락 보강(4→5, 4→10 프레임), `sort compared` 스타일 도입 |
 
 ---
 
