@@ -22,12 +22,6 @@
 
 | # | 위치 | 종류 | 발견 내용 | 방향 | 상태 | 처리자 | batch |
 |---|---|---|---|---|---|---|---|
-| 1 | L05 `12-matrix-reconstruction.svg` | 그림-재컴파일 | 화살표가 불명확(clear하지 않음) | 화살표 방향·굵기·대비 선명하게 | open | [CC] | C |
-| 2 | L05 `11-matrix-representative-cell.svg` | 그림-재컴파일 | 화살표는 OK, "chosen" 레이블이 불명확 | chosen 표시(위치/대비/연결선) 명확하게 | open | [CC] | C |
-| 5 | L06 SUCCESSOR 절 그림+캡션 | 그림-재컴파일+내용 | (a) 원본은 트리 1개인데 변환 시 3-4 서브트리가 6 왼쪽에 통합 안 되고 오른쪽에 별도 그림으로 분리 (b) `succ(6)=7` 값 오류 | (a) 3-4를 6의 왼쪽 서브트리로 통합해 트리 1개로 복원 (b) `succ(6)=15`로 교정 | open | [CC] | C |
-| 8 | L07 `01-hash-pipeline.svg` | 그림-재컴파일 | 화살표 위 레이블(hash-code function, compression function)이 인접 상자와 겹쳐 글자 뭉개짐("johin","codepression") | 레이블을 화살표 위 공간에 겹치지 않게(간격/위치/줄바꿈) | open | [CC] | C |
-| 9 | L07 `10-chaining-insert-trace-step1`만 | 그림-재컴파일 | step1에서 "10" 노드가 slot 3에서 멀리 떨어져 허공에 뜬 것처럼 보임 | step1의 10 노드를 slot 3에 가깝게/명확히 연결 | open | [CC] | C |
-| 10 | L07 `15-linear-trace2-wraparound-step3` | 그림-재컴파일 | wrap 화살표가 slot 0을 명확히 안 가리키고 0-1 사이를 가리킴 | 화살표 끝점을 slot 0에 정확히 | open | [CC] | C |
 | 11 | L02 `01-call-stack-push` | 그림-애니메이션 | mode:sequence 없어 SVG 1장만 생성(원본은 누적 애니메이션). 실제 복원 시 3단계(sum(4)만→+2→+2) | mode:sequence 추가·재추출 후 tabset 삽입 | open | [CC] | D |
 | 12 | L03 트레이스 8개(bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix) | 그림-애니메이션 | mode:sequence 없어 각각 최종 SVG 1장만 생성 | mode:sequence 추가·재추출 후 tabset 삽입 | open | [CC] | D |
 
@@ -50,6 +44,8 @@
 | L08 애니메이션 설명 3개 + matrix-to-list 해제(#13-16) | `393c05f` | #14 DSU, #15 relaxation, #16 DAG relaxation 문단 추가(애니메이션 유지); #13 03-matrix-to-list tabset 해제(본문 인라인 예시 + Θ(V²)/Θ(V+E) 트레이드오프 문장으로 대체, step SVG는 디스크에 유지) |
 | L06 size/height 분리 + DUPLICATE 폰트(#4, #6) | `433e748` | Part D size(x)/height(x)를 별도 display 수식 2개로 분리(목차 겹침 해소); TreeInsert `\texttt{DUPLICATE}` → `$\mathtt{DUPLICATE}$`(NIL/NotFound와 같은 MathJax 경로로 통일, 헤드리스 브라우저로 data-semantic-font="monospace" 일치 확인) |
 | L06 search-trace + insert-trace 주석 확대(#7) | `6cf7861`, `976b3fc` | `14-search-trace`·`17-insert-trace` 좌상단 주석의 `font=\scriptsize` 제거. lecture-notes/는 읽기 전용이라 `scripts/extract_tikz.py`에 `text_patch` 메커니즘(TIKZ_PATCHES와 동일한 빌드타임 전용 원칙) 추가, 두 그림이 공유하는 `trace_orienting_annotation_font` 패치 하나로 처리. L06 전체 트레이스 그림(순회 3개·tree-terminology-trace·degenerate-bst-trace 포함)을 전수 확인해 이 패턴은 이 두 그림에만 있음을 확인(나머지는 `callout` 스타일 그대로라 폰트 문제 없음). 재추출 후 calibrated 측정(scriptsize/footnotesize/small/normalsize 384dpi 기준 렌더 비교)으로 두 주석 모두 normalsize로 확인. 자연폭 변화(search 479→509px, insert 511~529→524~556px)에도 기존 55% width에서 ratio 0.67~0.73x로 1.3x 이내 유지(폭 변경 불필요) |
+| L06 SUCCESSOR 트리 통합 + succ(6) 교정(#5) | `da08ca1` | 분리돼 있던 두 tikzpicture(Case1 5-node 트리 / Case2 6-3-4 별도 그림)를 `full_override` 메커니즘으로 7-node 트리 하나(2-tab tabset)로 병합. succ(6)=7→15 교정, BST/successor 알고리즘 기준 4개 값 전부 재검산 |
+| L05/L07 화살표·레이블 국소 수정(#1,2,8,9,10) | `2a9f15e` | #1 matrix-reconstruction 화살표 간격·색 대비, #2 matrix-representative-cell "chosen" 폰트, #8 hash-pipeline 레이블 겹침(간격+줄바꿈), #9 chaining-insert-trace step1 노드 연결, #10 linear-trace2-wraparound step3 화살표 각도 |
 
 *주: L06 `14-search-trace`·`17-insert-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`, `976b3fc`) 모두 done.*
 
@@ -70,6 +66,8 @@
 | 2026-08-02 | L06 #4, #6 | `433e748` | size/height 수식 분리, DUPLICATE 폰트 통일 |
 | 2026-08-02 | L06 #7 | `6cf7861` | search-trace 주석 폰트 확대(text_patch 신설, 4개 SVG 재추출) |
 | 2026-08-02 | L06 #7(재진단, 확장) | `976b3fc` | 재진단으로 search-trace 수정이 실제 유효했음(normalsize) 확인 + insert-trace(미수정 상태였음) 동일 패치 적용, 6개 SVG 재추출. L06 전체 트레이스 전수 확인 완료 |
+| 2026-08-02 | L06 #5 (batch C) | `da08ca1` | SUCCESSOR 트리 구조 통합(2개 tikzpicture→1개 7-node 트리) + succ(6)=7→15 교정. `FULL_BODY_PATCHES` 메커니즘 신설 |
+| 2026-08-02 | L05/L07 #1,2,8,9,10 (batch C) | `2a9f15e` | matrix-reconstruction/representative-cell 화살표·레이블, hash-pipeline 레이블 겹침, chaining-insert-trace step1, linear-trace2-wraparound step3 화살표 수정. `TEXT_PATCHES` 리스트 지원 확장 |
 
 ---
 
