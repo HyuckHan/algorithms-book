@@ -1,5 +1,7 @@
 {
-  "01-call-stack-push": "a22f416d2fa4fc55085b6b0cb22f5d45ddae9475",
+  "01-call-stack-push-step1": "1354f40f2c8b5a156bb0fdc1d9968059fb6ae33e",
+  "01-call-stack-push-step2": "a9ad2f8ccada1b86ba50115d752ba150e4358e65",
+  "01-call-stack-push-step3": "a22f416d2fa4fc55085b6b0cb22f5d45ddae9475",
   "02-call-stack-pop-step1": "55489a95ce69e9955de91f784cafa444f646550d",
   "02-call-stack-pop-step2": "01413085623c5f1cfeeef533f836e6ef19201e41",
   "02-call-stack-pop-step3": "7151333eb3412e1b0f7d20204d320f21a8114149",

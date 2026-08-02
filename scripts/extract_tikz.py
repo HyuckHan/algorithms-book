@@ -141,7 +141,11 @@ FIGURE_CONFIG = {
         ("12_summary_quiz.tex", 0): {"slug": "13-concept-map"},
     },
     "02": {
-        ("02_execution.tex", 0): {"slug": "01-call-stack-push"},
+        # docs/REVIEW_NOTES.md #11: source is \visible<2->/\visible<3-> (no
+        # explicit <1>), so overlay_steps() only sees boundaries {2,3} --
+        # "steps" overrides with the true 3-frame sequence (see the
+        # "steps" override comment in process_lecture above).
+        ("02_execution.tex", 0): {"slug": "01-call-stack-push", "mode": "sequence", "steps": [1, 2, 3]},
         ("02_execution.tex", 1): {"slug": "02-call-stack-pop", "mode": "sequence"},
         ("04_basic_examples.tex", 0): {"slug": "03-fibonacci-tree"},
         ("05_recurrences.tex", 0): {"slug": "04-recursion-tree"},
@@ -1210,7 +1214,16 @@ def process_lecture(lecture, check_only, keep_build, jobs=None):
                     raw = apply_tikz_patch(raw, patch_name)
                 if text_patch_name:
                     raw = apply_text_patch(raw, text_patch_name)
-                steps = overlay_steps(raw)
+                # overlay_steps() only collects \only/\alt/\visible *spec
+                # boundaries* -- a cumulative-reveal picture built entirely
+                # from \visible<2->/\visible<3-> (no node is ever wrapped in
+                # an explicit <1>, since "nothing extra yet" needs no
+                # \visible at all) is missing its own first frame from that
+                # boundary set (docs/ANIMATION_AUDIT.md's L02 push finding:
+                # boundaries {2,3} undercount the true 3-frame sequence
+                # {1,2,3}). "steps" lets a FIGURE_CONFIG entry override the
+                # detected list with the literal overlay targets to render.
+                steps = cfg.get("steps") or overlay_steps(raw)
                 if mode == "sequence" and steps:
                     targets = [(step, "%s-step%d" % (slug, i + 1), raw) for i, step in enumerate(steps)]
                 else:
