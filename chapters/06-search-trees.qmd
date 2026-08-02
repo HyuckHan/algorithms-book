@@ -158,23 +158,23 @@ Preorder 5단계: A 방문 → B 방문 → D,E 방문(왼쪽 먼저 끝까지) 
 ::: {.panel-tabset}
 ## 1단계
 
-![A 방문. visited: A.](../figures/06-search-trees/08-preorder-trace-step1.svg){fig-alt="A만 강조되고 visited: A인 1단계 상태" width="40%"}
+![A 방문. visited: A.](../figures/06-search-trees/08-preorder-trace-step1.svg){fig-alt="A만 강조되고 visited: A인 1단계 상태" width="50%"}
 
 ## 2단계
 
-![B 방문. visited: A, B.](../figures/06-search-trees/08-preorder-trace-step2.svg){fig-alt="A는 처리 완료로, B가 강조되어 visited: A, B인 상태" width="40%"}
+![B 방문. visited: A, B.](../figures/06-search-trees/08-preorder-trace-step2.svg){fig-alt="A는 처리 완료로, B가 강조되어 visited: A, B인 상태" width="50%"}
 
 ## 3단계
 
-![D, E 방문(왼쪽 먼저 끝까지). visited: A, B, D, E.](../figures/06-search-trees/08-preorder-trace-step3.svg){fig-alt="A,B는 처리 완료로, D,E가 강조되어 visited: A, B, D, E인 상태" width="40%"}
+![D, E 방문(왼쪽 먼저 끝까지). visited: A, B, D, E.](../figures/06-search-trees/08-preorder-trace-step3.svg){fig-alt="A,B는 처리 완료로, D,E가 강조되어 visited: A, B, D, E인 상태" width="50%"}
 
 ## 4단계
 
-![C 방문. visited: A, B, D, E, C.](../figures/06-search-trees/08-preorder-trace-step4.svg){fig-alt="A,B,D,E는 처리 완료로, C가 강조되어 visited: A, B, D, E, C인 상태" width="40%"}
+![C 방문. visited: A, B, D, E, C.](../figures/06-search-trees/08-preorder-trace-step4.svg){fig-alt="A,B,D,E는 처리 완료로, C가 강조되어 visited: A, B, D, E, C인 상태" width="50%"}
 
 ## 5단계
 
-![F, G 방문. visited: A, B, D, E, C, F, G.](../figures/06-search-trees/08-preorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: A,B,D,E,C,F,G인 마지막 상태" width="40%"}
+![F, G 방문. visited: A, B, D, E, C, F, G.](../figures/06-search-trees/08-preorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: A,B,D,E,C,F,G인 마지막 상태" width="50%"}
 :::
 
 **Inorder**: left subtree를 마친 뒤 node, 그다음 right subtree를 처리한다.
@@ -186,19 +186,19 @@ Inorder 4단계: D 방문 → B,E 방문 → A 방문 → F,C,G 방문.
 ::: {.panel-tabset}
 ## 1단계
 
-![D 방문. visited: D.](../figures/06-search-trees/09-inorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="40%"}
+![D 방문. visited: D.](../figures/06-search-trees/09-inorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="50%"}
 
 ## 2단계
 
-![B, E 방문. visited: D, B, E.](../figures/06-search-trees/09-inorder-trace-step2.svg){fig-alt="D는 처리 완료로, B,E가 강조되어 visited: D, B, E인 상태" width="40%"}
+![B, E 방문. visited: D, B, E.](../figures/06-search-trees/09-inorder-trace-step2.svg){fig-alt="D는 처리 완료로, B,E가 강조되어 visited: D, B, E인 상태" width="50%"}
 
 ## 3단계
 
-![A 방문. visited: D, B, E, A.](../figures/06-search-trees/09-inorder-trace-step3.svg){fig-alt="D,B,E는 처리 완료로, A가 강조되어 visited: D, B, E, A인 상태" width="40%"}
+![A 방문. visited: D, B, E, A.](../figures/06-search-trees/09-inorder-trace-step3.svg){fig-alt="D,B,E는 처리 완료로, A가 강조되어 visited: D, B, E, A인 상태" width="50%"}
 
 ## 4단계
 
-![F, C, G 방문. visited: D, B, E, A, F, C, G.](../figures/06-search-trees/09-inorder-trace-step4.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,B,E,A,F,C,G인 마지막 상태" width="40%"}
+![F, C, G 방문. visited: D, B, E, A, F, C, G.](../figures/06-search-trees/09-inorder-trace-step4.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,B,E,A,F,C,G인 마지막 상태" width="50%"}
 :::
 
 **Postorder**: 두 subtree의 결과가 준비된 뒤 node를 처리한다.
@@ -210,23 +210,23 @@ Postorder 5단계: D 방문 → E,B 방문 → F,G,C 방문 → A 방문.
 ::: {.panel-tabset}
 ## 1단계
 
-![D 방문. visited: D.](../figures/06-search-trees/10-postorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="40%"}
+![D 방문. visited: D.](../figures/06-search-trees/10-postorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="50%"}
 
 ## 2단계
 
-![E, B 방문. visited: D, E, B.](../figures/06-search-trees/10-postorder-trace-step2.svg){fig-alt="D는 처리 완료로, E,B가 강조되어 visited: D, E, B인 상태" width="40%"}
+![E, B 방문. visited: D, E, B.](../figures/06-search-trees/10-postorder-trace-step2.svg){fig-alt="D는 처리 완료로, E,B가 강조되어 visited: D, E, B인 상태" width="50%"}
 
 ## 3단계
 
-![F, G, C 방문. visited: D, E, B, F, G, C.](../figures/06-search-trees/10-postorder-trace-step3.svg){fig-alt="D,E,B는 처리 완료로, F,G,C가 강조되어 visited: D, E, B, F, G, C인 상태" width="40%"}
+![F, G, C 방문. visited: D, E, B, F, G, C.](../figures/06-search-trees/10-postorder-trace-step3.svg){fig-alt="D,E,B는 처리 완료로, F,G,C가 강조되어 visited: D, E, B, F, G, C인 상태" width="50%"}
 
 ## 4단계
 
-![A 방문. visited: D, E, B, F, G, C, A.](../figures/06-search-trees/10-postorder-trace-step4.svg){fig-alt="A만 남아 강조되고 나머지는 처리 완료로 표시된 상태" width="40%"}
+![A 방문. visited: D, E, B, F, G, C, A.](../figures/06-search-trees/10-postorder-trace-step4.svg){fig-alt="A만 남아 강조되고 나머지는 처리 완료로 표시된 상태" width="50%"}
 
 ## 5단계
 
-![후위 순회 완료.](../figures/06-search-trees/10-postorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,E,B,F,G,C,A인 마지막 상태" width="40%"}
+![후위 순회 완료.](../figures/06-search-trees/10-postorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,E,B,F,G,C,A인 마지막 상태" width="50%"}
 :::
 
 **복잡도(DFS 세 traversal 공통)**: 각 node에서 $\Theta(1)$ work를 정확히 한 번 수행하므로 시간은 $\Theta(n)$이다. recursion stack은 현재 root-to-node path이므로 $O(h)$ — balanced tree는 $O(\log n)$, degenerate tree는 $O(n)$이다.
@@ -235,7 +235,7 @@ Postorder 5단계: D 방문 → E,B 방문 → F,G,C 방문 → A 방문.
 
 {{< include ../figures/06-search-trees/pseudocode-level-order.qmd >}}
 
-![기준 tree(level-order queue animation과 함께 참고).](../figures/06-search-trees/11-level-order-reference-tree.svg){fig-alt="A,B,C,D,E,F,G 고정 tree" width="40%"}
+![기준 tree(level-order queue animation과 함께 참고).](../figures/06-search-trees/11-level-order-reference-tree.svg){fig-alt="A,B,C,D,E,F,G 고정 tree" width="50%"}
 
 | step | current | queue before → after | visited |
 |---|---|---|---|
@@ -359,19 +359,19 @@ SEARCH 13: root에서 시작해 13<15로 left, 13>6로 right, 13>7로 right, 13=
 ::: {.panel-tabset}
 ## 1단계
 
-![13<15: right subtree를 버리고 left로.](../figures/06-search-trees/14-search-trace-step1.svg){fig-alt="15가 강조되고 13<15: right subtree를 버리고 left로라는 콜아웃이 붙은 1단계, 나머지 노드는 inactive" width="55%"}
+![13<15: right subtree를 버리고 left로.](../figures/06-search-trees/14-search-trace-step1.svg){fig-alt="15가 강조되고 13<15: right subtree를 버리고 left로라는 콜아웃이 붙은 1단계, 나머지 노드는 inactive" width="80%"}
 
 ## 2단계
 
-![13>6: left subtree를 버리고 right로.](../figures/06-search-trees/14-search-trace-step2.svg){fig-alt="6이 강조되고 13>6: left subtree를 버리고 right로라는 콜아웃이 붙은 상태, 15에서 6까지 active edge 표시" width="55%"}
+![13>6: left subtree를 버리고 right로.](../figures/06-search-trees/14-search-trace-step2.svg){fig-alt="6이 강조되고 13>6: left subtree를 버리고 right로라는 콜아웃이 붙은 상태, 15에서 6까지 active edge 표시" width="80%"}
 
 ## 3단계
 
-![13>7: left/NIL을 버리고 right로.](../figures/06-search-trees/14-search-trace-step3.svg){fig-alt="7이 강조되고 13>7: left/NIL을 버리고 right로라는 콜아웃이 붙은 상태, 15에서 7까지 active edge 표시" width="55%"}
+![13>7: left/NIL을 버리고 right로.](../figures/06-search-trees/14-search-trace-step3.svg){fig-alt="7이 강조되고 13>7: left/NIL을 버리고 right로라는 콜아웃이 붙은 상태, 15에서 7까지 active edge 표시" width="80%"}
 
 ## 4단계
 
-![13=13: found.](../figures/06-search-trees/14-search-trace-step4.svg){fig-alt="13이 최종 강조되고 13=13: found라는 콜아웃이 붙은 마지막 상태, active edge 경로가 표시됨" width="55%"}
+![13=13: found.](../figures/06-search-trees/14-search-trace-step4.svg){fig-alt="13이 최종 강조되고 13=13: found라는 콜아웃이 붙은 마지막 상태, active edge 경로가 표시됨" width="80%"}
 :::
 
 **MINIMUM·MAXIMUM**: minimum은 left child를 NIL까지 따라간다(예제에서 2), maximum은 right child를 NIL까지 따라간다(예제에서 20). 시간은 $\Theta(h)$이고, empty tree의 Java API는 `OptionalInt.empty()`를 반환한다.
@@ -418,27 +418,27 @@ INSERT 12: x=15,y=NIL(12&lt;15) → x=6,y=15(12&gt;6) → x=7,y=6(12&gt;7) → x
 ::: {.panel-tabset}
 ## 1단계
 
-![x=15, y=NIL, 12<15.](../figures/06-search-trees/17-insert-trace-step1.svg){fig-alt="15가 강조되고 x=15,y=NIL, 12&lt;15라는 콜아웃이 붙은 1단계, 나머지는 inactive" width="55%"}
+![x=15, y=NIL, 12<15.](../figures/06-search-trees/17-insert-trace-step1.svg){fig-alt="15가 강조되고 x=15,y=NIL, 12&lt;15라는 콜아웃이 붙은 1단계, 나머지는 inactive" width="80%"}
 
 ## 2단계
 
-![x=6, y=15, 12>6.](../figures/06-search-trees/17-insert-trace-step2.svg){fig-alt="6이 강조되고 x=6,y=15, 12&gt;6이라는 콜아웃이 붙은 상태, 15에서 6까지 active edge 표시" width="55%"}
+![x=6, y=15, 12>6.](../figures/06-search-trees/17-insert-trace-step2.svg){fig-alt="6이 강조되고 x=6,y=15, 12&gt;6이라는 콜아웃이 붙은 상태, 15에서 6까지 active edge 표시" width="80%"}
 
 ## 3단계
 
-![x=7, y=6, 12>7.](../figures/06-search-trees/17-insert-trace-step3.svg){fig-alt="7이 강조되고 x=7,y=6, 12&gt;7이라는 콜아웃이 붙은 상태, 6에서 7까지 active edge 표시" width="55%"}
+![x=7, y=6, 12>7.](../figures/06-search-trees/17-insert-trace-step3.svg){fig-alt="7이 강조되고 x=7,y=6, 12&gt;7이라는 콜아웃이 붙은 상태, 6에서 7까지 active edge 표시" width="80%"}
 
 ## 4단계
 
-![x=13, y=7, 12<13.](../figures/06-search-trees/17-insert-trace-step4.svg){fig-alt="13이 강조되고 x=13,y=7, 12&lt;13이라는 콜아웃이 붙은 상태, 7에서 13까지 active edge 표시" width="55%"}
+![x=13, y=7, 12<13.](../figures/06-search-trees/17-insert-trace-step4.svg){fig-alt="13이 강조되고 x=13,y=7, 12&lt;13이라는 콜아웃이 붙은 상태, 7에서 13까지 active edge 표시" width="80%"}
 
 ## 5단계
 
-![x=9, y=13, 12>9.](../figures/06-search-trees/17-insert-trace-step5.svg){fig-alt="9가 강조되고 x=9,y=13, 12&gt;9라는 콜아웃이 붙은 상태, 13에서 9까지 active edge 표시" width="55%"}
+![x=9, y=13, 12>9.](../figures/06-search-trees/17-insert-trace-step5.svg){fig-alt="9가 강조되고 x=9,y=13, 12&gt;9라는 콜아웃이 붙은 상태, 13에서 9까지 active edge 표시" width="80%"}
 
 ## 6단계
 
-![x=NIL, y=9. 9의 right child로 attach.](../figures/06-search-trees/17-insert-trace-step6.svg){fig-alt="9까지의 경로가 active edge로 표시되고 새 노드 12가 9의 right child로 추가된 마지막 상태" width="55%"}
+![x=NIL, y=9. 9의 right child로 attach.](../figures/06-search-trees/17-insert-trace-step6.svg){fig-alt="9까지의 경로가 active edge로 표시되고 새 노드 12가 9의 right child로 추가된 마지막 상태" width="80%"}
 :::
 
 search path의 비교가 lower/upper bound를 좁히고, 마지막 $y$의 올바른 NIL side에 연결하면 모든 ancestor bound가 유지된다 — path length만큼 비교하므로 $\Theta(h)$다.
@@ -461,11 +461,11 @@ Transplant는 node $u$의 parent link를 $v$로 바꾸며 root case도 같은 he
 
 **DELETE Case 3**(15 삭제, successor 17 선택): $y=min(15.right)=17$이고 따라서 $y.left=\NIL$이다.
 
-![DELETE Case 3 준비: target 15, successor 후보 $y=17$(20의 left child), 20의 right child 25, 17의 right child 18.](../figures/06-search-trees/20-delete-case3-successor-setup.svg){fig-alt="15가 target, 17이 current로 표시되고 15의 왼쪽에 6, 오른쪽에 20(자식 17,25), 17의 자식 18이 있는 다이어그램" width="55%"}
+![DELETE Case 3 준비: target 15, successor 후보 $y=17$(20의 left child), 20의 right child 25, 17의 right child 18.](../figures/06-search-trees/20-delete-case3-successor-setup.svg){fig-alt="15가 target, 17이 current로 표시되고 15의 왼쪽에 6, 오른쪽에 20(자식 17,25), 17의 자식 18이 있는 다이어그램" width="70%"}
 
 Transplant sequence: $y=17$, $y.right=18$이므로 `TRANSPLANT`$(17,18)$로 $20.left=18$; $y.right\gets z.right$로 $17.right=20$과 parent 갱신; `TRANSPLANT`$(15,17)$; $y.left\gets z.left$로 $17.left=$ 기존 left subtree와 parent 갱신. **key copy가 아니라 successor node 자체를 옮겨** satellite data와 identity를 분명히 한다.
 
-![DELETE Case 3 완료: 17이 새 root, inorder는 6,17,18,20,25로 여전히 정렬돼 있다.](../figures/06-search-trees/21-delete-case3-final-tree.svg){fig-alt="17이 새 루트가 되고 왼쪽에 6, 오른쪽에 20(자식 18,25)이 연결된 최종 트리" width="55%"}
+![DELETE Case 3 완료: 17이 새 root, inorder는 6,17,18,20,25로 여전히 정렬돼 있다.](../figures/06-search-trees/21-delete-case3-final-tree.svg){fig-alt="17이 새 루트가 되고 왼쪽에 6, 오른쪽에 20(자식 18,25)이 연결된 최종 트리" width="70%"}
 
 **정확성 직관**: Case 1/2는 child subtree 전체가 올라가도 기존 ancestor bounds 안에 있다. Case 3는 successor $y$가 $z$보다 큰 최소 key이고 $y.left=\NIL$이다 — $z.left$의 모든 key $<y$, 남은 $z.right$의 모든 key $>y$다. 삭제 뒤 inorder가 strictly increasing이면 BST order가 보존된 것이다.
 
@@ -571,8 +571,8 @@ $$h(x)=1+\max(h(x.left),h(x.right))$$
 
 **Right Rotation**은 inorder를 보존한다.
 
-![Right rotation 전: y가 root, x가 y의 left child, C가 y의 right subtree, A·B가 x의 left·right subtree.](../figures/06-search-trees/23-right-rotation-before.svg){fig-alt="y를 루트로 왼쪽에 x(자식 A,B), 오른쪽에 C가 있는 트리" width="35%"}
-![Right rotation 후: x가 새 root, A가 x의 left, y가 x의 right(자식 B,C). inorder는 A,x,B,y,C로 그대로다.](../figures/06-search-trees/24-right-rotation-after.svg){fig-alt="x를 루트로 왼쪽에 A, 오른쪽에 y(자식 B,C)가 있는 트리" width="35%"}
+![Right rotation 전: y가 root, x가 y의 left child, C가 y의 right subtree, A·B가 x의 left·right subtree.](../figures/06-search-trees/23-right-rotation-before.svg){fig-alt="y를 루트로 왼쪽에 x(자식 A,B), 오른쪽에 C가 있는 트리" width="55%"}
+![Right rotation 후: x가 새 root, A가 x의 left, y가 x의 right(자식 B,C). inorder는 A,x,B,y,C로 그대로다.](../figures/06-search-trees/24-right-rotation-after.svg){fig-alt="x를 루트로 왼쪽에 A, 오른쪽에 y(자식 B,C)가 있는 트리" width="50%"}
 
 $$\text{inorder before}=\text{inorder after}=A,x,B,y,C$$
 
@@ -707,13 +707,13 @@ RB INSERT 용어: $z$(current), $p$(parent), $g$(grandparent), $u$(uncle)다. �
 **RB Insert 41, 38, 31**: uncle black, outer case로 곧바로 처리된다.
 
 ![41,38 삽입 후 31 삽입 직전: 41(B) 아래 38(R).](../figures/06-search-trees/39-rb-insert-41-38-31-step1.svg){fig-alt="41B 아래 38R 하나만 있는 트리" width="15%"}
-![31 삽입 직후: 38(R) 아래 31(R) — uncle black, outer.](../figures/06-search-trees/40-rb-insert-41-38-31-step2.svg){fig-alt="41B 아래 38R, 38의 자식 31R인 트리, uncle black outer라는 콜아웃" width="30%"}
-![right rotate 41 후: 38(B)이 root, 31·41이 red 자식.](../figures/06-search-trees/41-rb-insert-41-38-31-step3.svg){fig-alt="38B를 루트로 31R,41R이 자식인 트리, right rotate 41이라는 콜아웃" width="30%"}
+![31 삽입 직후: 38(R) 아래 31(R) — uncle black, outer.](../figures/06-search-trees/40-rb-insert-41-38-31-step2.svg){fig-alt="41B 아래 38R, 38의 자식 31R인 트리, uncle black outer라는 콜아웃" width="40%"}
+![right rotate 41 후: 38(B)이 root, 31·41이 red 자식.](../figures/06-search-trees/41-rb-insert-41-38-31-step3.svg){fig-alt="38B를 루트로 31R,41R이 자식인 트리, right rotate 41이라는 콜아웃" width="40%"}
 
 **RB Insert 12(recolor)**: uncle red이므로 recolor만 한다.
 
 ![12 삽입 직후: 31(R) 아래 12(R) — uncle(41)도 red.](../figures/06-search-trees/42-rb-insert-12-before.svg){fig-alt="38B 아래 31R(자식 12R), 41R인 트리" width="35%"}
-![recolor 후: 31,41이 B로, 38은 이미 root라 그대로 B.](../figures/06-search-trees/43-rb-insert-12-after.svg){fig-alt="38B 아래 31B(자식 12R), 41B로 바뀐 트리, uncle red recolor라는 콜아웃" width="35%"}
+![recolor 후: 31,41이 B로, 38은 이미 root라 그대로 B.](../figures/06-search-trees/43-rb-insert-12-after.svg){fig-alt="38B 아래 31B(자식 12R), 41B로 바뀐 트리, uncle red recolor라는 콜아웃" width="50%"}
 
 **RB Insert 19(inner → outer)**: 12의 right child로 19가 들어가 inner case가 되어 left rotate 12(case 2) 후 right rotate 31(case 3)로 마무리한다.
 
@@ -785,8 +785,8 @@ B-Tree의 minimum degree가 $t\ge2$일 때, node당 최대 $2t-1$ key·internal 
 
 {{< include ../figures/06-search-trees/pseudocode-btree-search.qmd >}}
 
-![B-Tree Search(key 17): root(10|20)에서 10&lt;17&lt;20이므로 middle page 선택 → page 안에서 17 발견, 2 page accesses.](../figures/06-search-trees/48-btree-search-trace-step1.svg){fig-alt="10|20 노드가 강조되고 10&lt;17&lt;20 middle page 선택이라는 콜아웃이 붙은 1단계, 자식 5|6|7, 12|17, 30 표시" width="60%"}
-![](../figures/06-search-trees/48-btree-search-trace-step2.svg){fig-alt="12|17 노드가 강조되고 page 안에서 17 발견, 2 page accesses라는 콜아웃이 붙은 마지막 상태" width="60%"}
+![B-Tree Search(key 17): root(10|20)에서 10&lt;17&lt;20이므로 middle page 선택 → page 안에서 17 발견, 2 page accesses.](../figures/06-search-trees/48-btree-search-trace-step1.svg){fig-alt="10|20 노드가 강조되고 10&lt;17&lt;20 middle page 선택이라는 콜아웃이 붙은 1단계, 자식 5|6|7, 12|17, 30 표시" width="80%"}
+![](../figures/06-search-trees/48-btree-search-trace-step2.svg){fig-alt="12|17 노드가 강조되고 page 안에서 17 발견, 2 page accesses라는 콜아웃이 붙은 마지막 상태" width="80%"}
 
 **Cost**: fixed minimum degree $t$와 occupancy invariant 아래 worst-case height와 page access는 $\Theta(\log_t n)$이다(root cache 제외). node 내부는 linear scan 또는 binary search가 가능하고, 큰 $t$는 height를 줄이지만 page 내부 comparison은 늘 수 있다.
 
@@ -802,13 +802,13 @@ B-Tree의 삽입은 **세 procedure가 함께 구성하는 하나의 흐름**이
 
 ![10 삽입 후 20 삽입: root가 [10,20]인 상태.](../figures/06-search-trees/49-btree-insert-step1.svg){fig-alt="10 하나만 있는 노드" width="10%"}
 ![](../figures/06-search-trees/50-btree-insert-step2.svg){fig-alt="10,20 두 키가 있는 노드" width="15%"}
-![5 삽입 후 root가 [5,10,20]로 가득 참(root full).](../figures/06-search-trees/51-btree-insert-step3.svg){fig-alt="5,10,20 세 키로 가득 찬 노드, root full이라는 콜아웃" width="25%"}
-![10 promotion 후 6 삽입: 10이 새 root, [5,6]과 [20]이 두 child.](../figures/06-search-trees/52-btree-insert-step4.svg){fig-alt="10을 루트로 5,6과 20 두 child로 분리된 트리, 10 promotion 후 6 삽입이라는 콜아웃" width="35%"}
+![5 삽입 후 root가 [5,10,20]로 가득 참(root full).](../figures/06-search-trees/51-btree-insert-step3.svg){fig-alt="5,10,20 세 키로 가득 찬 노드, root full이라는 콜아웃" width="40%"}
+![10 promotion 후 6 삽입: 10이 새 root, [5,6]과 [20]이 두 child.](../figures/06-search-trees/52-btree-insert-step4.svg){fig-alt="10을 루트로 5,6과 20 두 child로 분리된 트리, 10 promotion 후 6 삽입이라는 콜아웃" width="70%"}
 
 **Insert 12, 30, 7, 17**: split-before-descend로 20이 promotion되어 root가 [10,20]이 된다.
 
 ![12,30,7 삽입 후 root(10) 아래 [5,6,7]과 [12,20,30](곧 full).](../figures/06-search-trees/53-btree-insert2-step1.svg){fig-alt="10을 루트로 5,6,7과 12,20,30 두 child가 있는 삽입 전 상태" width="40%"}
-![split-before-descend로 20 up, 17 삽입 후: root [10,20], child [5,6,7]/[12,17]/[30].](../figures/06-search-trees/54-btree-insert2-step2.svg){fig-alt="10,20을 루트로 5,6,7 / 12,17 / 30 세 child로 나뉜 트리, split before descent 20 up then insert 17이라는 콜아웃" width="55%"}
+![split-before-descend로 20 up, 17 삽입 후: root [10,20], child [5,6,7]/[12,17]/[30].](../figures/06-search-trees/54-btree-insert2-step2.svg){fig-alt="10,20을 루트로 5,6,7 / 12,17 / 30 세 child로 나뉜 트리, split before descent 20 up then insert 17이라는 콜아웃" width="80%"}
 
 ![최종 B-Tree invariant 확인: 각 node 1–3 key(sorted), internal child count = key count + 1, child range와 leaf depth 일치.](../figures/06-search-trees/55-btree-final-check.svg){fig-alt="10,20을 루트로 5,6,7 / 12,17 / 30 세 child가 있는 최종 트리" width="55%"}
 
@@ -818,13 +818,13 @@ B-Tree의 삽입은 **세 procedure가 함께 구성하는 하나의 흐름**이
 전체 deletion pseudocode와 모든 경계 case를 구현하지 않는다. 핵심은 descent 전에 occupancy를 확보하는 **borrow/redistribution**과 **merge**이며, insertion보다 pointer·separator 갱신이 훨씬 복잡하다.
 :::
 
-![Borrow from right sibling 전: [5]가 $t-1$ key.](../figures/06-search-trees/56-btree-borrow-before.svg){fig-alt="10,20을 루트로 5, 12|15, 30 세 child가 있고 5가 t-1 keys라는 콜아웃이 붙은 상태" width="55%"}
-![Borrow 후: parent key 10이 내려가고 sibling의 최솟값 12가 올라와 [5,10]과 [15]가 된다.](../figures/06-search-trees/57-btree-borrow-after.svg){fig-alt="12,20을 루트로 5,10 / 15 / 30 세 child로 바뀐 상태, after borrowing이라는 콜아웃" width="55%"}
+![Borrow from right sibling 전: [5]가 $t-1$ key.](../figures/06-search-trees/56-btree-borrow-before.svg){fig-alt="10,20을 루트로 5, 12|15, 30 세 child가 있고 5가 t-1 keys라는 콜아웃이 붙은 상태" width="80%"}
+![Borrow 후: parent key 10이 내려가고 sibling의 최솟값 12가 올라와 [5,10]과 [15]가 된다.](../figures/06-search-trees/57-btree-borrow-after.svg){fig-alt="12,20을 루트로 5,10 / 15 / 30 세 child로 바뀐 상태, after borrowing이라는 콜아웃" width="80%"}
 
 parent key 10이 내려가고 right sibling의 가장 작은 key 12가 올라온다(separator movement).
 
-![Merge 전: 둘 다 $t-1$ key.](../figures/06-search-trees/58-btree-merge-before.svg){fig-alt="10을 루트로 5, 15 두 child가 있고 둘 다 t-1 keys라는 콜아웃이 붙은 상태" width="35%"}
-![Merge 후: root가 비어 유일한 child가 새 root가 된다.](../figures/06-search-trees/59-btree-merge-after.svg){fig-alt="5,10,15 세 키를 가진 단일 노드로 병합된 상태, merge 후 old root는 empty, 유일한 child가 new root라는 콜아웃" width="35%"}
+![Merge 전: 둘 다 $t-1$ key.](../figures/06-search-trees/58-btree-merge-before.svg){fig-alt="10을 루트로 5, 15 두 child가 있고 둘 다 t-1 keys라는 콜아웃이 붙은 상태" width="70%"}
+![Merge 후: root가 비어 유일한 child가 새 root가 된다.](../figures/06-search-trees/59-btree-merge-after.svg){fig-alt="5,10,15 세 키를 가진 단일 노드로 병합된 상태, merge 후 old root는 empty, 유일한 child가 new root라는 콜아웃" width="50%"}
 
 ::: {.callout-tip title="Merge 뒤 Root Shrink"}
 merge 뒤 root가 key 0개이고 child 1개면 그 child가 새 root다.
