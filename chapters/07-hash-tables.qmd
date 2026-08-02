@@ -160,7 +160,25 @@ $$\Pr[h(k)=j]=\frac1m\qquad (j=0,\ldots,m-1)$$
 
 **Multiplication method**: $h(k)=\left\lfloor m\,\operatorname{frac}(kA)\right\rfloor$, $\operatorname{frac}(x)=x-\lfloor x\rfloor$, $0<A<1$. Knuth의 제안 중 하나는 $A\approx(\sqrt5-1)/2$이지만, 특정 상수가 모든 dataset에 완벽하다는 뜻은 아니다.
 
-![Multiplication trace $k=25,\ m=13$: $25A\approx15.451$ → frac $=0.451$ → $13\times0.451\approx5.861$ → $\lfloor5.861\rfloor=5$.](../figures/07-hash-tables/04-multiplication-trace-step4.svg){fig-alt="25A, frac, 13*frac, floor 네 단계를 거쳐 최종 index 5에 도달하는 계산 트레이스의 마지막 상태" width="90%"}
+Multiplication trace $k=25,\ m=13$: $25A\approx15.451$ → frac $=0.451$ → $13\times0.451\approx5.861$ → $\lfloor5.861\rfloor=5$.
+
+::: {.panel-tabset}
+## 1단계
+
+![$25A\approx15.45085$를 계산한다.](../figures/07-hash-tables/04-multiplication-trace-step1.svg){fig-alt="25A≈15.45085 상자가 강조된 1단계 상태" width="90%"}
+
+## 2단계
+
+![소수부만 취한다: $\operatorname{frac}=0.45085$.](../figures/07-hash-tables/04-multiplication-trace-step2.svg){fig-alt="frac=0.45085 상자가 강조된 상태" width="90%"}
+
+## 3단계
+
+![테이블 크기 13을 곱한다: $13\times0.45085\approx5.861$.](../figures/07-hash-tables/04-multiplication-trace-step3.svg){fig-alt="13*0.45085≈5.861 상자가 강조된 상태" width="90%"}
+
+## 4단계
+
+![정수부를 취해 최종 index를 얻는다: $\lfloor5.861\rfloor=5$.](../figures/07-hash-tables/04-multiplication-trace-step4.svg){fig-alt="25A, frac, 13*frac, floor 네 단계를 거쳐 최종 index 5에 도달하는 계산 트레이스의 마지막 상태" width="90%"}
+:::
 
 문자열 hash로 **ASCII 합**을 쓰면 실패한다: `"abcd"`와 `"dbac"`는 항상 같은 합(394)이라 order를 잃고, 짧은 문자열은 가능한 합의 range가 좁아 collision이 늘어난다. 첫 몇 글자만 쓰는 것도 실패한다.
 
@@ -226,7 +244,21 @@ $m=13$에서 keys $25,13,16,15,7$을 삽입하면 각각 home slot $12,0,3,2,7$�
 
 이제 $29$를 삽입하면 $h(29)=29\bmod13=3$인데 slot 3은 이미 $16$이 차지하고 있다 — collision이다.
 
-![$29$를 삽입하려는데 $h(29)=3$이 이미 점유되어 있어 collision이 발생하고, 이후 resolution policy가 실제 위치를 정한다.](../figures/07-hash-tables/07-insert-29-collision-trace-step3.svg){fig-alt="slot 3이 16으로 점유된 상태에서 29를 삽입하려다 충돌이 표시되고 resolution policy가 실제 위치를 정한다는 콜아웃이 붙은 마지막 상태" width="75%"}
+$29$를 삽입하려는데 $h(29)=3$이 이미 점유되어 있어 collision이 발생하고, 이후 resolution policy가 실제 위치를 정한다.
+
+::: {.panel-tabset}
+## 1단계
+
+![$h(29)=29\bmod13=3$.](../figures/07-hash-tables/07-insert-29-collision-trace-step1.svg){fig-alt="slot 3이 16으로 점유된 상태에서 h(29)=3이라는 콜아웃이 붙은 1단계 상태" width="75%"}
+
+## 2단계
+
+![bucket 3 occupied: collision.](../figures/07-hash-tables/07-insert-29-collision-trace-step2.svg){fig-alt="slot 3이 충돌로 표시되고 bucket 3 occupied: collision이라는 콜아웃이 붙은 상태" width="75%"}
+
+## 3단계
+
+![resolution policy가 29의 실제 위치를 정한다.](../figures/07-hash-tables/07-insert-29-collision-trace-step3.svg){fig-alt="slot 3이 16으로 점유된 상태에서 29를 삽입하려다 충돌이 표시되고 resolution policy가 실제 위치를 정한다는 콜아웃이 붙은 마지막 상태" width="75%"}
+:::
 
 $$h(k_1)=h(k_2),\quad k_1\ne k_2.$$
 
@@ -269,9 +301,41 @@ $h(k)=k\bmod7$인 table에서 head insertion으로 $10\to17\to24$ 순서로 삽�
 
 `ChainedPut`은 먼저 `ChainedSearch`로 같은 key가 있는지 확인한 뒤, 있으면 value만 갱신하고 없으면 chain head에 새 entry를 넣는다 — **같은 logical key의 재삽입은 새 collision entry가 아니라 update**라는 Part B의 duplicate policy가 여기서 구체화된다.
 
-![10 삽입(빈 bucket) → 17 삽입(collision, head insert) → 24 삽입(collision, head insert)까지 3단계.](../figures/07-hash-tables/10-chaining-insert-trace-step3.svg){fig-alt="bucket 3에 24,17,10 순서로 연결된 최종 상태와 collision; head insert 24라는 콜아웃이 붙은 3단계 상태" width="70%"}
+10 삽입(빈 bucket) → 17 삽입(collision, head insert) → 24 삽입(collision, head insert)까지 3단계.
 
-![SEARCH 17(24와 비교 후 17에서 발견) → DELETE 17(unlink) 이후 24와 10이 직접 연결되는 4단계.](../figures/07-hash-tables/11-chaining-search-delete-trace-step4.svg){fig-alt="17이 제거되고 24와 10이 직접 연결된 최종 상태, 24 -> 10이라는 콜아웃이 붙은 4단계 상태" width="70%"}
+::: {.panel-tabset}
+## 1단계
+
+![$10\bmod7=3$: 빈 bucket에 삽입.](../figures/07-hash-tables/10-chaining-insert-trace-step1.svg){fig-alt="bucket 3에 10 하나만 연결된 1단계 상태" width="70%"}
+
+## 2단계
+
+![collision; head insert 17.](../figures/07-hash-tables/10-chaining-insert-trace-step2.svg){fig-alt="bucket 3에 17,10 순서로 연결되고 collision; head insert 17이라는 콜아웃이 붙은 상태" width="70%"}
+
+## 3단계
+
+![collision; head insert 24.](../figures/07-hash-tables/10-chaining-insert-trace-step3.svg){fig-alt="bucket 3에 24,17,10 순서로 연결된 최종 상태와 collision; head insert 24라는 콜아웃이 붙은 3단계 상태" width="70%"}
+:::
+
+SEARCH 17(24와 비교 후 17에서 발견) → DELETE 17(unlink) 이후 24와 10이 직접 연결되는 4단계.
+
+::: {.panel-tabset}
+## 1단계
+
+![SEARCH 17: compare 24.](../figures/07-hash-tables/11-chaining-search-delete-trace-step1.svg){fig-alt="24가 강조되고 SEARCH 17: compare 24라는 콜아웃이 붙은 1단계 상태" width="70%"}
+
+## 2단계
+
+![17 found.](../figures/07-hash-tables/11-chaining-search-delete-trace-step2.svg){fig-alt="17이 강조되고 17 found라는 콜아웃이 붙은 상태" width="70%"}
+
+## 3단계
+
+![DELETE 17: unlink.](../figures/07-hash-tables/11-chaining-search-delete-trace-step3.svg){fig-alt="17이 강조되고 DELETE 17: unlink라는 콜아웃이 붙은 상태" width="70%"}
+
+## 4단계
+
+![24 → 10.](../figures/07-hash-tables/11-chaining-search-delete-trace-step4.svg){fig-alt="17이 제거되고 24와 10이 직접 연결된 최종 상태, 24 -> 10이라는 콜아웃이 붙은 4단계 상태" width="70%"}
+:::
 
 Chain으로는 singly linked list(단순, head insertion), dynamic array/small vector(locality), sorted chain(조기 종료 가능하지만 insert 비용 증가), extreme collision에서는 balanced tree까지 고려할 수 있다. head insertion 자체는 $\Theta(1)$이지만, duplicate update를 지원하려면 먼저 equal key를 찾아야 한다.
 
@@ -353,9 +417,37 @@ $$h(k,i)=\bigl(h'(k)+i\bigr)\bmod m$$
 
 contiguous slot을 순서대로 방문해 cache locality가 좋고, wrap-around를 포함해 모든 slot을 방문한다. 다만 occupied run이 커지는 primary clustering에 취약하다.
 
-![25,13,16,15,7이 모두 home slot에 있는 상태에서 28을 삽입하면 home 2가 점유되어 있어 $2\to3\to4$로 probe한다.](../figures/07-hash-tables/14-linear-trace1-collision-step3.svg){fig-alt="slot 2,3이 충돌로 표시되고 slot 4에 28이 놓인 3단계 상태" width="75%"}
+25,13,16,15,7이 모두 home slot에 있는 상태에서 28을 삽입하면 home 2가 점유되어 있어 $2\to3\to4$로 probe한다.
 
-![여러 key가 채워진 뒤 38(home 12)을 삽입하면 $12\to0\to1\to\cdots\to5$가 모두 점유되어 있어 wrap-around 끝에 첫 EMPTY인 6에 놓인다.](../figures/07-hash-tables/15-linear-trace2-wraparound-step3.svg){fig-alt="slot 12부터 5까지 충돌로 표시되고 wrap 화살표를 거쳐 slot 6에 38이 놓인 3단계 상태" width="75%"}
+::: {.panel-tabset}
+## 1단계
+
+![25,13,16,15,7: 모두 home slot.](../figures/07-hash-tables/14-linear-trace1-collision-step1.svg){fig-alt="25,13,16,15,7이 각자 home slot에 놓인 1단계 상태" width="75%"}
+
+## 2단계
+
+![28 home$=2$: occupied.](../figures/07-hash-tables/14-linear-trace1-collision-step2.svg){fig-alt="slot 2가 충돌로 표시되고 28 home=2: occupied라는 콜아웃이 붙은 상태" width="75%"}
+
+## 3단계
+
+![probe $2\to3\to4$.](../figures/07-hash-tables/14-linear-trace1-collision-step3.svg){fig-alt="slot 2,3이 충돌로 표시되고 slot 4에 28이 놓인 3단계 상태" width="75%"}
+:::
+
+여러 key가 채워진 뒤 38(home 12)을 삽입하면 $12\to0\to1\to\cdots\to5$가 모두 점유되어 있어 wrap-around 끝에 첫 EMPTY인 6에 놓인다.
+
+::: {.panel-tabset}
+## 1단계
+
+![38 home$=12$.](../figures/07-hash-tables/15-linear-trace2-wraparound-step1.svg){fig-alt="slot 12가 충돌로 표시되고 38 home=12라는 콜아웃이 붙은 1단계 상태" width="75%"}
+
+## 2단계
+
+![$12\to0\to1\to\cdots\to5$ occupied.](../figures/07-hash-tables/15-linear-trace2-wraparound-step2.svg){fig-alt="slot 12부터 wrap-around를 거쳐 slot 5까지 전부 충돌로 표시된 상태" width="75%"}
+
+## 3단계
+
+![first EMPTY $=6$.](../figures/07-hash-tables/15-linear-trace2-wraparound-step3.svg){fig-alt="slot 12부터 5까지 충돌로 표시되고 wrap 화살표를 거쳐 slot 6에 38이 놓인 3단계 상태" width="75%"}
+:::
 
 | key | 25 | 13 | 16 | 15 | 7 | 28 | 31 | 20 | 1 | 38 |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -366,7 +458,21 @@ contiguous slot을 순서대로 방문해 cache locality가 좋고, wrap-around�
 
 Primary clustering은 **자기 강화**된다 — run 앞이나 내부로 hash된 key가 끝에 붙고, 더 긴 run은 더 넓은 home range의 key를 흡수한다.
 
-![길이 3인 cluster에 home이 cluster 내부인 새 key가 들어와 run 끝에 붙으면서 cluster가 길이 4로 자라는 과정.](../figures/07-hash-tables/17-primary-clustering-step3.svg){fig-alt="길이 3이던 cluster가 새 key를 흡수해 길이 4로 늘어난 3단계 상태" width="70%"}
+길이 3인 cluster에 home이 cluster 내부인 새 key가 들어와 run 끝에 붙으면서 cluster가 길이 4로 자라는 과정.
+
+::: {.panel-tabset}
+## 1단계
+
+![cluster length 3.](../figures/07-hash-tables/17-primary-clustering-step1.svg){fig-alt="a,b,c 세 key가 이어진 길이 3 cluster에 brace로 length 3이 표시된 1단계 상태" width="70%"}
+
+## 2단계
+
+![home 4인 새 key가 run 끝까지 probe.](../figures/07-hash-tables/17-primary-clustering-step2.svg){fig-alt="slot 4가 충돌로 표시되고 home 4인 새 key가 run 끝까지 probe한다는 콜아웃이 붙은 상태" width="70%"}
+
+## 3단계
+
+![cluster length 4.](../figures/07-hash-tables/17-primary-clustering-step3.svg){fig-alt="길이 3이던 cluster가 새 key를 흡수해 길이 4로 늘어난 3단계 상태" width="70%"}
+:::
 
 ![Load factor에 따른 성공/실패 탐색의 expected probe 횟수 곡선.](../figures/07-hash-tables/18-linear-probe-cost-curve.svg){fig-alt="load factor가 커질수록 성공 탐색과 실패 탐색 모두 expected probe 수가 증가하는 두 곡선 그래프" width="70%"}
 
@@ -390,7 +496,21 @@ $$h(k,i)=\bigl(h'(k)+c_1i+c_2i^2\bigr)\bmod m$$
 
 원본 단순형은 $m=13,\ c_1=0,\ c_2=1$: $h(k,i)=(h'(k)+i^2)\bmod13$. offset이 $0,1,4,9,16,\ldots$로 커져 contiguous primary run의 영향을 완화한다.
 
-![home 4가 이미 점유된 상태에서 30을 삽입하면 $i=0,1,2$가 각각 $4,5,8$로 계산되어 slot 8에 놓인다.](../figures/07-hash-tables/19-quadratic-trace-30-step3.svg){fig-alt="slot 4, 5가 충돌로 표시되고 slot 8에 30이 놓인 3단계 상태" width="75%"}
+home 4가 이미 점유된 상태에서 30을 삽입하면 $i=0,1,2$가 각각 $4,5,8$로 계산되어 slot 8에 놓인다.
+
+::: {.panel-tabset}
+## 1단계
+
+![$i=0$: $4+0=4$.](../figures/07-hash-tables/19-quadratic-trace-30-step1.svg){fig-alt="slot 4가 충돌로 표시되고 i=0: 4+0=4라는 콜아웃이 붙은 1단계 상태" width="75%"}
+
+## 2단계
+
+![$i=1$: $4+1=5$.](../figures/07-hash-tables/19-quadratic-trace-30-step2.svg){fig-alt="slot 5가 충돌로 표시되고 i=1: 4+1=5라는 콜아웃이 붙은 상태" width="75%"}
+
+## 3단계
+
+![$i=2$: $4+4=8$.](../figures/07-hash-tables/19-quadratic-trace-30-step3.svg){fig-alt="slot 4, 5가 충돌로 표시되고 slot 8에 30이 놓인 3단계 상태" width="75%"}
+:::
 
 ::: {.callout-warning title="Coverage는 자동 보장이 아니다"}
 $(h'+i^2)\bmod13$에서 $i=0,\ldots,7$의 $i^2\bmod13$은 $0,1,4,9,3,12,10,10$이다. $i=6$과 $i=7$부터 repeated offset이 나타난다 — $m,c_1,c_2$와 load에 따라 일부 slot을 방문하지 않아 table이 덜 찼어도 insertion이 실패할 수 있다.
@@ -431,7 +551,25 @@ $m=13,\ h_1(k)=k\bmod13,\ h_2(k)=(k\bmod11)+1$일 때:
 | 41 | 2 | 9 | 1 | $2,11$ | 11 |
 | 67 | 2 | 2 | 1 | $2,4$ | 4 |
 
-![15, 19가 이미 놓인 상태에서 28, 41, 67을 각자의 $h_1,h_2$로 계산한 probe sequence를 따라 배치하는 애니메이션의 마지막 상태.](../figures/07-hash-tables/21-double-hash-probe-trace-step4.svg){fig-alt="slot 2,6,9,11에 15,19,28,41이 놓이고 67이 slot 4로 향하는 4단계 상태" width="75%"}
+15, 19가 이미 놓인 상태에서 28, 41, 67을 각자의 $h_1,h_2$로 계산한 probe sequence를 따라 배치하는 애니메이션.
+
+::: {.panel-tabset}
+## 1단계
+
+![28: $h_1=2,\ h_2=7$.](../figures/07-hash-tables/21-double-hash-probe-trace-step1.svg){fig-alt="slot 2가 충돌로 표시되고 28: h1=2,h2=7이라는 콜아웃이 붙은 1단계 상태" width="75%"}
+
+## 2단계
+
+![$(2+1\cdot7)\bmod13=9$.](../figures/07-hash-tables/21-double-hash-probe-trace-step2.svg){fig-alt="slot 9에 28이 놓이는 상태" width="75%"}
+
+## 3단계
+
+![41: step 9, final 11.](../figures/07-hash-tables/21-double-hash-probe-trace-step3.svg){fig-alt="slot 9는 28로 확정되고 slot 11에 41이 놓이는 상태" width="75%"}
+
+## 4단계
+
+![67: step 2, final 4.](../figures/07-hash-tables/21-double-hash-probe-trace-step4.svg){fig-alt="slot 2,6,9,11에 15,19,28,41이 놓이고 67이 slot 4로 향하는 4단계 상태" width="75%"}
+:::
 
 ::: {.callout-warning title="Step과 Capacity가 서로소가 아니면"}
 $m=12,\ h_2(k)=4$이면 probe sequence는 $j,j+4,j+8,j,\ldots$로 $\gcd(4,12)=4$라서 3개 slot만 순환한다. 빈 slot이 많아도 insertion이 실패할 수 있다.
@@ -468,17 +606,67 @@ key 38의 home은 12이고 probe sequence는 $12,0,1,2,3,4,5,6$이다. key 1은 
 key 1을 지우며 slot 1을 EMPTY로 만들면, 이후 SEARCH 38이 $12\to0\to1$까지 갔을 때 slot 1이 EMPTY이므로 **거기서 조기 종료**해 false NOT_FOUND를 낸다 — 38은 실제로 slot 6에 있는데도 못 찾는다.
 :::
 
-![key 1 삭제를 EMPTY로 처리하면 이후 SEARCH 38이 slot 1의 EMPTY에서 조기 종료해 false NOT_FOUND가 되는 5단계 트레이스의 마지막 상태.](../figures/07-hash-tables/24-wrong-deletion-trace-step5.svg){fig-alt="slot 1이 EMPTY로 표시되고 slot 1 EMPTY: false NOT_FOUND라는 콜아웃이 붙은 5단계 상태" width="75%"}
+key 1 삭제를 EMPTY로 처리하면 이후 SEARCH 38이 slot 1의 EMPTY에서 조기 종료해 false NOT_FOUND가 되는 5단계 트레이스.
+
+::: {.panel-tabset}
+## 1단계
+
+![DELETE 1.](../figures/07-hash-tables/24-wrong-deletion-trace-step1.svg){fig-alt="slot 1이 강조되고 DELETE 1이라는 콜아웃이 붙은 1단계 상태" width="75%"}
+
+## 2단계
+
+![잘못된 처리: EMPTY.](../figures/07-hash-tables/24-wrong-deletion-trace-step2.svg){fig-alt="slot 1이 EMPTY로 표시되고 잘못된 처리: EMPTY라는 콜아웃이 붙은 상태" width="75%"}
+
+## 3단계
+
+![SEARCH 38: 12 occupied.](../figures/07-hash-tables/24-wrong-deletion-trace-step3.svg){fig-alt="slot 12가 충돌로 표시되고 SEARCH 38: 12 occupied라는 콜아웃이 붙은 상태" width="75%"}
+
+## 4단계
+
+![0 occupied, 다음 1.](../figures/07-hash-tables/24-wrong-deletion-trace-step4.svg){fig-alt="slot 0이 충돌로 표시되고 0 occupied, 다음 1이라는 콜아웃이 붙은 상태" width="75%"}
+
+## 5단계
+
+![slot 1 EMPTY: false NOT_FOUND.](../figures/07-hash-tables/24-wrong-deletion-trace-step5.svg){fig-alt="slot 1이 EMPTY로 표시되고 slot 1 EMPTY: false NOT_FOUND라는 콜아웃이 붙은 5단계 상태" width="75%"}
+:::
 
 **올바른 삭제**는 tombstone(DELETED)을 남긴다 — DELETED에서는 계속 probe하므로 SEARCH 38이 slot 1의 D를 통과해 slot 6에서 정상적으로 찾는다.
 
-![key 1 삭제를 DELETED(tombstone)로 처리하면 SEARCH 38이 slot 1의 D를 통과해 slot 6에서 찾는 4단계 트레이스의 마지막 상태.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step4.svg){fig-alt="slot 1이 D로 표시되고 slot 6에서 38을 찾았다는 콜아웃이 붙은 4단계 상태" width="75%"}
+key 1 삭제를 DELETED(tombstone)로 처리하면 SEARCH 38이 slot 1의 D를 통과해 slot 6에서 찾는 4단계 트레이스.
+
+::: {.panel-tabset}
+## 1단계
+
+![DELETE 1 $\Rightarrow$ DELETED.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step1.svg){fig-alt="slot 1이 D(tombstone)로 표시되는 1단계 상태" width="75%"}
+
+## 2단계
+
+![SEARCH 38 시작.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step2.svg){fig-alt="slot 12가 충돌로 표시되고 SEARCH 38 시작이라는 콜아웃이 붙은 상태" width="75%"}
+
+## 3단계
+
+![D에서는 계속 probe.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step3.svg){fig-alt="slot 1의 D를 지나쳐 계속 probe한다는 콜아웃이 붙은 상태" width="75%"}
+
+## 4단계
+
+![slot 6: found.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step4.svg){fig-alt="slot 1이 D로 표시되고 slot 6에서 38을 찾았다는 콜아웃이 붙은 4단계 상태" width="75%"}
+:::
 
 Tombstone reuse는 네 단계를 따른다: (1) PUT은 첫 DELETED index를 기억한다. (2) probe를 계속해 existing equal key가 없는지 확인한다. (3) EMPTY를 만나면 기억한 tombstone에 새 entry를 둔다. (4) active count는 증가하고 tombstone count는 감소한다. 즉시 쓰면 안 되는 이유는 같은 key가 tombstone 뒤에 있다면 duplicate entry를 만들 수 있기 때문이다.
 
 Load에는 두 종류가 있다: $\alpha_{\text{logical}}=\text{active}/m$, $\alpha_{\text{probing}}=(\text{active}+\text{tombstones})/m$.
 
-![active 9개/capacity 20의 logical load(0.45)와, tombstone 5개를 더한 probing load(0.70)를 나란히 보여주는 게이지.](../figures/07-hash-tables/26-logical-vs-probing-load-step2.svg){fig-alt="logical load 0.45 게이지와 probing load 0.70 게이지가 나란히 표시된 다이어그램" width="60%"}
+active 9개/capacity 20의 logical load(0.45)와, tombstone 5개를 더한 probing load(0.70)를 각각 게이지로 보여준다.
+
+::: {.panel-tabset}
+## Logical Load
+
+![active 9 / capacity 20: $\alpha_{\text{logical}}=.45$.](../figures/07-hash-tables/26-logical-vs-probing-load-step1.svg){fig-alt="active 9개만 반영한 logical load 0.45 게이지" width="60%"}
+
+## Probing Load
+
+![active 9 + tombstone(D) 5: $\alpha_{\text{probe}}=.70$.](../figures/07-hash-tables/26-logical-vs-probing-load-step2.svg){fig-alt="active 9개에 tombstone 5개를 더한 probing load 0.70 게이지" width="60%"}
+:::
 
 검색 비용은 probing load의 영향을 받는다. active load가 낮아도 tombstone이 많으면 rehash가 필요할 수 있다.
 
@@ -566,7 +754,25 @@ Chaining은 $\alpha>1$도 허용하며 chain representation과 workload에 따�
 
 **resize**는 table capacity를 바꾸고, **rehash**는 active entry를 새 capacity 기준으로 다시 배치한다. 절차는 (1) capacity가 큰 새 table 할당, (2) 새 compression으로 bucket index 재계산, (3) 모든 active entry 재삽입하고 tombstone 제거, (4) 검증 후 old table 폐기다. logical key–value contents와 size는 보존하지만 physical bucket은 바뀐다 — index가 capacity에 의존하므로 단순 memory copy가 아니다.
 
-![old table($m=5$)의 active entry 2,7,12를 new table($m=11$)로 재배치하는 rehash 애니메이션의 마지막 상태 — $12\to1,\ 2\to2,\ 7\to7$.](../figures/07-hash-tables/27-rehash-animation-step4.svg){fig-alt="old table의 2,7,12가 new table의 1,2,7번 슬롯으로 재배치된 최종 상태" width="65%"}
+old table($m=5$)의 active entry 2,7,12를 new table($m=11$)로 재배치하는 rehash 애니메이션 — $12\to1,\ 2\to2,\ 7\to7$.
+
+::: {.panel-tabset}
+## 1단계
+
+![old $m=5$: $h(k)=k\bmod5$. 2: home 2; 7: $2\to3$; 12: $2\to3\to4$. slot 1: earlier deletion의 tombstone.](../figures/07-hash-tables/27-rehash-animation-step1.svg){fig-alt="old table에서 2,7,12가 각자 home과 probe 위치에 놓이고 slot 1이 tombstone인 1단계 상태" width="65%"}
+
+## 2단계
+
+![allocate new $m=11$. active 3, D 1.](../figures/07-hash-tables/27-rehash-animation-step2.svg){fig-alt="새 table(m=11)이 할당되고 active 3, D 1이라는 콜아웃이 붙은 상태" width="65%"}
+
+## 3단계
+
+![rehash: $k\bmod11$.](../figures/07-hash-tables/27-rehash-animation-step3.svg){fig-alt="old table의 active entry들이 새 hash 함수로 재계산되는 상태" width="65%"}
+
+## 4단계
+
+![new $m=11$: $12\to1,\ 2\to2,\ 7\to7$.](../figures/07-hash-tables/27-rehash-animation-step4.svg){fig-alt="old table의 2,7,12가 new table의 1,2,7번 슬롯으로 재배치된 최종 상태" width="65%"}
+:::
 
 Rehash 전후로 `get(2)`, `get(7)`, `get(12)`는 모두 성공해야 하고, size는 3, tombstone은 0으로 초기화된다.
 
