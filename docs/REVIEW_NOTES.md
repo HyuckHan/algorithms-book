@@ -49,9 +49,9 @@
 | L04 median-of-medians 설명(#3) | `1d4b4e8` | Part D "구현" 문단에 `_insertion_sort` 역할 설명 문단 추가 |
 | L08 애니메이션 설명 3개 + matrix-to-list 해제(#13-16) | `393c05f` | #14 DSU, #15 relaxation, #16 DAG relaxation 문단 추가(애니메이션 유지); #13 03-matrix-to-list tabset 해제(본문 인라인 예시 + Θ(V²)/Θ(V+E) 트레이드오프 문장으로 대체, step SVG는 디스크에 유지) |
 | L06 size/height 분리 + DUPLICATE 폰트(#4, #6) | `433e748` | Part D size(x)/height(x)를 별도 display 수식 2개로 분리(목차 겹침 해소); TreeInsert `\texttt{DUPLICATE}` → `$\mathtt{DUPLICATE}$`(NIL/NotFound와 같은 MathJax 경로로 통일, 헤드리스 브라우저로 data-semantic-font="monospace" 일치 확인) |
-| L06 search-trace 주석 확대(#7) | `6cf7861` | `14-search-trace` 좌상단 주석의 `font=\scriptsize` 제거. lecture-notes/는 읽기 전용이라 `scripts/extract_tikz.py`에 새 `text_patch` 메커니즘(TIKZ_PATCHES와 동일한 빌드타임 전용 원칙) 추가해 패치, 4개 step SVG 전부 재추출. 자연폭 479→509px로 늘었으나 기존 55% width에서 ratio 0.73x로 1.3x 이내 유지(폭 변경 불필요) |
+| L06 search-trace + insert-trace 주석 확대(#7) | `6cf7861`, `976b3fc` | `14-search-trace`·`17-insert-trace` 좌상단 주석의 `font=\scriptsize` 제거. lecture-notes/는 읽기 전용이라 `scripts/extract_tikz.py`에 `text_patch` 메커니즘(TIKZ_PATCHES와 동일한 빌드타임 전용 원칙) 추가, 두 그림이 공유하는 `trace_orienting_annotation_font` 패치 하나로 처리. L06 전체 트레이스 그림(순회 3개·tree-terminology-trace·degenerate-bst-trace 포함)을 전수 확인해 이 패턴은 이 두 그림에만 있음을 확인(나머지는 `callout` 스타일 그대로라 폰트 문제 없음). 재추출 후 calibrated 측정(scriptsize/footnotesize/small/normalsize 384dpi 기준 렌더 비교)으로 두 주석 모두 normalsize로 확인. 자연폭 변화(search 479→509px, insert 511~529→524~556px)에도 기존 55% width에서 ratio 0.67~0.73x로 1.3x 이내 유지(폭 변경 불필요) |
 
-*주: L06 `14-search-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`) 모두 done.*
+*주: L06 `14-search-trace`·`17-insert-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`, `976b3fc`) 모두 done.*
 
 ## 처리 이력 (커밋 추적)
 
@@ -69,6 +69,7 @@
 | 2026-08-02 | L08 #13-16 | `393c05f` | DSU/relaxation/DAG relaxation 설명 추가 + matrix-to-list tabset 해제 |
 | 2026-08-02 | L06 #4, #6 | `433e748` | size/height 수식 분리, DUPLICATE 폰트 통일 |
 | 2026-08-02 | L06 #7 | `6cf7861` | search-trace 주석 폰트 확대(text_patch 신설, 4개 SVG 재추출) |
+| 2026-08-02 | L06 #7(재진단, 확장) | `976b3fc` | 재진단으로 search-trace 수정이 실제 유효했음(normalsize) 확인 + insert-trace(미수정 상태였음) 동일 패치 적용, 6개 SVG 재추출. L06 전체 트레이스 전수 확인 완료 |
 
 ---
 
