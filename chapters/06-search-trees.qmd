@@ -102,6 +102,7 @@ node가 $n\ge1$개인 tree는 다음을 만족한다: (1) connected이며 cycle�
 각 node는 최대 두 child를 가지고, left child와 right child는 서로 구별된다 — child가 하나뿐이어도 left인지 right인지가 구조의 일부다.
 
 ![A의 left child가 B인 경우.](../figures/06-search-trees/03-left-child-example.svg){fig-alt="A에서 B로 L 표시가 붙은 edge가 내려가는 다이어그램" width="10%"}
+
 ![A의 right child가 B인 경우.](../figures/06-search-trees/04-right-child-example.svg){fig-alt="A에서 B로 R 표시가 붙은 edge가 내려가는 다이어그램" width="10%"}
 
 Binary tree 응용: expression tree(operator가 internal node, operand가 leaf), Huffman tree(prefix-free code를 만드는 weighted tree), heap(complete binary tree를 array로 저장), search tree(order invariant로 후보를 줄임).
@@ -454,9 +455,11 @@ DELETE는 세 case다: (1) child 0개 — node 제거, (2) child 1개 — child 
 Transplant는 node $u$의 parent link를 $v$로 바꾸며 root case도 같은 helper가 처리한다.
 
 ![DELETE Case 1(leaf): target 7의 parent link를 NIL로.](../figures/06-search-trees/18-delete-case1-leaf-step1.svg){fig-alt="6의 두 자식 3,7 중 7이 target으로 표시된 삭제 전 상태" width="35%"}
+
 ![](../figures/06-search-trees/18-delete-case1-leaf-step2.svg){fig-alt="7 자리가 NIL로 바뀐 삭제 후 상태" width="35%"}
 
 ![DELETE Case 2(one child): Transplant(6,3) 후 subtree 3이 6의 자리로.](../figures/06-search-trees/19-delete-case2-one-child-step1.svg){fig-alt="15의 왼쪽 자식 6(target)이 자식 3을 가진 삭제 전 상태" width="35%"}
+
 ![](../figures/06-search-trees/19-delete-case2-one-child-step2.svg){fig-alt="3이 6의 자리로 직접 연결된 삭제 후 상태" width="35%"}
 
 **DELETE Case 3**(15 삭제, successor 17 선택): $y=min(15.right)=17$이고 따라서 $y.left=\NIL$이다.
@@ -572,6 +575,7 @@ $$h(x)=1+\max(h(x.left),h(x.right))$$
 **Right Rotation**은 inorder를 보존한다.
 
 ![Right rotation 전: y가 root, x가 y의 left child, C가 y의 right subtree, A·B가 x의 left·right subtree.](../figures/06-search-trees/23-right-rotation-before.svg){fig-alt="y를 루트로 왼쪽에 x(자식 A,B), 오른쪽에 C가 있는 트리" width="55%"}
+
 ![Right rotation 후: x가 새 root, A가 x의 left, y가 x의 right(자식 B,C). inorder는 A,x,B,y,C로 그대로다.](../figures/06-search-trees/24-right-rotation-after.svg){fig-alt="x를 루트로 왼쪽에 A, 오른쪽에 y(자식 B,C)가 있는 트리" width="50%"}
 
 $$\text{inorder before}=\text{inorder after}=A,x,B,y,C$$
@@ -592,11 +596,13 @@ Left rotation은 모든 left/right를 바꾼 symmetric operation이다.
 **LL case**: left-heavy $z=30$, left-left → `RIGHT-ROTATE`$(30)$.
 
 ![LL 위반: 30(BF=+2)의 left child 20, 20의 left child 10.](../figures/06-search-trees/25-ll-case-before.svg){fig-alt="30이 위반 표시, 자식 20(강조), 20의 자식 10인 트리" width="30%"}
+
 ![LL 교정 후: 20이 root(BF=0), 10·30이 좌우 child.](../figures/06-search-trees/26-ll-case-after.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="25%"}
 
 **RR case**: right-heavy $z=10$, right-right → `LEFT-ROTATE`$(10)$.
 
 ![RR 위반: 10(BF=-2)의 right child 20, 20의 right child 30.](../figures/06-search-trees/27-rr-case-before.svg){fig-alt="10이 위반 표시, 자식 20(강조), 20의 자식 30인 트리" width="30%"}
+
 ![RR 교정 후: 20이 root(BF=0), 10·30이 좌우 child.](../figures/06-search-trees/28-rr-case-after.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="25%"}
 
 두 경우 모두 before/after inorder $=10,20,30$이고, 교정 후 $h(10)=h(30)=0$, $h(20)=1$, 모든 $BF=0$이다.
@@ -604,13 +610,17 @@ Left rotation은 모든 left/right를 바꾼 symmetric operation이다.
 **LR case**(double rotation): `LEFT-ROTATE`$(10)$ 후 `RIGHT-ROTATE`$(30)$.
 
 ![LR 1단계: 30(BF=+2)의 left child 10, 10의 right child 20 — 안쪽 shape를 확인한다.](../figures/06-search-trees/29-lr-case-step1.svg){fig-alt="30이 위반, 자식 10(강조), 10의 자식 20인 트리" width="15%"}
+
 ![LR 2단계: 10을 left-rotate해 LL 형태로 바꾼다.](../figures/06-search-trees/30-lr-case-step2.svg){fig-alt="30 아래 20(강조), 20의 자식 10으로 바뀐 중간 상태" width="25%"}
+
 ![LR 3단계: 30을 right-rotate해 완료.](../figures/06-search-trees/31-lr-case-step3.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="25%"}
 
 **RL case**(double rotation): `RIGHT-ROTATE`$(30)$ 후 `LEFT-ROTATE`$(10)$.
 
 ![RL 1단계: 10(BF=-2)의 right child 30, 30의 left child 20 — 안쪽 shape를 확인한다.](../figures/06-search-trees/32-rl-case-step1.svg){fig-alt="10이 위반, 자식 30(강조), 30의 자식 20인 트리" width="15%"}
+
 ![RL 2단계: 30을 right-rotate해 RR 형태로 바꾼다.](../figures/06-search-trees/33-rl-case-step2.svg){fig-alt="10 아래 20(강조), 20의 자식 30으로 바뀐 중간 상태" width="25%"}
+
 ![RL 3단계: 10을 left-rotate해 완료.](../figures/06-search-trees/34-rl-case-step3.svg){fig-alt="20을 루트로 10,30이 자식인 균형 잡힌 트리" width="25%"}
 
 두 double rotation 모두 before/after inorder $=10,20,30$이고, 교정 후 $h(10)=h(30)=0$, $h(20)=1$, 모든 $BF=0$이다.
@@ -700,6 +710,7 @@ RB INSERT 용어: $z$(current), $p$(parent), $g$(grandparent), $u$(uncle)다. �
 **Case 1(uncle이 red)**: $p,u\to$ black, $g\to$ red, $z\gets g$로 옮긴다 — violation이 위로 이동할 수 있다.
 
 ![Case 1 전: g(B) 아래 p(R)-z(R) red-red, uncle u도 R.](../figures/06-search-trees/37-rb-case1-before.svg){fig-alt="g가 B, p가 R이고 그 자식 z가 R, 형제 u도 R인 트리" width="35%"}
+
 ![Case 1 후: p,u가 B로, g가 R로 recolor.](../figures/06-search-trees/38-rb-case1-after.svg){fig-alt="g가 R로, p와 u가 B로 바뀐 트리" width="35%"}
 
 **Case 2(inner) → Case 3(outer)**: $z$가 inner child면 parent를 rotation해 outer shape로 바꾸고(case 2), $p$를 black·$g$를 red로 recolor한 뒤 $g$를 rotation한다(case 3). parent가 grandparent의 right child인 경우 left/right를 모두 바꾼 mirror다.
@@ -707,17 +718,21 @@ RB INSERT 용어: $z$(current), $p$(parent), $g$(grandparent), $u$(uncle)다. �
 **RB Insert 41, 38, 31**: uncle black, outer case로 곧바로 처리된다.
 
 ![41,38 삽입 후 31 삽입 직전: 41(B) 아래 38(R).](../figures/06-search-trees/39-rb-insert-41-38-31-step1.svg){fig-alt="41B 아래 38R 하나만 있는 트리" width="15%"}
+
 ![31 삽입 직후: 38(R) 아래 31(R) — uncle black, outer.](../figures/06-search-trees/40-rb-insert-41-38-31-step2.svg){fig-alt="41B 아래 38R, 38의 자식 31R인 트리, uncle black outer라는 콜아웃" width="40%"}
+
 ![right rotate 41 후: 38(B)이 root, 31·41이 red 자식.](../figures/06-search-trees/41-rb-insert-41-38-31-step3.svg){fig-alt="38B를 루트로 31R,41R이 자식인 트리, right rotate 41이라는 콜아웃" width="40%"}
 
 **RB Insert 12(recolor)**: uncle red이므로 recolor만 한다.
 
 ![12 삽입 직후: 31(R) 아래 12(R) — uncle(41)도 red.](../figures/06-search-trees/42-rb-insert-12-before.svg){fig-alt="38B 아래 31R(자식 12R), 41R인 트리" width="35%"}
+
 ![recolor 후: 31,41이 B로, 38은 이미 root라 그대로 B.](../figures/06-search-trees/43-rb-insert-12-after.svg){fig-alt="38B 아래 31B(자식 12R), 41B로 바뀐 트리, uncle red recolor라는 콜아웃" width="50%"}
 
 **RB Insert 19(inner → outer)**: 12의 right child로 19가 들어가 inner case가 되어 left rotate 12(case 2) 후 right rotate 31(case 3)로 마무리한다.
 
 ![19 삽입 직후(inner): 12(R)의 right child 19(R) — left rotate 12.](../figures/06-search-trees/44-rb-insert-19-step1.svg){fig-alt="38B 아래 31B(자식 12R, 12의 자식 19R), 41B인 트리, Case 2 left rotate 12라는 콜아웃" width="45%"}
+
 ![outer로 바뀐 뒤: right rotate 31로 완료.](../figures/06-search-trees/45-rb-insert-19-step2.svg){fig-alt="38B 아래 19B(자식 12R,31R), 41B인 트리, Case 3 right rotate 31이라는 콜아웃" width="45%"}
 
 **RB Insert 8과 최종 검증**: 8 삽입이 12/31에서 uncle-red recolor를 한 번 더 일으킨 뒤, root는 black이고 red-red가 없으며 모든 path의 black-height가 같다.
@@ -786,6 +801,7 @@ B-Tree의 minimum degree가 $t\ge2$일 때, node당 최대 $2t-1$ key·internal 
 {{< include ../figures/06-search-trees/pseudocode-btree-search.qmd >}}
 
 ![B-Tree Search(key 17): root(10|20)에서 10&lt;17&lt;20이므로 middle page 선택 → page 안에서 17 발견, 2 page accesses.](../figures/06-search-trees/48-btree-search-trace-step1.svg){fig-alt="10|20 노드가 강조되고 10&lt;17&lt;20 middle page 선택이라는 콜아웃이 붙은 1단계, 자식 5|6|7, 12|17, 30 표시" width="80%"}
+
 ![](../figures/06-search-trees/48-btree-search-trace-step2.svg){fig-alt="12|17 노드가 강조되고 page 안에서 17 발견, 2 page accesses라는 콜아웃이 붙은 마지막 상태" width="80%"}
 
 **Cost**: fixed minimum degree $t$와 occupancy invariant 아래 worst-case height와 page access는 $\Theta(\log_t n)$이다(root cache 제외). node 내부는 linear scan 또는 binary search가 가능하고, 큰 $t$는 height를 줄이지만 page 내부 comparison은 늘 수 있다.
@@ -801,13 +817,17 @@ B-Tree의 삽입은 **세 procedure가 함께 구성하는 하나의 흐름**이
 **Insert 10, 20, 5, 6**: 세 번째 삽입에서 root가 가득 차(5,10,20) split이 일어난다.
 
 ![10 삽입 후 20 삽입: root가 [10,20]인 상태.](../figures/06-search-trees/49-btree-insert-step1.svg){fig-alt="10 하나만 있는 노드" width="10%"}
+
 ![](../figures/06-search-trees/50-btree-insert-step2.svg){fig-alt="10,20 두 키가 있는 노드" width="15%"}
+
 ![5 삽입 후 root가 [5,10,20]로 가득 참(root full).](../figures/06-search-trees/51-btree-insert-step3.svg){fig-alt="5,10,20 세 키로 가득 찬 노드, root full이라는 콜아웃" width="40%"}
+
 ![10 promotion 후 6 삽입: 10이 새 root, [5,6]과 [20]이 두 child.](../figures/06-search-trees/52-btree-insert-step4.svg){fig-alt="10을 루트로 5,6과 20 두 child로 분리된 트리, 10 promotion 후 6 삽입이라는 콜아웃" width="70%"}
 
 **Insert 12, 30, 7, 17**: split-before-descend로 20이 promotion되어 root가 [10,20]이 된다.
 
 ![12,30,7 삽입 후 root(10) 아래 [5,6,7]과 [12,20,30](곧 full).](../figures/06-search-trees/53-btree-insert2-step1.svg){fig-alt="10을 루트로 5,6,7과 12,20,30 두 child가 있는 삽입 전 상태" width="40%"}
+
 ![split-before-descend로 20 up, 17 삽입 후: root [10,20], child [5,6,7]/[12,17]/[30].](../figures/06-search-trees/54-btree-insert2-step2.svg){fig-alt="10,20을 루트로 5,6,7 / 12,17 / 30 세 child로 나뉜 트리, split before descent 20 up then insert 17이라는 콜아웃" width="80%"}
 
 ![최종 B-Tree invariant 확인: 각 node 1–3 key(sorted), internal child count = key count + 1, child range와 leaf depth 일치.](../figures/06-search-trees/55-btree-final-check.svg){fig-alt="10,20을 루트로 5,6,7 / 12,17 / 30 세 child가 있는 최종 트리" width="55%"}
@@ -819,11 +839,13 @@ B-Tree의 삽입은 **세 procedure가 함께 구성하는 하나의 흐름**이
 :::
 
 ![Borrow from right sibling 전: [5]가 $t-1$ key.](../figures/06-search-trees/56-btree-borrow-before.svg){fig-alt="10,20을 루트로 5, 12|15, 30 세 child가 있고 5가 t-1 keys라는 콜아웃이 붙은 상태" width="80%"}
+
 ![Borrow 후: parent key 10이 내려가고 sibling의 최솟값 12가 올라와 [5,10]과 [15]가 된다.](../figures/06-search-trees/57-btree-borrow-after.svg){fig-alt="12,20을 루트로 5,10 / 15 / 30 세 child로 바뀐 상태, after borrowing이라는 콜아웃" width="80%"}
 
 parent key 10이 내려가고 right sibling의 가장 작은 key 12가 올라온다(separator movement).
 
 ![Merge 전: 둘 다 $t-1$ key.](../figures/06-search-trees/58-btree-merge-before.svg){fig-alt="10을 루트로 5, 15 두 child가 있고 둘 다 t-1 keys라는 콜아웃이 붙은 상태" width="70%"}
+
 ![Merge 후: root가 비어 유일한 child가 새 root가 된다.](../figures/06-search-trees/59-btree-merge-after.svg){fig-alt="5,10,15 세 키를 가진 단일 노드로 병합된 상태, merge 후 old root는 empty, 유일한 child가 new root라는 콜아웃" width="50%"}
 
 ::: {.callout-tip title="Merge 뒤 Root Shrink"}
