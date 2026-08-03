@@ -50,6 +50,9 @@
 | L03 트레이스 8개 애니메이션 복원(#12, batch D) | `236cc5b` | bubble/insertion/quick-partition/heapify/build-heap/heapsort/counting-sort/radix 8개 `FIGURE_CONFIG`에 mode:sequence 추가(전부 소스에 명시적 `<1>` 있어 steps override 불필요). 재추출 결과 4/5/4/4/5/5/4/3 프레임으로 소스와 정확히 일치 확인(각 트레이스의 배열/트리 상태를 알고리즘으로 재검산 — insertion·heapsort·counting-sort·radix 최종 결과가 실제 정렬/카운트 결과와 일치). qmd 8개를 각각 step별 캡션이 있는 panel-tabset으로 교체, 기존 %width 유지(재추출 후에도 ratio 1.13~1.25x로 변동 없음). 부수적으로 05-insertion-trace가 바로 위 05-insertion-cards 이미지와 빈 줄 없이 붙어있어 pandoc이 새 tabset을 별도 블록으로 인식 못하는 문제(quarto의 "stray :::" 경고)를 발견해 빈 줄 추가로 수정 |
 | L03 bubble/quick-partition 비교-스텝 누락 보강(#17, batch D) | `6bf7c7c` | #12 복원 직후 발견: 두 트레이스는 원본 소스 자체가 "swap이 일어난 스텝"만 `\only` 프레임으로 그렸고 "비교했지만 swap 안 함"은 프레임 자체가 없었음(진단: 파이프라인 문제(a)가 아니라 원본 저작 단계 누락(b)). bubble 4→5프레임(29-37 무교환 비교 프레임 추가), quick-partition 4→10프레임(j=1..9 스캔 스텝 전부 + 최종 상태, scan pointer j를 처음으로 시각화)으로 `full_override` 전면 재작성. `common/sorting.tex`에 정의돼 있었지만 lecture-notes/ 전체에서 한 번도 쓰이지 않던 `sort compared`(빗금 패턴) 스타일을 "비교만, swap 없음"에 사용해 `sort current`(단색 주황, swap 있음)와 구분. 모든 프레임 값을 알고리즘으로 직접 재검산, 최종 상태는 원본과 정확히 일치 |
 | L02 push 재수정 — 5단계·pop과 스택 방향 정렬(#11 재작업) | `4bd0b42` | 첫 복원(`b252c8f`)은 소스 자체의 3-state 배칭(1→3→5개 누적)을 그대로 복원했을 뿐이라 "재귀 호출마다 frame 하나씩"이라는 본문 서술 및 pop의 5단계 페이스와 어긋남. pop의 템플릿(동일 옵션, `\path` 투명 프레이밍 박스로 5단계 내내 캔버스 크기 고정, `(a) at (0,.35)` 바닥 anchor + `above=of` 체이닝)을 그대로 복사해 `full_override`로 5개 `\only<1>-<5>` 상태를 새로 저작 — sum(4) 바닥·sum(0) 정상으로 pop과 방향 일치, 매 단계 새로 쌓인 frame을 주황으로 강조(pop의 반환 frame 강조와 대칭). 자연폭이 pop과 완전히 동일(132.694pt)해져 push step5와 pop step1이 픽셀 단위로 동일하게 렌더됨 확인 |
+| L02 binary-search 레이블 겹침 수정(#18, batch C) | `b538e76` | Part G 이진 탐색 트레이스 상단 "A[mid]=...<x" 레이블이 `above=3pt of aN`(셀 상단에서 3pt)로 배치돼 index 행(y=.68)과 거의 같은 높이에서 겹침. 3개 `\only` 블록의 앵커(a3/a5/a4) 오프셋을 16pt로 확대해 index 행과 명확한 간격 확보, 가로 위치·begin/end 레이블·강조·회색 처리는 그대로 |
+| L02 Hanoi 큰 원판 이동 단계 추가(#19, batch D) | `a82453a` | n=3 핵심 상태 트레이스가 "초기→첫 재귀 완료→전체 완료" 3단계뿐이라 재귀를 두 부분으로 가르는 "큰 원판 L→R 이동" 단계가 빠짐. 소스에 4번째 상태가 존재하지 않아 `full_override`로 신규 저작(단, 모든 `\draw[disk]` 좌표는 기존 state1·state3의 원판 사각형을 그대로 재사용) — L 빔, M에 작은 2개, R에 큰 원판 1개인 새 3단계 삽입, 기존 "전체 완료"는 4단계로 밀림 |
+| L02 미로 backtracking 프레임 분할(#20, batch D) | `57e9549` | step3이 "전진 3칸 + dead end 2칸"을 한 프레임에 압축해 두 갈래가 동시에 orange로 보임. 기존 step3/step4를 그대로 보존한 채(각각 새 step5/step6이 됨) 그 사이에 "(3,2)-(4,2) 막다른 pocket으로 전진"(새 step3)과 "그 pocket을 dead로 표시하며 (2,2)로 되돌아감"(새 step4) 2개 프레임을 추가해 4→6단계로 확장. 매 프레임 orange 경로가 항상 한 줄기만 되도록 재구성, 최종 경로/dead 집합은 원본과 동일 |
 
 *주: L06 `14-search-trace`·`17-insert-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`, `976b3fc`) 모두 done.*
 
@@ -78,6 +81,9 @@
 | 2026-08-02 | L03 #12 (batch D) | `236cc5b` | 8개 트레이스 mode:sequence 추가, 4/5/4/4/5/5/4/3 프레임 재추출·검산, 8개 tabset 복원 |
 | 2026-08-02 | L03 #17 (batch D) | `6bf7c7c` | bubble/quick-partition 비교-스텝 누락 보강(4→5, 4→10 프레임), `sort compared` 스타일 도입 |
 | 2026-08-03 | L02 #11 재작업 | `4bd0b42` | push를 pop과 같은 템플릿으로 재저작(5단계, 방향·강조 일치), 자연폭 pop과 동일화 |
+| 2026-08-03 | L02 #18 (batch C) | `b538e76` | binary-search 레이블 offset 3pt→16pt, index 행과 겹침 해소 |
+| 2026-08-03 | L02 #19 (batch D) | `a82453a` | Hanoi 트레이스 3→4단계, 큰 원판 이동 프레임 신규 저작 |
+| 2026-08-03 | L02 #20 (batch D) | `57e9549` | 미로 backtracking 트레이스 4→6단계, pocket 탐색/dead-end/백트랙 프레임 분리 |
 
 ---
 
