@@ -183,7 +183,7 @@ $$\text{equal strings}\Rightarrow\text{equal hash},\qquad\text{equal hash}\not\R
 
 $$\Sigma=\{a,b,c,d,e\},\quad code(a)=0,\ldots,code(e)=4,\quad d=5$$
 
-![`cad`를 5진법 자리값 $(2,0,3)_5$로 인코딩해 $2\cdot5^2+0\cdot5+3=53$을 계산하는 2단계.](../figures/09-string-matching/03-numeric-encoding-cad-step2.svg){fig-alt="cad를 5진법 자리값으로 표현한 뒤 2*25+0*5+3=53을 계산하는 2단계 트레이스의 마지막 상태" width="45%"}
+![`cad`를 5진법 자리값 $(2,0,3)_5$로 인코딩해 $2\cdot5^2+0\cdot5+3=53$을 계산하는 2단계.](../figures/09-string-matching/03-numeric-encoding-cad-step2.svg){fig-alt="cad를 5진법 자리값으로 표현한 뒤 2*25+0*5+3=53을 계산하는 2단계 트레이스의 마지막 상태" width="25%"}
 
 ![$h(P)=17$과 $h(window)=17$이 같아 candidate로 표시되지만, 실제 일치는 character-by-character verification으로만 확정된다.](../figures/09-string-matching/04-hash-equality-insufficient.svg){fig-alt="h(P)=17과 h(window)=17이 candidate 화살표로 이어지고 character-by-character verification이 필요하다는 설명이 붙은 다이어그램" width="50%"}
 

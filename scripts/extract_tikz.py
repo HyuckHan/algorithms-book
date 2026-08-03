@@ -406,7 +406,9 @@ FIGURE_CONFIG = {
     "09": {
         ("02_naive.tex", 0): {"slug": "01-naive-alignment-trace", "mode": "sequence"},
         ("02_naive.tex", 1): {"slug": "02-naive-worst-case-repeated-prefix", "mode": "sequence"},
-        ("04_rabin_karp_intro.tex", 0): {"slug": "03-numeric-encoding-cad", "mode": "sequence"},
+        # chapters/09-string-matching.qmd Part D: drop the baked-in
+        # "원본 교정" annotation node (see the patch's own comment).
+        ("04_rabin_karp_intro.tex", 0): {"slug": "03-numeric-encoding-cad", "mode": "sequence", "text_patch": "numeric_encoding_cad_drop_correction_note"},
         # Static (no \only overlay), unlike its idx0 sibling.
         ("04_rabin_karp_intro.tex", 1): {"slug": "04-hash-equality-insufficient"},
         ("05_rolling_hash.tex", 0): {"slug": "05-rolling-update-derivation", "mode": "sequence"},
@@ -647,6 +649,21 @@ TEXT_PATCHES = {
     "insertion_cards_arrow_above_gap": (
         r"\\draw\[-Latex,AlgoOrange,very thick\] \(3,-\.8\) to\[bend right=25\] node\[below\]\{insert\} \(1\.5,-\.8\);",
         r"\\draw[-Latex,AlgoOrange,very thick] (3,.85) to[bend right=45] node[above,yshift=3mm]{insert} (0.5,.85);",
+    ),
+    # 04_rabin_karp_intro.tex's numeric-encoding-cad figure
+    # ("03-numeric-encoding-cad", chapters/09-string-matching.qmd Part D):
+    # the source draws an unconditional (not \only-wrapped, so it appears
+    # in both of this figure's 2 steps) `\node[smnote]` annotation reading
+    # "원본의 28은 계산 오류이며 53이 정확하다" -- the same
+    # original-source-correction meta-narration the qmd's own "원본 교정"
+    # callout had (removed separately), just baked into the diagram
+    # itself instead of the prose. Drop the node entirely rather than
+    # reword it in place: the corrected value (53) is already the figure's
+    # own hash-box content in step 2, so the note added nothing but the
+    # meta-reference once removed.
+    "numeric_encoding_cad_drop_correction_note": (
+        r"\\node\[smnote\]at\(0,-\.5\)\{원본의 28은 계산 오류이며 53이 정확하다\.\};\n?",
+        r"",
     ),
 }
 
