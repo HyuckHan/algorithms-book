@@ -568,19 +568,27 @@ visited를 unmark할 필요는 없다(경로 자체를 출력하려면 다른 �
 ::: {.panel-tabset}
 ## 1단계
 
-![후보 경로를 따라 전진.](../figures/02-recursion/10-maze-trace-step1.svg){fig-alt="6x6 격자에서 시작점 S부터 세 칸이 후보 경로로 표시된 상태" width="45%"}
+![S에서 후보 경로를 따라 전진.](../figures/02-recursion/10-maze-trace-step1.svg){fig-alt="6x6 격자에서 시작점 S부터 세 칸이 후보 경로로 표시된 상태" width="45%"}
 
 ## 2단계
 
-![막힌 가지를 dead end로 표시.](../figures/02-recursion/10-maze-trace-step2.svg){fig-alt="후보 경로 끝에 막다른 칸이 dead로 표시된 상태" width="45%"}
+![막혀서 dead end.](../figures/02-recursion/10-maze-trace-step2.svg){fig-alt="후보 경로 끝에 막다른 칸이 dead로 표시된 상태" width="45%"}
 
 ## 3단계
 
-![되돌아가 다른 이웃을 탐색.](../figures/02-recursion/10-maze-trace-step3.svg){fig-alt="다른 방향으로 경로가 확장되고 추가 dead end가 표시된 상태" width="45%"}
+![되돌아가 다른 방향(아래)으로 전진.](../figures/02-recursion/10-maze-trace-step3.svg){fig-alt="경로가 아래쪽으로 확장되어 후보 경로 한 줄기로 이어진 상태" width="45%"}
 
 ## 4단계
 
-![출구까지 한 경로를 발견.](../figures/02-recursion/10-maze-trace-step4.svg){fig-alt="시작 S부터 출구 E까지 이어진 전체 경로가 표시된 최종 상태" width="45%"}
+![다시 막혀서 dead end, 되돌아간다.](../figures/02-recursion/10-maze-trace-step4.svg){fig-alt="방금 내려간 두 칸이 dead로 표시되고 경로가 되돌아간 상태" width="45%"}
+
+## 5단계
+
+![되돌아가 또 다른 방향으로 재시도.](../figures/02-recursion/10-maze-trace-step5.svg){fig-alt="이전과 다른 방향으로 경로가 확장된 상태" width="45%"}
+
+## 6단계
+
+![출구 E까지 경로 완성.](../figures/02-recursion/10-maze-trace-step6.svg){fig-alt="시작 S부터 출구 E까지 이어진 전체 경로가 표시된 최종 상태" width="45%"}
 :::
 
 **Backtracking 패턴**: choose → explore → unchoose/mark dead. 선택이 실패하면 호출 전 상태로
