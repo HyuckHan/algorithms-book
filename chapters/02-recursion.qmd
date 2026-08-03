@@ -475,9 +475,13 @@ $H(n,s,d,t)$는 $n$개를 $s$에서 $d$로 옮긴다($t$는 임시 peg).
 
 ![$H(2,L,M,R)$ 완료 — 3회 이동 후 작은 두 원판이 M으로 옮겨졌다.](../figures/02-recursion/08-hanoi-n3-states-step2.svg){fig-alt="가장 큰 원판만 L에 남고 작은 두 원판이 M으로 옮겨진 상태" width="70%"}
 
+## 큰 원판 이동
+
+![가장 큰 원판을 L→R로 직접 이동(4회째). 이제 M의 작은 두 원판을 R로 옮기면 된다.](../figures/02-recursion/08-hanoi-n3-states-step3.svg){fig-alt="L은 비고 M에 작은 두 원판, R에 가장 큰 원판이 놓인 상태" width="70%"}
+
 ## 전체 완료
 
-![큰 원판 이동 후 $H(2,M,R,L)$까지 완료 — 총 7회.](../figures/02-recursion/08-hanoi-n3-states-step3.svg){fig-alt="세 원판이 모두 R로 옮겨진 최종 상태" width="70%"}
+![큰 원판 이동 후 $H(2,M,R,L)$까지 완료 — 총 7회.](../figures/02-recursion/08-hanoi-n3-states-step4.svg){fig-alt="세 원판이 모두 R로 옮겨진 최종 상태" width="70%"}
 :::
 
 **재귀 호출과 현재 작업**: 두 $H(2)$ 호출 사이에 현재 작업 "move disk 3"이 있다. 각 $H(2)$

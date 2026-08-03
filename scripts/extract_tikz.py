@@ -163,7 +163,8 @@ FIGURE_CONFIG = {
         # the index row.
         ("07_recursive_thinking.tex", 0): {"slug": "06-binary-search-reduction", "mode": "sequence", "text_patch": "binary_search_label_above_index"},
         ("08_hanoi.tex", 0): {"slug": "07-hanoi-rules"},
-        ("08_hanoi.tex", 1): {"slug": "08-hanoi-n3-states", "mode": "sequence"},
+        # docs/CHANGE_INSTRUCIONS_L02.md: missing large-disk-move step.
+        ("08_hanoi.tex", 1): {"slug": "08-hanoi-n3-states", "mode": "sequence", "full_override": "hanoi_add_large_disk_move_step"},
         ("08_hanoi.tex", 2): {"slug": "09-hanoi-recursion-tree"},
         ("09_maze.tex", 0): {"slug": "10-maze-trace", "mode": "sequence"},
         ("10_blob.tex", 0): {"slug": "11-blob-neighbors"},
@@ -804,6 +805,26 @@ FULL_BODY_PATCHES = {
   \node[stack,above=of b] (c) {$sum(2)$: $2+\square$};
   \node[stack,above=of c] (d) {$sum(1)$: $1+\square$};
   \node[stack,above=of d,fill=AlgoOrange!15] {$sum(0)$: return 0};}
+\end{tikzpicture}""",
+    # 08_hanoi.tex's n=3 key-states figure ("08-hanoi-n3-states",
+    # docs/CHANGE_INSTRUCIONS_L02.md): the source has only 3 \only states
+    # (initial -> first-recursion-done -> fully-done), skipping the step
+    # where the largest disk actually moves L->R -- the exact move that
+    # splits H(3) into its two H(2) halves, so the trace never shows it.
+    # No 4th state exists anywhere in the source to recover (checked --
+    # this file's only tikzpicture with disk-drawing \only blocks is this
+    # one); the missing frame is authored fresh here, but every `\draw[disk]`
+    # command in it is copied byte-for-byte from elsewhere in this same
+    # source: the big disk's L-peg rectangle from state 1 is now drawn at
+    # the R peg's x-coordinates (copied from state 3's own big-disk
+    # rectangle), and the two small disks' M-peg rectangles are copied
+    # unchanged from state 2 (they haven't moved yet at this point).
+    "hanoi_add_large_disk_move_step": r"""\begin{tikzpicture}[scale=1.28,transform shape]
+\foreach \x/\n in {0/L,3/M,6/R}{\draw[peg] (\x,0)--(\x,1.8);\draw[peg] (\x-1,0)--(\x+1,0);\node at (\x,-.3){\n};}
+\only<1>{\draw[disk](-.9,.08)rectangle(.9,.3);\draw[disk](-.65,.32)rectangle(.65,.54);\draw[disk](-.4,.56)rectangle(.4,.78);}
+\only<2>{\draw[disk](-.9,.08)rectangle(.9,.3);\draw[disk](2.35,.08)rectangle(3.65,.3);\draw[disk](2.6,.32)rectangle(3.4,.54);}
+\only<3>{\draw[disk](5.1,.08)rectangle(6.9,.3);\draw[disk](2.35,.08)rectangle(3.65,.3);\draw[disk](2.6,.32)rectangle(3.4,.54);}
+\only<4>{\draw[disk](5.1,.08)rectangle(6.9,.3);\draw[disk](5.35,.32)rectangle(6.65,.54);\draw[disk](5.6,.56)rectangle(6.4,.78);}
 \end{tikzpicture}""",
 }
 
