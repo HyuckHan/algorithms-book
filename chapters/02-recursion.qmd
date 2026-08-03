@@ -130,15 +130,23 @@ $sum(4)$를 손으로 실행하면 먼저 $4+3+2+1+sum(0)$까지 호출이 내�
 ::: {.panel-tabset}
 ## 1단계
 
-![$sum(4)$ 호출: 첫 frame이 쌓인다.](../figures/02-recursion/01-call-stack-push-step1.svg){fig-alt="sum(4) frame 하나만 쌓인 1단계 상태" width="30%"}
+![$sum(4)$ 호출: 첫 frame이 쌓인다.](../figures/02-recursion/01-call-stack-push-step1.svg){fig-alt="sum(4) frame 하나가 강조되어 쌓인 1단계 상태" width="30%"}
 
 ## 2단계
 
-![$sum(4)\to sum(3)\to sum(2)$: 재귀 호출이 반복되며 frame이 쌓인다.](../figures/02-recursion/01-call-stack-push-step2.svg){fig-alt="sum(4), sum(3), sum(2) 세 개의 frame이 아래에서 위로 쌓인 상태" width="30%"}
+![$sum(3)$ 호출: frame이 그 위에 쌓인다.](../figures/02-recursion/01-call-stack-push-step2.svg){fig-alt="sum(4) 위에 sum(3) frame이 강조되어 쌓인 상태" width="30%"}
 
 ## 3단계
 
-![$sum(1), sum(0)$까지 도달: base case에서 멈춘다.](../figures/02-recursion/01-call-stack-push-step3.svg){fig-alt="sum(4)부터 sum(0)까지 다섯 개의 frame이 쌓이고 맨 위 sum(0)이 강조된 최종 상태" width="30%"}
+![$sum(2)$ 호출: frame이 그 위에 쌓인다.](../figures/02-recursion/01-call-stack-push-step3.svg){fig-alt="sum(4), sum(3) 위에 sum(2) frame이 강조되어 쌓인 상태" width="30%"}
+
+## 4단계
+
+![$sum(1)$ 호출: frame이 그 위에 쌓인다.](../figures/02-recursion/01-call-stack-push-step4.svg){fig-alt="sum(4), sum(3), sum(2) 위에 sum(1) frame이 강조되어 쌓인 상태" width="30%"}
+
+## 5단계
+
+![$sum(0)$ 호출: base case 도달, 다섯 frame 전부 쌓인다.](../figures/02-recursion/01-call-stack-push-step5.svg){fig-alt="sum(4)부터 sum(0)까지 다섯 개의 frame이 쌓이고 맨 위 sum(0)이 강조된 최종 상태" width="30%"}
 :::
 
 **호출 스택 Pop**: base case에 도달하면 반환값이 caller로 전달되며 frame이 제거된다. 반환값
