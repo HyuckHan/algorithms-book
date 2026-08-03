@@ -242,7 +242,7 @@ $A[1..i-1]$가 정렬되었다고 믿고 $A[i]$를 올바른 위치에 삽입한
 
 {{< include ../figures/03-sorting/pseudocode-insertion-sort.qmd >}}
 
-![새 key를 꺼내고 큰 원소를 한 칸씩 shift하여 생긴 hole에 넣는다.](../figures/03-sorting/05-insertion-cards.svg){fig-alt="10,14,29,13 네 장의 카드 중 13을 꺼내 앞쪽으로 삽입하는 화살표가 그려진 다이어그램" width="40%"}
+![새 key를 꺼내고 큰 원소를 한 칸씩 shift하여 생긴 hole에 넣는다.](../figures/03-sorting/05-insertion-cards.svg){fig-alt="10,14,29,13 네 장의 카드 위로 13에서 10과 14 사이 gap까지 호를 그리는 삽입 화살표가 표시된 다이어그램" width="35%"}
 
 ::: {.panel-tabset}
 ## 1단계
