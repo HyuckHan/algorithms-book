@@ -841,7 +841,7 @@ B-Tree의 삽입은 **세 procedure가 함께 구성하는 하나의 흐름**이
 
 **Insert 12, 30, 7, 17**: split-before-descend로 20이 promotion되어 root가 [10,20]이 된다.
 
-![12,30,7 삽입 후 root(10) 아래 [5,6,7]과 [12,20,30](곧 full).](../figures/06-search-trees/53-btree-insert2-step1.svg){fig-alt="10을 루트로 5,6,7과 12,20,30 두 child가 있는 삽입 전 상태" width="40%"}
+![12,30,7 삽입 후 root(10) 아래 [5,6,7]과 [12,20,30] (곧 full).](../figures/06-search-trees/53-btree-insert2-step1.svg){fig-alt="10을 루트로 5,6,7과 12,20,30 두 child가 있는 삽입 전 상태" width="40%"}
 
 ![split-before-descend로 20 up, 17 삽입 후: root [10,20], child [5,6,7]/[12,17]/[30].](../figures/06-search-trees/54-btree-insert2-step2.svg){fig-alt="10,20을 루트로 5,6,7 / 12,17 / 30 세 child로 나뉜 트리, split before descent 20 up then insert 17이라는 콜아웃" width="80%"}
 
