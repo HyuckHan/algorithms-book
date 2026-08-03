@@ -53,6 +53,8 @@
 | L02 binary-search 레이블 겹침 수정(#18, batch C) | `b538e76` | Part G 이진 탐색 트레이스 상단 "A[mid]=...<x" 레이블이 `above=3pt of aN`(셀 상단에서 3pt)로 배치돼 index 행(y=.68)과 거의 같은 높이에서 겹침. 3개 `\only` 블록의 앵커(a3/a5/a4) 오프셋을 16pt로 확대해 index 행과 명확한 간격 확보, 가로 위치·begin/end 레이블·강조·회색 처리는 그대로 |
 | L02 Hanoi 큰 원판 이동 단계 추가(#19, batch D) | `a82453a` | n=3 핵심 상태 트레이스가 "초기→첫 재귀 완료→전체 완료" 3단계뿐이라 재귀를 두 부분으로 가르는 "큰 원판 L→R 이동" 단계가 빠짐. 소스에 4번째 상태가 존재하지 않아 `full_override`로 신규 저작(단, 모든 `\draw[disk]` 좌표는 기존 state1·state3의 원판 사각형을 그대로 재사용) — L 빔, M에 작은 2개, R에 큰 원판 1개인 새 3단계 삽입, 기존 "전체 완료"는 4단계로 밀림 |
 | L02 미로 backtracking 프레임 분할(#20, batch D) | `57e9549` | step3이 "전진 3칸 + dead end 2칸"을 한 프레임에 압축해 두 갈래가 동시에 orange로 보임. 기존 step3/step4를 그대로 보존한 채(각각 새 step5/step6이 됨) 그 사이에 "(3,2)-(4,2) 막다른 pocket으로 전진"(새 step3)과 "그 pocket을 dead로 표시하며 (2,2)로 되돌아감"(새 step4) 2개 프레임을 추가해 4→6단계로 확장. 매 프레임 orange 경로가 항상 한 줄기만 되도록 재구성, 최종 경로/dead 집합은 원본과 동일 |
+| L03 insertion-cards 화살표 재배치(#21, batch C) | `038bb42` | insert 화살표가 카드 아래(`bend right=25`)에서 14-29 gap(잘못된 위치)으로 향함. 카드 위(`bend left=45`)로 뒤집어 10-14 gap(x=.5, 13의 올바른 삽입 위치)으로 재배치, label yshift로 호와 겹침 방지. 자연폭 확대로 width 40%→35%(1.29x→1.13x) |
+| L03 merge-pointers 8프레임 확장(#22, batch D) | `c1032ab` | 4개 임의 체크포인트가 실제 8번의 배치를 압축. R:5→R:8→L:10→R:13→L:14→R:21(소진)→L suffix(29,37 동시 강조)→완료 순 8프레임으로 `full_override` 재작성, 실제 MERGE 알고리즘으로 전부 재검산(원본 최종 out 배열과 일치) |
 
 *주: L06 `14-search-trace`·`17-insert-trace`는 애니메이션 tabset(`f69d4b1`)과 주석 폰트(`6cf7861`, `976b3fc`) 모두 done.*
 
@@ -84,6 +86,8 @@
 | 2026-08-03 | L02 #18 (batch C) | `b538e76` | binary-search 레이블 offset 3pt→16pt, index 행과 겹침 해소 |
 | 2026-08-03 | L02 #19 (batch D) | `a82453a` | Hanoi 트레이스 3→4단계, 큰 원판 이동 프레임 신규 저작 |
 | 2026-08-03 | L02 #20 (batch D) | `57e9549` | 미로 backtracking 트레이스 4→6단계, pocket 탐색/dead-end/백트랙 프레임 분리 |
+| 2026-08-03 | L03 #21 (batch C) | `038bb42` | insertion-cards insert 화살표 카드 위로 재배치, 10-14 gap 정확히 착지 |
+| 2026-08-03 | L03 #22 (batch D) | `c1032ab` | merge-pointers 트레이스 4→8단계, 배치 1개당 프레임 1개로 확장 |
 
 ---
 
