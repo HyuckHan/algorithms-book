@@ -620,23 +620,33 @@ TEXT_PATCHES = {
         (r"above=3pt of a4", r"above=16pt of a4"),
     ],
     # 05_insertion.tex's insertion-cards figure ("05-insertion-cards",
-    # docs/CHANGE_INSTRUCIONS_L03.md 3.3.3): the insert arrow was drawn
-    # below the card row (y=-.8) with `bend right=25`, landing at (1.5,-.8)
-    # -- the gap between 14 and 29, not the 10-14 gap that's actually 13's
-    # correct sorted position. Moves both endpoints above the card row
-    # (cards are 13mm tall, so y=.85 clears their y=.65 top edge), flips
-    # to `bend left=45` (reversing the bulge direction so the arc curves
-    # up and over instead of down and under) so it arcs over the cards,
+    # docs/CHANGE_INSTRUCIONS_L03.md 3.3.3, then a redo): the insert arrow
+    # was drawn below the card row (y=-.8) with `bend right=25`, landing at
+    # (1.5,-.8) -- the gap between 14 and 29, not the 10-14 gap that's
+    # actually 13's correct sorted position. Moves both endpoints above the
+    # card row (cards are 13mm tall, so y=.85 clears their y=.65 top edge),
     # and re-targets the end point at x=.5 (the actual 10-14 gap in this
     # picture's coordinate space: each 12mm-wide card is 1.2/1.35=.889
     # coordinate units wide, so card0 spans -.444..+.444 and card1 spans
     # .556..1.444 -- the gap between them is centered at exactly .5).
+    #
+    # Bend direction: going from (3,.85) to (0.5,.85) travels in -x. `bend
+    # left` bulges toward the *left of the direction of travel* -- rotating
+    # (-1,0) by +90 deg (CCW) gives (0,-1), i.e. "left of westward" is
+    # *south* (down) in this y-up coordinate system, not up. The first pass
+    # used `bend left=45` on exactly this reasoning inverted, producing a
+    # U-shaped dip (confirmed by re-rendering and reading the compiled
+    # SVG's own cubic-bezier control points, which sat *below* both
+    # endpoints in TikZ-y). `bend right=45` is the correct direction for an
+    # upward, over-the-cards ∩ arc on a leftward-traveling path -- verified
+    # by re-checking the SVG's path data: both control points end up at a
+    # smaller SVG-y (SVG y grows downward) than either endpoint, i.e.
+    # visually higher, confirming a true convex-up curve.
     # `yshift=3mm` on the "insert" label (still `node[above]`, just at a
-    # larger offset than the default) clears the now-much-more-curved arc
-    # line, which a smaller offset still crossed through.
+    # larger offset than the default) clears the arc line.
     "insertion_cards_arrow_above_gap": (
         r"\\draw\[-Latex,AlgoOrange,very thick\] \(3,-\.8\) to\[bend right=25\] node\[below\]\{insert\} \(1\.5,-\.8\);",
-        r"\\draw[-Latex,AlgoOrange,very thick] (3,.85) to[bend left=45] node[above,yshift=3mm]{insert} (0.5,.85);",
+        r"\\draw[-Latex,AlgoOrange,very thick] (3,.85) to[bend right=45] node[above,yshift=3mm]{insert} (0.5,.85);",
     ),
 }
 
