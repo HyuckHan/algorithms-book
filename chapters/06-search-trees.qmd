@@ -94,7 +94,10 @@ node가 $n\ge1$개인 tree는 다음을 만족한다: (1) connected이며 cycle�
 3. leaf와 internal node의 차이는?
 4. 두 node 사이의 path가 유일하다는 말에서 필요한 정확한 용어는?
 
-**답**: 1. 11개. 2. level 4. 3. child가 0인지 아닌지. 4. unique simple path.
+**답**: 1. 11개. 
+2. level 4. 
+3. child가 0인지 아닌지. 
+4. unique simple path.
 :::
 
 ## Part B. Binary Tree의 형태와 표현
@@ -293,7 +296,10 @@ Prefix(preorder) `* + x y / + a b c`, infix(inorder) `(x + y) * ((a + b) / c)`, 
 3. recursive DFS와 BFS의 auxiliary space는?
 4. expression tree의 postfix는?
 
-**답**: 1. E. 2. root A. 3. $O(h)$와 $O(w)$. 4. `x y + a b + c / *`.
+**답**: 1. E. 
+2. root A. 
+3. $O(h)$와 $O(w)$. 
+4. `x y + a b + c / *`.
 :::
 
 ## Part D. Java 구현 노트
@@ -332,7 +338,9 @@ balanced height는 $\Theta(\log n)$, degenerate height는 $\Theta(n)$이다. B-T
 2. sorted array insert가 느린 이유는?
 3. key 변경 시 언제 재삽입이 필요한가?
 
-**답**: 1. order가 없다. 2. 원소 shift가 필요하다. 3. ordering key가 바뀔 때.
+**답**: 1. order가 없다. 
+2. 원소 shift가 필요하다. 
+3. ordering key가 바뀔 때.
 :::
 
 ## Part F. BST 기본 연산
@@ -405,7 +413,10 @@ parent pointer가 있으면 upward walk가 직접 가능하고, 없으면 root�
 3. predecessor(15)는?
 4. successor(20)는?
 
-**답**: 1. $15\to6\to7\to13\to14$. 2. 2와 20. 3. 14. 4. NIL.
+**답**: 1. $15\to6\to7\to13\to14$. 
+2. 2와 20. 
+3. 14. 
+4. NIL.
 :::
 
 ## Part G. BST INSERT와 DELETE
@@ -477,7 +488,9 @@ Transplant sequence: $y=17$, $y.right=18$이므로 `TRANSPLANT`$(17,18)$로 $20.
 2. successor가 left child를 가질 수 없는 이유는?
 3. 두 operation의 시간은?
 
-**답**: 1. Transplant의 root branch. 2. right subtree minimum이므로. 3. $\Theta(h)$.
+**답**: 1. Transplant의 root branch. 
+2. right subtree minimum이므로. 
+3. $\Theta(h)$.
 :::
 
 **구현**: 세 언어 모두 이 장의 고정 BST 예제(`15,6,3,2,4,7,13,9,14,18,17,20` 삽입 후 `12` 삽입)를 쓰고, successor/predecessor/delete 예제도 위 trace와 같은 키를 쓴다.
@@ -636,7 +649,9 @@ ordinary BST delete 후 upward height update를 하는 것은 같지만, subtree
 2. 30,10,20 삽입은 무슨 case인가?
 3. rotation 전후 반드시 같은 traversal은?
 
-**답**: 1. right-heavy. 2. LR. 3. inorder.
+**답**: 1. right-heavy. 
+2. LR. 
+3. inorder.
 :::
 
 **구현**: 세 언어 모두 위 LL/RR/LR/RL 네 예제(각각 3-key 삽입 순서)와 15-key 순차 삽입(정렬 입력이어도 height가 $O(\log n)$으로 유지되는지 확인)을 쓴다.
@@ -816,9 +831,9 @@ B-Tree의 삽입은 **세 procedure가 함께 구성하는 하나의 흐름**이
 
 **Insert 10, 20, 5, 6**: 세 번째 삽입에서 root가 가득 차(5,10,20) split이 일어난다.
 
-![10 삽입 후 20 삽입: root가 [10,20]인 상태.](../figures/06-search-trees/49-btree-insert-step1.svg){fig-alt="10 하나만 있는 노드" width="10%"}
+![10 삽입: root가 [10]인 상태.](../figures/06-search-trees/49-btree-insert-step1.svg){fig-alt="10 하나만 있는 노드" width="10%"}
 
-![](../figures/06-search-trees/50-btree-insert-step2.svg){fig-alt="10,20 두 키가 있는 노드" width="15%"}
+![20 삽입: root가 [10,20]인 상태.](../figures/06-search-trees/50-btree-insert-step2.svg){fig-alt="10,20 두 키가 있는 노드" width="15%"}
 
 ![5 삽입 후 root가 [5,10,20]로 가득 참(root full).](../figures/06-search-trees/51-btree-insert-step3.svg){fig-alt="5,10,20 세 키로 가득 찬 노드, root full이라는 콜아웃" width="40%"}
 
@@ -858,7 +873,10 @@ merge 뒤 root가 key 0개이고 child 1개면 그 child가 새 root다.
 3. borrow에서 parent separator는 어떻게 움직이는가?
 4. merge 후 root가 비면?
 
-**답**: 1. 2–5. 2. worst-case $\Theta(\log_t n)$ page I/O. 3. parent key는 child로 내려가고 sibling key는 올라온다. 4. 유일한 child가 새 root가 된다.
+**답**: 1. 2–5. 
+2. worst-case $\Theta(\log_t n)$ page I/O. 
+3. parent key는 child로 내려가고 sibling key는 올라온다. 
+4. 유일한 child가 새 root가 된다.
 :::
 
 **구현**: 세 언어 모두 $t=2$, `10,20,5,6,12,30,7,17` 삽입 예제를 쓴다.
@@ -934,7 +952,10 @@ AVL/RB는 pointer와 CPU/cache locality가, B-Tree는 page와 I/O 수가 핵심 
 3. database page index?
 4. adversarial input 가능 plain BST?
 
-**답**: 1. AVL. 2. RB Tree. 3. B-Tree. 4. balance guarantee가 없으므로 피하거나 self-balancing tree를 쓴다.
+**답**: 1. AVL. 
+2. RB Tree. 
+3. B-Tree. 
+4. balance guarantee가 없으므로 피하거나 self-balancing tree를 쓴다.
 :::
 
 ## 개념 지도
