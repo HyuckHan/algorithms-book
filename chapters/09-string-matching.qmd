@@ -63,7 +63,7 @@ $$T[0..n-1],\qquad P[0..m-1],\qquad T[i],P[j]\in\Sigma$$
 Text index $i$는 현재 읽는 text 위치, pattern index $j$는 현재 비교하는 pattern 위치, shift $s$는 pattern 시작을 $T[s]$에 맞춘 alignment다.
 
 ::: {.callout-warning title="구현과 trace는 0-based indexing으로 통일한다"}
-전체 장이 0-based를 쓴다. 1-based로 적힌 원본 표현은 모두 0-based로 교정했다.
+전체 장이 0-based를 쓴다.
 :::
 
 ::: {.callout-note title="정의: Exact Occurrence"}
@@ -184,10 +184,6 @@ $$\text{equal strings}\Rightarrow\text{equal hash},\qquad\text{equal hash}\not\R
 $$\Sigma=\{a,b,c,d,e\},\quad code(a)=0,\ldots,code(e)=4,\quad d=5$$
 
 ![`cad`를 5진법 자리값 $(2,0,3)_5$로 인코딩해 $2\cdot5^2+0\cdot5+3=53$을 계산하는 2단계.](../figures/09-string-matching/03-numeric-encoding-cad-step2.svg){fig-alt="cad를 5진법 자리값으로 표현한 뒤 2*25+0*5+3=53을 계산하는 2단계 트레이스의 마지막 상태" width="45%"}
-
-::: {.callout-warning title="원본 교정"}
-원본의 `cad=28`은 계산 오류이며 정확한 값은 **53**이다.
-:::
 
 ![$h(P)=17$과 $h(window)=17$이 같아 candidate로 표시되지만, 실제 일치는 character-by-character verification으로만 확정된다.](../figures/09-string-matching/04-hash-equality-insufficient.svg){fig-alt="h(P)=17과 h(window)=17이 candidate 화살표로 이어지고 character-by-character verification이 필요하다는 설명이 붙은 다이어그램" width="50%"}
 
@@ -412,7 +408,7 @@ $len\gets lps[len-1]$은 더 짧은 border 후보를 따라가는 fallback chain
 | sentinel failure | $failure[0]=-1$ | $j\gets failure[j]$ |
 
 ::: {.callout-warning title="본문 정책"}
-standard LPS만 사용한다. 원본의 length 0 → $-1$ row는 다른 convention이다(부록에서만 참고로 다룸).
+본문은 standard LPS($lps[0]=0$) convention만 쓴다. sentinel failure($failure[0]=-1$) convention은 부록에서만 참고로 다룬다.
 :::
 
 ## Part K. KMP Preprocessing
