@@ -239,7 +239,7 @@ Backtracking의 correctness는 DFS 자체가 아니라 Apply/Undo invariant와 s
 
 $$c_1=c_2\quad\text{or}\quad|r_1-r_2|=|c_1-c_2|\quad\Longrightarrow\quad conflict$$
 
-![4-Queens: row 0 candidate col 1 → position=[1] → position=[1,3] promising → row 2 col 2 diagonal conflict, backtrack → row 2 col 0 promising → 완성 [1,3,0,2].](../figures/10-state-space-search/06-four-queens-board-trace-step6.svg){fig-alt="4x4 체스판에 퀸을 하나씩 놓으며 충돌 시 backtrack하고 최종적으로 [1,3,0,2] 해를 완성하는 6단계 트레이스의 마지막 상태" width="45%"}
+![4-Queens의 해 [1,3,0,2]: 네 퀸이 서로 열도 대각선도 공유하지 않는 배치.](../figures/10-state-space-search/06-four-queens-board-trace-step6.svg){fig-alt="4x4 체스판에 네 퀸이 row 0 col 1, row 1 col 3, row 2 col 0, row 3 col 2에 놓여 서로 충돌하지 않는 완성된 배치" width="45%"}
 
 ![4-Queens partial state tree: [1,3,0] conflict로 dead, [1,3,0,2]와 [2,0,3,1] 두 solution.](../figures/10-state-space-search/07-four-queens-partial-tree.svg){fig-alt="빈 상태에서 [1], [1,3]으로 확장되고 [1,3,0]은 conflict로 dead, [1,3,0,2]가 valid인 부분 상태 트리, 또 다른 가지 [2,0,3,1]도 valid로 표시된 다이어그램" width="40%"}
 
