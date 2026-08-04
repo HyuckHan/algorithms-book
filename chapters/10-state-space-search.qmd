@@ -730,7 +730,19 @@ OPEN에서 $f$가 최소인 state를 확장한다. 본문은 nonnegative edge co
 ![G가 non-stale 최소 key로 추출돼 CLOSED로 확정, 최적 비용 10의 경로가 확정된다.](../figures/10-state-space-search/17-astar-open-closed-trace-step6.svg){fig-alt="격자에서 시작부터 목표까지의 경로 칸들이 체크 표시와 함께 확정된 상태" width="65%"}
 :::
 
-![Path reconstruction: goal에서 parent chain을 거꾸로 따라가 S까지의 전체 경로를 복원한다.](../figures/10-state-space-search/18-astar-path-reconstruction-step3.svg){fig-alt="목표 지점에서 시작 지점까지 parent 체인을 따라 복원된 전체 경로가 화살표로 표시된 3단계 트레이스의 마지막 상태" width="35%"}
+::: {.panel-tabset}
+## 1단계
+
+![탐색이 끝나 goal G가 확정된 상태.](../figures/10-state-space-search/18-astar-path-reconstruction-step1.svg){fig-alt="격자에서 목표 칸 G만 확정 표시되고 나머지 칸은 비어 있는 상태" width="35%"}
+
+## 2단계
+
+![parent 포인터를 거꾸로 따라가며 화살표로 경로를 역추적한다.](../figures/10-state-space-search/18-astar-path-reconstruction-step2.svg){fig-alt="목표에서 시작까지 격자를 따라 화살표들이 이어지고 시작 칸 S가 표시된 상태" width="35%"}
+
+## 3단계
+
+![역추적이 시작점까지 닿아 최종 경로가 체크마크로 확정된다.](../figures/10-state-space-search/18-astar-path-reconstruction-step3.svg){fig-alt="시작 칸 S부터 목표 칸 G까지 전체 경로가 체크 표시로 확정된 상태" width="35%"}
+:::
 
 ::: {.callout-note title="정의: Admissible Heuristic"}
 $$0\le h(n)\le h^*(n),\qquad h(goal)=0$$
