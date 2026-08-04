@@ -456,6 +456,8 @@ $i$는 character index, $lps[i]$는 length다. 둘을 혼동하지 않는다.
 
 $len\gets lps[len-1]$은 더 짧은 border 후보를 따라가는 fallback chain이다.
 
+KMP의 fallback은 두 가지 convention으로 구현된다. 이 장이 쓰는 standard LPS는 $lps[i]$에 border 길이를 담고($lps[0]=0$, mismatch 시 $j\gets lps[j-1]$), 고전 문헌의 failure function은 $failure[i]=lps[i]-1$로 정의해 sentinel($failure[0]=-1$, mismatch 시 $j\gets failure[j]$)을 쓴다. 아래 표는 같은 정보의 두 표현을 대조한다.
+
 | Convention | base value | mismatch |
 |---|---|---|
 | standard LPS | $lps[0]=0$ | $j\gets lps[j-1]$ |
