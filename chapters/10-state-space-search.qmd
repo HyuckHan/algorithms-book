@@ -609,7 +609,7 @@ weight/profit 합은 넓은 정수형과 덧셈 guard를 사용하고, ratio 비
 
 ![Knapsack best-first trace: root UB115 → A 포함 UB115 → A 제외 UB82 → B 포함/제외 → exclude-B에서 C 포함해 w12,p90 확정 → exclude-A(UB82≤90)는 prune → PQ empty, optimum 90.](../figures/10-state-space-search/13-knapsack-best-first-trace-step7.svg){fig-alt="root에서 A 포함/제외로 나뉘고 B, C를 거쳐 weight 12 profit 90인 최적해를 찾은 뒤 남은 후보를 모두 prune하는 7단계 트레이스의 마지막 상태" width="30%"}
 
-![핵심 state tree: 0/0/115 root에서 2/40/115(A 포함), 0/0/82(A 제외, bound)로 갈라지고 A 포함 branch가 7/70/115, 2/40/98을 거쳐 12/90에 도달한다(node label: weight/profit/UB).](../figures/10-state-space-search/14-knapsack-state-tree.svg){fig-alt="root 0/0/115에서 A 포함(2/40/115)과 A 제외(0/0/82, bound) 두 갈래로 나뉘고 A 포함 쪽이 다시 7/70/115와 2/40/98로 갈라져 최종 12/90에 도달하는 트리 다이어그램" width="45%"}
+![핵심 state tree(node label: weight/profit/UB): root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라진다. A 포함 쪽은 다시 B 포함 7/70/115와 B 제외 2/40/98로 나뉘고, B 제외 쪽에서 C를 포함해 12/90에 도달한다. A 제외 쪽은 UB 82가 incumbent 90을 넘지 못해 prune(P)된다.](../figures/10-state-space-search/14-knapsack-state-tree.svg){fig-alt="root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라지고, A 포함 쪽이 다시 7/70/115와 2/40/98 두 형제로 나뉘어 2/40/98 아래에만 12/90이 달린 트리. A 제외 쪽 아래에는 prune을 뜻하는 P 노드가 있다." width="45%"}
 
 $$currentWeight=\sum_{i\in selected}w_i,\qquad currentProfit=\sum_{i\in selected}p_i,\qquad UB(node)\ge\text{true best feasible descendant profit}$$
 
