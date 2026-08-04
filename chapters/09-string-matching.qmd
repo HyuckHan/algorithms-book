@@ -100,18 +100,20 @@ $$\#alignments=n-m+1,\qquad\#comparisons\le(n-m+1)m$$
 
 alignment 하나가 곧 comparison 하나는 아니다 — mismatch 위치에 따라 같은 alignment의 비용이 달라진다.
 
+`T=AAAAAAAAAAB`, `P=AAAAAB`는 repeated-prefix 최악 예다.
+
 ::: {.panel-tabset}
 ## 1단계
 
-![$s=0$: AAAAA 뒤 $A\ne B$ — 5 match + 1 mismatch.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step1.svg){fig-alt="AAAAAAAAAAB에서 s=0으로 맞춘 AAAAAB가 5문자까지 일치하다가 6번째에서 mismatch가 나는 1단계 상태" width="30%"}
+![$s=0$: `P`의 `AAAAA`는 일치하지만 $P[5]=$`B`가 $T[5]=$`A`와 mismatch — 한 shift에 5 match + 1 mismatch.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step1.svg){fig-alt="AAAAAAAAAAB에서 s=0으로 맞춘 AAAAAB가 5문자까지 일치하다가 6번째에서 mismatch가 나는 1단계 상태" width="30%"}
 
 ## 2단계
 
-![$s=1$: 같은 긴 prefix를 재비교 — 이미 본 text 문자를 다시 비교한다.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step2.svg){fig-alt="s=1로 이동해 같은 긴 prefix를 다시 비교하는 2단계 상태" width="30%"}
+![$s=1$: 앞서 본 A들을 다시 비교한다 — $s=1$부터 $s=4$까지 매 shift가 5개의 A를 재확인하고 B에서 mismatch.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step2.svg){fig-alt="s=1로 이동해 같은 긴 prefix를 다시 비교하는 2단계 상태" width="30%"}
 
 ## 3단계
 
-![`T=AAAAAAAAAAB`, `P=AAAAAB`에서 각 shift가 5개의 A를 재확인하다가 $s=5$에서 match하는 최악 예 3단계.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step3.svg){fig-alt="AAAAA 반복 뒤 mismatch가 나는 최악 사례에서 s=5에 이르러 occurrence를 찾는 3단계 트레이스의 마지막 상태" width="30%"}
+![$s=5$: 5개의 A에 이어 마지막 B까지 일치 — occurrence 5.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step3.svg){fig-alt="AAAAA 반복 뒤 mismatch가 나는 최악 사례에서 s=5에 이르러 occurrence를 찾는 3단계 트레이스의 마지막 상태" width="30%"}
 :::
 
 ::: {.callout-warning title="중복 비교의 원인"}
