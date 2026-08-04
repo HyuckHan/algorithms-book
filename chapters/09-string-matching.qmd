@@ -380,7 +380,7 @@ $$\underbrace{\texttt{BAA}}_{\text{prefix}}\texttt{BAB}\underbrace{\texttt{BAA}}
 
 ## 3단계
 
-![`BAAB`(border B, LPS 1) → `BAABA`(border BA, LPS 2) → `BAABABAA`(border BAA, LPS 3)로 이어지는 3단계.](../figures/09-string-matching/09-prefix-lps-discovery-step3.svg){fig-alt="BAAB, BAABA, BAABABAA 세 prefix에서 각각 border를 찾아 LPS 1,2,3을 확정하는 3단계 트레이스의 마지막 상태" width="55%"}
+![prefix `BAABABAA`의 가장 긴 border는 `BAA`(LPS 3).](../figures/09-string-matching/09-prefix-lps-discovery-step3.svg){fig-alt="BAAB, BAABA, BAABABAA 세 prefix에서 각각 border를 찾아 LPS 1,2,3을 확정하는 3단계 트레이스의 마지막 상태" width="55%"}
 :::
 
 prefix와 suffix가 같아도 전체 prefix보다 짧아야 한다.
@@ -419,7 +419,7 @@ prefix와 suffix가 같아도 전체 prefix보다 짧아야 한다.
 
 ## 4단계
 
-![old $j=5$: `BAABA` matched, `X` mismatch → $lps[4]=2$로 border `BA` 재사용 → new $j=2$, 같은 text index $i=5$ → `X`를 $P[2]$와 재비교하는 4단계.](../figures/09-string-matching/10-mismatch-fallback-trace-step4.svg){fig-alt="BAABA까지 매칭된 뒤 X에서 mismatch가 나 lps[4]=2인 border BA로 fallback해 같은 text index에서 재비교하는 4단계 트레이스의 마지막 상태" width="65%"}
+![$j\gets lps[4]=2$로 border `BA`를 재사용한 뒤, 같은 text index에서 $T[i]=$`X`를 $P[2]=$`A`와 재비교한다 — $i$는 감소하지 않는다.](../figures/09-string-matching/10-mismatch-fallback-trace-step4.svg){fig-alt="BAABA까지 매칭된 뒤 X에서 mismatch가 나 lps[4]=2인 border BA로 fallback해 같은 text index에서 재비교하는 4단계 트레이스의 마지막 상태" width="65%"}
 :::
 
 ::: {.callout-warning title="과도한 표현 금지"}
@@ -494,7 +494,7 @@ $i$는 지금 $lps[i]$를 채울 prefix ending position이고, $len$은 현재 �
 
 ## 6단계
 
-![`BAABABAA`의 LPS를 채우는 과정: $i=1,2$ mismatch → $i=3$ 매칭 → ... → $i=7$까지 6단계 만에 `[0,0,0,1,2,1,2,3]` 완성.](../figures/09-string-matching/11-lps-construction-trace-step6.svg){fig-alt="BAABABAA의 각 인덱스마다 lps 값을 채워나가 최종적으로 0,0,0,1,2,1,2,3 표를 완성하는 6단계 트레이스의 마지막 상태" width="70%"}
+![$i=7$에서 $P[7]=$`A`$=P[2]$로 $len=3$ → $lps[7]=3$, 최종 LPS `[0,0,0,1,2,1,2,3]` 완성.](../figures/09-string-matching/11-lps-construction-trace-step6.svg){fig-alt="BAABABAA의 각 인덱스마다 lps 값을 채워나가 최종적으로 0,0,0,1,2,1,2,3 표를 완성하는 6단계 트레이스의 마지막 상태" width="70%"}
 :::
 
 $$P[i]\ne P[len],\ len>0\quad\Rightarrow\quad len\gets lps[len-1]$$
@@ -539,7 +539,7 @@ $$T=\texttt{BAABXBAABABAA},\qquad P=\texttt{BAABABAA},\qquad lps=[0,0,0,1,2,1,2,
 
 ## 5단계
 
-![$i=4,j=4$에서 X≠A mismatch → $j\gets lps[3]=1$ → 다시 mismatch, $j\gets lps[0]=0$ → $i\gets5$ → shift 5에서 전체 매칭 완료까지 5단계.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step5.svg){fig-alt="BAABX 뒤 mismatch가 나 lps 값을 따라 두 번 fallback한 뒤 shift 5에서 BAABABAA 전체가 매칭되는 5단계 트레이스의 마지막 상태" width="70%"}
+![$i\gets5$ 이후 shift 5에서 $P=$`BAABABAA` 전체가 매칭돼 occurrence 5로 확정된다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step5.svg){fig-alt="BAABX 뒤 mismatch가 나 lps 값을 따라 두 번 fallback한 뒤 shift 5에서 BAABABAA 전체가 매칭되는 5단계 트레이스의 마지막 상태" width="70%"}
 :::
 
 $$T=\texttt{AAAAA},\quad P=\texttt{AAA},\quad lps=[0,1,2]$$
@@ -676,7 +676,7 @@ full algorithm은 bad-character shift와 good-suffix shift를 모두 계산하�
 
 ## 3단계
 
-![`RATIONAL`에서 반복되는 `A`: 왼쪽 A를 먼저 표시했다가, 더 오른쪽 A(index 6)로 덮어써 $shift[A]=7-6=1$을 확정하는 3단계.](../figures/09-string-matching/17-rational-repeated-character-step3.svg){fig-alt="RATIONAL의 두 A 중 더 오른쪽 A를 사용해 shift[A]=1을 확정하는 3단계 트레이스의 마지막 상태" width="70%"}
+![더 오른쪽 A(index 6)가 왼쪽 A를 덮어써 $shift[A]=7-6=1$로 확정된다.](../figures/09-string-matching/17-rational-repeated-character-step3.svg){fig-alt="RATIONAL의 두 A 중 더 오른쪽 A를 사용해 shift[A]=1을 확정하는 3단계 트레이스의 마지막 상태" width="70%"}
 :::
 
 마지막 문자 `L`은 전처리에서 제외한다. 왼쪽 `A`를 사용하면 유효한 alignment를 건너뛸 수 있다.
@@ -704,7 +704,7 @@ $shift[c]\ge1$이므로 mismatch도 $s$를 반드시 증가시키며 infinite lo
 
 ## 4단계
 
-![`CATIGER`에서 `TIGER`의 끝 G/R mismatch 뒤 shift 2로 이동 → 오른쪽부터 전체 검증까지 4단계.](../figures/09-string-matching/18-horspool-trace-tiger-step4.svg){fig-alt="CATIGER에서 TIGER 끝 문자 mismatch 후 shift 2로 이동해 오른쪽부터 왼쪽으로 전체 문자를 검증하는 4단계 트레이스의 마지막 상태" width="70%"}
+![shift 2로 이동한 뒤 오른쪽부터 왼쪽으로 `TIGER` 전체가 `T`와 일치한다 — match.](../figures/09-string-matching/18-horspool-trace-tiger-step4.svg){fig-alt="CATIGER에서 TIGER 끝 문자 mismatch 후 shift 2로 이동해 오른쪽부터 왼쪽으로 전체 문자를 검증하는 4단계 트레이스의 마지막 상태" width="70%"}
 :::
 
 비교는 pattern의 마지막 문자부터 시작하고, 새 window에서도 오른쪽부터 왼쪽으로 검증한다.
