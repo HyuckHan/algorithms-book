@@ -102,6 +102,11 @@ pruning이 전혀 작동하지 않으면 원래 exponential tree를 탐색한다
 
 ### 순열과 조합 생성
 
+::: {.callout-note title="문제 (Permutation/Combination Generation)"}
+**Input**: 정수 $n,k$ ($0\le k\le n$).\
+**Output**: $\{0,\ldots,n-1\}$에서 중복 없이 $k$개를 고르는 모든 순열($_nP_k$)과 조합($_nC_k$).
+:::
+
 원본 `pick` 코드는 미선언 `arr`, 잘못된 duplicate loop index, 불명확한 `lastIndex`, 0/1-based 계약 부재 등 여러 결함이 있어 그대로 옮기지 않고 0-based `ChoosePermutation`으로 재작성했다 — `pick(5,...,4)`의 의도는 $0,\ldots,4$에서 중복 없이 4개를 고르는 $5P_4$ 생성으로 해석한다.
 
 {{< include ../figures/10-state-space-search/pseudocode-choose-permutation.qmd >}}
@@ -201,6 +206,13 @@ Backtracking의 correctness는 DFS 자체가 아니라 Apply/Undo invariant와 s
 :::
 
 ### N-Queens
+
+::: {.callout-note title="문제 (N-Queens)"}
+**Input**: 정수 $n$.\
+**Output**: $n\times n$ 판에 $n$개의 퀸을 어떤 두 퀸도 같은 행·열·대각선에 있지 않게 배치하는 모든 방법(`position[row]=column` 표현, 행 충돌은 구조적으로 배제된다).
+:::
+
+퀸은 행·열·대각선을 공격하므로, 한 행에 하나씩만 놓으면 열과 두 대각선의 충돌만 검사하면 된다 — 이것이 Promising 조건이다.
 
 | | |
 |---|---|
@@ -342,6 +354,11 @@ Apply/Undo 뒤 두 식이 항상 성립해야 한다.
 :::
 
 ### Graph Coloring
+
+::: {.callout-note title="문제 (Graph Coloring)"}
+**Input**: 무방향 그래프 $G=(V,E)$와 색 수 $m$.\
+**Output**: 인접한 두 vertex가 같은 색이 아니도록 모든 vertex에 $1..m$ 중 하나의 색을 배정한 것(존재하면 하나) — **$m$-coloring** 문제.
+:::
 
 | | |
 |---|---|
