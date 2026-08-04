@@ -63,7 +63,7 @@ $$\text{model state}\ \longrightarrow\ \text{choose order}\ \longrightarrow\ \te
 level/depth는 내린 결정 수이고, leaf는 complete 또는 더 확장할 수 없는 state다.
 
 ::: {.callout-note title="정의: Candidate, Feasible, Optimal"}
-**Candidate**는 모든 결정이 끝난 complete state다. **Feasible**은 모든 constraint를 만족한 candidate다. **Optimal**은 feasible candidate 중 objective가 가장 좋은 해다. **Dead state**는 어떤 descendant도 feasible일 수 없는 state이고, **Bounded state**는 feasible descendant는 가능하지만 incumbent를 개선할 수 없는 state다.
+**Candidate**는 모든 결정이 끝난 complete state다. **Feasible**은 모든 constraint를 만족한 candidate다. **Optimal**은 feasible candidate 중 objective가 가장 좋은 해다. **Dead state**는 어떤 descendant도 feasible일 수 없는 state이고, **Bounded state**는 feasible descendant는 가능하지만 incumbent(지금까지 찾은 best feasible solution — 자세한 정의는 Part C 참고)를 개선할 수 없는 state다.
 :::
 
 ::: {.callout-caution collapse="true" title="확인 문제"}
