@@ -1,4 +1,4 @@
-    /** lecture-notes/code/lecture04/c/deterministic_select.c의 알고리즘을 Java로
+    /** 강의노트 원본의 알고리즘을 Java로
      * 옮긴 것이다(Median of Medians, group of 5). 최악의 경우에도 Theta(n)을
      * 보장한다. rank는 0-based(0..n-1). */
     static int deterministicSelect(int[] a, int rank) {

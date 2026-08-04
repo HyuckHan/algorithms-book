@@ -1,4 +1,4 @@
-/* lecture-notes/code/lecture04/c/quickselect.c의 quickselect_int를 그대로 옮긴
+/* 강의노트 원본의 quickselect_int를 그대로 옮긴
  * 것이다(RandomizedSelect). 무작위인 것은 내부 pivot 선택뿐이고, 결과는 어떤
  * pivot을 뽑든 항상 정확한 rank번째 값이다. rank는 0-based(0..n-1). */
 static void swap_int(int *a, int *b) {

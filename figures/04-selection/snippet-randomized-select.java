@@ -1,4 +1,4 @@
-    /** lecture-notes/code/lecture04/java/Quickselect.java의 select를 그대로
+    /** 강의노트 원본의 select를 그대로
      * 옮긴 것이다. 무작위인 것은 내부 pivot 선택뿐이고, 결과는 어떤 pivot을
      * 뽑든 항상 정확한 rank번째 값이다. rank는 0-based(0..n-1). */
     static int randomizedSelect(int[] a, int rank, Random random) {
