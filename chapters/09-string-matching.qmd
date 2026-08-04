@@ -380,7 +380,7 @@ $$\underbrace{\texttt{BAA}}_{\text{prefix}}\texttt{BAB}\underbrace{\texttt{BAA}}
 
 ## 3단계
 
-![prefix `BAABABAA`의 가장 긴 border는 `BAA`(LPS 3).](../figures/09-string-matching/09-prefix-lps-discovery-step3.svg){fig-alt="BAAB, BAABA, BAABABAA 세 prefix에서 각각 border를 찾아 LPS 1,2,3을 확정하는 3단계 트레이스의 마지막 상태" width="55%"}
+![prefix `BAABABAA`의 가장 긴 border는 `BAA`(LPS 3).](../figures/09-string-matching/09-prefix-lps-discovery-step3.svg){fig-alt="BAABABAA prefix에서 border BAA를 찾아 LPS 3을 확정하는 상태" width="55%"}
 :::
 
 prefix와 suffix가 같아도 전체 prefix보다 짧아야 한다.
