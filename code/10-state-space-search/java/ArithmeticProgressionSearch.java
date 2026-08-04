@@ -2,8 +2,8 @@ import java.util.Arrays;
 
 /** lecture-notes/code/lecture10/java/ArithmeticProgressionSearch.java와 같은
  * 정책(정렬 후 index 증가 subsequence, feasibility + objective-bound pruning).
- * 선택 심화(\ssoptional) 예제 -- 원본에 C 구현이 없어(chapters/10.inventory
- * (c)) L07의 mutable-key-example처럼 Java 단일 언어로만 다룬다. */
+ * 선택 심화(\ssoptional) 예제 -- 원본에 C 구현이 없어 L07의
+ * mutable-key-example처럼 Java 단일 언어로만 다룬다. */
 public final class ArithmeticProgressionSearch {
     public static final class Result {
         public int[] sequence = new int[0];

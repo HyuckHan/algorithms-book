@@ -35,11 +35,11 @@ ss_status ss_permutation_count(size_t n, size_t k, uint64_t *count,
     }
 }
 
-/* New in this book's port: the original C file only ports ChoosePermutation
- * (see chapters/10.inventory (c)), not ChooseCombination -- added here with
- * the same start-index technique as PermutationGenerator.combinations()
- * (Java) so the demo runs a real combination-counting recursion instead of
- * deriving C(n,k) arithmetically from P(n,k). */
+/* New in this book's port: the original C file only ports ChoosePermutation,
+ * not ChooseCombination -- added here with the same start-index technique
+ * as PermutationGenerator.combinations() (Java) so the demo runs a real
+ * combination-counting recursion instead of deriving C(n,k) arithmetically
+ * from P(n,k). */
 static ss_status combine(size_t n, size_t k, size_t start, size_t depth,
                          uint64_t *count, ss_metrics *m) {
     size_t value;

@@ -35,8 +35,7 @@ typedef struct {
 ss_status ss_permutation_count(size_t n, size_t k, uint64_t *count,
                                ss_metrics *metrics);
 /* New in this book's port (no lecture-notes/code/lecture10/c equivalent --
- * see chapters/10.inventory (c): the original C file only ports
- * ChoosePermutation, not ChooseCombination). */
+ * the original C file only ports ChoosePermutation, not ChooseCombination). */
 ss_status ss_combination_count(size_t n, size_t k, uint64_t *count,
                                ss_metrics *metrics);
 ss_status ss_n_queens_count(size_t n, uint64_t *count, ss_metrics *metrics);
@@ -45,7 +44,7 @@ ss_status ss_subset_sum_masks(const int64_t *weights, size_t n, int64_t target,
                               size_t *solution_count, bool pruning,
                               ss_metrics *metrics);
 /* New in this book's port (no lecture-notes/code/lecture10/c equivalent --
- * see chapters/10.inventory (c): graph coloring has no C source at all).
+ * graph coloring has no C source at all).
  * adjacency is a row-major n*n 0/1 matrix. colors[n] is filled 1..m on
  * success (0-based vertex index -> color). */
 ss_status ss_color_graph(const unsigned char *adjacency, size_t n, int m,

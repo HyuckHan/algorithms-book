@@ -1,7 +1,7 @@
 /* New in this book's port: lecture-notes/code/lecture10/c has no graph
- * coloring file (see chapters/10.inventory (c)). Same policy as
- * GraphColoringSolver.java: vertex order fixed 0..n-1, try color 1..m,
- * promising iff no already-colored neighbor shares the color. */
+ * coloring file. Same policy as GraphColoringSolver.java: vertex order
+ * fixed 0..n-1, try color 1..m, promising iff no already-colored neighbor
+ * shares the color. */
 #include "state_space_search.h"
 
 // snippet:color-graph-coloring:start
