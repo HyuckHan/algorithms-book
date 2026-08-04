@@ -228,15 +228,15 @@ $$current=value(T[s..s+m-1]),\qquad h=d^{m-1}$$
 ::: {.panel-tabset}
 ## 1단계
 
-![1. leading contribution 제거: $current-leading\cdot h$.](../figures/09-string-matching/05-rolling-update-derivation-step1.svg){fig-alt="current에서 leading 항을 뺀 current-leading×h 식을 보여주는 1단계 상태" width="30%"}
+![현재 해시에서 맨 앞 문자의 기여분을 뺀다.](../figures/09-string-matching/05-rolling-update-derivation-step1.svg){fig-alt="state box에 current-leading×h 식이 표시되고 note에 leading contribution 제거라고 쓰인 상태" width="30%"}
 
 ## 2단계
 
-![2. 남은 digits를 왼쪽으로 shift: $d(current-leading\cdot h)$.](../figures/09-string-matching/05-rolling-update-derivation-step2.svg){fig-alt="leading 항을 뺀 값에 d를 곱해 남은 digit을 왼쪽으로 옮기는 2단계 상태" width="30%"}
+![남은 digit들을 한 자리씩 왼쪽으로 밀어 자릿수를 맞춘다.](../figures/09-string-matching/05-rolling-update-derivation-step2.svg){fig-alt="state box가 d(current-leading×h) 식으로 갱신되고 note에 남은 digit을 왼쪽으로 shift한다고 쓰인 상태" width="30%"}
 
 ## 3단계
 
-![rolling update 유도 3단계: leading contribution 제거 → 남은 digit을 왼쪽으로 shift → 새 trailing character 추가.](../figures/09-string-matching/05-rolling-update-derivation-step3.svg){fig-alt="current에서 leading 항을 빼고 d를 곱한 뒤 trailing 문자를 더해 next 값을 얻는 3단계 트레이스의 마지막 상태" width="45%"}
+![새로 들어온 마지막 문자를 더해 다음 window의 해시를 얻는다.](../figures/09-string-matching/05-rolling-update-derivation-step3.svg){fig-alt="state box에 next=d(current-leading×h)+trailing 식이 표시되고 note에 새 trailing character 추가라고 쓰인 상태" width="45%"}
 :::
 
 ![window가 한 칸 움직일 때 old 기여 제거 → ×d → new 문자 추가로 이어지는 정적 흐름도.](../figures/09-string-matching/06-rolling-update-flow.svg){fig-alt="old T[s] 기여 제거, x d, new T[s+m] 추가 세 상자가 화살표로 이어진 흐름도" width="60%"}
