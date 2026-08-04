@@ -105,11 +105,11 @@ alignment 하나가 곧 comparison 하나는 아니다 — mismatch 위치에 �
 ::: {.panel-tabset}
 ## 1단계
 
-![$s=0$: `P`의 `AAAAA`는 일치하지만 $P[5]=$`B`가 $T[5]=$`A`와 mismatch — 한 shift에 5 match + 1 mismatch.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step1.svg){fig-alt="AAAAAAAAAAB에서 s=0으로 맞춘 AAAAAB가 5문자까지 일치하다가 6번째에서 mismatch가 나는 1단계 상태" width="30%"}
+![$s=0$: `P`의 `AAAAA`는 일치하지만 $P[5]=$`B`가 $T[5]=$`A`와 mismatch — 한 shift에 5 match + 1 mismatch.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step1.svg){fig-alt="AAAAAAAAAAB에서 s=0으로 맞춘 AAAAAB가 5문자까지 일치하다가 6번째에서 mismatch가 나는 상태" width="30%"}
 
 ## 2단계
 
-![$s=1$: 앞서 본 A들을 다시 비교한다 — $s=1$부터 $s=4$까지 매 shift가 5개의 A를 재확인하고 B에서 mismatch.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step2.svg){fig-alt="s=1로 이동해 같은 긴 prefix를 다시 비교하는 2단계 상태" width="30%"}
+![$s=1$: 앞서 본 A들을 다시 비교한다 — $s=1$부터 $s=4$까지 매 shift가 5개의 A를 재확인하고 B에서 mismatch.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step2.svg){fig-alt="s=1로 이동해 같은 긴 prefix를 다시 비교하는 상태" width="30%"}
 
 ## 3단계
 
@@ -372,11 +372,11 @@ $$\underbrace{\texttt{BAA}}_{\text{prefix}}\texttt{BAB}\underbrace{\texttt{BAA}}
 ::: {.panel-tabset}
 ## 1단계
 
-![`BAAB`: border `B`, LPS 1.](../figures/09-string-matching/09-prefix-lps-discovery-step1.svg){fig-alt="BAAB prefix에서 border B를 찾아 LPS 1을 확정하는 1단계 상태" width="55%"}
+![`BAAB`: border `B`, LPS 1.](../figures/09-string-matching/09-prefix-lps-discovery-step1.svg){fig-alt="BAAB prefix에서 border B를 찾아 LPS 1을 확정하는 상태" width="55%"}
 
 ## 2단계
 
-![`BAABA`: border `BA`, LPS 2.](../figures/09-string-matching/09-prefix-lps-discovery-step2.svg){fig-alt="BAABA prefix에서 border BA를 찾아 LPS 2를 확정하는 2단계 상태" width="55%"}
+![`BAABA`: border `BA`, LPS 2.](../figures/09-string-matching/09-prefix-lps-discovery-step2.svg){fig-alt="BAABA prefix에서 border BA를 찾아 LPS 2를 확정하는 상태" width="55%"}
 
 ## 3단계
 
@@ -407,15 +407,15 @@ prefix와 suffix가 같아도 전체 prefix보다 짧아야 한다.
 ::: {.panel-tabset}
 ## 1단계
 
-![old $j=5$: `BAABA` matched, 현재 $T[i]=$`X`에서 mismatch.](../figures/09-string-matching/10-mismatch-fallback-trace-step1.svg){fig-alt="BAABA까지 매칭된 뒤 T[i]=X에서 mismatch가 난 1단계 상태" width="65%"}
+![old $j=5$: `BAABA` matched, 현재 $T[i]=$`X`에서 mismatch.](../figures/09-string-matching/10-mismatch-fallback-trace-step1.svg){fig-alt="BAABA까지 매칭된 뒤 T[i]=X에서 mismatch가 난 상태" width="65%"}
 
 ## 2단계
 
-![$lps[4]=2$: matched text suffix `BA` = pattern prefix `BA`.](../figures/09-string-matching/10-mismatch-fallback-trace-step2.svg){fig-alt="lps[4]=2로 matched suffix BA와 pattern prefix BA가 같음을 보이는 2단계 상태" width="65%"}
+![$lps[4]=2$: matched text suffix `BA` = pattern prefix `BA`.](../figures/09-string-matching/10-mismatch-fallback-trace-step2.svg){fig-alt="lps[4]=2로 matched suffix BA와 pattern prefix BA가 같음을 보이는 상태" width="65%"}
 
 ## 3단계
 
-![new $j=2$, 같은 text index $i=5$: equal parts를 정렬.](../figures/09-string-matching/10-mismatch-fallback-trace-step3.svg){fig-alt="new j=2로 재정렬하되 text index i=5는 그대로인 3단계 상태" width="65%"}
+![new $j=2$, 같은 text index $i=5$: equal parts를 정렬.](../figures/09-string-matching/10-mismatch-fallback-trace-step3.svg){fig-alt="new j=2로 재정렬하되 text index i=5는 그대로인 상태" width="65%"}
 
 ## 4단계
 
@@ -476,23 +476,23 @@ $i$는 지금 $lps[i]$를 채울 prefix ending position이고, $len$은 현재 �
 ::: {.panel-tabset}
 ## 1단계
 
-![$i=1,2$: $A\ne B\Rightarrow lps[1]=lps[2]=0$. `[0,0,0]`.](../figures/09-string-matching/11-lps-construction-trace-step1.svg){fig-alt="i=1,2에서 mismatch로 lps[1]=lps[2]=0이 되어 [0,0,0]까지 채워진 1단계 상태" width="70%"}
+![$i=1,2$: $A\ne B\Rightarrow lps[1]=lps[2]=0$. `[0,0,0]`.](../figures/09-string-matching/11-lps-construction-trace-step1.svg){fig-alt="i=1,2에서 mismatch로 lps[1]=lps[2]=0이 되어 [0,0,0]까지 채워진 상태" width="70%"}
 
 ## 2단계
 
-![$i=3$: $B=B\Rightarrow lps[3]=1$. `[0,0,0,1]`.](../figures/09-string-matching/11-lps-construction-trace-step2.svg){fig-alt="i=3에서 매칭되어 lps[3]=1, [0,0,0,1]까지 채워진 2단계 상태" width="70%"}
+![$i=3$: $B=B\Rightarrow lps[3]=1$. `[0,0,0,1]`.](../figures/09-string-matching/11-lps-construction-trace-step2.svg){fig-alt="i=3에서 매칭되어 lps[3]=1, [0,0,0,1]까지 채워진 상태" width="70%"}
 
 ## 3단계
 
-![$i=4$: $A=A\Rightarrow lps[4]=2$. `[0,0,0,1,2]`.](../figures/09-string-matching/11-lps-construction-trace-step3.svg){fig-alt="i=4에서 매칭되어 lps[4]=2, [0,0,0,1,2]까지 채워진 3단계 상태" width="70%"}
+![$i=4$: $A=A\Rightarrow lps[4]=2$. `[0,0,0,1,2]`.](../figures/09-string-matching/11-lps-construction-trace-step3.svg){fig-alt="i=4에서 매칭되어 lps[4]=2, [0,0,0,1,2]까지 채워진 상태" width="70%"}
 
 ## 4단계
 
-![$i=5$: $B\ne A$, $len:2\to0$, $B=B\Rightarrow1$. `[0,0,0,1,2,1]`.](../figures/09-string-matching/11-lps-construction-trace-step4.svg){fig-alt="i=5에서 len이 2에서 0으로 fallback한 뒤 매칭되어 lps[5]=1, [0,0,0,1,2,1]까지 채워진 4단계 상태" width="70%"}
+![$i=5$: $B\ne A$, $len:2\to0$, $B=B\Rightarrow1$. `[0,0,0,1,2,1]`.](../figures/09-string-matching/11-lps-construction-trace-step4.svg){fig-alt="i=5에서 len이 2에서 0으로 fallback한 뒤 매칭되어 lps[5]=1, [0,0,0,1,2,1]까지 채워진 상태" width="70%"}
 
 ## 5단계
 
-![$i=6$: $A=A\Rightarrow2$. `[0,0,0,1,2,1,2]`.](../figures/09-string-matching/11-lps-construction-trace-step5.svg){fig-alt="i=6에서 매칭되어 lps[6]=2, [0,0,0,1,2,1,2]까지 채워진 5단계 상태" width="70%"}
+![$i=6$: $A=A\Rightarrow2$. `[0,0,0,1,2,1,2]`.](../figures/09-string-matching/11-lps-construction-trace-step5.svg){fig-alt="i=6에서 매칭되어 lps[6]=2, [0,0,0,1,2,1,2]까지 채워진 상태" width="70%"}
 
 ## 6단계
 
@@ -525,19 +525,19 @@ $$T=\texttt{BAABXBAABABAA},\qquad P=\texttt{BAABABAA},\qquad lps=[0,0,0,1,2,1,2,
 ::: {.panel-tabset}
 ## 1단계
 
-![$i=4,j=4$에서 `X`≠`A` mismatch. 이미 맞은 `BAAB`의 정보를 버리지 않는다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step1.svg){fig-alt="i=4,j=4에서 X와 A가 mismatch로 표시된 1단계 상태" width="70%"}
+![$i=4,j=4$에서 `X`≠`A` mismatch. 이미 맞은 `BAAB`의 정보를 버리지 않는다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step1.svg){fig-alt="i=4,j=4에서 X와 A가 mismatch로 표시된 상태" width="70%"}
 
 ## 2단계
 
-![$j\gets lps[3]=1$: 길이 1의 border만 재사용하고 같은 `X`를 비교한다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step2.svg){fig-alt="j가 lps[3]=1로 fallback해 같은 X를 다시 비교하는 2단계 상태" width="70%"}
+![$j\gets lps[3]=1$: 길이 1의 border만 재사용하고 같은 `X`를 비교한다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step2.svg){fig-alt="j가 lps[3]=1로 fallback해 같은 X를 다시 비교하는 상태" width="70%"}
 
 ## 3단계
 
-![다시 mismatch이므로 $j\gets lps[0]=0$. text index $i$는 아직 4다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step3.svg){fig-alt="다시 mismatch가 나 j가 lps[0]=0으로 fallback하지만 text index i=4는 그대로인 3단계 상태" width="70%"}
+![다시 mismatch이므로 $j\gets lps[0]=0$. text index $i$는 아직 4다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step3.svg){fig-alt="다시 mismatch가 나 j가 lps[0]=0으로 fallback하지만 text index i=4는 그대로인 상태" width="70%"}
 
 ## 4단계
 
-![$j=0$ mismatch 뒤 $i\gets5$. 새 alignment의 첫 문자가 일치한다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step4.svg){fig-alt="j=0에서 mismatch 후 i=5로 이동해 새 alignment의 첫 문자가 일치하는 4단계 상태" width="70%"}
+![$j=0$ mismatch 뒤 $i\gets5$. 새 alignment의 첫 문자가 일치한다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step4.svg){fig-alt="j=0에서 mismatch 후 i=5로 이동해 새 alignment의 첫 문자가 일치하는 상태" width="70%"}
 
 ## 5단계
 
@@ -658,11 +658,11 @@ $$shift[c]=m-1-\max\{j<m-1:P[j]=c\}$$
 ::: {.panel-tabset}
 ## 1단계
 
-![$j=0,1,2$ 계산: $shift[T]=4,\ shift[I]=3,\ shift[G]=2$.](../figures/09-string-matching/15-tiger-shift-table-step1.svg){fig-alt="TIGER shift table에서 T=4,I=3,G=2가 계산되어 채워지고 E,R은 아직 물음표로 미확정인 1단계 상태" width="55%"}
+![$j=0,1,2$ 계산: $shift[T]=4,\ shift[I]=3,\ shift[G]=2$.](../figures/09-string-matching/15-tiger-shift-table-step1.svg){fig-alt="TIGER shift table에서 T=4,I=3,G=2가 계산되어 채워지고 E,R은 아직 물음표로 미확정인 상태" width="55%"}
 
 ## 2단계
 
-![$j=3$(loop 마지막) 계산: $shift[E]=1$ 추가. 나머지 문자의 초기화값 $shift[\text{other}]=m=5$도 함께 표시.](../figures/09-string-matching/15-tiger-shift-table-step2.svg){fig-alt="TIGER shift table에 shift[E]=1이 추가되고 other=5 초기화값 배지가 함께 표시된 2단계 상태" width="55%"}
+![$j=3$(loop 마지막) 계산: $shift[E]=1$ 추가. 나머지 문자의 초기화값 $shift[\text{other}]=m=5$도 함께 표시.](../figures/09-string-matching/15-tiger-shift-table-step2.svg){fig-alt="TIGER shift table에 shift[E]=1이 추가되고 other=5 초기화값 배지가 함께 표시된 상태" width="55%"}
 
 ## 3단계
 
@@ -692,11 +692,11 @@ full algorithm은 bad-character shift와 good-suffix shift를 모두 계산하�
 ::: {.panel-tabset}
 ## 1단계
 
-![shift table은 마지막 문자 `L`을 제외하고 만든다.](../figures/09-string-matching/17-rational-repeated-character-step1.svg){fig-alt="RATIONAL에서 마지막 문자 L이 전처리 대상에서 제외됨을 보여주는 1단계 상태" width="70%"}
+![shift table은 마지막 문자 `L`을 제외하고 만든다.](../figures/09-string-matching/17-rational-repeated-character-step1.svg){fig-alt="RATIONAL에서 마지막 문자 L이 전처리 대상에서 제외됨을 보여주는 상태" width="70%"}
 
 ## 2단계
 
-![같은 문자 중 가장 오른쪽 occurrence를 사용한다 — 오른쪽 occurrence가 더 작은 안전한 shift를 준다.](../figures/09-string-matching/17-rational-repeated-character-step2.svg){fig-alt="왼쪽 A(index 1)와 오른쪽 A(index 6) 중 오른쪽 occurrence를 사용하기로 표시하는 2단계 상태" width="70%"}
+![같은 문자 중 가장 오른쪽 occurrence를 사용한다 — 오른쪽 occurrence가 더 작은 안전한 shift를 준다.](../figures/09-string-matching/17-rational-repeated-character-step2.svg){fig-alt="왼쪽 A(index 1)와 오른쪽 A(index 6) 중 오른쪽 occurrence를 사용하기로 표시하는 상태" width="70%"}
 
 ## 3단계
 
@@ -716,15 +716,15 @@ $shift[c]\ge1$이므로 mismatch도 $s$를 반드시 증가시키며 infinite lo
 ::: {.panel-tabset}
 ## 1단계
 
-![비교는 pattern의 마지막 문자부터 시작한다.](../figures/09-string-matching/18-horspool-trace-tiger-step1.svg){fig-alt="CATIGER 위에서 TIGER의 마지막 문자 R과 G가 mismatch로 표시된 1단계 상태" width="70%"}
+![비교는 pattern의 마지막 문자부터 시작한다.](../figures/09-string-matching/18-horspool-trace-tiger-step1.svg){fig-alt="CATIGER 위에서 TIGER의 마지막 문자 R과 G가 mismatch로 표시된 상태" width="70%"}
 
 ## 2단계
 
-![pattern 안의 마지막 `G`가 window 끝으로 오도록 이동한다(shift 2).](../figures/09-string-matching/18-horspool-trace-tiger-step2.svg){fig-alt="pattern의 마지막 G가 window 끝에 오도록 shift 2로 이동하는 2단계 상태" width="70%"}
+![pattern 안의 마지막 `G`가 window 끝으로 오도록 이동한다(shift 2).](../figures/09-string-matching/18-horspool-trace-tiger-step2.svg){fig-alt="pattern의 마지막 G가 window 끝에 오도록 shift 2로 이동하는 상태" width="70%"}
 
 ## 3단계
 
-![새 window에서 오른쪽부터 왼쪽으로 모든 문자를 검증한다.](../figures/09-string-matching/18-horspool-trace-tiger-step3.svg){fig-alt="새 window에서 오른쪽부터 왼쪽으로 T,I,G,E,R 순서로 전체 문자를 검증하는 3단계 상태" width="70%"}
+![새 window에서 오른쪽부터 왼쪽으로 모든 문자를 검증한다.](../figures/09-string-matching/18-horspool-trace-tiger-step3.svg){fig-alt="새 window에서 오른쪽부터 왼쪽으로 T,I,G,E,R 순서로 전체 문자를 검증하는 상태" width="70%"}
 
 ## 4단계
 
