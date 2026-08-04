@@ -688,7 +688,31 @@ OPEN에서 $f$가 최소인 state를 확장한다. 본문은 nonnegative edge co
 
 ![5×7 grid: 장애물(회색)을 피해 S에서 G로 가는 경로를 찾는다.](../figures/10-state-space-search/16-astar-grid-heuristic.svg){fig-alt="5행 7열 격자에서 여섯 개의 장애물 칸이 회색으로 표시되고 왼쪽 위에 S, 오른쪽 아래에 G가 있는 다이어그램" width="35%"}
 
-![A* OPEN/CLOSED trace: S를 추출해 CLOSED로 → neighbor들이 OPEN에 들어감 → 현재 최소 f를 계속 추출 → wall이 frontier를 아래로 유도 → goal 발견(g=10) → non-stale minimum으로 G를 추출해 종료.](../figures/10-state-space-search/17-astar-open-closed-trace-step6.svg){fig-alt="시작 지점부터 장애물을 피해 격자를 확장하며 CLOSED로 확정된 칸들이 늘어나고 최종적으로 목표 지점을 g=10에 추출하는 6단계 트레이스의 마지막 상태" width="65%"}
+::: {.panel-tabset}
+## 1단계
+
+![시작 노드 S만 OPEN에 있고 CLOSED는 비어 있다. g=0, h=10, f=10.](../figures/10-state-space-search/17-astar-open-closed-trace-step1.svg){fig-alt="격자에서 시작 칸 S만 OPEN으로 표시되고 나머지 칸은 비어 있는 상태" width="65%"}
+
+## 2단계
+
+![S를 추출해 CLOSED로 옮기고, 이웃 칸들이 OPEN에 들어온다.](../figures/10-state-space-search/17-astar-open-closed-trace-step2.svg){fig-alt="격자에서 시작 칸 S가 CLOSED로 표시되고 인접한 두 칸이 OPEN으로 열린 상태" width="65%"}
+
+## 3단계
+
+![OPEN에서 f=g+h가 최소인 노드를 추출 — 동점이면 row, 그다음 column 순.](../figures/10-state-space-search/17-astar-open-closed-trace-step3.svg){fig-alt="격자에서 현재 확장 중인 칸이 굵은 테두리로 강조되고 주변에 OPEN 칸들이 늘어난 상태" width="65%"}
+
+## 4단계
+
+![벽이 frontier를 아래쪽으로 우회시킨다. CLOSED에 들어간 칸은 다시 열지 않는다.](../figures/10-state-space-search/17-astar-open-closed-trace-step4.svg){fig-alt="격자 왼쪽 위 블록의 여러 칸이 CLOSED로 채워지고 벽 아래쪽에 OPEN 칸 두 개가 열린 상태" width="65%"}
+
+## 5단계
+
+![goal 칸이 g=10으로 발견되지만 발견은 종료가 아니다 — OPEN에서 추출돼야 확정된다.](../figures/10-state-space-search/17-astar-open-closed-trace-step5.svg){fig-alt="격자 왼쪽 열과 아래쪽 행을 따라 CLOSED 칸들이 이어지고 목표 칸이 OPEN으로 표시된 상태" width="65%"}
+
+## 6단계
+
+![G가 non-stale 최소 key로 추출돼 CLOSED로 확정, 최적 비용 10의 경로가 확정된다.](../figures/10-state-space-search/17-astar-open-closed-trace-step6.svg){fig-alt="격자에서 시작부터 목표까지의 경로 칸들이 체크 표시와 함께 확정된 상태" width="65%"}
+:::
 
 ![Path reconstruction: goal에서 parent chain을 거꾸로 따라가 S까지의 전체 경로를 복원한다.](../figures/10-state-space-search/18-astar-path-reconstruction-step3.svg){fig-alt="목표 지점에서 시작 지점까지 parent 체인을 따라 복원된 전체 경로가 화살표로 표시된 3단계 트레이스의 마지막 상태" width="35%"}
 
