@@ -130,7 +130,7 @@ $sum(4)$를 손으로 실행하면 먼저 $4+3+2+1+sum(0)$까지 호출이 내�
 ::: {.panel-tabset}
 ## 1단계
 
-![$sum(4)$ 호출: 첫 frame이 쌓인다.](../figures/02-recursion/01-call-stack-push-step1.svg){fig-alt="sum(4) frame 하나가 강조되어 쌓인 1단계 상태" width="30%"}
+![$sum(4)$ 호출: 첫 frame이 쌓인다.](../figures/02-recursion/01-call-stack-push-step1.svg){fig-alt="sum(4) frame 하나가 강조되어 쌓인 상태" width="30%"}
 
 ## 2단계
 
