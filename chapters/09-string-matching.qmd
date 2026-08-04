@@ -807,7 +807,7 @@ C API는 명시적 `unsigned char *`와 `size_t` 길이를 쓰고 byte-oriented 
 | KMP | fallback과 overlap 출력이 Naive와 일치 |
 | Horspool | positive shift, mismatch progress, 전체 occurrence 일치 |
 
-테스트 행렬은 empty/$m>n$/no/begin/end/overlap/repeated 경우, 의도적 collision과 negative rolling 식, 4개 고정 LPS table(연속 fallback chain 포함), TIGER/RATIONAL table과 긴 mismatch progress regression, Java UTF-16 code-unit·C UTF-8 byte-offset 예제, 언어당 고정 seed 6,000-case random test, C의 ASan/UBSan bounds check를 포함한다.
+테스트 행렬은 empty/$m>n$/no/begin/end/overlap/repeated 경우, 의도적 collision과 negative rolling 식, 4개 고정 LPS table(연속 fallback chain 포함), TIGER/RATIONAL table과 긴 mismatch progress regression, Java UTF-16 code-unit·C UTF-8 byte-offset 예제, 언어당 고정 seed 5,000-case random test, C의 ASan/UBSan bounds check를 포함한다.
 
 ::: {.callout-tip title="구현의 핵심"}
 built-in `indexOf`를 구현에 사용하지 않는다 — 직접 character/byte 비교로 검증한다. Java code unit과 C byte는 string unit이 다르다.
