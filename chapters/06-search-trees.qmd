@@ -63,7 +63,7 @@ Tree 용어 추적: 같은 트리에서 root/degree → parent/child/sibling →
 ::: {.panel-tabset}
 ## 1단계
 
-![A: root, degree 2.](../figures/06-search-trees/02-tree-terminology-trace-step1.svg){fig-alt="A가 주황으로 강조되고 root, degree 2라는 콜아웃이 붙은 1단계 상태" width="45%"}
+![A: root, degree 2.](../figures/06-search-trees/02-tree-terminology-trace-step1.svg){fig-alt="A가 주황으로 강조되고 root, degree 2라는 콜아웃이 붙은 상태" width="45%"}
 
 ## 2단계
 
@@ -162,7 +162,7 @@ Preorder 5단계: A 방문 → B 방문 → D,E 방문(왼쪽 먼저 끝까지) 
 ::: {.panel-tabset}
 ## 1단계
 
-![A 방문. visited: A.](../figures/06-search-trees/08-preorder-trace-step1.svg){fig-alt="A만 강조되고 visited: A인 1단계 상태" width="50%"}
+![A 방문. visited: A.](../figures/06-search-trees/08-preorder-trace-step1.svg){fig-alt="A만 강조되고 visited: A인 상태" width="50%"}
 
 ## 2단계
 
@@ -190,7 +190,7 @@ Inorder 4단계: D 방문 → B,E 방문 → A 방문 → F,C,G 방문.
 ::: {.panel-tabset}
 ## 1단계
 
-![D 방문. visited: D.](../figures/06-search-trees/09-inorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="50%"}
+![D 방문. visited: D.](../figures/06-search-trees/09-inorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 상태" width="50%"}
 
 ## 2단계
 
@@ -214,7 +214,7 @@ Postorder 5단계: D 방문 → E,B 방문 → F,G,C 방문 → A 방문.
 ::: {.panel-tabset}
 ## 1단계
 
-![D 방문. visited: D.](../figures/06-search-trees/10-postorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 1단계 상태" width="50%"}
+![D 방문. visited: D.](../figures/06-search-trees/10-postorder-trace-step1.svg){fig-alt="D만 강조되고 visited: D인 상태" width="50%"}
 
 ## 2단계
 
