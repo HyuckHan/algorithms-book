@@ -165,7 +165,7 @@ Multiplication trace $k=25,\ m=13$: $25A\approx15.451$ → frac $=0.451$ → $13
 ::: {.panel-tabset}
 ## 1단계
 
-![$25A\approx15.45085$를 계산한다.](../figures/07-hash-tables/04-multiplication-trace-step1.svg){fig-alt="25A≈15.45085 상자가 강조된 1단계 상태" width="90%"}
+![$25A\approx15.45085$를 계산한다.](../figures/07-hash-tables/04-multiplication-trace-step1.svg){fig-alt="25A≈15.45085 상자가 강조된 상태" width="90%"}
 
 ## 2단계
 
@@ -249,7 +249,7 @@ $29$를 삽입하려는데 $h(29)=3$이 이미 점유되어 있어 collision이 
 ::: {.panel-tabset}
 ## 1단계
 
-![$h(29)=29\bmod13=3$.](../figures/07-hash-tables/07-insert-29-collision-trace-step1.svg){fig-alt="slot 3이 16으로 점유된 상태에서 h(29)=3이라는 콜아웃이 붙은 1단계 상태" width="75%"}
+![$h(29)=29\bmod13=3$.](../figures/07-hash-tables/07-insert-29-collision-trace-step1.svg){fig-alt="slot 3이 16으로 점유된 상태에서 h(29)=3이라는 콜아웃이 붙은 상태" width="75%"}
 
 ## 2단계
 
@@ -306,7 +306,7 @@ $h(k)=k\bmod7$인 table에서 head insertion으로 $10\to17\to24$ 순서로 삽�
 ::: {.panel-tabset}
 ## 1단계
 
-![$10\bmod7=3$: 빈 bucket에 삽입.](../figures/07-hash-tables/10-chaining-insert-trace-step1.svg){fig-alt="bucket 3에 10 하나만 연결된 1단계 상태" width="70%"}
+![$10\bmod7=3$: 빈 bucket에 삽입.](../figures/07-hash-tables/10-chaining-insert-trace-step1.svg){fig-alt="bucket 3에 10 하나만 연결된 상태" width="70%"}
 
 ## 2단계
 
@@ -314,7 +314,7 @@ $h(k)=k\bmod7$인 table에서 head insertion으로 $10\to17\to24$ 순서로 삽�
 
 ## 3단계
 
-![collision; head insert 24.](../figures/07-hash-tables/10-chaining-insert-trace-step3.svg){fig-alt="bucket 3에 24,17,10 순서로 연결된 최종 상태와 collision; head insert 24라는 콜아웃이 붙은 3단계 상태" width="70%"}
+![collision; head insert 24.](../figures/07-hash-tables/10-chaining-insert-trace-step3.svg){fig-alt="bucket 3에 24,17,10 순서로 연결된 최종 상태와 collision; head insert 24라는 콜아웃이 붙은 상태" width="70%"}
 :::
 
 SEARCH 17(24와 비교 후 17에서 발견) → DELETE 17(unlink) 이후 24와 10이 직접 연결되는 4단계.
@@ -322,7 +322,7 @@ SEARCH 17(24와 비교 후 17에서 발견) → DELETE 17(unlink) 이후 24와 1
 ::: {.panel-tabset}
 ## 1단계
 
-![SEARCH 17: compare 24.](../figures/07-hash-tables/11-chaining-search-delete-trace-step1.svg){fig-alt="24가 강조되고 SEARCH 17: compare 24라는 콜아웃이 붙은 1단계 상태" width="70%"}
+![SEARCH 17: compare 24.](../figures/07-hash-tables/11-chaining-search-delete-trace-step1.svg){fig-alt="24가 강조되고 SEARCH 17: compare 24라는 콜아웃이 붙은 상태" width="70%"}
 
 ## 2단계
 
@@ -334,7 +334,7 @@ SEARCH 17(24와 비교 후 17에서 발견) → DELETE 17(unlink) 이후 24와 1
 
 ## 4단계
 
-![24 → 10.](../figures/07-hash-tables/11-chaining-search-delete-trace-step4.svg){fig-alt="17이 제거되고 24와 10이 직접 연결된 최종 상태, 24 -> 10이라는 콜아웃이 붙은 4단계 상태" width="70%"}
+![24 → 10.](../figures/07-hash-tables/11-chaining-search-delete-trace-step4.svg){fig-alt="17이 제거되고 24와 10이 직접 연결된 최종 상태, 24 -> 10이라는 콜아웃이 붙은 상태" width="70%"}
 :::
 
 Chain으로는 singly linked list(단순, head insertion), dynamic array/small vector(locality), sorted chain(조기 종료 가능하지만 insert 비용 증가), extreme collision에서는 balanced tree까지 고려할 수 있다. head insertion 자체는 $\Theta(1)$이지만, duplicate update를 지원하려면 먼저 equal key를 찾아야 한다.
@@ -422,7 +422,7 @@ contiguous slot을 순서대로 방문해 cache locality가 좋고, wrap-around�
 ::: {.panel-tabset}
 ## 1단계
 
-![25,13,16,15,7: 모두 home slot.](../figures/07-hash-tables/14-linear-trace1-collision-step1.svg){fig-alt="25,13,16,15,7이 각자 home slot에 놓인 1단계 상태" width="75%"}
+![25,13,16,15,7: 모두 home slot.](../figures/07-hash-tables/14-linear-trace1-collision-step1.svg){fig-alt="25,13,16,15,7이 각자 home slot에 놓인 상태" width="75%"}
 
 ## 2단계
 
@@ -430,7 +430,7 @@ contiguous slot을 순서대로 방문해 cache locality가 좋고, wrap-around�
 
 ## 3단계
 
-![probe $2\to3\to4$.](../figures/07-hash-tables/14-linear-trace1-collision-step3.svg){fig-alt="slot 2,3이 충돌로 표시되고 slot 4에 28이 놓인 3단계 상태" width="75%"}
+![probe $2\to3\to4$.](../figures/07-hash-tables/14-linear-trace1-collision-step3.svg){fig-alt="slot 2,3이 충돌로 표시되고 slot 4에 28이 놓인 상태" width="75%"}
 :::
 
 여러 key가 채워진 뒤 38(home 12)을 삽입하면 $12\to0\to1\to\cdots\to5$가 모두 점유되어 있어 wrap-around 끝에 첫 EMPTY인 6에 놓인다.
@@ -438,7 +438,7 @@ contiguous slot을 순서대로 방문해 cache locality가 좋고, wrap-around�
 ::: {.panel-tabset}
 ## 1단계
 
-![38 home$=12$.](../figures/07-hash-tables/15-linear-trace2-wraparound-step1.svg){fig-alt="slot 12가 충돌로 표시되고 38 home=12라는 콜아웃이 붙은 1단계 상태" width="75%"}
+![38 home$=12$.](../figures/07-hash-tables/15-linear-trace2-wraparound-step1.svg){fig-alt="slot 12가 충돌로 표시되고 38 home=12라는 콜아웃이 붙은 상태" width="75%"}
 
 ## 2단계
 
@@ -446,7 +446,7 @@ contiguous slot을 순서대로 방문해 cache locality가 좋고, wrap-around�
 
 ## 3단계
 
-![first EMPTY $=6$.](../figures/07-hash-tables/15-linear-trace2-wraparound-step3.svg){fig-alt="slot 12부터 5까지 충돌로 표시되고 wrap 화살표를 거쳐 slot 6에 38이 놓인 3단계 상태" width="75%"}
+![first EMPTY $=6$.](../figures/07-hash-tables/15-linear-trace2-wraparound-step3.svg){fig-alt="slot 12부터 5까지 충돌로 표시되고 wrap 화살표를 거쳐 slot 6에 38이 놓인 상태" width="75%"}
 :::
 
 | key | 25 | 13 | 16 | 15 | 7 | 28 | 31 | 20 | 1 | 38 |
@@ -463,7 +463,7 @@ Primary clustering은 **자기 강화**된다 — run 앞이나 내부로 hash�
 ::: {.panel-tabset}
 ## 1단계
 
-![cluster length 3.](../figures/07-hash-tables/17-primary-clustering-step1.svg){fig-alt="a,b,c 세 key가 이어진 길이 3 cluster에 brace로 length 3이 표시된 1단계 상태" width="70%"}
+![cluster length 3.](../figures/07-hash-tables/17-primary-clustering-step1.svg){fig-alt="a,b,c 세 key가 이어진 길이 3 cluster에 brace로 length 3이 표시된 상태" width="70%"}
 
 ## 2단계
 
@@ -471,7 +471,7 @@ Primary clustering은 **자기 강화**된다 — run 앞이나 내부로 hash�
 
 ## 3단계
 
-![cluster length 4.](../figures/07-hash-tables/17-primary-clustering-step3.svg){fig-alt="길이 3이던 cluster가 새 key를 흡수해 길이 4로 늘어난 3단계 상태" width="70%"}
+![cluster length 4.](../figures/07-hash-tables/17-primary-clustering-step3.svg){fig-alt="길이 3이던 cluster가 새 key를 흡수해 길이 4로 늘어난 상태" width="70%"}
 :::
 
 ![Load factor에 따른 성공/실패 탐색의 expected probe 횟수 곡선.](../figures/07-hash-tables/18-linear-probe-cost-curve.svg){fig-alt="load factor가 커질수록 성공 탐색과 실패 탐색 모두 expected probe 수가 증가하는 두 곡선 그래프" width="70%"}
@@ -501,7 +501,7 @@ home 4가 이미 점유된 상태에서 30을 삽입하면 $i=0,1,2$가 각각 $
 ::: {.panel-tabset}
 ## 1단계
 
-![$i=0$: $4+0=4$.](../figures/07-hash-tables/19-quadratic-trace-30-step1.svg){fig-alt="slot 4가 충돌로 표시되고 i=0: 4+0=4라는 콜아웃이 붙은 1단계 상태" width="75%"}
+![$i=0$: $4+0=4$.](../figures/07-hash-tables/19-quadratic-trace-30-step1.svg){fig-alt="slot 4가 충돌로 표시되고 i=0: 4+0=4라는 콜아웃이 붙은 상태" width="75%"}
 
 ## 2단계
 
@@ -509,7 +509,7 @@ home 4가 이미 점유된 상태에서 30을 삽입하면 $i=0,1,2$가 각각 $
 
 ## 3단계
 
-![$i=2$: $4+4=8$.](../figures/07-hash-tables/19-quadratic-trace-30-step3.svg){fig-alt="slot 4, 5가 충돌로 표시되고 slot 8에 30이 놓인 3단계 상태" width="75%"}
+![$i=2$: $4+4=8$.](../figures/07-hash-tables/19-quadratic-trace-30-step3.svg){fig-alt="slot 4, 5가 충돌로 표시되고 slot 8에 30이 놓인 상태" width="75%"}
 :::
 
 ::: {.callout-warning title="Coverage는 자동 보장이 아니다"}
@@ -556,7 +556,7 @@ $m=13,\ h_1(k)=k\bmod13,\ h_2(k)=(k\bmod11)+1$일 때:
 ::: {.panel-tabset}
 ## 1단계
 
-![28: $h_1=2,\ h_2=7$.](../figures/07-hash-tables/21-double-hash-probe-trace-step1.svg){fig-alt="slot 2가 충돌로 표시되고 28: h1=2,h2=7이라는 콜아웃이 붙은 1단계 상태" width="75%"}
+![28: $h_1=2,\ h_2=7$.](../figures/07-hash-tables/21-double-hash-probe-trace-step1.svg){fig-alt="slot 2가 충돌로 표시되고 28: h1=2,h2=7이라는 콜아웃이 붙은 상태" width="75%"}
 
 ## 2단계
 
@@ -568,7 +568,7 @@ $m=13,\ h_1(k)=k\bmod13,\ h_2(k)=(k\bmod11)+1$일 때:
 
 ## 4단계
 
-![67: step 2, final 4.](../figures/07-hash-tables/21-double-hash-probe-trace-step4.svg){fig-alt="slot 2,6,9,11에 15,19,28,41이 놓이고 67이 slot 4로 향하는 4단계 상태" width="75%"}
+![67: step 2, final 4.](../figures/07-hash-tables/21-double-hash-probe-trace-step4.svg){fig-alt="slot 2,6,9,11에 15,19,28,41이 놓이고 67이 slot 4로 향하는 상태" width="75%"}
 :::
 
 ::: {.callout-warning title="Step과 Capacity가 서로소가 아니면"}
@@ -611,7 +611,7 @@ key 1 삭제를 EMPTY로 처리하면 이후 SEARCH 38이 slot 1의 EMPTY에서 
 ::: {.panel-tabset}
 ## 1단계
 
-![DELETE 1.](../figures/07-hash-tables/24-wrong-deletion-trace-step1.svg){fig-alt="slot 1이 강조되고 DELETE 1이라는 콜아웃이 붙은 1단계 상태" width="75%"}
+![DELETE 1.](../figures/07-hash-tables/24-wrong-deletion-trace-step1.svg){fig-alt="slot 1이 강조되고 DELETE 1이라는 콜아웃이 붙은 상태" width="75%"}
 
 ## 2단계
 
@@ -627,7 +627,7 @@ key 1 삭제를 EMPTY로 처리하면 이후 SEARCH 38이 slot 1의 EMPTY에서 
 
 ## 5단계
 
-![slot 1 EMPTY: false NOT_FOUND.](../figures/07-hash-tables/24-wrong-deletion-trace-step5.svg){fig-alt="slot 1이 EMPTY로 표시되고 slot 1 EMPTY: false NOT_FOUND라는 콜아웃이 붙은 5단계 상태" width="75%"}
+![slot 1 EMPTY: false NOT_FOUND.](../figures/07-hash-tables/24-wrong-deletion-trace-step5.svg){fig-alt="slot 1이 EMPTY로 표시되고 slot 1 EMPTY: false NOT_FOUND라는 콜아웃이 붙은 상태" width="75%"}
 :::
 
 **올바른 삭제**는 tombstone(DELETED)을 남긴다 — DELETED에서는 계속 probe하므로 SEARCH 38이 slot 1의 D를 통과해 slot 6에서 정상적으로 찾는다.
@@ -637,7 +637,7 @@ key 1 삭제를 DELETED(tombstone)로 처리하면 SEARCH 38이 slot 1의 D를 �
 ::: {.panel-tabset}
 ## 1단계
 
-![DELETE 1 $\Rightarrow$ DELETED.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step1.svg){fig-alt="slot 1이 D(tombstone)로 표시되는 1단계 상태" width="75%"}
+![DELETE 1 $\Rightarrow$ DELETED.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step1.svg){fig-alt="slot 1이 D(tombstone)로 표시되는 상태" width="75%"}
 
 ## 2단계
 
@@ -649,7 +649,7 @@ key 1 삭제를 DELETED(tombstone)로 처리하면 SEARCH 38이 slot 1의 D를 �
 
 ## 4단계
 
-![slot 6: found.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step4.svg){fig-alt="slot 1이 D로 표시되고 slot 6에서 38을 찾았다는 콜아웃이 붙은 4단계 상태" width="75%"}
+![slot 6: found.](../figures/07-hash-tables/25-correct-deletion-tombstone-trace-step4.svg){fig-alt="slot 1이 D로 표시되고 slot 6에서 38을 찾았다는 콜아웃이 붙은 상태" width="75%"}
 :::
 
 Tombstone reuse는 네 단계를 따른다: (1) PUT은 첫 DELETED index를 기억한다. (2) probe를 계속해 existing equal key가 없는지 확인한다. (3) EMPTY를 만나면 기억한 tombstone에 새 entry를 둔다. (4) active count는 증가하고 tombstone count는 감소한다. 즉시 쓰면 안 되는 이유는 같은 key가 tombstone 뒤에 있다면 duplicate entry를 만들 수 있기 때문이다.
@@ -759,7 +759,7 @@ old table($m=5$)의 active entry 2,7,12를 new table($m=11$)로 재배치하는 
 ::: {.panel-tabset}
 ## 1단계
 
-![old $m=5$: $h(k)=k\bmod5$. 2: home 2; 7: $2\to3$; 12: $2\to3\to4$. slot 1: earlier deletion의 tombstone.](../figures/07-hash-tables/27-rehash-animation-step1.svg){fig-alt="old table에서 2,7,12가 각자 home과 probe 위치에 놓이고 slot 1이 tombstone인 1단계 상태" width="65%"}
+![old $m=5$: $h(k)=k\bmod5$. 2: home 2; 7: $2\to3$; 12: $2\to3\to4$. slot 1: earlier deletion의 tombstone.](../figures/07-hash-tables/27-rehash-animation-step1.svg){fig-alt="old table에서 2,7,12가 각자 home과 probe 위치에 놓이고 slot 1이 tombstone인 상태" width="65%"}
 
 ## 2단계
 
