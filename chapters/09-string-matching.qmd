@@ -546,7 +546,15 @@ $$T=\texttt{BAABXBAABABAA},\qquad P=\texttt{BAABABAA},\qquad lps=[0,0,0,1,2,1,2,
 
 $$T=\texttt{AAAAA},\quad P=\texttt{AAA},\quad lps=[0,1,2]$$
 
-![match at 0 뒤 $j\gets lps[2]=2$로 fallback해 overlap을 포함한 matches $[0,1,2]$를 모두 찾는 2단계.](../figures/09-string-matching/13-kmp-overlapping-match-step2.svg){fig-alt="AAAAA에서 AAA 패턴이 match 0 뒤 overlap을 유지해 matches 0,1,2를 모두 찾는 2단계 트레이스의 마지막 상태" width="55%"}
+::: {.panel-tabset}
+## 1단계
+
+![위치 0에서 AAA가 match된다. 다음 탐색을 위해 j를 lps[2]=2로 되돌린다.](../figures/09-string-matching/13-kmp-overlapping-match-step1.svg){fig-alt="match at 0; j←lps[2]=2라는 문구가 표시된 상태" width="55%"}
+
+## 2단계
+
+![되돌린 j 덕분에 overlap을 잃지 않고 이어서 탐색해 matches [0,1,2]를 모두 찾는다.](../figures/09-string-matching/13-kmp-overlapping-match-step2.svg){fig-alt="continue ⇒ matches [0,1,2]라는 문구가 표시된 상태" width="55%"}
+:::
 
 match 후 $j=0$으로 초기화하면 overlap 정보를 버린다.
 
