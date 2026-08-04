@@ -148,7 +148,7 @@ Example 1 5단계: pivot 3으로 k=1을 제거해 rank 1로 갱신하고, pivot 
 ::: {.panel-tabset}
 ## 1단계
 
-![현재 last element 3 외에 다른 pivot을 고르지 않는다.](../figures/04-selection/07-fixed-pivot-trace-step1.svg){fig-alt="8,11,3이 active, 15부터 73까지가 discard로 표시되고 pivot 3이 강조된 1단계 상태" width="55%"}
+![현재 last element 3 외에 다른 pivot을 고르지 않는다.](../figures/04-selection/07-fixed-pivot-trace-step1.svg){fig-alt="8,11,3이 active, 15부터 73까지가 discard로 표시되고 pivot 3이 강조된 상태" width="55%"}
 
 ## 2단계
 
@@ -174,7 +174,7 @@ Example 2 7단계: 무작위 draw s=8(pivot 29), s=7(pivot 31)을 차례로 A[r]
 ::: {.panel-tabset}
 ## 1단계
 
-![선택한 pivot index와 value를 먼저 명시한다: s=8, pivot=29.](../figures/04-selection/08-randomized-trace-step1.svg){fig-alt="31,48,20,29,65,73이 active인 상태에서 p=5,r=10,i=3, 무작위 draw s=8, pivot 29라는 콜아웃이 붙은 1단계 상태" width="65%"}
+![선택한 pivot index와 value를 먼저 명시한다: s=8, pivot=29.](../figures/04-selection/08-randomized-trace-step1.svg){fig-alt="31,48,20,29,65,73이 active인 상태에서 p=5,r=10,i=3, 무작위 draw s=8, pivot 29라는 콜아웃이 붙은 상태" width="65%"}
 
 ## 2단계
 
@@ -369,7 +369,7 @@ Group Sort → Median → Median of Medians: 각 group을 정렬해 3번째 값�
 ::: {.panel-tabset}
 ## 1단계
 
-![각 group을 정렬한다.](../figures/04-selection/11-median-of-medians-trace-step1.svg){fig-alt="G1..G5 각 group의 원소들이 나열되고 가운데 열(3번째 값)이 강조된 1단계 상태" width="55%"}
+![각 group을 정렬한다.](../figures/04-selection/11-median-of-medians-trace-step1.svg){fig-alt="G1..G5 각 group의 원소들이 나열되고 가운데 열(3번째 값)이 강조된 상태" width="55%"}
 
 ## 2단계
 
