@@ -1,5 +1,5 @@
 /* AVLTree: distinct int key. empty height=-1, leaf height=0, BF=left-right.
- * lecture-notes/code/lecture06/java/AVLTree.java와 같은 정책·예제를 C로 옮긴 것이다. */
+ * 강의노트 원본과 같은 정책·예제를 C로 옮긴 것이다. */
 typedef struct Node {
     int key, height;
     struct Node *left, *right;

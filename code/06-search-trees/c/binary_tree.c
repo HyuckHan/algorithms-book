@@ -4,7 +4,7 @@
 
 // snippet:binary-tree:start
 /* BinaryTree: 4가지 traversal과 size/height. empty height=-1, leaf height=0.
- * lecture-notes/code/lecture06/java/BinaryTree.java와 같은 정책·예제를 C로 옮긴 것이다. */
+ * 강의노트 원본과 같은 정책·예제를 C로 옮긴 것이다. */
 typedef struct Node {
     const char *data;
     struct Node *left, *right;

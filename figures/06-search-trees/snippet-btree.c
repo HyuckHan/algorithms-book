@@ -1,6 +1,6 @@
 /* BTree: distinct int key, CLRS minimum degree t, top-down split-before-
  * descend insert, borrow/merge delete.
- * lecture-notes/code/lecture06/java/BTree.java와 같은 정책·예제(t=2)를 C로 옮긴 것이다. */
+ * 강의노트 원본과 같은 정책·예제(t=2)를 C로 옮긴 것이다. */
 #define MAX_KEYS 15 /* 2*t-1 for t up to 8, plenty for this chapter's t in {2,3,5} */
 #define MAX_CHILDREN (MAX_KEYS + 1)
 

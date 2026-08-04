@@ -1,6 +1,6 @@
 /* BinarySearchTree: distinct int key, parent pointer, SEARCH/MINIMUM/MAXIMUM/
  * SUCCESSOR/PREDECESSOR/INSERT/DELETE(Transplant 기반) 전부 O(h).
- * lecture-notes/code/lecture06/java/BinarySearchTree.java와 같은 정책·예제를 C로 옮긴 것이다. */
+ * 강의노트 원본과 같은 정책·예제를 C로 옮긴 것이다. */
 typedef struct Node {
     int key;
     struct Node *left, *right, *parent;

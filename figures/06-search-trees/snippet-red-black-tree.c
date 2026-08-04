@@ -1,6 +1,6 @@
 /* RedBlackTree: distinct int key with one shared black NIL sentinel,
  * z/p/g/u 용어(current/parent/grandparent/uncle). O(log n) 연산.
- * lecture-notes/code/lecture06/java/RedBlackTree.java와 같은 정책·예제를 C로 옮긴 것이다. */
+ * 강의노트 원본과 같은 정책·예제를 C로 옮긴 것이다. */
 typedef enum { RED, BLACK } Color;
 
 typedef struct Node {
