@@ -74,7 +74,23 @@ complete라고 해서 feasible은 아니며, feasible이라고 해서 optimal도
 
 $$\text{binary depth }n:\ 2^n\text{ leaves},\quad 2^{n+1}-1\text{ nodes}\qquad\text{permutation leaves}:n!$$
 
-![State-space expansion 4단계: root만 생성 → 필요한 두 child 생성 → DFS는 L subtree부터 → prune node의 후손은 생성하지 않음.](../figures/10-state-space-search/02-state-space-expansion-step4.svg){fig-alt="root에서 두 child, 다시 각 child에서 두 grandchild로 확장되며 마지막 하나는 prune되어 후손이 생성되지 않는 4단계 트레이스의 마지막 상태" width="50%"}
+::: {.panel-tabset}
+## 1단계
+
+![루트 상태 하나에서 시작한다.](../figures/10-state-space-search/02-state-space-expansion-step1.svg){fig-alt="트리에 root 노드 R 하나만 표시된 상태" width="17%"}
+
+## 2단계
+
+![첫 결정으로 L과 R 두 자식 상태가 생성된다.](../figures/10-state-space-search/02-state-space-expansion-step2.svg){fig-alt="root에서 두 자식 L, R로 가지가 뻗어 나온 상태" width="38%"}
+
+## 3단계
+
+![L을 확장해 LL·LR이 생성된다.](../figures/10-state-space-search/02-state-space-expansion-step3.svg){fig-alt="L 노드 아래에 LL, LR 두 자식이 추가된 상태" width="46%"}
+
+## 4단계
+
+![R을 확장해 RL·RR이 생성되고, RR은 bound에 걸려 그 후손은 아예 만들어지지 않는다.](../figures/10-state-space-search/02-state-space-expansion-step4.svg){fig-alt="R 노드 아래에 RL, RR 두 자식이 추가되고 RR이 bounded 표시로 강조된 상태" width="53%"}
+:::
 
 | Order | Container | 장점 | 위험 |
 |---|---|---|---|
