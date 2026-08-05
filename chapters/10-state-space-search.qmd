@@ -403,7 +403,27 @@ Apply/Undo 뒤 두 식이 항상 성립해야 한다.
 | Promising | 이미 colored인 neighbor와 다른 color |
 | Complete | 모든 vertex가 colored |
 
-![작은 4-vertex graph coloring trace: A:1 → B:2 → C:1은 A와 conflict로 prune → C:3, D:2로 valid 3-coloring 완성.](../figures/10-state-space-search/10-graph-coloring-trace-step4.svg){fig-alt="A,B,C,D 네 vertex 그래프에서 A에 색 1, B에 색 2를 배정한 뒤 C에 색 1을 시도했다가 conflict로 prune하고 결국 C:3, D:2로 3-coloring을 완성하는 4단계 트레이스의 마지막 상태" width="55%"}
+::: {.panel-tabset}
+## 1단계
+
+![정점 순서 A, B, C, D를 정하고 아직 아무 색도 배정하지 않는다.](../figures/10-state-space-search/10-graph-coloring-trace-step1.svg){fig-alt="A, B, C, D 네 정점과 다섯 간선(A-B, B-C, C-D, D-A, A-C)만 있고 아직 어떤 정점에도 색이 없는 그래프" width="55%"}
+
+## 2단계
+
+![A는 첫 정점이라 이웃이 아직 색이 없으므로 색 1이 바로 promising하다.](../figures/10-state-space-search/10-graph-coloring-trace-step2.svg){fig-alt="A에 색 1이 배정되고 나머지 B, C, D는 아직 무색인 그래프" width="55%"}
+
+## 3단계
+
+![B는 색 1을 시도하면 이웃 A와 충돌해 기각하고, 색 2로 확정한다.](../figures/10-state-space-search/10-graph-coloring-trace-step3.svg){fig-alt="A:1 옆에 B가 ×1 표시와 함께 색 2로 확정되고, C, D는 아직 무색인 그래프" width="55%"}
+
+## 4단계
+
+![C는 A·B·D 전부와 인접해 색 1은 A와, 색 2는 B와 충돌하므로 색 3으로 확정한다.](../figures/10-state-space-search/10-graph-coloring-trace-step4.svg){fig-alt="C 옆에 ×1과 ×2 두 기각 표시가 붙고 색 3으로 확정되며, D는 아직 무색인 그래프" width="55%"}
+
+## 5단계
+
+![D는 이웃이 A, C뿐이라(B와는 인접하지 않는다) 색 1만 A와 충돌하고 색 2는 promising해 valid 3-coloring이 완성된다.](../figures/10-state-space-search/10-graph-coloring-trace-step5.svg){fig-alt="D 옆에 ×1 표시가 붙고 색 2로 확정되어 네 정점 모두 색이 채워진 valid 3-coloring 그래프" width="55%"}
+:::
 
 {{< include ../figures/10-state-space-search/pseudocode-color-graph-coloring.qmd >}}
 
