@@ -164,7 +164,7 @@ Example 1 5단계: pivot 3으로 k=1을 제거해 rank 1로 갱신하고, pivot 
 
 ## 5단계
 
-![원래 배열의 2nd order-statistic value는 8이다.](../figures/04-selection/07-fixed-pivot-trace-step5.svg){fig-alt="8이 target으로 강조되고 나머지가 모두 discard된 마지막 상태, answer=8" width="55%"}
+![원래 배열의 2nd order-statistic value는 8이다.](../figures/04-selection/07-fixed-pivot-trace-step5.svg){fig-alt="8이 target으로 강조되고 나머지가 모두 discard된 상태, answer=8" width="55%"}
 :::
 
 **Example 2: RandomizedSelect로 7번째 값 찾기(미리보기).** $A[5..10]=[31,48,20,29,65,73]$, $i=7-4=3$에서 무작위로 $s=8$(값 29)을 뽑아 $A[r]$과 swap한 뒤 같은 Lomuto를 적용하면 $q=6,\ k=2<i$이므로 $A[7..10]$에서 새 rank 1. 다시 무작위로 $s=7$(값 31)을 뽑아 partition하면 $q=7,\ k=1=i$이므로 pivot이 정답이다 — 원래 배열의 7th order-statistic 값은 **31**이다. 무작위 pivot을 뽑는다는 점만 다를 뿐, partition 뒤 처리 방식은 fixed-pivot과 동일하다(formal 의사코드와 성능 분석은 Part C).
@@ -198,7 +198,7 @@ Example 2 7단계: 무작위 draw s=8(pivot 29), s=7(pivot 31)을 차례로 A[r]
 
 ## 7단계
 
-![원래 배열의 7th order-statistic value는 31이다.](../figures/04-selection/08-randomized-trace-step7.svg){fig-alt="31이 target으로 강조되고 73,65,48이 discard된 마지막 상태, answer=31" width="65%"}
+![원래 배열의 7th order-statistic value는 31이다.](../figures/04-selection/08-randomized-trace-step7.svg){fig-alt="31이 target으로 강조되고 73,65,48이 discard된 상태, answer=31" width="65%"}
 :::
 
 두 trace의 pivot 정책 비교: fixed-pivot Quickselect는 매 call에서 $A[r]$을 쓰지만($[8,11,3]$에서 pivot 3, $[11,8]$에서 pivot 8), RandomizedSelect는 uniform index $s$를 뽑아 $A[s]\leftrightarrow A[r]$로 swap한 뒤 같은 Lomuto를 적용한다. Quickselect는 한쪽만 남기는 구조이고, pivot을 고르는 정책은 별도의 알고리즘 설계 결정이다.
@@ -385,7 +385,7 @@ Group Sort → Median → Median of Medians: 각 group을 정렬해 3번째 값�
 
 ## 5단계
 
-![M=16이 원본 배열의 pivot이 된다.](../figures/04-selection/11-median-of-medians-trace-step5.svg){fig-alt="다섯 median 12,14,16,17,20 중 16이 M으로 강조되고 원본의 pivot이라는 콜아웃이 붙은 마지막 상태" width="60%"}
+![M=16이 원본 배열의 pivot이 된다.](../figures/04-selection/11-median-of-medians-trace-step5.svg){fig-alt="다섯 median 12,14,16,17,20 중 16이 M으로 강조되고 원본의 pivot이라는 콜아웃이 붙은 상태" width="60%"}
 :::
 
 ::: {.callout-warning title="흔한 실수: 이 M이 항상 진짜 중앙값은 아니다"}
