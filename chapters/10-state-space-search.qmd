@@ -318,7 +318,7 @@ $$currentSum>W\ \Longrightarrow\ P\qquad currentSum+remainingSum<W\ \Longrightar
 
 {{< include ../figures/10-state-space-search/pseudocode-subset-sum.qmd >}}
 
-![Include/Exclude tree: [3,4,5,6], W=9 — {3,6}과 {4,5} 두 solution, 나머지는 overshoot(dead)로 제거된다.](../figures/10-state-space-search/08-subset-sum-include-exclude-tree.svg){fig-alt="i0,s0,r18에서 시작해 3을 포함하는 가지와 제외하는 가지로 나뉘고 최종적으로 {3,6}과 {4,5} 두 valid subset을 찾는 다이어그램" width="65%"}
+![Include/Exclude tree: [3,4,5,6], W=9 — {3,6}과 {4,5} 두 solution. s>W인 가지는 overshoot로, s+r<W인 가지는 목표에 도달할 수 없어 각각 다른 이유로 잘린다.](../figures/10-state-space-search/08-subset-sum-include-exclude-tree.svg){fig-alt="i0,s0,r18에서 시작하는 12노드 include/exclude 트리. {3,6}과 {4,5} 두 solution은 초록색, s>W로 overshoot한 {3,4,5}와 s+r<W로 unreachable한 빈 집합 두 dead 노드는 빨간색으로 표시되고, 나머지 미탐색 가지는 점선과 생략 부호로 표시된다" width="65%"}
 
 ::: {.panel-tabset}
 ## 1단계
