@@ -199,7 +199,7 @@ $$\Sigma=\{a,b,c,d,e\},\quad code(a)=0,\ldots,code(e)=4,\quad d=5$$
 
 ![`cad`를 5진법 $(2,0,3)_5$로 인코딩하면 $2\cdot5^2+0\cdot5+3=53$이다.](../figures/09-string-matching/03-numeric-encoding-cad-step2.svg){fig-alt="cad를 5진법 자리값으로 표현해 2*25+0*5+3=53을 계산한 상태" width="25%"}
 
-![$P=$`abe`(value 9)와 $window=$`eec`(value 122, $122\bmod113=9$)는 문자열이 다른데도 해시가 둘 다 9로 같아 candidate가 되지만, 실제로는 `abe`$\ne$`eec`인 spurious hit이다.](../figures/09-string-matching/04-hash-equality-insufficient.svg){fig-alt="P=abe, value=9, h(P)=9인 박스와 window=eec, value=122, h=122 mod 113=9인 박스가 candidate 화살표로 이어지고, 아래 note에 두 문자열이 달라 spurious hit임이 표시된 다이어그램" width="50%"}
+![$P=$`abe`(value 9)와 $window=$`eec`(value 122, $122\bmod113=9$)는 문자열이 다른데도 해시가 둘 다 9로 같아 candidate가 되지만, 실제로는 `abe`$\ne$`eec`인 spurious hit이다.](../figures/09-string-matching/04-hash-equality-insufficient.svg){fig-alt="P=abe, value=9, h(P)=9인 박스와 window=eec, value=122, h=122 mod 113=9인 박스가 candidate 화살표로 이어지고, 아래 note에 두 문자열이 달라 spurious hit임이 표시된 다이어그램" width="80%"}
 
 ::: {.callout-warning title="흔한 실수"}
 hash equality만으로 match를 확정하면 exact matcher가 아니다 — 반드시 verification이 필요하다.
