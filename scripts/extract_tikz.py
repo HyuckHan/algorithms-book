@@ -151,13 +151,6 @@ FIGURE_CONFIG = {
         ("12_summary_quiz.tex", 0): {"slug": "13-concept-map"},
     },
     "02": {
-        # docs/REVIEW_NOTES.md #11 (redo): first pass used a "steps"
-        # override to recover the source's own 3-state \visible<2->/<3->
-        # sequence, but that sequence batches 2 frames per step and isn't
-        # stack-aligned with Pop -- full_override replaces it with a
-        # hand-authored 5-step, one-frame-per-push sequence built on Pop's
-        # own template (see "push_5step_bottom_up" above), so no "steps"
-        # override is needed anymore (5 native \only<1>..<5> states).
         ("02_execution.tex", 0): {"slug": "01-call-stack-push", "mode": "sequence"},
         ("02_execution.tex", 1): {"slug": "02-call-stack-pop", "mode": "sequence"},
         ("04_basic_examples.tex", 0): {"slug": "03-fibonacci-tree"},
