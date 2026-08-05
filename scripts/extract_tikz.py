@@ -158,7 +158,7 @@ FIGURE_CONFIG = {
         # hand-authored 5-step, one-frame-per-push sequence built on Pop's
         # own template (see "push_5step_bottom_up" above), so no "steps"
         # override is needed anymore (5 native \only<1>..<5> states).
-        ("02_execution.tex", 0): {"slug": "01-call-stack-push", "mode": "sequence", "full_override": "push_5step_bottom_up"},
+        ("02_execution.tex", 0): {"slug": "01-call-stack-push", "mode": "sequence"},
         ("02_execution.tex", 1): {"slug": "02-call-stack-pop", "mode": "sequence"},
         ("04_basic_examples.tex", 0): {"slug": "03-fibonacci-tree"},
         ("05_recurrences.tex", 0): {"slug": "04-recursion-tree"},
@@ -754,51 +754,6 @@ FULL_BODY_PATCHES = {
 \node[st inactive]at(n20){20};
 \draw[st active edge](n4)--(n3)--(n6);
 }
-\end{tikzpicture}""",
-    # 02_execution.tex's call-stack Push figure ("01-call-stack-push",
-    # docs/REVIEW_NOTES.md #11 redo): the first pass at this fix (steps
-    # override [1,2,3]) only recovered the source's OWN 3 \visible<2->/<3->
-    # states, which each add 2 frames at once (1 -> 3 -> 5 boxes) -- correct
-    # relative to the source, but not what the fix actually needs, since the
-    # source's coarse batching is itself the problem the redo is for. Also,
-    # the source builds its stack with a bare \node (a) with no explicit
-    # anchor (unlike Pop's `at (0,.35)` + the invisible `\path
-    # (-2.2,0)--(2.2,4.8);` framing box that keeps Pop's canvas the same
-    # size across all 5 of its own steps) -- so Push and Pop weren't drawn
-    # from the same template, even though they're meant to read as a
-    # matched pair.
-    # This full-body override authors 5 native \only<1>..<5> states, one
-    # new frame per step (sum(4) alone -> ... -> all 5, base case reached),
-    # copying Pop's exact template: same node-distance/font options, same
-    # invisible \path framing box, same `(a) at (0,.35)` bottom anchor with
-    # `above=of` chaining (so sum(4) sits at the bottom and sum(0) ends up
-    # on top, matching Pop's stack orientation exactly -- Pop's own step1 is
-    # visually identical to this step5, both showing the full 5-frame stack
-    # with sum(0) highlighted). Each step highlights the just-pushed frame
-    # in AlgoOrange!15 (mirroring how Pop highlights the frame it's about
-    # to return), instead of the original's plain final frame with no
-    # per-step emphasis at all.
-    "push_5step_bottom_up": r"""\begin{tikzpicture}[node distance=1.5mm,every node/.append style={font=\normalsize}]
-\path (-2.2,0)--(2.2,4.8);
-\only<1>{\node[stack,fill=AlgoOrange!15] at (0,.35) {$sum(4)$: $4+\square$};}
-\only<2>{
-  \node[stack] (a) at (0,.35) {$sum(4)$: $4+\square$};
-  \node[stack,above=of a,fill=AlgoOrange!15] {$sum(3)$: $3+\square$};}
-\only<3>{
-  \node[stack] (a) at (0,.35) {$sum(4)$: $4+\square$};
-  \node[stack,above=of a] (b) {$sum(3)$: $3+\square$};
-  \node[stack,above=of b,fill=AlgoOrange!15] {$sum(2)$: $2+\square$};}
-\only<4>{
-  \node[stack] (a) at (0,.35) {$sum(4)$: $4+\square$};
-  \node[stack,above=of a] (b) {$sum(3)$: $3+\square$};
-  \node[stack,above=of b] (c) {$sum(2)$: $2+\square$};
-  \node[stack,above=of c,fill=AlgoOrange!15] {$sum(1)$: $1+\square$};}
-\only<5>{
-  \node[stack] (a) at (0,.35) {$sum(4)$: $4+\square$};
-  \node[stack,above=of a] (b) {$sum(3)$: $3+\square$};
-  \node[stack,above=of b] (c) {$sum(2)$: $2+\square$};
-  \node[stack,above=of c] (d) {$sum(1)$: $1+\square$};
-  \node[stack,above=of d,fill=AlgoOrange!15] {$sum(0)$: return 0};}
 \end{tikzpicture}""",
     # 15_bad_character.tex's `TIGER` Shift frame ("15-tiger-shift-table"):
     # the source's 2 \only states are a single floating equation-like
