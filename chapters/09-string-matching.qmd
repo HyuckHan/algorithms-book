@@ -195,7 +195,7 @@ $$\text{equal strings}\Rightarrow\text{equal hash},\qquad\text{equal hash}\not\R
 **pattern hash**는 $P$의 fingerprint, **window hash**는 $T[s..s+m-1]$의 fingerprint다. 두 hash가 같으면 **candidate hit**, 실제 문자도 모두 같으면 **valid hit**, hash만 같은 collision이면 **spurious hit**이다.
 :::
 
-$$\Sigma=\{a,b,c,d,e\},\quad code(a)=0,\ldots,code(e)=4,\quad d=5$$
+$$\Sigma=\{a,b,c,d,e\},\quad code(a)=0,\ldots,code(e)=4,\quad base=5$$
 
 ![`cad`를 5진법 $(2,0,3)_5$로 인코딩하면 $2\cdot5^2+0\cdot5+3=53$이다.](../figures/09-string-matching/03-numeric-encoding-cad-step2.svg){fig-alt="cad를 5진법 자리값으로 표현해 2*25+0*5+3=53을 계산한 상태" width="25%"}
 
@@ -215,7 +215,7 @@ hash equality만으로 match를 확정하면 exact matcher가 아니다 — 반�
 
 ## Part E. Rolling Hash
 
-$$value(x)=x[0]d^{m-1}+\cdots+x[m-1],\qquad v\gets0;\ v\gets d\,v+code(c)\ \text{for each }c$$
+$$value(x)=x[0]\cdot base^{m-1}+\cdots+x[m-1],\qquad v\gets0;\ v\gets base\cdot v+code(c)\ \text{for each }c$$
 
 power를 매번 만들지 않고 initial pattern/window value를 $\Theta(m)$에 계산한다.
 
@@ -223,7 +223,7 @@ power를 매번 만들지 않고 initial pattern/window value를 $\Theta(m)$에 
 해시 테이블 장에서 문자열 hash function으로 다룬 Horner's rule(`hash = hash*B + code(c)`)과 완전히 같은 식이다. 그 장에서는 정적 fingerprint 하나만 계산했지만, 여기서는 window가 한 칸씩 움직일 때마다 **다시 계산하지 않고 갱신**하는 rolling hash로 확장한다.
 :::
 
-$$current=value(T[s..s+m-1]),\qquad h=d^{m-1}$$
+$$current=value(T[s..s+m-1]),\qquad h=base^{m-1}$$
 
 ::: {.panel-tabset}
 ## 1단계
@@ -232,16 +232,16 @@ $$current=value(T[s..s+m-1]),\qquad h=d^{m-1}$$
 
 ## 2단계
 
-![남은 digit들을 한 자리씩 왼쪽으로 밀어 자릿수를 맞춘다.](../figures/09-string-matching/05-rolling-update-derivation-step2.svg){fig-alt="state box가 d(current-leading×h) 식으로 갱신되고 note에 남은 digit을 왼쪽으로 shift한다고 쓰인 상태" width="30%"}
+![남은 digit들을 한 자리씩 왼쪽으로 밀어 자릿수를 맞춘다.](../figures/09-string-matching/05-rolling-update-derivation-step2.svg){fig-alt="state box가 base×(current-leading×h) 식으로 갱신되고 note에 남은 digit을 왼쪽으로 shift한다고 쓰인 상태" width="30%"}
 
 ## 3단계
 
-![새로 들어온 마지막 문자를 더해 다음 window의 해시를 얻는다.](../figures/09-string-matching/05-rolling-update-derivation-step3.svg){fig-alt="state box에 next=d(current-leading×h)+trailing 식이 표시되고 note에 새 trailing character 추가라고 쓰인 상태" width="45%"}
+![새로 들어온 마지막 문자를 더해 다음 window의 해시를 얻는다.](../figures/09-string-matching/05-rolling-update-derivation-step3.svg){fig-alt="state box에 next=base×(current-leading×h)+trailing 식이 표시되고 note에 새 trailing character 추가라고 쓰인 상태" width="45%"}
 :::
 
-![window가 한 칸 움직일 때 old 기여 제거 → ×d → new 문자 추가로 이어지는 정적 흐름도.](../figures/09-string-matching/06-rolling-update-flow.svg){fig-alt="old T[s] 기여 제거, x d, new T[s+m] 추가 세 상자가 화살표로 이어진 흐름도" width="60%"}
+![window가 한 칸 움직일 때 old 기여 제거 → ×base → new 문자 추가로 이어지는 정적 흐름도.](../figures/09-string-matching/06-rolling-update-flow.svg){fig-alt="old T[s] 기여 제거, x base, new T[s+m] 추가 세 상자가 화살표로 이어진 흐름도" width="60%"}
 
-이전 window value와 미리 계산한 $h=d^{m-1}$만 있으면 재사용할 수 있다.
+이전 window value와 미리 계산한 $h=base^{m-1}$만 있으면 재사용할 수 있다.
 
 ::: {.callout-warning title="단서"}
 큰 정수를 그대로 쓰면 arithmetic 자체가 constant time이 아닐 수 있다.
@@ -257,11 +257,11 @@ initial $\Theta(m)$ 뒤 각 window update는 fixed-width modular arithmetic에�
 
 ## Part F. Modular Hash와 Collision
 
-$$value(x)=\Theta(d^m)\quad\Rightarrow\quad hash(x)=value(x)\bmod q$$
+$$value(x)=\Theta(base^m)\quad\Rightarrow\quad hash(x)=value(x)\bmod q$$
 
-modulus는 **저장되는 hash 값**을 $0,\ldots,q-1$로 제한한다. intermediate multiplication/subtraction은 구현에서 별도로 overflow를 피해야 한다. $q$가 작을수록 collision 가능성이 커지며 $d,q$와 input 가정이 expected cost에 영향을 준다.
+modulus는 **저장되는 hash 값**을 $0,\ldots,q-1$로 제한한다. intermediate multiplication/subtraction은 구현에서 별도로 overflow를 피해야 한다. $q$가 작을수록 collision 가능성이 커지며 $base,q$와 input 가정이 expected cost에 영향을 준다.
 
-$$h=d^{m-1}\bmod q,\qquad next=\bigl(d(current-code(T[s])h)+code(T[s+m])\bigr)\bmod q$$
+$$h=base^{m-1}\bmod q,\qquad next=\bigl(base\cdot(current-code(T[s])h)+code(T[s+m])\bigr)\bmod q$$
 
 $$\operatorname{normalizedMod}(x,q)=((x\bmod q)+q)\bmod q$$
 
@@ -281,7 +281,7 @@ collision이 많으면 느려질 뿐, verification이 있으면 결과의 정확
 
 `RabinKarp`가 candidate hit마다 부르는 `EqualAt(T,P,s)`는 별도의 formal한 절차로 정의되지 않는다 — Part B의 Naive가 이미 보여준 `T[s+j]=P[j]` 문자별 비교와 정확히 같은 동작이다. 해시 테이블 장의 `Probe`가 linear/quadratic/double hashing 중 어떤 것으로도 채워질 수 있는 자리였던 것처럼, 여기서도 이름만 정해두고 본문에서 관계를 설명하는 편이 자연스럽다.
 
-$$T=\texttt{acebbceeaabceedb},\quad P=\texttt{eeaab},\quad d=5,\ q=113$$
+$$T=\texttt{acebbceeaabceedb},\quad P=\texttt{eeaab},\quad base=5,\ q=113$$
 
 $$value(P)=3001,\quad pHash=3001\bmod113=63,\quad h=5^4\bmod113=60$$
 
@@ -317,7 +317,7 @@ $T=\texttt{AAAAAAAA}\ldots$, $P=\texttt{AAAA}\ldots$처럼 거의 모든 alignme
 rolling hash는 cryptographic hash가 아니다. adversarial collision resistance를 자동으로 제공하지 않는다.
 :::
 
-**구현**: `T="acebbceeaabceedb"`, `P="eeaab"`, base $d=5$, modulus $q=113$ 고정 예제로 검증한다.
+**구현**: `T="acebbceeaabceedb"`, `P="eeaab"`, base $5$, modulus $q=113$ 고정 예제로 검증한다.
 
 ::: {.panel-tabset}
 ## Python
@@ -857,7 +857,7 @@ built-in `indexOf`를 구현에 사용하지 않는다 — 직접 character/byte
 
 `failure[0]=-1`, $j\gets failure[j]$ 방식의 sentinel failure convention도 올바르게 구현할 수 있다. 그러나 standard LPS와 table 크기·index 의미·pseudocode를 섞으면 out-of-bounds와 fallback 오류가 난다 — 이 장의 본문과 Java/C 구현은 $lps[0]=0$ convention만 쓴다.
 
-modulus 없이 $d^m$ 크기의 정수를 그대로 유지하면 digit 수가 $m$과 함께 증가한다. 이때 곱셈·덧셈을 unit-cost로 보는 $O(1)$ rolling update는 bit complexity 관점에서 성립하지 않을 수 있다 — 수학적 modular arithmetic, fixed-width machine implementation의 intermediate overflow, arbitrary-precision bit complexity는 서로 다른 문제다.
+modulus 없이 $base^m$ 크기의 정수를 그대로 유지하면 digit 수가 $m$과 함께 증가한다. 이때 곱셈·덧셈을 unit-cost로 보는 $O(1)$ rolling update는 bit complexity 관점에서 성립하지 않을 수 있다 — 수학적 modular arithmetic, fixed-width machine implementation의 intermediate overflow, arbitrary-precision bit complexity는 서로 다른 문제다.
 
 $$P=\texttt{AAAAABAAAAAC}\Rightarrow lps=[0,1,2,3,4,0,1,2,3,4,5,0]$$
 
