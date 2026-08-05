@@ -630,7 +630,15 @@ pattern은 text에 align되고, comparison은 $j=m-1$에서 왼쪽으로 진행�
 
 $$\text{pattern}\to\text{shift table}\to\text{mismatch}\to\text{shift distance}\to\text{next alignment}$$
 
-![오른쪽 suffix부터 왼쪽으로 비교해, 끝 문자 mismatch만으로도 큰 shift의 근거를 얻는다.](../figures/09-string-matching/14-right-to-left-comparison-step2.svg){fig-alt="text와 pattern을 오른쪽 끝부터 왼쪽으로 비교하는 방향과 mismatch 시 문자·suffix 정보를 사용한다는 설명이 표시된 상태" width="70%"}
+::: {.panel-tabset}
+## 1단계
+
+![shift 0 정렬에서 오른쪽 끝 G와 R을 먼저 비교한다 — 이 한 번의 mismatch가 shift 거리의 근거가 된다.](../figures/09-string-matching/14-right-to-left-comparison-step1.svg){fig-alt="text CATIG와 pattern TIGER를 shift 0으로 정렬하고 오른쪽 끝 G와 R이 빨강으로 강조되어 mismatch를 표시한 그림" width="70%"}
+
+## 2단계
+
+![shift 1에서는 오른쪽 끝 R부터 왼쪽으로 다섯 문자가 모두 일치한다.](../figures/09-string-matching/14-right-to-left-comparison-step2.svg){fig-alt="text XTIGER에 pattern TIGER를 shift 1로 정렬해 다섯 문자가 모두 초록으로 일치 표시되고 비교 방향이 right에서 left로 표기된 그림" width="70%"}
+:::
 
 | | Full BM | Horspool |
 |---|---|---|
