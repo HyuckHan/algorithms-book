@@ -75,7 +75,7 @@ Tree 용어 추적: 같은 트리에서 root/degree → parent/child/sibling →
 
 ## 4단계
 
-![C의 subtree={C,F,G}; A는 G의 ancestor.](../figures/06-search-trees/02-tree-terminology-trace-step4.svg){fig-alt="C,F,G가 주황으로 강조되고 C의 subtree, A는 G의 ancestor라는 콜아웃이 붙은 마지막 상태" width="45%"}
+![C의 subtree={C,F,G}; A는 G의 ancestor.](../figures/06-search-trees/02-tree-terminology-trace-step4.svg){fig-alt="C,F,G가 주황으로 강조되고 C의 subtree, A는 G의 ancestor라는 콜아웃이 붙은 상태" width="45%"}
 :::
 
 **Ancestor·Descendant**는 parent/child를 여러 edge로 확장한 transitive relation이다 — A는 E의 ancestor이고 E는 A의 descendant다. **Subtree**는 한 node와 모든 descendant, 그리고 그 edge로 이루어진 tree다(예: node B와 $\{B,D,E\}$). Node degree는 child 수이고, tree degree는 모든 node degree의 최댓값이다.
@@ -178,7 +178,7 @@ Preorder 5단계: A 방문 → B 방문 → D,E 방문(왼쪽 먼저 끝까지) 
 
 ## 5단계
 
-![F, G 방문. visited: A, B, D, E, C, F, G.](../figures/06-search-trees/08-preorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: A,B,D,E,C,F,G인 마지막 상태" width="50%"}
+![F, G 방문. visited: A, B, D, E, C, F, G.](../figures/06-search-trees/08-preorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: A,B,D,E,C,F,G인 상태" width="50%"}
 :::
 
 **Inorder**: left subtree를 마친 뒤 node, 그다음 right subtree를 처리한다.
@@ -202,7 +202,7 @@ Inorder 4단계: D 방문 → B,E 방문 → A 방문 → F,C,G 방문.
 
 ## 4단계
 
-![F, C, G 방문. visited: D, B, E, A, F, C, G.](../figures/06-search-trees/09-inorder-trace-step4.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,B,E,A,F,C,G인 마지막 상태" width="50%"}
+![F, C, G 방문. visited: D, B, E, A, F, C, G.](../figures/06-search-trees/09-inorder-trace-step4.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,B,E,A,F,C,G인 상태" width="50%"}
 :::
 
 **Postorder**: 두 subtree의 결과가 준비된 뒤 node를 처리한다.
@@ -230,7 +230,7 @@ Postorder 5단계: D 방문 → E,B 방문 → F,G,C 방문 → A 방문.
 
 ## 5단계
 
-![후위 순회 완료.](../figures/06-search-trees/10-postorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,E,B,F,G,C,A인 마지막 상태" width="50%"}
+![후위 순회 완료.](../figures/06-search-trees/10-postorder-trace-step5.svg){fig-alt="모든 노드가 처리 완료로 표시되고 visited: D,E,B,F,G,C,A인 상태" width="50%"}
 :::
 
 **복잡도(DFS 세 traversal 공통)**: 각 node에서 $\Theta(1)$ work를 정확히 한 번 수행하므로 시간은 $\Theta(n)$이다. recursion stack은 현재 root-to-node path이므로 $O(h)$ — balanced tree는 $O(\log n)$, degenerate tree는 $O(n)$이다.
@@ -368,7 +368,7 @@ SEARCH 13: root에서 시작해 13<15로 left, 13>6로 right, 13>7로 right, 13=
 ::: {.panel-tabset}
 ## 1단계
 
-![13<15: right subtree를 버리고 left로.](../figures/06-search-trees/14-search-trace-step1.svg){fig-alt="15가 강조되고 13<15: right subtree를 버리고 left로라는 콜아웃이 붙은 1단계, 나머지 노드는 inactive" width="80%"}
+![13<15: right subtree를 버리고 left로.](../figures/06-search-trees/14-search-trace-step1.svg){fig-alt="15가 강조되고 13<15: right subtree를 버리고 left로라는 콜아웃이 붙은 상태, 나머지 노드는 inactive" width="80%"}
 
 ## 2단계
 
@@ -380,7 +380,7 @@ SEARCH 13: root에서 시작해 13<15로 left, 13>6로 right, 13>7로 right, 13=
 
 ## 4단계
 
-![13=13: found.](../figures/06-search-trees/14-search-trace-step4.svg){fig-alt="13이 최종 강조되고 13=13: found라는 콜아웃이 붙은 마지막 상태, active edge 경로가 표시됨" width="80%"}
+![13=13: found.](../figures/06-search-trees/14-search-trace-step4.svg){fig-alt="13이 최종 강조되고 13=13: found라는 콜아웃이 붙은 상태, active edge 경로가 표시됨" width="80%"}
 :::
 
 **MINIMUM·MAXIMUM**: minimum은 left child를 NIL까지 따라간다(예제에서 2), maximum은 right child를 NIL까지 따라간다(예제에서 20). 시간은 $\Theta(h)$이고, empty tree의 Java API는 `OptionalInt.empty()`를 반환한다.
@@ -430,7 +430,7 @@ INSERT 12: x=15,y=NIL(12&lt;15) → x=6,y=15(12&gt;6) → x=7,y=6(12&gt;7) → x
 ::: {.panel-tabset}
 ## 1단계
 
-![x=15, y=NIL, 12<15.](../figures/06-search-trees/17-insert-trace-step1.svg){fig-alt="15가 강조되고 x=15,y=NIL, 12&lt;15라는 콜아웃이 붙은 1단계, 나머지는 inactive" width="80%"}
+![x=15, y=NIL, 12<15.](../figures/06-search-trees/17-insert-trace-step1.svg){fig-alt="15가 강조되고 x=15,y=NIL, 12&lt;15라는 콜아웃이 붙은 상태, 나머지는 inactive" width="80%"}
 
 ## 2단계
 
@@ -450,7 +450,7 @@ INSERT 12: x=15,y=NIL(12&lt;15) → x=6,y=15(12&gt;6) → x=7,y=6(12&gt;7) → x
 
 ## 6단계
 
-![x=NIL, y=9. 9의 right child로 attach.](../figures/06-search-trees/17-insert-trace-step6.svg){fig-alt="9까지의 경로가 active edge로 표시되고 새 노드 12가 9의 right child로 추가된 마지막 상태" width="80%"}
+![x=NIL, y=9. 9의 right child로 attach.](../figures/06-search-trees/17-insert-trace-step6.svg){fig-alt="9까지의 경로가 active edge로 표시되고 새 노드 12가 9의 right child로 추가된 상태" width="80%"}
 :::
 
 search path의 비교가 lower/upper bound를 좁히고, 마지막 $y$의 올바른 NIL side에 연결하면 모든 ancestor bound가 유지된다 — path length만큼 비교하므로 $\Theta(h)$다.
@@ -540,7 +540,7 @@ BST 연산은 모두 $\Theta(h)$다 — $h$를 구하는 재귀식 분석 도구
 ::: {.panel-tabset}
 ## 1단계
 
-![after insert 1. edge-height=0.](../figures/06-search-trees/22-degenerate-bst-trace-step1.svg){fig-alt="1만 있는 트리, after insert 1, edge-height=0이라는 콜아웃이 붙은 1단계" width="50%"}
+![after insert 1. edge-height=0.](../figures/06-search-trees/22-degenerate-bst-trace-step1.svg){fig-alt="1만 있는 트리, after insert 1, edge-height=0이라는 콜아웃이 붙은 상태" width="50%"}
 
 ## 2단계
 
@@ -556,7 +556,7 @@ BST 연산은 모두 $\Theta(h)$다 — $h$를 구하는 재귀식 분석 도구
 
 ## 5단계
 
-![after inserts 6, 7. edge-height=6, operations worst-case Θ(n).](../figures/06-search-trees/22-degenerate-bst-trace-step5.svg){fig-alt="1부터 7까지 오른쪽으로 계속 이어진 사슬 모양 트리, edge-height=6, worst-case Θ(n)이라는 콜아웃이 붙은 마지막 상태" width="50%"}
+![after inserts 6, 7. edge-height=6, operations worst-case Θ(n).](../figures/06-search-trees/22-degenerate-bst-trace-step5.svg){fig-alt="1부터 7까지 오른쪽으로 계속 이어진 사슬 모양 트리, edge-height=6, worst-case Θ(n)이라는 콜아웃이 붙은 상태" width="50%"}
 :::
 
 같은 key set `{1,...,7}`이라도 삽입 순서 `4,2,6,1,3,5,7`이면 height 2, 연산 $\Theta(\log n)$이 된다 — **plain BST는 input order에 따라 shape가 바뀌며 balance를 보장하지 않는다.**
@@ -815,9 +815,9 @@ B-Tree의 minimum degree가 $t\ge2$일 때, node당 최대 $2t-1$ key·internal 
 
 {{< include ../figures/06-search-trees/pseudocode-btree-search.qmd >}}
 
-![B-Tree Search(key 17): root(10|20)에서 10&lt;17&lt;20이므로 middle page 선택 → page 안에서 17 발견, 2 page accesses.](../figures/06-search-trees/48-btree-search-trace-step1.svg){fig-alt="10|20 노드가 강조되고 10&lt;17&lt;20 middle page 선택이라는 콜아웃이 붙은 1단계, 자식 5|6|7, 12|17, 30 표시" width="80%"}
+![B-Tree Search(key 17): root(10|20)에서 10&lt;17&lt;20이므로 middle page 선택 → page 안에서 17 발견, 2 page accesses.](../figures/06-search-trees/48-btree-search-trace-step1.svg){fig-alt="10|20 노드가 강조되고 10&lt;17&lt;20 middle page 선택이라는 콜아웃이 붙은 상태, 자식 5|6|7, 12|17, 30 표시" width="80%"}
 
-![](../figures/06-search-trees/48-btree-search-trace-step2.svg){fig-alt="12|17 노드가 강조되고 page 안에서 17 발견, 2 page accesses라는 콜아웃이 붙은 마지막 상태" width="80%"}
+![](../figures/06-search-trees/48-btree-search-trace-step2.svg){fig-alt="12|17 노드가 강조되고 page 안에서 17 발견, 2 page accesses라는 콜아웃이 붙은 상태" width="80%"}
 
 **Cost**: fixed minimum degree $t$와 occupancy invariant 아래 worst-case height와 page access는 $\Theta(\log_t n)$이다(root cache 제외). node 내부는 linear scan 또는 binary search가 가능하고, 큰 $t$는 height를 줄이지만 page 내부 comparison은 늘 수 있다.
 
