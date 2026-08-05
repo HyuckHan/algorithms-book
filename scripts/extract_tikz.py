@@ -422,7 +422,7 @@ FIGURE_CONFIG = {
         ("12_kmp_search.tex", 0): {"slug": "12-kmp-mismatch-recovery-trace", "mode": "sequence"},
         ("12_kmp_search.tex", 1): {"slug": "13-kmp-overlapping-match", "mode": "sequence"},
         ("14_boyer_moore_intro.tex", 0): {"slug": "14-right-to-left-comparison", "mode": "sequence"},
-        ("15_bad_character.tex", 0): {"slug": "15-tiger-shift-table", "mode": "sequence", "full_override": "tiger_shift_table_3steps"},
+        ("15_bad_character.tex", 0): {"slug": "15-tiger-shift-table", "mode": "sequence"},
         ("15_bad_character.tex", 1): {"slug": "16-absent-character-shift", "mode": "sequence"},
         ("16_horspool.tex", 0): {"slug": "17-rational-repeated-character", "mode": "sequence"},
         ("16_horspool.tex", 1): {"slug": "18-horspool-trace-tiger", "mode": "sequence"},
@@ -753,52 +753,6 @@ FULL_BODY_PATCHES = {
 \node[st inactive]at(n17){17};
 \node[st inactive]at(n20){20};
 \draw[st active edge](n4)--(n3)--(n6);
-}
-\end{tikzpicture}""",
-    # 15_bad_character.tex's `TIGER` Shift frame ("15-tiger-shift-table"):
-    # the source's 2 \only states are a single floating equation-like
-    # \node[smhash] whose text is fully *replaced* between states 1
-    # ("T:4,I:3,G:2") and 2 ("E:1,R:5,other:5") -- state 2 never shows T/I/G
-    # again, even though they're still part of the same shift table. That
-    # contradicts this chapter's own later prose/checkpoint/run-output,
-    # which all state shift[I]=3 as an established fact after this figure.
-    # Rebuilt as a real, accumulating table using this file's own \smrow/
-    # smcell family (already used a few frames later for the RATIONAL
-    # shift table, 17-rational-repeated-character) instead of one
-    # self-overwriting text blob: a static P-string row (T,I,G,E,R, via
-    # \smrow) stays on screen the whole time, and a shift-value row below
-    # it fills in left-to-right and never removes an earlier value.
-    # BuildShiftTable's own two phases (\ForAll{c} shift[c]<-m, then
-    # \For{j=0 to m-2} shift[P[j]]<-m-1-j) map onto 3 frames: step1 =
-    # j=0,1,2 done (T=4,I=3,G=2 computed; E,R still unresolved "?" cells);
-    # step2 = j=3 done (+E=1) plus the initialization phase's other=5
-    # default made visible as its own badge; step3 = the loop has ended at
-    # j=m-2=3, so R (index 4=m-1) was never assigned by it and keeps its
-    # phase-1 default of 5 -- styled `sminactive` (this chapter's existing
-    # "not an active/verified result" style) rather than `smverified`, so
-    # it reads as "left at default", not "computed", distinguishing it from
-    # T/I/G/E at a glance. All four m-1-j values re-checked against the
-    # source's own formula: m=5, j=0,1,2,3 -> 4,3,2,1.
-    "tiger_shift_table_3steps": r"""\begin{tikzpicture}[x=.95cm,y=.95cm]
-\smrow{1.3}{P}{T,I,G,E,R}
-\smindices{.7}{T,I,G,E,R}
-\node[anchor=east,font=\small\bfseries]at(-.45,0){shift};
-\only<1>{
-\node[smverified]at(0,0){4};\node[smverified]at(1,0){3};\node[smverified]at(2,0){2};
-\node[smcell]at(3,0){?};\node[smcell]at(4,0){?};
-\node[smnote,text width=7cm]at(2,-1.05){\(j=0,1,2\): \(shift[T]=4,\ shift[I]=3,\ shift[G]=2\)};
-}
-\only<2>{
-\node[smverified]at(0,0){4};\node[smverified]at(1,0){3};\node[smverified]at(2,0){2};\node[smactive]at(3,0){1};
-\node[smcell]at(4,0){?};
-\node[smhash]at(2,-1.05){\(shift[\text{other}]=m=5\) (초기화값)};
-\node[smnote,text width=7cm]at(2,-1.85){\(j=3\)(loop 마지막, \(m-2=3\)): \(shift[E]=1\)};
-}
-\only<3>{
-\node[smverified]at(0,0){4};\node[smverified]at(1,0){3};\node[smverified]at(2,0){2};\node[smverified]at(3,0){1};
-\node[sminactive]at(4,0){5};
-\node[smhash]at(2,-1.05){\(shift[\text{other}]=m=5\) (초기화값)};
-\node[smnote,text width=8cm]at(2,-1.85){\(R\)(index \(4=m-1\))은 \(j=0..m-2\) loop에서 제외 -- 계산이 아니라 초기화 default \(5\)에 남은 값};
 }
 \end{tikzpicture}""",
 }
