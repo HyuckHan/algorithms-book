@@ -113,7 +113,7 @@ FIGURE_CONFIG = {
         ("01_motivation.tex", 0): {"slug": "01-sorting-roadmap"},
         ("02_sorting_properties.tex", 0): {"slug": "02-stability-demo"},
         ("03_selection.tex", 0): {"slug": "03-selection-trace", "mode": "sequence"},
-        ("04_bubble.tex", 0): {"slug": "04-bubble-trace", "mode": "sequence", "full_override": "bubble_trace_all_comparisons"},
+        ("04_bubble.tex", 0): {"slug": "04-bubble-trace", "mode": "sequence"},
         # docs/CHANGE_INSTRUCIONS_L03.md 3.3.3: insert arrow arced under
         # the cards and landed in the wrong gap.
         ("05_insertion.tex", 0): {"slug": "05-insertion-cards", "text_patch": "insertion_cards_arrow_above_gap"},
@@ -754,28 +754,6 @@ FULL_BODY_PATCHES = {
 \node[st inactive]at(n20){20};
 \draw[st active edge](n4)--(n3)--(n6);
 }
-\end{tikzpicture}""",
-    # 04_bubble.tex's Bubble Sort trace ("04-bubble-trace"): the source's 4
-    # \only<N> frames only cover the pass's 3 SWAPS (29-10, 29-14, 37-13),
-    # skipping the (29,37) comparison entirely -- 29<37 needs no swap, so the
-    # slide never gives it its own frame; frame3's array already equals the
-    # post-(29,37)-comparison state, it just relabels the highlight straight
-    # to the next pair (docs/REVIEW_NOTES.md new finding, "batch D" review).
-    # This drops a step that's pedagogically essential for Bubble Sort
-    # specifically, where "compared but left alone" is half of what the
-    # algorithm does. Insert the missing frame and add a `\swap` flag so the
-    # \foreach can tell "sort current" (orange, swapping) from "sort
-    # compared" (hatched, compared-only -- defined in common/sorting.tex,
-    # already used nowhere else in lecture-notes/ before this) apart; the
-    # 5 frames are otherwise the same array/index data the source already
-    # had, just with one more entry and consistent renumbering.
-    "bubble_trace_all_comparisons": r"""\begin{tikzpicture}[x=1.18cm]
-\only<1>{\def\vals{{29,10,14,37,13}}\def\a{1}\def\b{2}\def\swap{1}}
-\only<2>{\def\vals{{10,29,14,37,13}}\def\a{2}\def\b{3}\def\swap{1}}
-\only<3>{\def\vals{{10,14,29,37,13}}\def\a{3}\def\b{4}\def\swap{0}}
-\only<4>{\def\vals{{10,14,29,37,13}}\def\a{4}\def\b{5}\def\swap{1}}
-\only<5>{\def\vals{{10,14,29,13,37}}\def\a{0}\def\b{0}\def\swap{0}}
-\foreach \i in {1,...,5}{\pgfmathparse{\vals[\i-1]}\edef\v{\pgfmathresult}\ifnum\i=\a\ifnum\swap=1\node[sort current]at(\i,0){\v};\else\node[sort compared]at(\i,0){\v};\fi\else\ifnum\i=\b\ifnum\swap=1\node[sort current]at(\i,0){\v};\else\node[sort compared]at(\i,0){\v};\fi\else\ifnum\i=5\ifnum\a=0\node[sort done]at(\i,0){\v};\else\node[sort cell]at(\i,0){\v};\fi\else\node[sort cell]at(\i,0){\v};\fi\fi\fi}
 \end{tikzpicture}""",
     # 08_quick_sort.tex's Lomuto Partition trace
     # ("08-quick-partition-trace"): the source's 4 \only<N> frames only stop
