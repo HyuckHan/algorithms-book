@@ -116,7 +116,7 @@ FIGURE_CONFIG = {
         ("04_bubble.tex", 0): {"slug": "04-bubble-trace", "mode": "sequence"},
         # docs/CHANGE_INSTRUCIONS_L03.md 3.3.3: insert arrow arced under
         # the cards and landed in the wrong gap.
-        ("05_insertion.tex", 0): {"slug": "05-insertion-cards", "text_patch": "insertion_cards_arrow_above_gap"},
+        ("05_insertion.tex", 0): {"slug": "05-insertion-cards"},
         ("05_insertion.tex", 1): {"slug": "05-insertion-trace", "mode": "sequence"},
         ("07_merge_sort.tex", 0): {"slug": "07-merge-divide"},
         # docs/CHANGE_INSTRUCIONS_L03.md 3.4.1: 4 arbitrary checkpoints ->
@@ -199,8 +199,8 @@ FIGURE_CONFIG = {
         ("05_matrix_path.tex", 0): {"slug": "08-matrix-dependency"},
         ("05_matrix_path.tex", 1): {"slug": "09-matrix-call-tree"},
         ("05_matrix_path.tex", 2): {"slug": "10-matrix-row-progression", "mode": "sequence"},
-        ("05_matrix_path.tex", 3): {"slug": "11-matrix-representative-cell", "text_patch": "matrix_representative_cell_chosen_label"},
-        ("05_matrix_path.tex", 4): {"slug": "12-matrix-reconstruction", "patch": "matrix_reconstruction_path_contrast"},
+        ("05_matrix_path.tex", 3): {"slug": "11-matrix-representative-cell"},
+        ("05_matrix_path.tex", 4): {"slug": "12-matrix-reconstruction"},
         ("07_lcs.tex", 0): {"slug": "13-lcs-case1"},
         ("07_lcs.tex", 1): {"slug": "14-lcs-call-tree"},
         ("08_lcs_reconstruction.tex", 0): {"slug": "15-lcs-backtrack-trace"},
@@ -363,7 +363,7 @@ FIGURE_CONFIG = {
         ("05_collision.tex", 1): {"slug": "07-insert-29-collision-trace", "mode": "sequence"},
         ("05_collision.tex", 2): {"slug": "08-pigeonhole-principle"},
         ("06_chaining.tex", 0): {"slug": "09-chaining-structure"},
-        ("06_chaining.tex", 1): {"slug": "10-chaining-insert-trace", "mode": "sequence", "text_patch": "chaining_insert_step1_edge_target"},
+        ("06_chaining.tex", 1): {"slug": "10-chaining-insert-trace", "mode": "sequence"},
         ("06_chaining.tex", 2): {"slug": "11-chaining-search-delete-trace", "mode": "sequence"},
         ("06_chaining.tex", 3): {"slug": "12-chaining-worst-case"},
         # 07_open_addressing.tex: \htlegend (arity-0, three bare-\tikz
@@ -375,7 +375,7 @@ FIGURE_CONFIG = {
         # Tombstone에 즉시 쓰지 않는가?" example row) -- must not be missed.
         ("07_open_addressing.tex", 0): {"slug": "13-tombstone-reuse-example"},  # macro:htrowthirteen
         ("08_linear_probing.tex", 0): {"slug": "14-linear-trace1-collision", "mode": "sequence"},
-        ("08_linear_probing.tex", 1): {"slug": "15-linear-trace2-wraparound", "mode": "sequence", "text_patch": "linear_trace2_wrap_arrow_target"},
+        ("08_linear_probing.tex", 1): {"slug": "15-linear-trace2-wraparound", "mode": "sequence"},
         ("08_linear_probing.tex", 2): {"slug": "16-linear-final-table"},  # macro:htrowthirteen
         ("08_linear_probing.tex", 3): {"slug": "17-primary-clustering", "mode": "sequence"},
         ("08_linear_probing.tex", 4): {"slug": "18-linear-probe-cost-curve"},  # pgfplots axis
@@ -479,24 +479,6 @@ TIKZ_PATCHES = {
         "\\tikzset{pq/.append style={inner sep=0.8mm,font=\\footnotesize},"
         "callout/.append style={inner sep=0.8mm,font=\\footnotesize}}",
     ),
-    # 05_matrix_path.tex's "최소 경로 Reconstruction" figure
-    # ("12-matrix-reconstruction", docs/REVIEW_NOTES.md #1): the path arrows
-    # (`dp path` style) are drawn cell-edge-to-cell-edge, and at the source's
-    # y=.85cm row spacing (cell height 8mm) that leaves only ~0.5mm of
-    # vertical gap for the down-arrows -- barely enough room for anything
-    # more than the arrowhead itself, plus `dp path`'s AlgoOrange draw color
-    # is the same color as the orange highlight-box border each arrow
-    # crosses, so it visually merges into it. `y=1cm` (appended after the
-    # figure's own `x=1.15cm,y=.85cm`, pgfkeys last-write-wins) opens the gap
-    # to ~2mm, matching the horizontal gap; `dp path` is only ever used in
-    # this one figure (grep confirms), so redefining it here doesn't affect
-    # anything else -- switched to AlgoBlueTwo, the same directional-arrow
-    # color already used by this lecture's `dp edge` style, for contrast
-    # against the orange highlight boxes.
-    "matrix_reconstruction_path_contrast": (
-        "y=1cm",
-        "\\tikzset{dp path/.style={-Latex,ultra thick,draw=AlgoBlueTwo}}",
-    ),
 }
 TIKZPICTURE_OPEN_RE = re.compile(r"\\begin\{tikzpicture\}(\[[^\]]*\])?")
 
@@ -542,55 +524,6 @@ TEXT_PATCHES = {
     # \only wrapper, so one patch application covers all overlay steps of
     # its figure (4 steps for search-trace, 6 for insert-trace).
     "trace_orienting_annotation_font": (r"font=\\scriptsize,", ""),
-    # 05_matrix_path.tex's "대표 Cell 계산" figure ("11-matrix-representative-
-    # cell", docs/REVIEW_NOTES.md #2, redone after the first pass -- a
-    # font-size-only bump on the "chosen" label -- still read as unclear:
-    # the label sat wedged between the 25 cell and the arrow with nothing
-    # marking *which* cell was actually selected. 25 and 31 both use the
-    # plain "dp dependency" (blue) style, identical to each other, so
-    # min(25,31)=25 wasn't visible in the figure itself -- only inferable
-    # from the label text. Two changes: (1) re-style the 25 node from
-    # "dp dependency" to "dp current" (same orange fill/border already used
-    # for the 28 result cell in this same picture, defined in
-    # common/dynamic_programming.tex) so the selected value and the value it
-    # produces are visually tied together the same way the 28 highlight
-    # already ties itself to "this is the answer"; 31 is left as plain
-    # "dp dependency" since it's the rejected candidate. (2) drop the
-    # edge-attached label (which forced font size to compete with the arrow
-    # for space) and place "chosen" as its own node directly above the 25
-    # cell instead -- cell height is 8mm ("dp cell"'s minimum height) so at
-    # this picture's y=1cm-per-unit default, the cell's top edge is at
-    # y=1.4; anchoring a plain `above` node at (1,1.45) puts the label
-    # clear of both the cell and the (1,1)--(1,.45) arrow below it.
-    "matrix_representative_cell_chosen_label": [
-        (r"\\node\[dp dependency\]at\(1,1\)\{25\}", r"\\node[dp current]at(1,1){25}"),
-        (
-            r"\\draw\[dp edge\]\(1,1\)--node\[right,font=\\scriptsize\]\{chosen\} \(1,\.45\);",
-            r"\\draw[dp edge](1,1)--(1,.45);\n\\node[above,font=\\small]at(1,1.45){chosen};",
-        ),
-    ],
-    # 06_chaining.tex's "Chaining Animation: Insert" figure
-    # ("10-chaining-insert-trace", step1 only, docs/REVIEW_NOTES.md #9):
-    # step1's edge is drawn to a hardcoded coordinate (1.8,-3) that doesn't
-    # actually reach the "10" node (drawn independently at (3,-3)) -- unlike
-    # steps 2/3, which correctly connect actual named nodes
-    # (`\draw[chain edge](b3)--(a);`). Name the node and connect to it the
-    # same way, so "10" no longer looks disconnected/floating.
-    "chaining_insert_step1_edge_target": (
-        r"\\node\[chain active\]at\(3,-3\)\{10\};\\draw\[chain edge\]\(b3\)--\(1\.8,-3\);",
-        r"\\node[chain active](a10)at(3,-3){10};\\draw[chain edge](b3)--(a10);",
-    ),
-    # 08_linear_probing.tex's "Linear Trace II: Wrap-Around" figure
-    # ("15-linear-trace2-wraparound", step3 only, docs/REVIEW_NOTES.md #10):
-    # the wrap-around arrow's symmetric `bend left=35` makes it arrive at
-    # s0.north at a shallow diagonal, so the arrowhead visually reads as
-    # pointing left of slot 0 rather than into it. Explicit out/in angles
-    # keep the same departure from s12 but make the arrival near-vertical
-    # (in=100, just past straight-up) so the tip lands clearly on slot 0.
-    "linear_trace2_wrap_arrow_target": (
-        r"to\[bend left=35\]",
-        r"to[out=165,in=100]",
-    ),
     # 02_hashing_model.tex's "Key -> Hash Code -> Compression -> Bucket"
     # figure ("01-hash-pipeline", docs/REVIEW_NOTES.md #8): the 4 boxes sit
     # only 6mm apart, and the "hash-code function"/"compression function"
@@ -621,35 +554,6 @@ TEXT_PATCHES = {
         (r"above=3pt of a5", r"above=16pt of a5"),
         (r"above=3pt of a4", r"above=16pt of a4"),
     ],
-    # 05_insertion.tex's insertion-cards figure ("05-insertion-cards",
-    # docs/CHANGE_INSTRUCIONS_L03.md 3.3.3, then a redo): the insert arrow
-    # was drawn below the card row (y=-.8) with `bend right=25`, landing at
-    # (1.5,-.8) -- the gap between 14 and 29, not the 10-14 gap that's
-    # actually 13's correct sorted position. Moves both endpoints above the
-    # card row (cards are 13mm tall, so y=.85 clears their y=.65 top edge),
-    # and re-targets the end point at x=.5 (the actual 10-14 gap in this
-    # picture's coordinate space: each 12mm-wide card is 1.2/1.35=.889
-    # coordinate units wide, so card0 spans -.444..+.444 and card1 spans
-    # .556..1.444 -- the gap between them is centered at exactly .5).
-    #
-    # Bend direction: going from (3,.85) to (0.5,.85) travels in -x. `bend
-    # left` bulges toward the *left of the direction of travel* -- rotating
-    # (-1,0) by +90 deg (CCW) gives (0,-1), i.e. "left of westward" is
-    # *south* (down) in this y-up coordinate system, not up. The first pass
-    # used `bend left=45` on exactly this reasoning inverted, producing a
-    # U-shaped dip (confirmed by re-rendering and reading the compiled
-    # SVG's own cubic-bezier control points, which sat *below* both
-    # endpoints in TikZ-y). `bend right=45` is the correct direction for an
-    # upward, over-the-cards ∩ arc on a leftward-traveling path -- verified
-    # by re-checking the SVG's path data: both control points end up at a
-    # smaller SVG-y (SVG y grows downward) than either endpoint, i.e.
-    # visually higher, confirming a true convex-up curve.
-    # `yshift=3mm` on the "insert" label (still `node[above]`, just at a
-    # larger offset than the default) clears the arc line.
-    "insertion_cards_arrow_above_gap": (
-        r"\\draw\[-Latex,AlgoOrange,very thick\] \(3,-\.8\) to\[bend right=25\] node\[below\]\{insert\} \(1\.5,-\.8\);",
-        r"\\draw[-Latex,AlgoOrange,very thick] (3,.85) to[bend right=45] node[above,yshift=3mm]{insert} (0.5,.85);",
-    ),
     # 04_rabin_karp_intro.tex's numeric-encoding-cad figure
     # ("03-numeric-encoding-cad", chapters/09-string-matching.qmd Part D):
     # the source draws an unconditional (not \only-wrapped, so it appears
