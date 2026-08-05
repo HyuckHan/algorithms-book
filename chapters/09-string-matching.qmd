@@ -113,7 +113,7 @@ alignment 하나가 곧 comparison 하나는 아니다 — mismatch 위치에 �
 
 ## 3단계
 
-![$s=5$: 5개의 A에 이어 마지막 B까지 일치 — occurrence 5.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step3.svg){fig-alt="AAAAA 반복 뒤 mismatch가 나는 최악 사례에서 s=5에 이르러 occurrence를 찾는 3단계 트레이스의 마지막 상태" width="30%"}
+![$s=5$: 5개의 A에 이어 마지막 B까지 일치 — occurrence 5.](../figures/09-string-matching/02-naive-worst-case-repeated-prefix-step3.svg){fig-alt="AAAAA 반복 뒤 mismatch가 나는 최악 사례에서 s=5에 이르러 occurrence를 찾는 상태" width="30%"}
 :::
 
 ::: {.callout-warning title="중복 비교의 원인"}
@@ -496,7 +496,7 @@ $i$는 지금 $lps[i]$를 채울 prefix ending position이고, $len$은 현재 �
 
 ## 6단계
 
-![$i=7$에서 $P[7]=$`A`$=P[2]$로 $len=3$ → $lps[7]=3$, 최종 LPS `[0,0,0,1,2,1,2,3]` 완성.](../figures/09-string-matching/11-lps-construction-trace-step6.svg){fig-alt="BAABABAA의 각 인덱스마다 lps 값을 채워나가 최종적으로 0,0,0,1,2,1,2,3 표를 완성하는 6단계 트레이스의 마지막 상태" width="70%"}
+![$i=7$에서 $P[7]=$`A`$=P[2]$로 $len=3$ → $lps[7]=3$, 최종 LPS `[0,0,0,1,2,1,2,3]` 완성.](../figures/09-string-matching/11-lps-construction-trace-step6.svg){fig-alt="BAABABAA의 각 인덱스마다 lps 값을 채워나가 최종적으로 0,0,0,1,2,1,2,3 표를 완성하는 상태" width="70%"}
 :::
 
 $$P[i]\ne P[len],\ len>0\quad\Rightarrow\quad len\gets lps[len-1]$$
@@ -700,7 +700,7 @@ full algorithm은 bad-character shift와 good-suffix shift를 모두 계산하�
 
 ## 3단계
 
-![더 오른쪽 A(index 6)가 왼쪽 A를 덮어써 $shift[A]=7-6=1$로 확정된다.](../figures/09-string-matching/17-rational-repeated-character-step3.svg){fig-alt="RATIONAL의 두 A 중 더 오른쪽 A를 사용해 shift[A]=1을 확정하는 3단계 트레이스의 마지막 상태" width="70%"}
+![더 오른쪽 A(index 6)가 왼쪽 A를 덮어써 $shift[A]=7-6=1$로 확정된다.](../figures/09-string-matching/17-rational-repeated-character-step3.svg){fig-alt="RATIONAL의 두 A 중 더 오른쪽 A를 사용해 shift[A]=1을 확정하는 상태" width="70%"}
 :::
 
 마지막 문자 `L`은 전처리에서 제외한다. 왼쪽 `A`를 사용하면 유효한 alignment를 건너뛸 수 있다.
@@ -728,7 +728,7 @@ $shift[c]\ge1$이므로 mismatch도 $s$를 반드시 증가시키며 infinite lo
 
 ## 4단계
 
-![shift 2로 이동한 뒤 오른쪽부터 왼쪽으로 `TIGER` 전체가 `T`와 일치한다 — match.](../figures/09-string-matching/18-horspool-trace-tiger-step4.svg){fig-alt="CATIGER에서 TIGER 끝 문자 mismatch 후 shift 2로 이동해 오른쪽부터 왼쪽으로 전체 문자를 검증하는 4단계 트레이스의 마지막 상태" width="70%"}
+![shift 2로 이동한 뒤 오른쪽부터 왼쪽으로 `TIGER` 전체가 `T`와 일치한다 — match.](../figures/09-string-matching/18-horspool-trace-tiger-step4.svg){fig-alt="CATIGER에서 TIGER 끝 문자 mismatch 후 shift 2로 이동해 오른쪽부터 왼쪽으로 전체 문자를 검증하는 상태" width="70%"}
 :::
 
 비교는 pattern의 마지막 문자부터 시작하고, 새 window에서도 오른쪽부터 왼쪽으로 검증한다.
