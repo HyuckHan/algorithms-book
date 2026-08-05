@@ -125,7 +125,7 @@ Selection Sort 5단계 추적. 주황은 이번 pass에서 선택된 최댓값, 
 
 ## Pass 4
 
-![13과 10을 swap하여 정렬 완료: 10, 13, 14, 29, 37.](../figures/03-sorting/03-selection-trace-step5.svg){fig-alt="10,13,14,29,37로 완전히 정렬되어 모두 회색으로 표시된 마지막 상태" width="40%"}
+![13과 10을 swap하여 정렬 완료: 10, 13, 14, 29, 37.](../figures/03-sorting/03-selection-trace-step5.svg){fig-alt="10,13,14,29,37로 완전히 정렬되어 모두 회색으로 표시된 상태" width="40%"}
 :::
 
 **왜 맞는가 (proof-sketch)**: loop invariant — pass 시작 시 $A[last+1..n]$은 이미 최종 위치의 가장 큰 원소들이고 $A[1..last]$는 나머지의 permutation이다. 매 pass가 $A[1..last]$의 최댓값을 찾아 $A[last]$와 swap하면 invariant가 한 칸 넓어지고, $last=1$에서 전체가 정렬된다.
@@ -193,7 +193,7 @@ Selection Sort 5단계 추적. 주황은 이번 pass에서 선택된 최댓값, 
 
 ## 5단계
 
-![첫 pass 종료: 최댓값 37 확정.](../figures/03-sorting/04-bubble-trace-step5.svg){fig-alt="10,14,29,13,37 배열에서 37이 오른쪽 끝에 확정된 마지막 상태" width="40%"}
+![첫 pass 종료: 최댓값 37 확정.](../figures/03-sorting/04-bubble-trace-step5.svg){fig-alt="10,14,29,13,37 배열에서 37이 오른쪽 끝에 확정된 상태" width="40%"}
 :::
 
 **왜 맞는가 (proof-sketch)**: 한 pass에서 $A[i]>A[i+1]$일 때만 교환하므로, pass가 끝나면 그 구간의 최댓값이 반드시 오른쪽 끝까지 밀려 있다. swapped 플래그가 한 번도 켜지지 않으면 인접한 모든 쌍이 이미 순서대로라는 뜻이므로 정렬이 끝났음이 증명된다(조기 종료).
@@ -263,7 +263,7 @@ $A[1..i-1]$가 정렬되었다고 믿고 $A[i]$를 올바른 위치에 삽입한
 
 ## 5단계
 
-![다음 반복 전에 정렬된 prefix 확인.](../figures/03-sorting/05-insertion-trace-step5.svg){fig-alt="10,13,14,29,37로 정렬된 prefix가 확인된 마지막 상태" width="40%"}
+![다음 반복 전에 정렬된 prefix 확인.](../figures/03-sorting/05-insertion-trace-step5.svg){fig-alt="10,13,14,29,37로 정렬된 prefix가 확인된 상태" width="40%"}
 :::
 
 **왜 맞는가 (proof-sketch)**: while 루프는 $A[j]>key$인 동안만 오른쪽으로 shift하므로, 종료 시 $A[j+1]$은 key가 들어갈 정확한 위치다. $A[j]>key$가 strict 조건이라 같은 key는 서로 지나치지 않으므로 **stable**이다.
@@ -372,7 +372,7 @@ Merge는 정렬된 두 구간 $A[low..mid]$, $A[mid+1..high]$를 $A[low..high]$�
 
 ## 8단계
 
-![완료: out=[5,8,10,13,14,21,29,37].](../figures/03-sorting/07-merge-pointers-step8.svg){fig-alt="out 배열이 5,8,10,13,14,21,29,37로 완전히 채워진 마지막 상태" width="55%"}
+![완료: out=[5,8,10,13,14,21,29,37].](../figures/03-sorting/07-merge-pointers-step8.svg){fig-alt="out 배열이 5,8,10,13,14,21,29,37로 완전히 채워진 상태" width="55%"}
 :::
 
 **왜 맞는가 (proof-sketch)**: $L[i]\le R[j]$이면 왼쪽 record를 먼저 선택하므로 동률일 때도 relative order가 보존되어 **stable**이다. 각 원소는 정확히 한 번만 output으로 이동하므로 merge 자체는 $\Theta(|L|+|R|)$이다.
@@ -468,7 +468,7 @@ Lomuto partition은 scan invariant를 유지한다: $A[low..i]\le pivot$, $A[i+1
 
 ## 10단계
 
-![pivot을 index 4와 swap: partition 완료.](../figures/03-sorting/08-quick-partition-trace-step10.svg){fig-alt="pivot 15가 index 4에 최종 위치하고 왼쪽 partition이 완료된 상태를 중괄호로 표시한 마지막 상태" width="65%"}
+![pivot을 index 4와 swap: partition 완료.](../figures/03-sorting/08-quick-partition-trace-step10.svg){fig-alt="pivot 15가 index 4에 최종 위치하고 왼쪽 partition이 완료된 상태를 중괄호로 표시한 상태" width="65%"}
 :::
 
 **복잡도**: best(계속 균형 분할)와 expected(randomized pivot) 모두 $\Theta(n\log n)$이지만, worst($0:n-1$로 계속 치우침)는 $\Theta(n^2)$다. "average"를 말하려면 입력 분포나 randomized pivot이라는 확률적 가정이 필요하다. 기본 구현은 **unstable**이며 recursion stack은 expected $\Theta(\log n)$, worst $\Theta(n)$이다.
@@ -562,7 +562,7 @@ node $i$만 heap property를 어겼고 왼쪽·오른쪽 subtree는 이미 max-h
 
 ## 4단계
 
-![index 4에서 두 child 2, 1보다 크므로 종료.](../figures/03-sorting/11-heapify-trace-step4.svg){fig-alt="index 4에서 멈추는 마지막 상태" width="55%"}
+![index 4에서 두 child 2, 1보다 크므로 종료.](../figures/03-sorting/11-heapify-trace-step4.svg){fig-alt="index 4에서 멈추는 상태" width="55%"}
 :::
 
 **왜 맞는가 (proof-sketch)**: 두 child 중 더 큰 값을 parent 위치로 올렸으므로, swap 뒤 위쪽 node는 두 child보다 크거나 같아 max-heap property를 만족한다. 유일하게 남을 수 있는 위반은 선택한 child subtree로 내려간다 — 두 subtree가 이미 heap이라는 precondition 아래, 한 root-to-leaf path만 검사하면 된다.
@@ -763,7 +763,7 @@ Heapsort의 아이디어는 세 단계다: (1) $\Theta(n)$에 max-heap을 만든
 
 ## 3단계
 
-![hundreds 결과.](../figures/03-sorting/15-radix-trace-step3.svg){fig-alt="2,24,45,66,75,90,170,802로 완전히 정렬된 마지막 상태" width="60%"}
+![hundreds 결과.](../figures/03-sorting/15-radix-trace-step3.svg){fig-alt="2,24,45,66,75,90,170,802로 완전히 정렬된 상태" width="60%"}
 :::
 
 ::: {.callout-warning title="흔한 실수: 왜 내부 정렬이 stable이어야 하는가"}
