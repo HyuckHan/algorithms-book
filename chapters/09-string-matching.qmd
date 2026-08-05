@@ -419,7 +419,7 @@ prefix와 suffix가 같아도 전체 prefix보다 짧아야 한다.
 
 ## 4단계
 
-![$j\gets lps[4]=2$로 border `BA`를 재사용한 뒤, 같은 text index에서 $T[i]=$`X`를 $P[2]=$`A`와 재비교한다 — $i$는 감소하지 않는다.](../figures/09-string-matching/10-mismatch-fallback-trace-step4.svg){fig-alt="BAABA까지 매칭된 뒤 X에서 mismatch가 나 lps[4]=2인 border BA로 fallback해 같은 text index에서 재비교하는 4단계 트레이스의 마지막 상태" width="65%"}
+![$j\gets lps[4]=2$로 border `BA`를 재사용한 뒤, 같은 text index에서 $T[i]=$`X`를 $P[2]=$`A`와 재비교한다 — $i$는 감소하지 않는다.](../figures/09-string-matching/10-mismatch-fallback-trace-step4.svg){fig-alt="lps[4]=2가 가리키는 border BA에 패턴을 맞추고 같은 text index에서 비교를 재개하는 상태" width="65%"}
 :::
 
 ::: {.callout-warning title="과도한 표현 금지"}
@@ -541,7 +541,7 @@ $$T=\texttt{BAABXBAABABAA},\qquad P=\texttt{BAABABAA},\qquad lps=[0,0,0,1,2,1,2,
 
 ## 5단계
 
-![$i\gets5$ 이후 shift 5에서 $P=$`BAABABAA` 전체가 매칭돼 occurrence 5로 확정된다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step5.svg){fig-alt="BAABX 뒤 mismatch가 나 lps 값을 따라 두 번 fallback한 뒤 shift 5에서 BAABABAA 전체가 매칭되는 5단계 트레이스의 마지막 상태" width="70%"}
+![$i\gets5$ 이후 shift 5에서 $P=$`BAABABAA` 전체가 매칭돼 occurrence 5로 확정된다.](../figures/09-string-matching/12-kmp-mismatch-recovery-trace-step5.svg){fig-alt="shift 5에서 패턴 BAABABAA가 text와 전부 일치해 occurrence가 확정된 상태" width="70%"}
 :::
 
 $$T=\texttt{AAAAA},\quad P=\texttt{AAA},\quad lps=[0,1,2]$$
