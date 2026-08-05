@@ -121,7 +121,7 @@ FIGURE_CONFIG = {
         ("07_merge_sort.tex", 0): {"slug": "07-merge-divide"},
         # docs/CHANGE_INSTRUCIONS_L03.md 3.4.1: 4 arbitrary checkpoints ->
         # 8 frames, one per output placement.
-        ("07_merge_sort.tex", 1): {"slug": "07-merge-pointers", "mode": "sequence", "full_override": "merge_pointers_8_frames"},
+        ("07_merge_sort.tex", 1): {"slug": "07-merge-pointers", "mode": "sequence"},
         ("07_merge_sort.tex", 2): {"slug": "07-merge-recursion-tree"},
         ("08_quick_sort.tex", 0): {"slug": "08-quick-partition-trace", "mode": "sequence"},
         ("09_lower_bound.tex", 0): {"slug": "09-decision-tree"},
@@ -799,36 +799,6 @@ FULL_BODY_PATCHES = {
   \node[stack,above=of b] (c) {$sum(2)$: $2+\square$};
   \node[stack,above=of c] (d) {$sum(1)$: $1+\square$};
   \node[stack,above=of d,fill=AlgoOrange!15] {$sum(0)$: return 0};}
-\end{tikzpicture}""",
-    # 07_merge_sort.tex's "MERGE: 두 Pointer만 전진한다" figure
-    # ("07-merge-pointers", docs/CHANGE_INSTRUCIONS_L03.md 3.4.1): the
-    # source only had 4 \only states -- 3 arbitrary checkpoints (first
-    # pick, then 2 picks later, then 2 more picks later) plus the finished
-    # array -- collapsing 8 actual output placements into 4 frames. Expands
-    # to one frame per placement: 6 individual L-vs-R picks, one frame for
-    # copying the exhausted side's remaining suffix (L's 29,37, both
-    # highlighted together since that copy isn't a comparison), and a final
-    # frame with no highlight. Values hand-traced against the real MERGE
-    # algorithm on L=[10,14,29,37], R=[5,8,13,21]: R the smaller (5,8),
-    # then L (10), R (13), L (14), R (21, exhausting R), then L's [29,37]
-    # suffix copied whole -- matching the pseudocode's own final `\out`
-    # array from the original 4th frame exactly (only the older frames'
-    # arbitrary 2-3-pick batching is what changes, not the final result).
-    # The `\out` array + its unconditional draw loop and all other picture
-    # structure is copied unchanged from the original source.
-    "merge_pointers_8_frames": r"""\begin{tikzpicture}[x=.95cm,y=1cm]
-\node[font=\bfseries,anchor=east]at(-.6,1){L};\node[font=\bfseries,anchor=east]at(-.6,0){R};\node[font=\bfseries,anchor=east]at(-.6,-1.2){out};
-\foreach \x/\v in {0/10,1/14,2/29,3/37}\node[sort cell]at(\x,1){\v};
-\foreach \x/\v in {0/5,1/8,2/13,3/21}\node[sort cell]at(\x,0){\v};
-\only<1>{\def\out{{{},{},{},{},{},{},{},{}}}\node[sort current]at(0,0){5};}
-\only<2>{\def\out{{5,{},{},{},{},{},{},{}}}\node[sort current]at(1,0){8};}
-\only<3>{\def\out{{5,8,{},{},{},{},{},{}}}\node[sort current]at(0,1){10};}
-\only<4>{\def\out{{5,8,10,{},{},{},{},{}}}\node[sort current]at(2,0){13};}
-\only<5>{\def\out{{5,8,10,13,{},{},{},{}}}\node[sort current]at(1,1){14};}
-\only<6>{\def\out{{5,8,10,13,14,{},{},{}}}\node[sort current]at(3,0){21};}
-\only<7>{\def\out{{5,8,10,13,14,21,{},{}}}\node[sort current]at(2,1){29};\node[sort current]at(3,1){37};}
-\only<8>{\def\out{{5,8,10,13,14,21,29,37}}}
-\foreach \i in {0,...,7}{\pgfmathparse{\out[\i]}\edef\v{\pgfmathresult}\node[sort done]at(\i,-1.2){\v};}
 \end{tikzpicture}""",
     # 15_bad_character.tex's `TIGER` Shift frame ("15-tiger-shift-table"):
     # the source's 2 \only states are a single floating equation-like
