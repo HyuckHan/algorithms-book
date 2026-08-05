@@ -658,15 +658,15 @@ $$shift[c]=m-1-\max\{j<m-1:P[j]=c\}$$
 ::: {.panel-tabset}
 ## 1단계
 
-![$j=0,1,2$ 계산: $shift[T]=4,\ shift[I]=3,\ shift[G]=2$.](../figures/09-string-matching/15-tiger-shift-table-step1.svg){fig-alt="TIGER shift table에서 T=4,I=3,G=2가 계산되어 채워지고 E,R은 아직 물음표로 미확정인 상태" width="55%"}
+![$j=0,1,2$ 계산: $shift[T]=4,\ shift[I]=3,\ shift[G]=2$.](../figures/09-string-matching/15-tiger-shift-table-step1.svg){fig-alt="TIGER shift table에서 T=4,I=3,G=2가 계산되어 채워지고 E,R은 물음표로 미확정이며 other=5 초기화값 배지가 함께 있는 상태" width="55%"}
 
 ## 2단계
 
-![$j=3$(loop 마지막) 계산: $shift[E]=1$ 추가. 나머지 문자의 초기화값 $shift[\text{other}]=m=5$도 함께 표시.](../figures/09-string-matching/15-tiger-shift-table-step2.svg){fig-alt="TIGER shift table에 shift[E]=1이 추가되고 other=5 초기화값 배지가 함께 표시된 상태" width="55%"}
+![$j=3$(loop 마지막) 계산: $shift[E]=1$이 채워진다.](../figures/09-string-matching/15-tiger-shift-table-step2.svg){fig-alt="TIGER shift table에 shift[E]=1이 채워지고 R만 물음표로 남은 상태" width="55%"}
 
 ## 3단계
 
-![`R`(index $4=m-1$)은 $j=0..m-2$ loop에서 제외되어 계산되지 않고 초기화 default $5$에 남는다 — 옅은 색으로 계산된 값과 구분한다.](../figures/09-string-matching/15-tiger-shift-table-step3.svg){fig-alt="TIGER shift table 최종 상태: T=4,I=3,G=2,E=1은 초록으로 계산되어 표시되고 R=5는 옅은 색으로 default임을 구분해 표시" width="55%"}
+![`R`(index $4=m-1$)은 $j=0..m-2$ loop에서 제외되어 계산되지 않고 초기화 default $5$에 남는다 — 옅은 색으로 계산된 값과 구분한다.](../figures/09-string-matching/15-tiger-shift-table-step3.svg){fig-alt="TIGER shift table에서 T=4,I=3,G=2,E=1은 초록으로 계산되어 표시되고 R=5는 옅은 색으로 default임을 구분해 표시" width="55%"}
 :::
 
 마지막 $R$은 preprocessing loop에서 제외한다.
