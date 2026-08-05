@@ -123,7 +123,7 @@ FIGURE_CONFIG = {
         # 8 frames, one per output placement.
         ("07_merge_sort.tex", 1): {"slug": "07-merge-pointers", "mode": "sequence", "full_override": "merge_pointers_8_frames"},
         ("07_merge_sort.tex", 2): {"slug": "07-merge-recursion-tree"},
-        ("08_quick_sort.tex", 0): {"slug": "08-quick-partition-trace", "mode": "sequence", "full_override": "quick_partition_trace_all_comparisons"},
+        ("08_quick_sort.tex", 0): {"slug": "08-quick-partition-trace", "mode": "sequence"},
         ("09_lower_bound.tex", 0): {"slug": "09-decision-tree"},
         ("10_heap_basics.tex", 0): {"slug": "10-heap-array-tree"},
         ("11_heapify.tex", 0): {"slug": "11-heapify-trace", "mode": "sequence"},
@@ -754,42 +754,6 @@ FULL_BODY_PATCHES = {
 \node[st inactive]at(n20){20};
 \draw[st active edge](n4)--(n3)--(n6);
 }
-\end{tikzpicture}""",
-    # 08_quick_sort.tex's Lomuto Partition trace
-    # ("08-quick-partition-trace"): the source's 4 \only<N> frames only stop
-    # at 4 arbitrarily-chosen checkpoints (j=1, then j=5, then j=9, then
-    # done) and never visualize the scan pointer `j` at all -- the existing
-    # \foreach only highlights index `\i` (the confirmed-boundary), so every
-    # j=2..9 comparison (both the ones that swap and, worse, ALL FIVE that
-    # don't: j=3,4,7,8,9) is invisible. Quick Sort's partition step is
-    # defined by "compare every element to pivot, swap into the left
-    # partition or pass over" -- skipping the pass-over comparisons hides
-    # exactly the half of the algorithm that explains why the left/right
-    # split ends up where it does. Rewritten as one frame per j=1..9 (10th
-    # frame = the final pivot swap/done state, matching the source's
-    # original done=1 case byte-for-byte including its brace overlay), each
-    # tracking \vals/\i/\j/\swap/\done: \j gets "sort current" (swap) or
-    # "sort compared" (no-swap, same hatched style introduced for the bubble
-    # trace above) so both outcomes are visible, and the confirmed \le pivot
-    # region (indices \le \i, excluding the current \j) is shown with
-    # "sort active" so the growing left partition is visible too. All 10
-    # array/i states below were hand-traced against Lomuto partition on
-    # {31,8,48,73,11,3,20,29,65,15} with pivot=15 (verified against the
-    # source's own final state, which is preserved exactly: pivot lands at
-    # index 4, {8,11,3,15,31,48,20,29,65,73}).
-    "quick_partition_trace_all_comparisons": r"""\begin{tikzpicture}[x=.94cm]
-\only<1>{\def\vals{{31,8,48,73,11,3,20,29,65,15}}\def\i{0}\def\j{1}\def\swap{0}\def\done{0}}
-\only<2>{\def\vals{{8,31,48,73,11,3,20,29,65,15}}\def\i{1}\def\j{2}\def\swap{1}\def\done{0}}
-\only<3>{\def\vals{{8,31,48,73,11,3,20,29,65,15}}\def\i{1}\def\j{3}\def\swap{0}\def\done{0}}
-\only<4>{\def\vals{{8,31,48,73,11,3,20,29,65,15}}\def\i{1}\def\j{4}\def\swap{0}\def\done{0}}
-\only<5>{\def\vals{{8,11,48,73,31,3,20,29,65,15}}\def\i{2}\def\j{5}\def\swap{1}\def\done{0}}
-\only<6>{\def\vals{{8,11,3,73,31,48,20,29,65,15}}\def\i{3}\def\j{6}\def\swap{1}\def\done{0}}
-\only<7>{\def\vals{{8,11,3,73,31,48,20,29,65,15}}\def\i{3}\def\j{7}\def\swap{0}\def\done{0}}
-\only<8>{\def\vals{{8,11,3,73,31,48,20,29,65,15}}\def\i{3}\def\j{8}\def\swap{0}\def\done{0}}
-\only<9>{\def\vals{{8,11,3,73,31,48,20,29,65,15}}\def\i{3}\def\j{9}\def\swap{0}\def\done{0}}
-\only<10>{\def\vals{{8,11,3,15,31,48,20,29,65,73}}\def\i{4}\def\j{0}\def\swap{0}\def\done{1}}
-\foreach \k in {1,...,10}{\pgfmathparse{\vals[\k-1]}\edef\v{\pgfmathresult}\ifnum\k=10\ifnum\done=0\node[sort pivot,minimum width=8mm]at(\k,0){\v};\else\node[sort cell,minimum width=8mm]at(\k,0){\v};\fi\else\ifnum\k=\j\ifnum\swap=1\node[sort current,minimum width=8mm]at(\k,0){\v};\else\node[sort compared,minimum width=8mm]at(\k,0){\v};\fi\else\ifnum\k>\i\node[sort cell,minimum width=8mm]at(\k,0){\v};\else\node[sort active,minimum width=8mm]at(\k,0){\v};\fi\fi\fi}
-\ifnum\done=1\node[sort pivot,minimum width=8mm]at(4,0){15};\draw[decorate,decoration={brace,mirror,amplitude=5pt},AlgoOrange](.55,-.65)--(4.45,-.65)node[midway,below=5pt]{partition 완료};\fi
 \end{tikzpicture}""",
     # 02_execution.tex's call-stack Push figure ("01-call-stack-push",
     # docs/REVIEW_NOTES.md #11 redo): the first pass at this fix (steps
