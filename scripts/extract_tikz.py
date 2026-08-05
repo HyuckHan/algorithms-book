@@ -172,7 +172,7 @@ FIGURE_CONFIG = {
         ("08_hanoi.tex", 2): {"slug": "09-hanoi-recursion-tree"},
         # docs/CHANGE_INSTRUCIONS_L02.md: step3 compressed 3 path advances +
         # 2 dead-end markings into one frame -- split into 6 steps.
-        ("09_maze.tex", 0): {"slug": "10-maze-trace", "mode": "sequence", "full_override": "maze_split_backtrack_steps"},
+        ("09_maze.tex", 0): {"slug": "10-maze-trace", "mode": "sequence"},
         ("10_blob.tex", 0): {"slug": "11-blob-neighbors"},
         ("10_blob.tex", 1): {"slug": "12-blob-floodfill", "mode": "sequence"},
         ("11_power_set.tex", 0): {"slug": "13-power-set-tree"},
@@ -877,35 +877,6 @@ FULL_BODY_PATCHES = {
 \only<2>{\draw[disk](-.9,.08)rectangle(.9,.3);\draw[disk](2.35,.08)rectangle(3.65,.3);\draw[disk](2.6,.32)rectangle(3.4,.54);}
 \only<3>{\draw[disk](5.1,.08)rectangle(6.9,.3);\draw[disk](2.35,.08)rectangle(3.65,.3);\draw[disk](2.6,.32)rectangle(3.4,.54);}
 \only<4>{\draw[disk](5.1,.08)rectangle(6.9,.3);\draw[disk](5.35,.32)rectangle(6.65,.54);\draw[disk](5.6,.56)rectangle(6.4,.78);}
-\end{tikzpicture}""",
-    # 09_maze.tex's 6x6 backtracking figure ("10-maze-trace",
-    # docs/CHANGE_INSTRUCIONS_L02.md): the source's step3 (of 4) jumps from
-    # "path ends at (2,1), (2,0) marked dead" straight to "path reaches
-    # (3,3) via (2,2)/(2,3), AND (3,2)/(4,2) already marked dead" -- three
-    # new path cells and two new dead cells appear in the same frame, so
-    # the reader can't tell whether the dead pocket was explored before or
-    # after the successful direction, and for an instant two different
-    # branches ((2,2)-onward and (3,2)-(4,2)) would both read as "current"
-    # if drawn with the same path styling.
-    # Splits that one frame into two, both reusing the source's own
-    # `\gridcell` calls verbatim (no new coordinates invented): a new step3
-    # shows the tentative advance down into the (3,2)-(4,2) pocket as path
-    # (still exploring, not yet known to be a dead end); step4 reclassifies
-    # those two cells to `dead` and retracts the visible path back to
-    # (2,2), i.e. the backtrack. The original step3 and step4 are preserved
-    # unchanged as the new step5 (retry via (2,3)) and step6 (advance to
-    # the exit) -- same final path/dead-cell sets as before, just no
-    # longer requiring 5 simultaneous cell-state changes in one frame.
-    "maze_split_backtrack_steps": r"""\begin{tikzpicture}[scale=1.08,transform shape]
-\foreach \r in {0,...,5}{\foreach \c in {0,...,5}{\gridcell{\r}{\c}{open}}}
-\foreach \r/\c in {0/2,0/3,0/4,0/5,1/0,1/2,1/3,1/4,1/5,2/4,2/5,3/0,3/1,3/4,3/5,4/0,4/1,4/5,5/0,5/1,5/2,5/3}{\gridcell{\r}{\c}{wall}}
-\only<1>{\foreach \r/\c in {0/0,0/1,1/1}{\gridcell{\r}{\c}{path}}}
-\only<2>{\foreach \r/\c in {0/0,0/1,1/1,2/1}{\gridcell{\r}{\c}{path}}\gridcell{2}{0}{dead}}
-\only<3>{\foreach \r/\c in {0/0,0/1,1/1,2/1,2/2,3/2,4/2}{\gridcell{\r}{\c}{path}}\gridcell{2}{0}{dead}}
-\only<4>{\foreach \r/\c in {0/0,0/1,1/1,2/1,2/2}{\gridcell{\r}{\c}{path}}\foreach \r/\c in {2/0,3/2,4/2}{\gridcell{\r}{\c}{dead}}}
-\only<5>{\foreach \r/\c in {0/0,0/1,1/1,2/1,2/2,2/3,3/3}{\gridcell{\r}{\c}{path}}\foreach \r/\c in {2/0,3/2,4/2}{\gridcell{\r}{\c}{dead}}}
-\only<6>{\foreach \r/\c in {0/0,0/1,1/1,2/1,2/2,2/3,3/3,4/3,4/4,5/4,5/5}{\gridcell{\r}{\c}{path}}\foreach \r/\c in {2/0,3/2,4/2}{\gridcell{\r}{\c}{dead}}}
-\node[font=\bfseries] at (0,0){S};\node[font=\bfseries] at (5,-5){E};
 \end{tikzpicture}""",
     # 07_merge_sort.tex's "MERGE: 두 Pointer만 전진한다" figure
     # ("07-merge-pointers", docs/CHANGE_INSTRUCIONS_L03.md 3.4.1): the
