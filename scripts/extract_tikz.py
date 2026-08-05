@@ -255,12 +255,7 @@ FIGURE_CONFIG = {
         ("03_traversal.tex", 5): {"slug": "12-expression-tree"},
         ("06_bst_search.tex", 0): {"slug": "13-fixed-bst-example"},
         ("06_bst_search.tex", 1): {"slug": "14-search-trace", "mode": "sequence", "text_patch": "trace_orienting_annotation_font"},
-        ("06_bst_search.tex", 2): {"slug": "15-successor-cases", "mode": "sequence", "full_override": "successor_merged_tree"},
-        # Was "16-successor-case2-ancestor-chain": its content is now fully
-        # absorbed into idx 2's merged tree above (see the
-        # "successor_merged_tree" FULL_BODY_PATCHES comment), so this source
-        # tikzpicture no longer gets its own extracted figure at all.
-        ("06_bst_search.tex", 3): {"skip": True},
+        ("06_bst_search.tex", 2): {"slug": "15-successor-cases", "mode": "sequence"},
         ("07_bst_insert_delete.tex", 0): {"slug": "17-insert-trace", "mode": "sequence", "text_patch": "trace_orienting_annotation_font"},
         ("07_bst_insert_delete.tex", 1): {"slug": "18-delete-case1-leaf", "mode": "sequence"},
         ("07_bst_insert_delete.tex", 2): {"slug": "19-delete-case2-one-child", "mode": "sequence"},
@@ -596,69 +591,6 @@ def apply_text_patch(raw, patch_name):
 # with the string below; still build-time-only, still never touches
 # lecture-notes/ (the new content lives entirely in this file).
 FULL_BODY_PATCHES = {
-    # 06_bst_search.tex's SUCCESSOR Animation frame draws Case 1
-    # ("15-successor-cases", idx 2: a 5-node tree {15,6,18,17,20} with 6 as a
-    # leaf-looking inactive node) and Case 2 ("16-successor-case2-ancestor-
-    # chain", idx 3: a *separate*, disconnected tikzpicture positioned in the
-    # other beamer \column, showing only {6,3,4} with an upward active-edge
-    # path) as two independent tikzpictures -- fine live, side by side on a
-    # slide with spoken narration, but confusing as two disconnected diagrams
-    # in a standalone webbook (docs/REVIEW_NOTES.md #5): the reader has no
-    # way to see that 3/4 are actually part of the SAME tree hanging off 6's
-    # left side. This full-body override merges both into one 7-node tree
-    # {3,4,6,15,17,18,20} with two \only<N> overlay states (reusing this
-    # file's own st current/st done/st inactive/st active edge styles and
-    # child{}/child[missing]{} tree syntax, e.g. from this same file's
-    # 13-fixed-bst-example), applied to idx 2 with "mode": "sequence" so it
-    # renders as a 2-step tabset (Case 1 / Case 2) instead of a single flat
-    # image. idx 3 is left unconfigured (auto-slug, unreferenced in the qmd)
-    # since its content is now fully absorbed into idx 2's merged figure.
-    #
-    # Tree structure (confirmed BST-valid and re-checked against the actual
-    # SUCCESSOR algorithm, not just sorted order):
-    #   15
-    #    |-- 6            (left)
-    #    |    `-- 3       (left)
-    #    |         `-- 4  (right)
-    #    `-- 18           (right)
-    #         |-- 17      (left)
-    #         `-- 20      (right)
-    # succ(15)=17 (min of 15's right subtree), succ(6)=15 (6 is a left child,
-    # so its nearest such ancestor is succ -- NOT 7, which isn't even in this
-    # tree), succ(4)=6 (4 is a right child of 3, 3 is a left child of 6, so
-    # walking up from 4 the first "became a left child" ancestor is 6),
-    # succ(20)=NIL (20 is the maximum key, no such ancestor exists).
-    "successor_merged_tree": r"""\begin{tikzpicture}[level distance=10mm,level 1/.style={sibling distance=26mm},level 2/.style={sibling distance=16mm}]
-\node[st node](n15){15}
- child{node[st node](n6){6}
-   child{node[st node](n3){3}
-     child[missing]{}
-     child{node[st node](n4){4}}
-   }
- }
- child{node[st node](n18){18}
-   child{node[st node](n17){17}}
-   child{node[st node](n20){20}}
- };
-\only<1|handout:0>{
-\node[st current]at(n15){15};
-\node[st inactive]at(n6){6};
-\node[st inactive]at(n3){3};
-\node[st inactive]at(n4){4};
-\node[st done]at(n18){18};
-\node[st current]at(n17){17};
-}
-\only<2|handout:1>{
-\node[st inactive]at(n15){15};
-\node[st done]at(n6){6};
-\node[st node]at(n3){3};
-\node[st current]at(n4){4};
-\node[st inactive]at(n18){18};
-\node[st inactive]at(n17){17};
-\node[st inactive]at(n20){20};
-\draw[st active edge](n4)--(n3)--(n6);
-}
-\end{tikzpicture}""",
 }
 
 
