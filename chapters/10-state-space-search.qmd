@@ -563,7 +563,23 @@ Maximization UB가 실제 가능한 최고값보다 작으면 optimal branch를 
 
 `BranchAndBound`도 개념 골격이다 — `RepresentsFeasibleSolution`/`IsComplete`/`Expand`/`FeasibilityPossible`는 이름만 정해두고, Part D의 Knapsack B&B가 이 자리들을 구체화한다.
 
-![Bound-based pruning: root UB 20에서 두 child(UB 16, UB 12) 확장 → UB 16 쪽에서 feasible solution(value 14) 발견 → INC=14 갱신 → UB 12 child는 14보다 클 수 없어 prune.](../figures/10-state-space-search/12-bound-based-pruning-step4.svg){fig-alt="UB 20인 root에서 UB 16과 UB 12 두 child로 확장되고 UB 16 쪽에서 value 14인 feasible solution을 찾아 incumbent를 갱신한 뒤 UB 12 child가 prune되는 4단계 트레이스의 마지막 상태" width="50%"}
+::: {.panel-tabset}
+## 1단계
+
+![root를 확장해 UB 16과 UB 12 두 child를 얻는다.](../figures/10-state-space-search/12-bound-based-pruning-step1.svg){fig-alt="UB 20인 root 아래에 UB 16과 UB 12 두 child가 연결된 트리" width="38%"}
+
+## 2단계
+
+![UB 16 쪽을 내려가 value 14인 feasible solution을 찾는다.](../figures/10-state-space-search/12-bound-based-pruning-step2.svg){fig-alt="UB 16 아래에 value 14 노드가 추가되어 feasible solution이 표시된 트리" width="38%"}
+
+## 3단계
+
+![incumbent를 14로 갱신한다 — 이보다 못한 후보는 이제 쓸모없다.](../figures/10-state-space-search/12-bound-based-pruning-step3.svg){fig-alt="value 14 아래에 INC = 14 배지가 붙어 incumbent가 표시된 트리" width="38%"}
+
+## 4단계
+
+![UB 12인 child는 14를 넘을 수 없으므로 잘라낸다.](../figures/10-state-space-search/12-bound-based-pruning-step4.svg){fig-alt="UB 12 위치에 P 표시와 UB 12 ≤ 14 주석이 붙어 해당 subtree가 prune된 트리" width="50%"}
+:::
 
 $$\text{total work}\approx\text{expanded nodes}\times\text{bound cost}$$
 
