@@ -235,3 +235,18 @@ MathJax뿐이다. 원본에 새 sentinel 매크로를 추가하면서 `assets/ma
 않는다**. 이 게이트는 현재 사람이 직접 `--check`를 대화형으로 실행할 때만 실질적으로
 작동하며, CI를 통해서는 회귀를 잡아내지 못한다.
 
+### 8. `randomized_select.c`의 `rand()`는 libc 구현에 따라 시퀀스가 달라질 수 있다
+
+`code/04-selection/c/randomized_select.c`는 `srand(20260729u)`로 시드를 고정하지만,
+표준 C의 `rand()`는 **같은 시드에서 어떤 정수 시퀀스가 나오는지를 규정하지 않는다** —
+glibc/musl 등 libc 구현마다, 심지어 같은 glibc의 메이저 버전이 바뀌어도 시퀀스가
+달라질 수 있다. `scripts/build.sh`의 신선도 게이트(§7과 별개로 이번에 추가됨)가
+`git status --short figures/`로 `figures/04-selection/out-randomized-select-c.txt`의
+변경을 잡아내면, 코드나 소스가 실제로 바뀐 게 아니라 **CI 이미지의 glibc 버전이
+바뀌어 같은 시드가 다른 시퀀스를 냈을 가능성**을 먼저 확인할 것. (Java의
+`new Random(20260729L)`은 시드-시퀀스 대응이 언어 스펙으로 고정돼 있어 이 위험이
+없다. Python은 `random.seed(20260729)`로 고정했지만 CPython의 Mersenne Twister
+구현이 바뀌면 이론적으로 같은 위험이 있다 — 다만 `randomized_select`의 출력은 최종
+선택값만 찍으므로, pivot 경로가 어떻게 되든 알고리즘 정확성 덕분에 값 자체는 항상
+같다.)
+

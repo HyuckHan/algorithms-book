@@ -40,6 +40,7 @@ def randomized_select(a, rank):
 if __name__ == "__main__":
     data = [31, 8, 48, 73, 11, 3, 20, 29, 65, 15]
     print("input:", ",".join(str(x) for x in data))
+    random.seed(20260729)
     for rank in (1, 6):
         print("rank:", rank)
         print("result:", randomized_select(data, rank))
