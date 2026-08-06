@@ -53,9 +53,9 @@ Risks
 # 빌드
 quarto render                 # 또는 quarto render chapters/NN-*.qmd
 # 파이프라인
-python3 scripts/extract_tikz.py --check
-python3 scripts/convert_pseudocode.py --check
-python3 scripts/run_examples.py --lecture NN     # 3언어 출력 일치
+python3 scripts/extract_tikz.py --all --check
+python3 scripts/convert_pseudocode.py --all --check
+python3 scripts/run_examples.py --lecture NN     # 3언어 출력 일치(수정한 강의 하나)
 # 품질 게이트(§QUALITY_ASSURANCE): 헤드리스 검사
 python3 scripts/qa_check.py _book/…              # 원시수식 0, 그림 개수 일치, 오버플로 0, 대비, alt
 ```

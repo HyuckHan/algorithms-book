@@ -211,3 +211,27 @@ MathJax `macros` 객체)이 완전히 별개의 매크로 등록 체계라는 �
 다른 쪽에서 정의되지 않은 매크로로 렌더가 깨지므로, 이런 종류의 sentinel 매크로는 항상
 두 곳에 나란히 등록해야 한다.
 
+### 6. 매크로 등록은 원본(LaTeX)과 웹북(MathJax) 양쪽 다 필요하다
+
+`lecture-notes/`의 `\newcommand`와 `assets/mathjax-macros.html`의 `window.MathJax.tex.macros`는
+완전히 독립된 두 체계다. `convert_pseudocode.py`는 `algorithmic` 블록의 원문을 매크로
+확장 없이 그대로 추출하므로(`\NIL`·`\NotFound`가 생성된 `.qmd`에 리터럴 매크로 이름으로
+그대로 남아 있는 것으로 확인됨), 웹페이지에서 실제로 그 매크로를 풀어 쓰는 쪽은 브라우저의
+MathJax뿐이다. 원본에 새 sentinel 매크로를 추가하면서 `assets/mathjax-macros.html`에
+등록하지 않으면 Beamer PDF는 정상이지만 웹북은 undefined-macro로 조용히 깨진다(에러가
+아니라 렌더 결과만 이상해지므로 놓치기 쉽다). 반대로 웹북에만 등록하고 원본에 매크로
+정의가 없으면 Beamer 빌드가 실패한다. 새 매크로를 쓸 때는 항상 두 파일을 나란히 고치고,
+가능하면 헤드리스 브라우저로 렌더 결과까지 확인한다. (2026-08-07 `\Duplicate` 역이식에서
+발견 — §5 참고)
+
+### 7. `.figure-counts.json` 게이트는 CI 실배포에서 사실상 무력화된다
+
+`extract_tikz.py`의 `.figure-counts.json`은 `if not check_only: save_figure_counts(...)` —
+`--check` 없는 실제 빌드에서는 **항상** 현재 카운트로 덮어쓴다(이미 baseline이 있어도
+그대로 갈아치움). `scripts/build.sh`가 이제 `--all`을 실제 모드로 넘기므로(2026-08-07
+`bea4d94`), CI(`deploy.yml` → `build.sh`)가 매 배포마다 10개 lecture 전체의 baseline을
+새로 쓴다 — 즉 어떤 `.tex` 파일의 그림 개수가 실제로 밀렸어도(인덱스가 어긋날 위험 신호),
+그 배포에서 baseline이 즉시 새 값으로 갱신되므로 **다음 실행부터는 경고가 다시는 뜨지
+않는다**. 이 게이트는 현재 사람이 직접 `--check`를 대화형으로 실행할 때만 실질적으로
+작동하며, CI를 통해서는 회귀를 잡아내지 못한다.
+
