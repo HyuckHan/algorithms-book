@@ -1,0 +1,19 @@
+{
+  "01_motivation.tex": 0,
+  "02_hashing_model.tex": 2,
+  "03_hash_functions.tex": 1,
+  "04_string_hashing.tex": 2,
+  "05_collision.tex": 3,
+  "06_chaining.tex": 4,
+  "07_open_addressing.tex": 1,
+  "08_linear_probing.tex": 5,
+  "09_quadratic_probing.tex": 2,
+  "10_double_hashing.tex": 2,
+  "11_deletion.tex": 4,
+  "12_load_factor.tex": 0,
+  "13_rehashing.tex": 2,
+  "14_implementation.tex": 0,
+  "15_comparison.tex": 0,
+  "16_summary_quiz.tex": 0,
+  "17_appendix.tex": 0
+}

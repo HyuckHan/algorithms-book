@@ -1,0 +1,16 @@
+{
+  "01_tree_basics.tex": 2,
+  "02_binary_tree.tex": 4,
+  "03_traversal.tex": 6,
+  "04_binary_tree_impl.tex": 0,
+  "05_dynamic_set.tex": 0,
+  "06_bst_search.tex": 3,
+  "07_bst_insert_delete.tex": 5,
+  "08_balanced_motivation.tex": 1,
+  "09_avl.tex": 12,
+  "10_red_black.tex": 12,
+  "11_btree.tex": 13,
+  "12_comparison.tex": 0,
+  "13_summary_quiz.tex": 1,
+  "14_appendix.tex": 0
+}

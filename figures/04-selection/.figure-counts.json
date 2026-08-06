@@ -1,0 +1,17 @@
+{
+  "01_motivation.tex": 1,
+  "02_order_statistics.tex": 1,
+  "03_sort_then_select.tex": 1,
+  "04_quickselect_idea.tex": 2,
+  "05_quickselect_trace.tex": 3,
+  "06_quickselect_correctness.tex": 0,
+  "07_quickselect_analysis.tex": 1,
+  "08_randomized_select.tex": 0,
+  "09_median_of_medians_intro.tex": 0,
+  "10_group_of_five.tex": 2,
+  "11_pivot_guarantee.tex": 2,
+  "12_bfprt_recurrence.tex": 0,
+  "13_comparison.tex": 0,
+  "14_summary_quiz.tex": 1,
+  "15_appendix.tex": 0
+}

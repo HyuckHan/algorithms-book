@@ -1,0 +1,14 @@
+{
+  "01_motivation.tex": 2,
+  "02_fibonacci.tex": 1,
+  "03_memoization_tabulation.tex": 2,
+  "04_dp_workflow.tex": 0,
+  "05_matrix_path.tex": 5,
+  "06_optimal_substructure.tex": 2,
+  "07_lcs.tex": 2,
+  "08_lcs_reconstruction.tex": 1,
+  "09_maximum_subarray.tex": 0,
+  "10_comparison.tex": 0,
+  "11_summary_quiz.tex": 1,
+  "12_appendix.tex": 0
+}

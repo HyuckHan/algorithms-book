@@ -1,0 +1,22 @@
+{
+  "01_problem.tex": 0,
+  "02_naive.tex": 2,
+  "03_redundancy.tex": 0,
+  "04_rabin_karp_intro.tex": 2,
+  "05_rolling_hash.tex": 2,
+  "06_modular_collision.tex": 1,
+  "07_rabin_karp_analysis.tex": 1,
+  "08_border.tex": 1,
+  "09_kmp_idea.tex": 1,
+  "10_lps_table.tex": 0,
+  "11_kmp_preprocessing.tex": 1,
+  "12_kmp_search.tex": 2,
+  "13_kmp_analysis.tex": 0,
+  "14_boyer_moore_intro.tex": 1,
+  "15_bad_character.tex": 2,
+  "16_horspool.tex": 2,
+  "17_comparison.tex": 0,
+  "18_implementation.tex": 0,
+  "19_summary_quiz.tex": 0,
+  "20_appendix.tex": 0
+}

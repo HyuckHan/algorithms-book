@@ -1,0 +1,20 @@
+{
+  "01_graph_basics.tex": 1,
+  "02_representation.tex": 2,
+  "03_bfs.tex": 3,
+  "04_dfs.tex": 1,
+  "05_cycle_detection.tex": 1,
+  "06_topological_sort.tex": 3,
+  "07_mst_intro.tex": 0,
+  "08_cut_property.tex": 1,
+  "09_prim.tex": 1,
+  "10_kruskal.tex": 2,
+  "11_mst_comparison.tex": 1,
+  "12_shortest_path_intro.tex": 1,
+  "13_unweighted_dag.tex": 2,
+  "14_dijkstra.tex": 2,
+  "15_bellman_ford.tex": 1,
+  "16_comparison.tex": 0,
+  "17_summary_quiz.tex": 0,
+  "18_appendix.tex": 0
+}

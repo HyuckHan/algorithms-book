@@ -1031,6 +1031,26 @@ def save_manifest(out_dir, manifest):
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True), encoding="utf-8")
 
 
+# Separate sidecar (not a key inside .manifest.json) so the existing
+# slug -> content_hash structure stays untouched, and a figure's slug can
+# never collide with a section filename in the same namespace. Same
+# precedent as convert_pseudocode.py's own ".pseudocode-manifest.json"
+# living alongside this file's ".manifest.json" in the same output dir.
+def load_figure_counts(out_dir):
+    counts_path = out_dir / ".figure-counts.json"
+    if counts_path.exists():
+        return json.loads(counts_path.read_text(encoding="utf-8"))
+    return {}
+
+
+def save_figure_counts(out_dir, counts):
+    counts_path = out_dir / ".figure-counts.json"
+    # Unlike save_manifest, this can run under --check (bootstrap case) where
+    # nothing else has created out_dir yet -- mkdir it ourselves.
+    counts_path.parent.mkdir(parents=True, exist_ok=True)
+    counts_path.write_text(json.dumps(counts, indent=2, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+
+
 def default_worker_count():
     """Parallel lualatex compile job count: each job is its own process
     invoking lualatex+dvisvgm independently (no shared mutable state --
@@ -1065,9 +1085,26 @@ def process_lecture(lecture, check_only, keep_build, jobs=None):
     built, cached, failed = [], [], []
     pending = []  # (body_tex, common_block, out_svg, out_slug, content_hash)
 
+    # Per-file figure *count* (not content) tracking: a FIGURE_CONFIG
+    # (file, idx) key only silently points at the wrong tikzpicture when
+    # the file's total figure count changes (an insertion/deletion shifts
+    # every later index) -- editing an existing figure's own content never
+    # changes that count. Comparing counts instead of content hashes means
+    # legitimate content fixes (the common case) never trigger a false
+    # warning, and this has nothing to do with content_hash/body_tex, so it
+    # can never trigger an SVG rebuild.
+    prior_figure_counts = load_figure_counts(out_dir)
+    current_figure_counts = {}
+    count_warnings = []
+
     section_paths = sorted(sections_dir.glob("*.tex"))
     for section_path in section_paths:
-        for idx, kind, raw in find_figures(section_path, lecture):
+        section_figures = list(find_figures(section_path, lecture))
+        current_figure_counts[section_path.name] = len(section_figures)
+        prior_count = prior_figure_counts.get(section_path.name)
+        if prior_count is not None and prior_count != len(section_figures):
+            count_warnings.append((section_path.name, prior_count, len(section_figures)))
+        for idx, kind, raw in section_figures:
             key = (section_path.name, idx)
             cfg = config.get(key, {})
             if cfg.get("skip"):
@@ -1156,7 +1193,20 @@ def process_lecture(lecture, check_only, keep_build, jobs=None):
         if not keep_build:
             shutil.rmtree(CACHE_DIR, ignore_errors=True)
 
-    return built, cached, failed, expected_files, manifest
+    # Bootstrap the sidecar the first time it's seen (even under --check, so
+    # a fresh clone's first --check already has a baseline to compare against
+    # next time) -- but once a baseline exists, only update it on a real
+    # build. A count mismatch found by --check must keep firing on every
+    # subsequent --check until someone actually commits to a real build
+    # (which is where FIGURE_CONFIG would realistically get reviewed and
+    # fixed, or the new count confirmed intentional); auto-updating on
+    # --check would let the warning vanish the moment it's re-run without
+    # anyone having looked at it.
+    counts_path = out_dir / ".figure-counts.json"
+    if not check_only or not counts_path.exists():
+        save_figure_counts(out_dir, current_figure_counts)
+
+    return built, cached, failed, expected_files, manifest, count_warnings
 
 
 def _lecture_slug(lecture):
@@ -1178,7 +1228,7 @@ def main():
                          help="parallel lualatex compiles (default: min(cpu_count, 8) -- see default_worker_count())")
     args = parser.parse_args()
 
-    built, cached, failed, expected_files, manifest = process_lecture(
+    built, cached, failed, expected_files, manifest, count_warnings = process_lecture(
         args.lecture, args.check, args.keep_build, jobs=args.jobs
     )
 
@@ -1189,6 +1239,9 @@ def main():
     for slug, err in failed:
         print("  FAIL %s:" % slug)
         print("    " + "\n    ".join((err or "").splitlines()[-15:]))
+    for file_name, prior_count, new_count in count_warnings:
+        print("  WARN %s: figure count %d -> %d -- this file's FIGURE_CONFIG"
+              " indices may have shifted, check them" % (file_name, prior_count, new_count))
 
     if args.check:
         out_dir = REPO_ROOT / "figures" / _lecture_slug(args.lecture)

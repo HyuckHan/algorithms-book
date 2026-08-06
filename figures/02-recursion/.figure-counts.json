@@ -1,0 +1,15 @@
+{
+  "01_motivation.tex": 0,
+  "02_execution.tex": 2,
+  "03_correctness.tex": 0,
+  "04_basic_examples.tex": 1,
+  "05_recurrences.tex": 1,
+  "06_master_theorem.tex": 1,
+  "07_recursive_thinking.tex": 1,
+  "08_hanoi.tex": 3,
+  "09_maze.tex": 1,
+  "10_blob.tex": 2,
+  "11_power_set.tex": 1,
+  "12_recursion_vs_iteration.tex": 0,
+  "13_summary_quiz.tex": 1
+}

@@ -1,0 +1,14 @@
+{
+  "01_motivation.tex": 2,
+  "02_algorithm_program.tex": 3,
+  "03_algorithm_properties.tex": 0,
+  "04_pseudocode.tex": 0,
+  "05_maximum.tex": 1,
+  "06_linear_search.tex": 1,
+  "07_binary_search.tex": 2,
+  "08_complexity_motivation.tex": 0,
+  "09_orders_of_growth.tex": 1,
+  "10_asymptotic_notation.tex": 2,
+  "11_algorithm_analysis.tex": 0,
+  "12_summary_quiz.tex": 1
+}
