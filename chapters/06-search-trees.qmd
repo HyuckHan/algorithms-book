@@ -467,11 +467,11 @@ Transplant는 node $u$의 parent link를 $v$로 바꾸며 root case도 같은 he
 
 ![DELETE Case 1(leaf): target 7의 parent link를 NIL로.](../figures/06-search-trees/18-delete-case1-leaf-step1.svg){fig-alt="6의 두 자식 3,7 중 7이 target으로 표시된 삭제 전 상태" width="35%"}
 
-![](../figures/06-search-trees/18-delete-case1-leaf-step2.svg){fig-alt="7 자리가 NIL로 바뀐 삭제 후 상태" width="35%"}
+![7이 제거되고 parent의 자식 자리가 NIL이 된다 — leaf 삭제는 재배치가 필요 없다.](../figures/06-search-trees/18-delete-case1-leaf-step2.svg){fig-alt="7 자리가 NIL로 바뀐 삭제 후 상태" width="35%"}
 
 ![DELETE Case 2(one child): Transplant(6,3) 후 subtree 3이 6의 자리로.](../figures/06-search-trees/19-delete-case2-one-child-step1.svg){fig-alt="15의 왼쪽 자식 6(target)이 자식 3을 가진 삭제 전 상태" width="35%"}
 
-![](../figures/06-search-trees/19-delete-case2-one-child-step2.svg){fig-alt="3이 6의 자리로 직접 연결된 삭제 후 상태" width="35%"}
+![6이 있던 자리에 subtree 3이 그대로 올라온다 — 자식이 하나면 그 subtree를 통째로 끌어올리면 된다.](../figures/06-search-trees/19-delete-case2-one-child-step2.svg){fig-alt="3이 6의 자리로 직접 연결된 삭제 후 상태" width="35%"}
 
 **DELETE Case 3**(15 삭제, successor 17 선택): $y=min(15.right)=17$이고 따라서 $y.left=\NIL$이다.
 
