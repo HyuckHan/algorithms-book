@@ -102,7 +102,7 @@ $$\text{binary depth }n:\ 2^n\text{ leaves},\quad 2^{n+1}-1\text{ nodes}\qquad\t
 Backtracking과 Branch-and-Bound의 차이는 DFS/BFS가 아니라 pruning의 의미다.
 :::
 
-![같은 tree, 다른 방문 순서: DFS는 R,A,C,D,B,E,F, BFS는 R,A,B,C,D,E,F 순으로 방문하지만 best-first는 tree 구조가 같고 frontier 정책만 다르다.](../figures/10-state-space-search/03-dfs-bfs-visit-order-step3.svg){fig-alt="같은 7-node 트리에서 DFS 순서와 BFS 순서를 비교하고 best-first는 frontier 정책만 다르다는 콜아웃이 붙은 3단계 트레이스의 마지막 상태" width="60%"}
+![같은 tree, 다른 방문 순서: DFS는 R,A,C,D,B,E,F, BFS는 R,A,B,C,D,E,F 순으로 방문하지만 best-first는 tree 구조가 같고 frontier 정책만 다르다.](../figures/10-state-space-search/03-dfs-bfs-visit-order-step3.svg){fig-alt="같은 7-node 트리에서 DFS 순서와 BFS 순서를 비교하고 best-first는 frontier 정책만 다르다는 콜아웃이 붙은 그림" width="60%"}
 
 $$\text{complete enumeration}\quad+\quad\text{sound pruning}\quad=\quad\text{정답을 보존한 state-space search}$$
 
@@ -200,7 +200,7 @@ Partial solution을 보통 DFS로 확장하되, constraint상 feasible descendan
 
 `Backtrack`은 개념 골격이다 — `IsComplete`/`IsFeasible`/`Report`/`Candidates`/`Apply`/`IsPromising`/`Undo`는 모두 이름만 정해두고, 아래 N-Queens/Subset Sum/Graph Coloring이 각각 자신의 state에 맞게 이 자리들을 구체화한다.
 
-![Apply와 Undo의 대칭: decision을 state에 반영 → promising이면 재귀 → return 후 Undo하면 sibling은 동일한 parent state에서 시작한다.](../figures/10-state-space-search/05-apply-undo-symmetry-step3.svg){fig-alt="state S에서 Apply로 자식 상태로 갔다가 recurse한 뒤 Undo로 다시 정확히 원래 state S로 돌아오는 3단계 트레이스의 마지막 상태" width="60%"}
+![Apply와 Undo의 대칭: decision을 state에 반영 → promising이면 재귀 → return 후 Undo하면 sibling은 동일한 parent state에서 시작한다.](../figures/10-state-space-search/05-apply-undo-symmetry-step3.svg){fig-alt="state S에서 Apply로 자식 상태로 갔다가 recurse한 뒤 Undo로 다시 정확히 원래 state S로 돌아오는 그림" width="60%"}
 
 $$\neg Promising(s)\ \Longrightarrow\ \text{descendants}(s)\text{에 feasible solution이 없다}$$
 
@@ -643,7 +643,39 @@ $W=16$. 검증된 optimum: A와 C, weight 12, profit 90.
 weight/profit 합은 넓은 정수형과 덧셈 guard를 사용하고, ratio 비교는 cross multiplication을 안전하게 처리한다.
 :::
 
-![Knapsack best-first trace: root UB115 → A 포함/제외 → B 포함/제외 → UB가 가장 큰 AB를 먼저 꺼내지만 C를 넣으면 무게 17로 용량을 넘어 폐기되고 → exclude-B에서 C를 포함해 w12,p90 확정 → UB가 90 이하인 ¬A(82)와 AB¬C(80)를 prune → PQ empty, optimum 90.](../figures/10-state-space-search/13-knapsack-best-first-trace-step8.svg){fig-alt="state box에 PQ empty: optimum 90이, note에 optimal weight 12, profit 90이 표시된 화면" width="30%"}
+::: {.panel-tabset}
+## 1단계
+
+![root를 확장한다 — $UB=115$, PQ에 root 하나.](../figures/10-state-space-search/13-knapsack-best-first-trace-step1.svg){fig-alt="state box에 root (w0,p0,UB115)가, note에 PQ view root:115가 표시된 상태" width="26%"}
+
+## 2단계
+
+![A를 포함한다 — $(w2,p40)$, UB는 여전히 115.](../figures/10-state-space-search/13-knapsack-best-first-trace-step2.svg){fig-alt="state box에 A를 포함한 (w2,p40,UB115)가, note에 PQ view A:115가 표시된 상태" width="30%"}
+
+## 3단계
+
+![A를 제외한 가지도 만든다 — $(w0,p0)$, $UB=82$.](../figures/10-state-space-search/13-knapsack-best-first-trace-step3.svg){fig-alt="state box에 A를 제외한 (w0,p0,UB82)가, note에 PQ view A:115와 ¬A:82가 표시된 상태" width="30%"}
+
+## 4단계
+
+![B 포함·제외 두 자식이 생겨 PQ는 $AB{:}115$, $A\lnot B{:}98$, $\lnot A{:}82$이 된다.](../figures/10-state-space-search/13-knapsack-best-first-trace-step4.svg){fig-alt="state box에 B 포함·제외 두 자식 생성이, note에 PQ view AB:115, A¬B:98, ¬A:82가 표시된 상태" width="30%"}
+
+## 5단계
+
+![UB가 가장 큰 AB를 꺼낸다 — C를 넣으면 무게 17로 용량 16을 넘어 폐기되고, $AB\lnot C$가 $UB=80$으로 남는다.](../figures/10-state-space-search/13-knapsack-best-first-trace-step5.svg){fig-alt="state box에 AB pop 후 C 포함 시 무게 17로 폐기, AB¬C는 UB80으로 잔류한다는 내용이, note에 PQ view A¬B:98, ¬A:82, AB¬C:80이 표시된 상태" width="30%"}
+
+## 6단계
+
+![다음으로 $A\lnot B$를 꺼내 C를 포함한다 — $w12,p90$으로 incumbent 확정.](../figures/10-state-space-search/13-knapsack-best-first-trace-step6.svg){fig-alt="state box에 exclude-B를 확장해 C를 포함한 (w12,p90)이, note에 incumbent 90: selected {A,C}가 표시된 상태" width="30%"}
+
+## 7단계
+
+![$UB$가 90 이하인 $\lnot A(82)$와 $AB\lnot C(80)$를 모두 자른다.](../figures/10-state-space-search/13-knapsack-best-first-trace-step7.svg){fig-alt="state box에 incumbent 90 이하인 ¬A(82), AB¬C(80) prune이, note에 objective-bound prune이 표시된 상태" width="30%"}
+
+## 8단계
+
+![PQ가 비었다 — optimum은 weight 12, profit 90.](../figures/10-state-space-search/13-knapsack-best-first-trace-step8.svg){fig-alt="state box에 PQ empty: optimum 90이, note에 optimal weight 12, profit 90이 표시된 화면" width="30%"}
+:::
 
 ![핵심 state tree(node label: weight/profit/UB): root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라진다. A 포함 쪽은 다시 B 포함 7/70/115와 B 제외 2/40/98로 나뉜다. B 포함 쪽은 C를 포함하면 weight 17로 용량을 초과해 폐기(w>W)되고, C를 제외하면 12/80/80으로 남지만 UB 80이 incumbent 90을 넘지 못해 prune된다. B 제외 쪽은 C를 포함해 12/90/90에 도달한다. A 제외 쪽은 UB 82가 incumbent 90을 넘지 못해 prune(P)된다.](../figures/10-state-space-search/14-knapsack-state-tree.svg){fig-alt="root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라지고, A 포함 쪽이 다시 7/70/115와 2/40/98 두 형제로 나뉜다. 7/70/115 아래에는 용량 초과로 폐기된 17/-와 UB80으로 prune된 12/80/80 두 자식이 있고, 2/40/98 아래에는 완성된 해 12/90/90이 있다. A 제외 쪽 아래에는 prune을 뜻하는 P 노드가 있다." width="45%"}
 
@@ -701,7 +733,7 @@ Branch-and-Bound는 어느 frontier 정책을 써도 optimum이 바뀌지 않는
 | LIFO | stack | 가장 최근 live node | DFS-like |
 | Best-bound | PQ | 가장 좋은 UB/LB | 평가 집중 |
 
-![Frontier policy: live node A(UB12), B(UB18), C(UB15)에서 FIFO는 A를, LIFO는 C를, best-bound(max)는 B를 다음으로 선택한다 — sound bound이면 어느 순서도 optimality를 유지한다.](../figures/10-state-space-search/15-frontier-policy-animation-step3.svg){fig-alt="A,B,C 세 live node에서 FIFO, LIFO, best-bound가 각각 다른 node를 다음으로 선택하지만 optimality는 유지된다는 설명이 붙은 3단계 트레이스의 마지막 상태" width="65%"}
+![Frontier policy: live node A(UB12), B(UB18), C(UB15)에서 FIFO는 A를, LIFO는 C를, best-bound(max)는 B를 다음으로 선택한다 — sound bound이면 어느 순서도 optimality를 유지한다.](../figures/10-state-space-search/15-frontier-policy-animation-step3.svg){fig-alt="A,B,C 세 live node에서 FIFO, LIFO, best-bound가 각각 다른 node를 다음으로 선택하지만 optimality는 유지된다는 설명이 붙은 그림" width="65%"}
 
 LIFO가 좋은 깊은 해를 빨리 찾으면 이후 많은 node를 prune할 수 있고, best-bound는 bound가 정확할 때 좋은 branch에 집중하며, FIFO는 shallow structure를 고르게 보지만 frontier가 커질 수 있다.
 
