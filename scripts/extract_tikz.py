@@ -41,6 +41,15 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 LECTURE_NOTES = REPO_ROOT / "lecture-notes"
 CACHE_DIR = REPO_ROOT / "figures" / ".cache" / "tikz-build"
 
+# Canonical lecture -> figures/ subdirectory slug mapping. Also the source of
+# truth for "all lectures" (--all): sorted(LECTURE_SLUGS.keys()).
+LECTURE_SLUGS = {
+    "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
+    "04": "04-selection", "05": "05-dynamic-programming", "06": "06-search-trees",
+    "07": "07-hash-tables", "08": "08-graphs", "09": "09-string-matching",
+    "10": "10-state-space-search",
+}
+
 TIKZ_RE = re.compile(r"\\begin\{tikzpicture\}.*?\\end\{tikzpicture\}", re.DOTALL)
 AXIS_RE = re.compile(r"\\begin\{axis\}.*?\\end\{axis\}", re.DOTALL)
 # \visible<SPEC>{BODY} (cumulative reveal, used by L02's call-stack "push"
@@ -1210,29 +1219,20 @@ def process_lecture(lecture, check_only, keep_build, jobs=None):
 
 
 def _lecture_slug(lecture):
-    names = {
-        "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
-        "04": "04-selection", "05": "05-dynamic-programming", "06": "06-search-trees",
-        "07": "07-hash-tables", "08": "08-graphs", "09": "09-string-matching",
-        "10": "10-state-space-search",
-    }
-    return names.get(lecture, "lecture%s" % lecture)
+    return LECTURE_SLUGS.get(lecture, "lecture%s" % lecture)
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--lecture", default="03", help="lecture number, e.g. 03 (default: 03)")
-    parser.add_argument("--check", action="store_true", help="report status without compiling")
-    parser.add_argument("--keep-build", action="store_true", help="keep the LaTeX build cache dir for debugging")
-    parser.add_argument("--jobs", type=int, default=None,
-                         help="parallel lualatex compiles (default: min(cpu_count, 8) -- see default_worker_count())")
-    args = parser.parse_args()
-
+def _run_one_lecture(lecture, check_only, keep_build, jobs):
+    """Process a single lecture and print its report (same format regardless
+    of whether this is the sole --lecture run or one iteration of --all).
+    Returns (built, cached, failed) with `failed` already folded in any
+    --check "missing on disk" entries, matching the original single-lecture
+    exit-code condition."""
     built, cached, failed, expected_files, manifest, count_warnings = process_lecture(
-        args.lecture, args.check, args.keep_build, jobs=args.jobs
+        lecture, check_only, keep_build, jobs=jobs
     )
 
-    print("extract_tikz.py --lecture %s%s" % (args.lecture, " --check" if args.check else ""))
+    print("extract_tikz.py --lecture %s%s" % (lecture, " --check" if check_only else ""))
     print("  built:  %d" % len(built))
     print("  cached: %d" % len(cached))
     print("  failed: %d" % len(failed))
@@ -1243,15 +1243,61 @@ def main():
         print("  WARN %s: figure count %d -> %d -- this file's FIGURE_CONFIG"
               " indices may have shifted, check them" % (file_name, prior_count, new_count))
 
-    if args.check:
-        out_dir = REPO_ROOT / "figures" / _lecture_slug(args.lecture)
+    if check_only:
+        out_dir = REPO_ROOT / "figures" / _lecture_slug(lecture)
         on_disk = {p.name for p in out_dir.glob("*.svg")} if out_dir.exists() else set()
         missing = expected_files - on_disk
         if missing:
             print("  missing on disk: %s" % ", ".join(sorted(missing)))
             failed = failed or [(m, "missing") for m in missing]
 
-    sys.exit(1 if failed else 0)
+    return built, cached, failed
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--lecture", default=None, help="lecture number, e.g. 03")
+    parser.add_argument("--all", action="store_true", help="process all lectures 01-10")
+    parser.add_argument("--check", action="store_true", help="report status without compiling")
+    parser.add_argument("--keep-build", action="store_true", help="keep the LaTeX build cache dir for debugging")
+    parser.add_argument("--jobs", type=int, default=None,
+                         help="parallel lualatex compiles (default: min(cpu_count, 8) -- see default_worker_count())")
+    args = parser.parse_args()
+
+    if not args.lecture and not args.all:
+        parser.error("one of --lecture LECTURE or --all is required")
+    if args.lecture and args.all:
+        parser.error("--lecture and --all are mutually exclusive")
+
+    if not args.all:
+        built, cached, failed = _run_one_lecture(args.lecture, args.check, args.keep_build, args.jobs)
+        sys.exit(1 if failed else 0)
+
+    lectures = sorted(LECTURE_SLUGS.keys())
+    per_lecture = []
+    failed_lectures = []
+    for lecture in lectures:
+        try:
+            built, cached, failed = _run_one_lecture(lecture, args.check, args.keep_build, args.jobs)
+        except Exception as e:
+            print("  ERROR processing lecture %s: %s" % (lecture, e))
+            built, cached, failed = [], [], [("<lecture-level error>", str(e))]
+        per_lecture.append((lecture, len(built), len(cached), len(failed)))
+        if failed:
+            failed_lectures.append(lecture)
+        print()
+
+    total_built = sum(b for _, b, _, _ in per_lecture)
+    total_cached = sum(c for _, _, c, _ in per_lecture)
+    total_failed = sum(f for _, _, _, f in per_lecture)
+    print("=== --all summary ===")
+    for lecture, built_n, cached_n, failed_n in per_lecture:
+        print("  %s: built=%d cached=%d failed=%d" % (lecture, built_n, cached_n, failed_n))
+    print("  TOTAL: built=%d cached=%d failed=%d" % (total_built, total_cached, total_failed))
+    if failed_lectures:
+        print("  failed lectures: %s" % ", ".join(failed_lectures))
+
+    sys.exit(1 if failed_lectures else 0)
 
 
 if __name__ == "__main__":

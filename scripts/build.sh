@@ -4,14 +4,16 @@
 set -euo pipefail
 
 run_if_exists() {
-  if [ -f "$1" ]; then
-    python3 "$1"
+  local script="$1"
+  shift
+  if [ -f "$script" ]; then
+    python3 "$script" "$@"
   else
-    echo "skip: $1 not implemented yet (see docs/MILESTONES.md)"
+    echo "skip: $script not implemented yet (see docs/MILESTONES.md)"
   fi
 }
 
-run_if_exists scripts/extract_tikz.py        # TikZ/pgfplots → SVG (캐시)
-run_if_exists scripts/convert_pseudocode.py  # algorithmic → pseudocode.js
-run_if_exists scripts/run_examples.py        # C/Java/Python 실행 출력 캡처
-quarto render                                # 웹북 빌드
+run_if_exists scripts/extract_tikz.py --all        # TikZ/pgfplots → SVG (캐시), 10개 lecture 전부
+run_if_exists scripts/convert_pseudocode.py --all  # algorithmic → pseudocode.js, 10개 lecture 전부
+run_if_exists scripts/run_examples.py --all        # C/Java/Python 실행 출력 캡처, 10개 lecture 전부
+quarto render                                      # 웹북 빌드

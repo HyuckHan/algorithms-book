@@ -563,18 +563,17 @@ def process_lecture(lecture):
     return all_ok, results, algorithms_agree, algorithm_results
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--lecture", default="03", help="lecture number, e.g. 03 (default: 03)")
-    args = parser.parse_args()
+def _run_one_lecture(lecture):
+    """Process a single lecture and print its report (same format regardless
+    of whether this is the sole --lecture run or one iteration of --all).
+    Returns all_ok (bool)."""
+    if lecture not in LECTURE_CONFIG and lecture not in ALGORITHM_CONFIG:
+        print("no run_examples config for lecture %s" % lecture)
+        return False
 
-    if args.lecture not in LECTURE_CONFIG and args.lecture not in ALGORITHM_CONFIG:
-        print("no run_examples config for lecture %s" % args.lecture)
-        sys.exit(1)
+    all_ok, results, algorithms_agree, algorithm_results = process_lecture(lecture)
 
-    all_ok, results, algorithms_agree, algorithm_results = process_lecture(args.lecture)
-
-    print("run_examples.py --lecture %s" % args.lecture)
+    print("run_examples.py --lecture %s" % lecture)
 
     for algo_name, r in algorithm_results.items():
         print("  --- %s (per-algorithm, 3-language) ---" % algo_name)
@@ -587,7 +586,7 @@ def main():
               % (algo_name + " outputs match", r["normalized"], "PASS" if r["outputs_match"] else "FAIL"))
 
     if results:
-        print("  --- legacy lecture%s checks ---" % args.lecture)
+        print("  --- legacy lecture%s checks ---" % lecture)
         for key, (ok, out) in results.items():
             status = "PASS" if ok else "FAIL"
             print("  %-20s %s" % (key, status))
@@ -595,7 +594,49 @@ def main():
                 print("    " + "\n    ".join(out.splitlines()[-15:]))
         print("  selection/insertion/merge agree: %s" % algorithms_agree)
 
-    sys.exit(0 if all_ok else 1)
+    return all_ok
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--lecture", default=None, help="lecture number, e.g. 03")
+    parser.add_argument("--all", action="store_true", help="process all lectures 01-10")
+    args = parser.parse_args()
+
+    if not args.lecture and not args.all:
+        parser.error("one of --lecture LECTURE or --all is required")
+    if args.lecture and args.all:
+        parser.error("--lecture and --all are mutually exclusive")
+
+    if not args.all:
+        sys.exit(0 if _run_one_lecture(args.lecture) else 1)
+
+    # ALGORITHM_CONFIG already has an entry for every lecture (01-10) --
+    # the existing per-lecture config mapping this script derives its own
+    # per-algorithm demo list from -- so it is the source of truth for
+    # "all lectures" here (LECTURE_CONFIG only has a legacy "03" entry).
+    lectures = sorted(ALGORITHM_CONFIG.keys())
+    per_lecture = []
+    failed_lectures = []
+    for lecture in lectures:
+        try:
+            ok = _run_one_lecture(lecture)
+        except Exception as e:
+            print("  ERROR processing lecture %s: %s" % (lecture, e))
+            ok = False
+        per_lecture.append((lecture, ok))
+        if not ok:
+            failed_lectures.append(lecture)
+        print()
+
+    print("=== --all summary ===")
+    for lecture, ok in per_lecture:
+        print("  %s: %s" % (lecture, "PASS" if ok else "FAIL"))
+    print("  TOTAL: %d/%d PASS" % (sum(1 for _, ok in per_lecture if ok), len(per_lecture)))
+    if failed_lectures:
+        print("  failed lectures: %s" % ", ".join(failed_lectures))
+
+    sys.exit(1 if failed_lectures else 0)
 
 
 if __name__ == "__main__":

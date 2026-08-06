@@ -92,6 +92,20 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 LECTURE_NOTES = REPO_ROOT / "lecture-notes"
 
+# Canonical lecture -> figures/ subdirectory slug mapping. Also the source of
+# truth for "all lectures" (--all): sorted(LECTURE_SLUGS.keys()). L02 has no
+# algorithmic blocks (0 pseudocode figures), but is listed here anyway so
+# --all resolves its out_dir correctly instead of falling back to the wrong
+# "lecture02" (process_lecture's PSEUDOCODE_CONFIG.get(lecture, {}) lookup
+# below already handles L02 having no config entry -- this dict is only
+# about the output directory name).
+LECTURE_SLUGS = {
+    "01": "01-introduction", "02": "02-recursion", "03": "03-sorting",
+    "04": "04-selection", "05": "05-dynamic-programming", "06": "06-search-trees",
+    "07": "07-hash-tables", "08": "08-graphs", "09": "09-string-matching",
+    "10": "10-state-space-search",
+}
+
 ALGORITHMIC_RE = re.compile(r"\\begin\{algorithmic\}(\[[^\]]*\])?(.*?)\\end\{algorithmic\}", re.DOTALL)
 MATH_SPAN_RE = re.compile(r"\$([^$]*)\$|\\\(((?:(?!\\\)).)*)\\\)", re.DOTALL)
 CALL_RE = re.compile(r"\\Call\{([^{}]*)\}\{([^{}]*)\}")
@@ -451,12 +465,7 @@ def to_html_fragment(snippet):
 
 
 def _lecture_slug(lecture):
-    names = {
-        "01": "01-introduction", "03": "03-sorting", "04": "04-selection",
-        "05": "05-dynamic-programming", "06": "06-search-trees", "07": "07-hash-tables",
-        "08": "08-graphs", "09": "09-string-matching", "10": "10-state-space-search",
-    }
-    return names.get(lecture, "lecture%s" % lecture)
+    return LECTURE_SLUGS.get(lecture, "lecture%s" % lecture)
 
 
 def process_lecture(lecture, check_only):
@@ -508,25 +517,68 @@ def process_lecture(lecture, check_only):
     return written, unmapped, missing
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--lecture", default="03", help="lecture number, e.g. 03 (default: 03)")
-    parser.add_argument("--check", action="store_true", help="report status without writing files")
-    args = parser.parse_args()
+def _run_one_lecture(lecture, check_only):
+    """Process a single lecture and print its report (same format regardless
+    of whether this is the sole --lecture run or one iteration of --all).
+    Returns (written, unmapped, missing, failed) where `failed` matches the
+    original single-lecture exit-code condition."""
+    written, unmapped, missing = process_lecture(lecture, check_only)
 
-    written, unmapped, missing = process_lecture(args.lecture, args.check)
-
-    print("convert_pseudocode.py --lecture %s%s" % (args.lecture, " --check" if args.check else ""))
+    print("convert_pseudocode.py --lecture %s%s" % (lecture, " --check" if check_only else ""))
     print("  written:  %d" % len(written))
     print("  unmapped: %d" % len(unmapped))
     for u in unmapped:
         print("    UNMAPPED %s (add to PSEUDOCODE_CONFIG)" % u)
-    if args.check:
+    if check_only:
         print("  stale/missing: %d" % len(missing))
         for m in missing:
             print("    %s" % m)
 
-    sys.exit(1 if (unmapped or (args.check and missing)) else 0)
+    failed = bool(unmapped or (check_only and missing))
+    return written, unmapped, missing, failed
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--lecture", default=None, help="lecture number, e.g. 03")
+    parser.add_argument("--all", action="store_true", help="process all lectures 01-10")
+    parser.add_argument("--check", action="store_true", help="report status without writing files")
+    args = parser.parse_args()
+
+    if not args.lecture and not args.all:
+        parser.error("one of --lecture LECTURE or --all is required")
+    if args.lecture and args.all:
+        parser.error("--lecture and --all are mutually exclusive")
+
+    if not args.all:
+        written, unmapped, missing, failed = _run_one_lecture(args.lecture, args.check)
+        sys.exit(1 if failed else 0)
+
+    lectures = sorted(LECTURE_SLUGS.keys())
+    per_lecture = []
+    failed_lectures = []
+    for lecture in lectures:
+        try:
+            written, unmapped, missing, failed = _run_one_lecture(lecture, args.check)
+        except Exception as e:
+            print("  ERROR processing lecture %s: %s" % (lecture, e))
+            written, unmapped, missing, failed = [], [], [], True
+        per_lecture.append((lecture, len(written), len(unmapped), len(missing)))
+        if failed:
+            failed_lectures.append(lecture)
+        print()
+
+    total_written = sum(w for _, w, _, _ in per_lecture)
+    total_unmapped = sum(u for _, _, u, _ in per_lecture)
+    total_missing = sum(m for _, _, _, m in per_lecture)
+    print("=== --all summary ===")
+    for lecture, written_n, unmapped_n, missing_n in per_lecture:
+        print("  %s: written=%d unmapped=%d missing=%d" % (lecture, written_n, unmapped_n, missing_n))
+    print("  TOTAL: written=%d unmapped=%d missing=%d" % (total_written, total_unmapped, total_missing))
+    if failed_lectures:
+        print("  failed lectures: %s" % ", ".join(failed_lectures))
+
+    sys.exit(1 if failed_lectures else 0)
 
 
 if __name__ == "__main__":
