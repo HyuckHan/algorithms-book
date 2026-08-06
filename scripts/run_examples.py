@@ -412,6 +412,15 @@ ALGORITHM_CONFIG = {
                 "java": {"file": "AStarDemo.java", "class": "AStarDemo"},
                 "python": {"file": "a_star_demo.py"},
             },
+            # Java-only, optional deep-dive example (chapters/10-state-space-search.qmd:
+            # "참고 구현 (Java만 -- 선택 심화 예제라 3언어 포팅은 하지 않는다)") -- no c/python
+            # key by design, not an oversight; process_algorithms() only runs the
+            # languages present. Demo class follows the same Solver+Demo split as
+            # every other L10 entry above (logic in ArithmeticProgressionSearch.java,
+            # registered separately in extract_code_snippets.py's SNIPPET_CONFIG).
+            "arithmetic-progression": {
+                "java": {"file": "ArithmeticProgressionDemo.java", "class": "ArithmeticProgressionDemo"},
+            },
         },
     },
 }
@@ -485,26 +494,41 @@ def process_algorithms(lecture, code_dir, out_dir, build_dir):
     cfg = ALGORITHM_CONFIG.get(lecture, {}).get("algorithms", {})
     results = {}
     for algo_name, langs in cfg.items():
+        if not langs:
+            raise ValueError("ALGORITHM_CONFIG['%s']['%s'] has no language entries" % (lecture, algo_name))
+
         algo_results = {}
+        # Most entries have all three languages (the 3-language cross-check is
+        # the norm), but a deliberate exception (e.g. arithmetic-progression
+        # below, a Java-only optional deep-dive whose reason is documented in
+        # the chapter body itself, not here) registers only the languages it
+        # actually has. Skip absent keys instead of the unconditional
+        # langs["c"]/["java"]/["python"] access this used to do, which
+        # KeyError'd on anything less than all three.
+        if "c" in langs:
+            info = langs["c"]
+            c_source = info.get("files", info.get("file"))
+            ok_c, out_c = compile_and_run_c(code_dir / "c", build_dir, c_source, info["bin"])
+            algo_results["c"] = (ok_c, out_c)
+            (out_dir / ("out-%s-c.txt" % algo_name)).write_text(out_c, encoding="utf-8")
 
-        c_source = langs["c"].get("files", langs["c"].get("file"))
-        ok_c, out_c = compile_and_run_c(code_dir / "c", build_dir, c_source, langs["c"]["bin"])
-        algo_results["c"] = (ok_c, out_c)
-        (out_dir / ("out-%s-c.txt" % algo_name)).write_text(out_c, encoding="utf-8")
+        if "java" in langs:
+            info = langs["java"]
+            ok_java, out_java = compile_and_run_java(code_dir / "java", build_dir, info["file"], info["class"])
+            algo_results["java"] = (ok_java, out_java)
+            (out_dir / ("out-%s-java.txt" % algo_name)).write_text(out_java, encoding="utf-8")
 
-        ok_java, out_java = compile_and_run_java(
-            code_dir / "java", build_dir, langs["java"]["file"], langs["java"]["class"]
-        )
-        algo_results["java"] = (ok_java, out_java)
-        (out_dir / ("out-%s-java.txt" % algo_name)).write_text(out_java, encoding="utf-8")
-
-        ok_py, out_py = run_python_file(code_dir / "python", langs["python"]["file"])
-        algo_results["python"] = (ok_py, out_py)
-        (out_dir / ("out-%s-python.txt" % algo_name)).write_text(out_py, encoding="utf-8")
+        if "python" in langs:
+            info = langs["python"]
+            ok_py, out_py = run_python_file(code_dir / "python", info["file"])
+            algo_results["python"] = (ok_py, out_py)
+            (out_dir / ("out-%s-python.txt" % algo_name)).write_text(out_py, encoding="utf-8")
 
         all_ok = all(ok for ok, _ in algo_results.values())
         normalized = {lang: normalize_numbers(out) for lang, (ok, out) in algo_results.items()}
         sequences = list(normalized.values())
+        # A single language trivially "matches" -- there's nothing to cross-check
+        # against, but a passing compile/run is still the whole point of running it.
         outputs_match = all_ok and len(sequences) > 0 and all(s == sequences[0] for s in sequences)
 
         results[algo_name] = {"per_language": algo_results, "normalized": normalized, "outputs_match": outputs_match}
