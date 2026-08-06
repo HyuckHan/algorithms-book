@@ -155,7 +155,7 @@ FIGURE_CONFIG = {
         ("05_recurrences.tex", 0): {"slug": "04-recursion-tree"},
         ("06_master_theorem.tex", 0): {"slug": "05-master-theorem-competition"},
         # top comparison label overlapped the index row.
-        ("07_recursive_thinking.tex", 0): {"slug": "06-binary-search-reduction", "mode": "sequence", "text_patch": "binary_search_label_above_index"},
+        ("07_recursive_thinking.tex", 0): {"slug": "06-binary-search-reduction", "mode": "sequence"},
         ("08_hanoi.tex", 0): {"slug": "07-hanoi-rules"},
         # missing large-disk-move step.
         ("08_hanoi.tex", 1): {"slug": "08-hanoi-n3-states", "mode": "sequence"},
@@ -521,23 +521,6 @@ TEXT_PATCHES = {
         (r"node distance=6mm and 6mm", r"node distance=22mm and 6mm"),
         (r"node\[above,font=\\scriptsize\]\{hash-code function\}", r"node[above,font=\\scriptsize,yshift=2.5mm]{\\shortstack{hash-code\\\\function}}"),
         (r"node\[above,font=\\scriptsize\]\{compression function\}", r"node[above,font=\\scriptsize,yshift=2.5mm]{\\shortstack{compression\\\\function}}"),
-    ],
-    # 07_recursive_thinking.tex's Binary Search reduction figure
-    # ("06-binary-search-reduction"): the top
-    # "A[mid]=...<x/>x" comparison label is placed `above=3pt of a<N>` --
-    # 3pt above the CELL's own top edge, which lands it almost exactly at
-    # the index row's height (that row sits close above the cells, at its
-    # own fixed y=.68), so label glyphs and index digits visually merge
-    # ("2A[mid]=...4" in the rendered SVG). Raising the offset to 16pt (each
-    # of the 3 \only blocks' own cell-anchor, `a3`/`a5`/`a4`) clears the
-    # index row with a clean gap while keeping the exact same horizontal
-    # position (`above=of` keeps the label centered over its anchor cell)
-    # and the same begin/mid/end labels, highlight box, and grayed-out
-    # eliminated half untouched.
-    "binary_search_label_above_index": [
-        (r"above=3pt of a3", r"above=16pt of a3"),
-        (r"above=3pt of a5", r"above=16pt of a5"),
-        (r"above=3pt of a4", r"above=16pt of a4"),
     ],
     # 04_rabin_karp_intro.tex's numeric-encoding-cad figure
     # ("03-numeric-encoding-cad", chapters/09-string-matching.qmd Part D):
