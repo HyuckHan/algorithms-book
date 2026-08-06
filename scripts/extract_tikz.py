@@ -114,13 +114,11 @@ FIGURE_CONFIG = {
         ("02_sorting_properties.tex", 0): {"slug": "02-stability-demo"},
         ("03_selection.tex", 0): {"slug": "03-selection-trace", "mode": "sequence"},
         ("04_bubble.tex", 0): {"slug": "04-bubble-trace", "mode": "sequence"},
-        # docs/CHANGE_INSTRUCIONS_L03.md 3.3.3: insert arrow arced under
-        # the cards and landed in the wrong gap.
+        # insert arrow arced under the cards and landed in the wrong gap.
         ("05_insertion.tex", 0): {"slug": "05-insertion-cards"},
         ("05_insertion.tex", 1): {"slug": "05-insertion-trace", "mode": "sequence"},
         ("07_merge_sort.tex", 0): {"slug": "07-merge-divide"},
-        # docs/CHANGE_INSTRUCIONS_L03.md 3.4.1: 4 arbitrary checkpoints ->
-        # 8 frames, one per output placement.
+        # 4 arbitrary checkpoints -> 8 frames, one per output placement.
         ("07_merge_sort.tex", 1): {"slug": "07-merge-pointers", "mode": "sequence"},
         ("07_merge_sort.tex", 2): {"slug": "07-merge-recursion-tree"},
         ("08_quick_sort.tex", 0): {"slug": "08-quick-partition-trace", "mode": "sequence"},
@@ -156,15 +154,14 @@ FIGURE_CONFIG = {
         ("04_basic_examples.tex", 0): {"slug": "03-fibonacci-tree"},
         ("05_recurrences.tex", 0): {"slug": "04-recursion-tree"},
         ("06_master_theorem.tex", 0): {"slug": "05-master-theorem-competition"},
-        # docs/CHANGE_INSTRUCIONS_L02.md: top comparison label overlapped
-        # the index row.
+        # top comparison label overlapped the index row.
         ("07_recursive_thinking.tex", 0): {"slug": "06-binary-search-reduction", "mode": "sequence", "text_patch": "binary_search_label_above_index"},
         ("08_hanoi.tex", 0): {"slug": "07-hanoi-rules"},
-        # docs/CHANGE_INSTRUCIONS_L02.md: missing large-disk-move step.
+        # missing large-disk-move step.
         ("08_hanoi.tex", 1): {"slug": "08-hanoi-n3-states", "mode": "sequence"},
         ("08_hanoi.tex", 2): {"slug": "09-hanoi-recursion-tree"},
-        # docs/CHANGE_INSTRUCIONS_L02.md: step3 compressed 3 path advances +
-        # 2 dead-end markings into one frame -- split into 6 steps.
+        # step3 compressed 3 path advances + 2 dead-end markings into one
+        # frame -- split into 6 steps.
         ("09_maze.tex", 0): {"slug": "10-maze-trace", "mode": "sequence"},
         ("10_blob.tex", 0): {"slug": "11-blob-neighbors"},
         ("10_blob.tex", 1): {"slug": "12-blob-floodfill", "mode": "sequence"},
@@ -526,7 +523,7 @@ TEXT_PATCHES = {
         (r"node\[above,font=\\scriptsize\]\{compression function\}", r"node[above,font=\\scriptsize,yshift=2.5mm]{\\shortstack{compression\\\\function}}"),
     ],
     # 07_recursive_thinking.tex's Binary Search reduction figure
-    # ("06-binary-search-reduction", docs/CHANGE_INSTRUCIONS_L02.md): the top
+    # ("06-binary-search-reduction"): the top
     # "A[mid]=...<x/>x" comparison label is placed `above=3pt of a<N>` --
     # 3pt above the CELL's own top edge, which lands it almost exactly at
     # the index row's height (that row sits close above the cells, at its
