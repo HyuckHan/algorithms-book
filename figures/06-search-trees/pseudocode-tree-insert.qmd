@@ -5,7 +5,7 @@
 \State $y\gets\NIL$; $x\gets T.root$
 \While{$x\ne\NIL$}
 \State $y\gets x$
-\If{$z.key=x.key$}\State\Return $\mathtt{DUPLICATE}$\EndIf
+\If{$z.key=x.key$}\State\Return $\Duplicate$\EndIf
 \If{$z.key&lt;x.key$}\State $x\gets x.left$\Else\State $x\gets x.right$\EndIf
 \EndWhile
 \State $z.parent\gets y$

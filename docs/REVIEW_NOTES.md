@@ -191,3 +191,23 @@
 이미 웹북과 같아진 경우). 원본은 읽기 전용이고 저자의 정오 기록 영역이므로 임의로 제거하지
 말 것.
 
+### 5. 의사코드 생성물(`figures/*/pseudocode-*.qmd`)을 직접 편집하지 말 것
+
+`convert_pseudocode.py`에는 `extract_tikz.py`의 `TIKZ_PATCHES`/`TEXT_PATCHES`에 해당하는
+패치 딕셔너리가 없다. 생성물을 직접 손으로 고쳐도 다음에 `--lecture`/`--all`을 실제 모드로
+돌리면 그 수정은 조용히 원상복구된다 — 경고도 에러도 없다. 교정이 필요하면 원본 `.tex`를
+고치거나(가능하면 이 방법을 우선한다), 그게 안 되면 `convert_pseudocode.py`의 정규화 로직
+자체를 고쳐서 생성기가 올바른 결과를 내게 해야 한다.
+
+**2026-08-02 `433e748`**: `figures/06-search-trees/pseudocode-tree-insert.qmd`의
+`\texttt{DUPLICATE}`를 `$\mathtt{DUPLICATE}$`로 직접 편집해, pseudocode.js 자체 폰트-스왑
+경로 대신 다른 sentinel(`\NIL`, `\NotFound`)과 같은 MathJax 경로를 타게 했다. 이 수정은
+원본 `.tex`나 생성기 어디에도 반영되지 않아, 2026-08-07 `--lecture`/`--all` 기본값 결함을
+고치는 과정에서 `--check`가 이 파일을 stale로 잡아냈다. 원본 `lecture06/lecture06.tex`에
+`\NotFound`와 같은 패턴으로 `\newcommand{\Duplicate}{\mathtt{DUPLICATE}}`를 정의하고,
+`07_bst_insert_delete.tex`의 두 사용처를 `$\Duplicate$`로 바꿔 역이식했다(원본 리포 커밋
+`84dd9e0`). 이 역이식은 원본(LaTeX `\newcommand`)과 웹북(`assets/mathjax-macros.html`의
+MathJax `macros` 객체)이 완전히 별개의 매크로 등록 체계라는 점도 드러냈다 — 하나만 고치면
+다른 쪽에서 정의되지 않은 매크로로 렌더가 깨지므로, 이런 종류의 sentinel 매크로는 항상
+두 곳에 나란히 등록해야 한다.
+
