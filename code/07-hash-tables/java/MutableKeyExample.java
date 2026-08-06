@@ -36,8 +36,12 @@ public final class MutableKeyExample {
         key.id = 20; // dangerous: hash/equality-relevant mutation
 
         System.out.println("size after mutation: " + map.size());
-        System.out.println("get(mutatedKey): " + map.get(key));
-        System.out.println("get(new StudentKey(10)): " + map.get(new StudentKey(10)));
-        System.out.println("get(new StudentKey(20)): " + map.get(new StudentKey(20)));
+        System.out.println("get(mutatedKey): " + fmt(map.get(key)));
+        System.out.println("get(new StudentKey(10)): " + fmt(map.get(new StudentKey(10))));
+        System.out.println("get(new StudentKey(20)): " + fmt(map.get(new StudentKey(20))));
+    }
+
+    private static String fmt(String v) {
+        return v == null ? "not found" : v;
     }
 }

@@ -332,6 +332,13 @@ ALGORITHM_CONFIG = {
                 "java": {"file": "OpenAddressHashMap.java", "class": "OpenAddressHashMap"},
                 "python": {"file": "open_address_hash_table.py"},
             },
+            # No C: see extract_code_snippets.py's SNIPPET_CONFIG["07"] comment --
+            # this lecture's C hash tables store int keys by value, so there's no
+            # shared-reference mutation to reproduce.
+            "mutable-key-example": {
+                "java": {"file": "MutableKeyExample.java", "class": "MutableKeyExample"},
+                "python": {"file": "mutable_key_example.py"},
+            },
         },
     },
     # See chapters/09.inventory §(c). All 4 algorithms share one library file

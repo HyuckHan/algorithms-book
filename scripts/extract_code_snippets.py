@@ -303,12 +303,14 @@ SNIPPET_CONFIG = {
                 ("java/OpenAddressHashMap.java", "java"),
                 ("c/open_address_hash_table.c", "c"),
             ],
-            # Java-only: the mutable-key hazard is a java.util.HashMap
-            # contract failure (equals/hashCode-relevant field mutated while
-            # the key is in the table) -- source material and CODE_INVENTORY
-            # only ever show this in Java, not C/Python (see chapters/07.inventory).
+            # No C: this lecture's C hash tables store keys as plain `int`
+            # values (see chapters/07.inventory) -- the caller and the table
+            # never share the same object, so there's nothing to mutate out
+            # from under the table the way Java/Python reference semantics
+            # allow. Not a porting choice, a structural one.
             "mutable-key-example": [
                 ("java/MutableKeyExample.java", "java"),
+                ("python/mutable_key_example.py", "py"),
             ],
         },
     },

@@ -815,26 +815,37 @@ Stop-the-world resize는 한 operation이 전체 table을 옮겨 latency spike�
 
 operation 중 resize가 일어나 reference/index가 바뀔 수 있으므로 내부 slot pointer를 API 밖으로 노출하지 않는다.
 
-Java의 계약: $a.equals(b)\Rightarrow a.hashCode()=b.hashCode()$이지만, 역은 성립하지 않는다($a.hashCode()=b.hashCode()\not\Rightarrow a.equals(b)$). collision 후 반드시 `equals`로 logical key를 확인해야 하고, key가 table 안에 있는 동안 equality/hash-relevant field를 변경해서는 안 되며, custom key는 두 method를 함께 설계해야 한다.
+Java의 계약: $a.equals(b)\Rightarrow a.hashCode()=b.hashCode()$, Python의 계약: $a=b\Rightarrow \mathrm{hash}(a)=\mathrm{hash}(b)$ — 두 언어 다 역은 성립하지 않는다($a.hashCode()=b.hashCode()\not\Rightarrow a.equals(b)$; $\mathrm{hash}(a)=\mathrm{hash}(b)\not\Rightarrow a=b$). collision 후 반드시 동등성 비교(`equals`/`__eq__`)로 logical key를 확인해야 하고, key가 table 안에 있는 동안 equality/hash-relevant field를 변경해서는 안 되며, custom key는 두 method를 함께 설계해야 한다.
 
 ::: {.callout-warning title="Mutable Key Failure"}
-`equals`/`hashCode`가 `id` 필드에만 의존하는 key를 `HashMap`에 넣은 뒤 `key.id`를 바꾸면, entry는 여전히 **원래 id의 bucket**에 남아 있지만 `get(key)`는 **바뀐 id**로 lookup path를 계산한다. Map은 mutated key를 자동으로 재배치할 의무가 없다 — key가 table 안에 있는 동안 `equals`/`hashCode` 관련 field는 immutable이어야 한다.
+동등성(`equals`/`__eq__`)과 hash(`hashCode`/`__hash__`)가 `id` 필드에만 의존하는 key를 hash table(`HashMap`/`dict`)에 넣은 뒤 `key.id`를 바꾸면, entry는 여전히 **원래 id의 bucket**에 남아 있지만 lookup은 **바뀐 id**로 bucket을 다시 계산한다. Hash table은 mutated key를 자동으로 재배치할 의무가 없다 — key가 table 안에 있는 동안 동등성·hash에 관련된 field는 immutable이어야 한다.
 :::
 
 ::: {.panel-tabset}
+## Python
+```{.python}
+{{< include ../figures/07-hash-tables/snippet-mutable-key-example.py >}}
+```
 ## Java
 ```{.java}
 {{< include ../figures/07-hash-tables/snippet-mutable-key-example.java >}}
 ```
 :::
 
-**실행 결과** (실제 컴파일·실행 캡처 — `javac`/`java`, `assert` 없이 관찰값을 직접 출력): `id`를 20으로 바꾼 뒤에는 mutated key 자체로도, `id=10`으로도, `id=20`으로도 **어느 쪽으로도 다시 찾을 수 없다** — entry는 사라지지 않았지만(size는 그대로 1) 도달 불가능해졌다.
+**실행 결과** (실제 컴파일·실행 캡처 — `javac`/`java`, `python3`, `assert` 없이 관찰값을 직접 출력): `id`를 20으로 바꾼 뒤에는 mutated key 자체로도, `id=10`으로도, `id=20`으로도 **어느 쪽으로도 다시 찾을 수 없다** — entry는 사라지지 않았지만(size는 그대로 1) 도달 불가능해졌다. 두 언어 모두 같은 이유로 실패한다: bucket 위치는 삽입 시점의 hash로 고정되고, 이후 lookup은 그 순간의 hash를 다시 계산하므로 mutated key·원래 id·바뀐 id 중 무엇으로 찾아도 어긋난다.
 
+::: {.panel-tabset}
+## Python
+```{.default}
+{{< include ../figures/07-hash-tables/out-mutable-key-example-python.txt >}}
+```
+## Java
 ```{.default}
 {{< include ../figures/07-hash-tables/out-mutable-key-example-java.txt >}}
 ```
+:::
 
-C 구현에서는 chaining은 integer key/value를 entry node가 소유하고 `destroy`가 모든 node와 bucket array를 해제하며, open addressing은 slot array가 value를 직접 보관하고 state enum이 EMPTY/OCCUPIED/DELETED를 구분한다. allocation failure는 false 반환과 원상태 보존으로 처리하고, negative key는 normalized modulo로 처리하며, dangling pointer를 API 밖으로 반환하지 않는다.
+C 구현에서는 chaining은 integer key/value를 entry node가 소유하고 `destroy`가 모든 node와 bucket array를 해제하며, open addressing은 slot array가 value를 직접 보관하고 state enum이 EMPTY/OCCUPIED/DELETED를 구분한다. allocation failure는 false 반환과 원상태 보존으로 처리하고, negative key는 normalized modulo로 처리하며, dangling pointer를 API 밖으로 반환하지 않는다. 이 ownership 방식 때문에 Mutable Key Failure도 C에는 없다 — key는 slot에 **값으로 복사**돼 들어가므로 호출자가 들고 있는 변수와 table 내부의 key는 처음부터 별개다. 애초에 같은 객체를 공유하지 않으니 mutate로 끊어질 참조 자체가 없다.
 
 | | 확인 대상 |
 |---|---|
