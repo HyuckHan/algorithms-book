@@ -5,12 +5,6 @@
 <clipPath id='cp0'>
 <path d='M26.62526 65.811934H4.58274V87.854474H26.62526Z'/>
 </clipPath>
-<clipPath id='cp1'>
-<path d='M87.85447 96.426544H65.81193V118.469084H87.85447Z'/>
-</clipPath>
-<clipPath id='cp2'>
-<path d='M87.85447 127.041134H65.81193V149.083684H87.85447Z'/>
-</clipPath>
 <path id='g0-49' d='M7.20108-2.72904H6.73296C6.51384-1.35456 6.23496-.46812 4.39236-.46812H2.87844V-3.27684H3.42624C4.3824-3.27684 4.482-2.84856 4.482-2.11152H4.95012V-4.91028H4.482C4.482-4.17324 4.39236-3.74496 3.42624-3.74496H2.87844V-6.30468H4.39236C5.99592-6.30468 6.25488-5.5776 6.41424-4.37244H6.88236L6.5736-6.7728H.38844V-6.30468H1.46412V-.46812H.38844V0H6.74292L7.20108-2.72904Z'/>
 <path id='g0-97' d='M5.71704-2.02188C5.71704-3.12744 4.91028-3.9342 4.00392-4.12344L2.55972-4.4322C2.16132-4.52184 1.60356-4.86048 1.60356-5.46804C1.60356-5.89632 1.88244-6.51384 2.87844-6.51384C3.67524-6.51384 4.6812-6.1752 4.91028-4.82064C4.95012-4.5816 4.95012-4.56168 5.15928-4.56168C5.39832-4.56168 5.39832-4.61148 5.39832-4.84056V-6.66324C5.39832-6.85248 5.39832-6.94212 5.21904-6.94212C5.13936-6.94212 5.1294-6.93216 5.01984-6.83256L4.57164-6.39432C3.99396-6.85248 3.34656-6.94212 2.86848-6.94212C1.35456-6.94212 .63744-5.98596 .63744-4.94016C.63744-4.29276 .96612-3.8346 1.17528-3.61548C1.66332-3.12744 2.00196-3.05772 3.0876-2.81868C3.96408-2.62944 4.1334-2.59956 4.35252-2.3904C4.50192-2.241 4.75092-1.98204 4.75092-1.52388C4.75092-1.0458 4.49196-.35856 3.45612-.35856C2.69916-.35856 1.18524-.55776 1.10556-2.0418C1.0956-2.22108 1.0956-2.27088 .87648-2.27088C.63744-2.27088 .63744-2.21112 .63744-1.98204V-.16932C.63744 .01992 .63744 .10956 .81672 .10956C.90636 .10956 .92628 .08964 1.00596 .01992L1.46412-.43824C2.12148 .0498 3.04776 .10956 3.45612 .10956C5.09952 .10956 5.71704-1.01592 5.71704-2.02188Z'/>
 </defs>
@@ -119,6 +113,16 @@
 <path d='M57.23985 65.811934H35.19732V87.854474H57.23985Z' stroke='#f08c46' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
 <path d='M87.85447 65.811934H65.81193V87.854474H87.85447Z' fill='#fad7be'/>
 <path d='M87.85447 65.811934H65.81193V87.854474H87.85447Z' stroke='#f08c46' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
+<path d='M87.85447 96.426544H65.81193V118.469084H87.85447Z' fill='#fad7be'/>
+<path d='M87.85447 96.426544H65.81193V118.469084H87.85447Z' stroke='#f08c46' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
+<path d='M87.85447 127.041134H65.81193V149.083684H87.85447Z' fill='#fad7be'/>
+<path d='M87.85447 127.041134H65.81193V149.083684H87.85447Z' stroke='#f08c46' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
+<path d='M118.46908 127.041134H96.42654V149.083684H118.46908Z' fill='#fad7be'/>
+<path d='M118.46908 127.041134H96.42654V149.083684H118.46908Z' stroke='#f08c46' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
+<path d='M118.46908 96.426544H96.42654V118.469084H118.46908Z' fill='#fad7be'/>
+<path d='M118.46908 96.426544H96.42654V118.469084H118.46908Z' stroke='#f08c46' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
+<path d='M118.46908 65.811934H96.42654V87.854474H118.46908Z' fill='#fad7be'/>
+<path d='M118.46908 65.811934H96.42654V87.854474H118.46908Z' stroke='#f08c46' fill='none' stroke-width='1.19553' stroke-miterlimit='10'/>
 <g clip-path='url(#cp0)'>
 <symbol id='tile0' style='overflow:visible'>
 <path d='M0 183.88L3.08846 180.79154' stroke='#627d98' fill='none' stroke-width='.3985' stroke-miterlimit='10'/>
@@ -139,46 +143,6 @@
 <path d='M4.38349 95.82628H26.824509V118.26732H4.38349Z' fill='url(#pat0)' transform='matrix(1 0 0 -1 0 183.88)'/>
 </g>
 <path d='M26.62526 65.811934H4.58274V87.854474H26.62526Z' stroke='#627d98' fill='none' stroke-width='.3985' stroke-miterlimit='10'/>
-<g clip-path='url(#cp1)'>
-<symbol id='tile1' style='overflow:visible'>
-<path d='M0 183.88L3.08846 180.79154' stroke='#627d98' fill='none' stroke-width='.3985' stroke-miterlimit='10'/>
-</symbol>
-<pattern id='pat1' x='0' y='0' width='2.98883' height='2.98883' patternUnits='userSpaceOnUse'>
-<clipPath id='patcp1'>
-<path d='M-.99628-.99628H3.9851V3.9851H-.99628Z'/>
-</clipPath>
-<g clip-path='url(#patcp1)'>
-<g transform='matrix(1 0 0 -1 0 183.88)'>
-<use x='0' y='0' xlink:href='#tile1'/>
-<use x='0' y='-2.98883' xlink:href='#tile1'/>
-<use x='2.98883' y='0' xlink:href='#tile1'/>
-<use x='2.98883' y='-2.98883' xlink:href='#tile1'/>
-</g>
-</g>
-</pattern>
-<path d='M65.612689 65.21167H88.05373V87.65271H65.612689Z' fill='url(#pat1)' transform='matrix(1 0 0 -1 0 183.88)'/>
-</g>
-<path d='M87.85447 96.426544H65.81193V118.469084H87.85447Z' stroke='#627d98' fill='none' stroke-width='.3985' stroke-miterlimit='10'/>
-<g clip-path='url(#cp2)'>
-<symbol id='tile2' style='overflow:visible'>
-<path d='M0 183.88L3.08846 180.79154' stroke='#627d98' fill='none' stroke-width='.3985' stroke-miterlimit='10'/>
-</symbol>
-<pattern id='pat2' x='0' y='0' width='2.98883' height='2.98883' patternUnits='userSpaceOnUse'>
-<clipPath id='patcp2'>
-<path d='M-.99628-.99628H3.9851V3.9851H-.99628Z'/>
-</clipPath>
-<g clip-path='url(#patcp2)'>
-<g transform='matrix(1 0 0 -1 0 183.88)'>
-<use x='0' y='0' xlink:href='#tile2'/>
-<use x='0' y='-2.98883' xlink:href='#tile2'/>
-<use x='2.98883' y='0' xlink:href='#tile2'/>
-<use x='2.98883' y='-2.98883' xlink:href='#tile2'/>
-</g>
-</g>
-</pattern>
-<path d='M65.612689 34.597078H88.05373V57.038118H65.612689Z' fill='url(#pat2)' transform='matrix(1 0 0 -1 0 183.88)'/>
-</g>
-<path d='M87.85447 127.041134H65.81193V149.083684H87.85447Z' stroke='#627d98' fill='none' stroke-width='.3985' stroke-miterlimit='10'/>
 <g transform='matrix(1.080286 0 0 1.080286 -.973281 197.04689)'>
 <use x='12.162776' y='-164.542386' xlink:href='#g0-97'/>
 </g>
