@@ -66,7 +66,7 @@ level/depth는 내린 결정 수이고, leaf는 complete 또는 더 확장할 �
 **Candidate**는 모든 결정이 끝난 complete state다. **Feasible**은 모든 constraint를 만족한 candidate다. **Optimal**은 feasible candidate 중 objective가 가장 좋은 해다. **Dead state**는 어떤 descendant도 feasible일 수 없는 state이고, **Bounded state**는 feasible descendant는 가능하지만 incumbent(지금까지 찾은 best feasible solution — 자세한 정의는 Part C 참고)를 개선할 수 없는 state다.
 :::
 
-::: {.callout-caution collapse="true" title="확인 문제"}
+::: {.callout-note collapse="true" title="핵심 정리: complete·feasible·optimal"}
 complete라고 해서 feasible은 아니며, feasible이라고 해서 optimal도 아니다.
 :::
 
@@ -253,7 +253,7 @@ Naive promising check는 새 queen을 이전 $r$개와 비교해 $O(r)$이지만
 
 $$\text{rows }0..r-1\text{ conflict-free}\quad\Longleftrightarrow\quad\texttt{usedColumn},\texttt{diag1},\texttt{diag2}=\texttt{position[0..r-1]}$$
 
-::: {.callout-caution collapse="true" title="확인 문제"}
+::: {.callout-warning collapse="true" title="주의: undo에서 복구할 것"}
 Undo에서 diagonal 하나라도 복구하지 않으면 이후 sibling의 valid placement를 잘못 prune한다.
 :::
 

@@ -179,7 +179,7 @@ $$\text{Naive 직접 비교}\to\text{Rolling Hash}\to\text{Prefix/Suffix 재사�
 | 추가 확인? | hash hit verification | 직접 character match |
 | 보장 | expected linear 조건부 | worst-case linear |
 
-::: {.callout-note title="확인 문제"}
+::: {.callout-note title="핵심 정리: 세 기법이 이용하는 정보"}
 Rolling Hash는 window 값을, KMP는 prefix/suffix를, Horspool은 mismatch character를 이용한다.
 :::
 
@@ -251,7 +251,7 @@ $$current=value(T[s..s+m-1]),\qquad h=base^{m-1}$$
 shift $s$ 시작 시 $tHash$는 정확히 $T[s..s+m-1]$의 polynomial hash다.
 :::
 
-::: {.callout-caution collapse="true" title="확인 문제"}
+::: {.callout-note collapse="true" title="핵심 정리: window update 비용"}
 initial $\Theta(m)$ 뒤 각 window update는 fixed-width modular arithmetic에서 $O(1)$이다.
 :::
 
@@ -351,7 +351,7 @@ rolling hash는 cryptographic hash가 아니다. adversarial collision resistanc
 ```
 :::
 
-::: {.callout-caution collapse="true" title="확인 문제"}
+::: {.callout-note collapse="true" title="핵심 정리: KMP를 택하는 경우"}
 single-pattern guaranteed linear이 필요하면 KMP가 더 직접적이다.
 :::
 
@@ -614,7 +614,7 @@ $i$는 감소하지 않는다. $j$의 증가와 fallback 총량은 linear하게 
 KMP는 text를 왼쪽으로 되돌리지 않고 border를 재사용해 worst-case linear time을 보장한다.
 :::
 
-::: {.callout-caution collapse="true" title="확인 문제"}
+::: {.callout-warning collapse="true" title="주의: preprocessing 비용 표기"}
 search만 $\Theta(n)$이라 말할 때도 preprocessing $\Theta(m)$을 함께 명시한다.
 :::
 
@@ -787,7 +787,7 @@ match 후에도 현재 window 마지막 character $A$를 조회하므로 shift $
 ```
 :::
 
-::: {.callout-caution collapse="true" title="확인 문제: Horspool Checkpoint"}
+::: {.callout-note collapse="true" title="핵심 정리: Horspool의 shift 폭"}
 `TIGER`에서 absent character는 5칸, $I$는 3칸 shift한다.
 :::
 

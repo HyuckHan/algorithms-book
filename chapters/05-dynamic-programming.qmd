@@ -161,7 +161,7 @@ state × $\Theta(1)$ transition = $\Theta(n)$.
 줄어든다. **먼저 `current`를 계산한 다음** `prev2←prev1, prev1←current` 순서로 갱신해야 한다 —
 순서를 바꾸면 갱신 전 `prev1` 값이 유실된다.
 
-::: {.callout-caution collapse="true" title="확인 문제: Memoization vs Bottom-Up"}
+::: {.callout-note collapse="true" title="Memoization vs Bottom-Up"}
 | | Top-Down(Memoization) | Bottom-Up(Tabulation) |
 |---|---|---|
 | 계산 순서 | 필요한 것만, 재귀로 | 전체를, 반복문으로 |
