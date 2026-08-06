@@ -13,7 +13,8 @@ run_if_exists() {
   fi
 }
 
-run_if_exists scripts/extract_tikz.py --all        # TikZ/pgfplots → SVG (캐시), 10개 lecture 전부
-run_if_exists scripts/convert_pseudocode.py --all  # algorithmic → pseudocode.js, 10개 lecture 전부
-run_if_exists scripts/run_examples.py --all        # C/Java/Python 실행 출력 캡처, 10개 lecture 전부
-quarto render                                      # 웹북 빌드
+run_if_exists scripts/extract_tikz.py --all          # TikZ/pgfplots → SVG (캐시), 10개 lecture 전부
+run_if_exists scripts/convert_pseudocode.py --all    # algorithmic → pseudocode.js, 10개 lecture 전부
+run_if_exists scripts/run_examples.py --all          # C/Java/Python 실행 출력 캡처, 10개 lecture 전부
+run_if_exists scripts/extract_code_snippets.py --all # code/의 snippet 마커 구간 → figures/*/snippet-*, 10개 lecture 전부(quarto render보다 먼저)
+quarto render                                        # 웹북 빌드

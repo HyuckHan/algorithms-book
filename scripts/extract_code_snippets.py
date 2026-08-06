@@ -446,25 +446,66 @@ def process_lecture(lecture, check_only):
     return written, missing
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--lecture", default="03", help="lecture number, e.g. 03 (default: 03)")
-    parser.add_argument("--check", action="store_true", help="report status without writing files")
-    args = parser.parse_args()
+def _run_one_lecture(lecture, check_only):
+    """Process a single lecture and print its report (same format regardless
+    of whether this is the sole --lecture run or one iteration of --all).
+    Returns (written, missing, failed) where `failed` matches the original
+    single-lecture exit-code condition."""
+    if lecture not in SNIPPET_CONFIG:
+        print("extract_code_snippets.py: no config for lecture %s" % lecture)
+        return [], [], True
 
-    if args.lecture not in SNIPPET_CONFIG:
-        print("extract_code_snippets.py: no config for lecture %s" % args.lecture)
-        sys.exit(1)
+    written, missing = process_lecture(lecture, check_only)
 
-    written, missing = process_lecture(args.lecture, args.check)
-
-    print("extract_code_snippets.py --lecture %s%s" % (args.lecture, " --check" if args.check else ""))
+    print("extract_code_snippets.py --lecture %s%s" % (lecture, " --check" if check_only else ""))
     print("  written: %d" % len(written))
     print("  missing/stale: %d" % len(missing))
     for m in missing:
         print("    %s" % m)
 
-    sys.exit(1 if missing else 0)
+    return written, missing, bool(missing)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--lecture", default=None, help="lecture number, e.g. 03")
+    parser.add_argument("--all", action="store_true", help="process all lectures 01-10")
+    parser.add_argument("--check", action="store_true", help="report status without writing files")
+    args = parser.parse_args()
+
+    if not args.lecture and not args.all:
+        parser.error("one of --lecture LECTURE or --all is required")
+    if args.lecture and args.all:
+        parser.error("--lecture and --all are mutually exclusive")
+
+    if not args.all:
+        written, missing, failed = _run_one_lecture(args.lecture, args.check)
+        sys.exit(1 if failed else 0)
+
+    lectures = sorted(SNIPPET_CONFIG.keys())
+    per_lecture = []
+    failed_lectures = []
+    for lecture in lectures:
+        try:
+            written, missing, failed = _run_one_lecture(lecture, args.check)
+        except Exception as e:
+            print("  ERROR processing lecture %s: %s" % (lecture, e))
+            written, missing, failed = [], [], True
+        per_lecture.append((lecture, len(written), len(missing)))
+        if failed:
+            failed_lectures.append(lecture)
+        print()
+
+    total_written = sum(w for _, w, _ in per_lecture)
+    total_missing = sum(m for _, _, m in per_lecture)
+    print("=== --all summary ===")
+    for lecture, written_n, missing_n in per_lecture:
+        print("  %s: written=%d missing/stale=%d" % (lecture, written_n, missing_n))
+    print("  TOTAL: written=%d missing/stale=%d" % (total_written, total_missing))
+    if failed_lectures:
+        print("  failed lectures: %s" % ", ".join(failed_lectures))
+
+    sys.exit(1 if failed_lectures else 0)
 
 
 if __name__ == "__main__":
