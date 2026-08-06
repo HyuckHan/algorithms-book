@@ -815,9 +815,9 @@ B-Tree의 minimum degree가 $t\ge2$일 때, node당 최대 $2t-1$ key·internal 
 
 {{< include ../figures/06-search-trees/pseudocode-btree-search.qmd >}}
 
-![B-Tree Search(key 17): root(10|20)에서 10&lt;17&lt;20이므로 middle page 선택 → page 안에서 17 발견, 2 page accesses.](../figures/06-search-trees/48-btree-search-trace-step1.svg){fig-alt="10|20 노드가 강조되고 10&lt;17&lt;20 middle page 선택이라는 콜아웃이 붙은 상태, 자식 5|6|7, 12|17, 30 표시" width="80%"}
+![B-Tree Search(key 17): root(10|20)에서 10&lt;17&lt;20이므로 middle page로 내려간다.](../figures/06-search-trees/48-btree-search-trace-step1.svg){fig-alt="10|20 노드가 강조되고 10&lt;17&lt;20 middle page 선택이라는 콜아웃이 붙은 상태, 자식 5|6|7, 12|17, 30 표시" width="80%"}
 
-![](../figures/06-search-trees/48-btree-search-trace-step2.svg){fig-alt="12|17 노드가 강조되고 page 안에서 17 발견, 2 page accesses라는 콜아웃이 붙은 상태" width="80%"}
+![middle page(12|17) 안에서 17을 찾는다 — root와 이 page, 2 page accesses로 끝난다.](../figures/06-search-trees/48-btree-search-trace-step2.svg){fig-alt="12|17 노드가 강조되고 page 안에서 17 발견, 2 page accesses라는 콜아웃이 붙은 상태" width="80%"}
 
 **Cost**: fixed minimum degree $t$와 occupancy invariant 아래 worst-case height와 page access는 $\Theta(\log_t n)$이다(root cache 제외). node 내부는 linear scan 또는 binary search가 가능하고, 큰 $t$는 height를 줄이지만 page 내부 comparison은 늘 수 있다.
 
