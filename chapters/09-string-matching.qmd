@@ -163,7 +163,11 @@ $m$이 고정이거나 $m\le cn$인 상수 $c<1$이면 best는 $\Theta(n)$으로
 2. worst에서 한 alignment의 최대 comparison은?
 3. overlapping occurrence를 허용하면 match 후 shift는?
 
-**답**: 1. 9. 2. 4. 3. 다음 $s+1$도 검사한다.
+**답**: 
+
+1. 9. 
+2. 4. 
+3. 다음 $s+1$도 검사한다.
 :::
 
 ## Part C. 중복 비교는 왜 생기는가?
@@ -210,7 +214,11 @@ hash equality만으로 match를 확정하면 exact matcher가 아니다 — 반�
 2. 같은 hash이면 string도 같은가?
 3. candidate hit 다음 단계는?
 
-**답**: 1. 예. 2. 반드시 그렇지 않다. 3. 실제 문자 verification.
+**답**: 
+
+1. 예. 
+2. 반드시 그렇지 않다. 
+3. 실제 문자 verification.
 :::
 
 ## Part E. Rolling Hash
@@ -397,7 +405,11 @@ prefix와 suffix가 같아도 전체 prefix보다 짧아야 한다.
 2. 전체 문자열은 자신의 border인가?
 3. standard $lps[0]$은?
 
-**답**: 1. 2. 2. 아니다. 3. 0.
+**답**: 
+
+1. 2. 
+2. 아니다. 
+3. 0.
 :::
 
 ## Part I. KMP의 핵심 아이디어
@@ -435,7 +447,11 @@ $j>0$인 mismatch에서는 text index $i$를 고정하고 $j\gets lps[j-1]$만 �
 2. fallback 값은 어디서 얻는가?
 3. text index가 왼쪽으로 가는가?
 
-**답**: 1. $j$만. 2. $lps[j-1]$. 3. 아니다.
+**답**: 
+
+1. $j$만. 
+2. $lps[j-1]$. 
+3. 아니다.
 :::
 
 ## Part J. LPS/Failure Table
@@ -509,7 +525,10 @@ $$\Theta(m)\text{ time},\qquad\Theta(m)\text{ table space}$$
 1. `AAAAA`의 LPS는?
 2. `ABCDABD`의 마지막 LPS는?
 
-**답**: 1. $[0,1,2,3,4]$. 2. 0.
+**답**: 
+
+1. $[0,1,2,3,4]$. 
+2. 0.
 :::
 
 ## Part L. KMP Search
@@ -597,7 +616,11 @@ match 후 $j=0$으로 초기화하면 overlap 정보를 버린다.
 2. $j=0$ mismatch이면?
 3. match 후 overlap을 위해 $j$는?
 
-**답**: 1. 아니다. 2. $i\gets i+1$. 3. $lps[m-1]$.
+**답**: 
+
+1. 아니다. 
+2. $i\gets i+1$. 
+3. $lps[m-1]$.
 :::
 
 ## Part M. KMP Correctness와 Complexity
@@ -652,7 +675,11 @@ $$\text{pattern}\to\text{shift table}\to\text{mismatch}\to\text{shift distance}\
 2. Horspool이 사용하지 않는 table은?
 3. 둘은 같은 알고리즘인가?
 
-**답**: 1. 오른쪽에서 왼쪽. 2. good-suffix. 3. 같은 family지만 동일하지 않다.
+**답**: 
+
+1. 오른쪽에서 왼쪽. 
+2. good-suffix. 
+3. 같은 family지만 동일하지 않다.
 :::
 
 ## Part O. Bad-Character Rule
@@ -822,7 +849,12 @@ Java String은 UTF-16 code unit이라 `char` index와 code point index가 다를
 3. large alphabet의 긴 pattern이면?
 4. Unicode에서 byte match가 충분한가?
 
-**답**: 1. KMP. 2. Rabin-Karp. 3. Horspool 후보. 4. 요구 semantics에 따라 다르다.
+**답**: 
+
+1. KMP. 
+2. Rabin-Karp. 
+3. Horspool 후보. 
+4. 요구 semantics에 따라 다르다.
 :::
 
 ## Part R. 구현과 테스트
@@ -850,7 +882,11 @@ built-in `indexOf`를 구현에 사용하지 않는다 — 직접 character/byte
 2. collision candidate를 어떻게 검증하는가?
 3. Java와 C의 string unit은 같은가?
 
-**답**: 1. 아니다. 2. 직접 character/byte 비교. 3. Java code unit과 C byte로 다르다.
+**답**: 
+
+1. 아니다. 
+2. 직접 character/byte 비교. 
+3. Java code unit과 C byte로 다르다.
 :::
 
 ## Part S. 보안과 확장: Hash Flooding과 Multi-Pattern 미리보기

@@ -82,7 +82,11 @@ B-Tree는 page/block I/O를 줄인다. in-memory tree의 comparison 상수와 �
 2. username exact lookup에는 왜 좋은 후보인가?
 3. "hash operation은 $\Theta(1)$이다"에서 빠진 조건은?
 
-**답**: 1. 아니다, order가 필요하다. 2. equality lookup에 적합하다. 3. resize가 없으면 suitable hashing/controlled load 아래 expected $\Theta(1)$, resize 포함 PUT은 amortized expected $\Theta(1)$이며 individual resizing PUT과 worst case는 $\Theta(n)$일 수 있다.
+**답**: 
+
+1. 아니다, order가 필요하다. 
+2. equality lookup에 적합하다. 
+3. resize가 없으면 suitable hashing/controlled load 아래 expected $\Theta(1)$, resize 포함 PUT은 amortized expected $\Theta(1)$이며 individual resizing PUT과 worst case는 $\Theta(n)$일 수 있다.
 :::
 
 ## Part B. Hashing의 기본 모델
@@ -110,7 +114,11 @@ Map API의 의미는 다음과 같다: `put(k,v)`는 key가 없으면 insert, �
 2. equal key의 hash code가 같아야 하는 이유는?
 3. resize가 단순 memory copy가 아닌 이유는?
 
-**답**: 1. $0\ldots15$. 2. 같은 lookup path를 만들어야 한다. 3. index가 capacity에 의존해 모든 active entry를 재배치해야 한다.
+**답**: 
+
+1. $0\ldots15$. 
+2. 같은 lookup path를 만들어야 한다. 
+3. index가 capacity에 의존해 모든 active entry를 재배치해야 한다.
 :::
 
 ## Part C. Hash Function 설계
@@ -151,7 +159,11 @@ $$\Pr[h(k)=j]=\frac1m\qquad (j=0,\ldots,m-1)$$
 2. cryptographic collision resistance가 일반 table hash의 필수 조건인가?
 3. expected와 amortized를 한 문장으로 구분하라.
 
-**답**: 1. 아니다. 2. 아니다. 3. expected는 randomness에 대한 기댓값, amortized는 연산열 총비용의 평균이다.
+**답**: 
+
+1. 아니다. 
+2. 아니다. 
+3. expected는 randomness에 대한 기댓값, amortized는 연산열 총비용의 평균이다.
 :::
 
 ## Part D. Integer와 String Hashing
@@ -233,7 +245,10 @@ Java의 공식 contract에서 equal string은 equal hash code를 가진다. hash
 2. Horner 방식의 한 iteration은?
 3. multiplication 예제의 index는?
 
-**답**: 1. 문자 순서를 버리기 때문이다. 2. `hash = hash*B + code(c)`. 3. 5.
+**답**: 
+
+1. 문자 순서를 버리기 때문이다. 
+2. `hash = hash*B + code(c)`. 3. 5.
 :::
 
 ## Part E. Collision은 왜 생기는가?
@@ -382,7 +397,10 @@ $\alpha=n/m$을 average chain length라 하면, simple uniform hashing 아래 re
 2. head insertion map put이 항상 $\Theta(1)$이 아닌 이유는?
 3. bucket 3의 search order는?
 
-**답**: 1. $12/7$. 2. duplicate/update 여부를 확인하는 search가 필요하다. 3. $24,17,10$.
+**답**: 
+1. $12/7$. 
+2. duplicate/update 여부를 확인하는 search가 필요하다. 
+3. $24,17,10$.
 :::
 
 ## Part G. Open Addressing
@@ -408,7 +426,11 @@ Slot은 세 상태를 가진다: **EMPTY**(한 번도 사용되지 않음, searc
 2. DELETED에서는 왜 계속해야 하는가?
 3. $m$번 probe 후에도 자리가 없으면?
 
-**답**: 1. probe chain에 그 key가 있었다면 EMPTY 이전에 있어야 하기 때문이다. 2. 뒤에 active key가 있을 수 있기 때문이다. 3. resize 또는 명시적 failure.
+**답**: 
+
+1. probe chain에 그 key가 있었다면 EMPTY 이전에 있어야 하기 때문이다. 
+2. 뒤에 active key가 있을 수 있기 때문이다. 
+3. resize 또는 명시적 failure.
 :::
 
 ## Part H. Linear Probing
@@ -487,7 +509,11 @@ $$E[\text{successful}]\approx\frac12\left(1+\frac1{1-\alpha}\right),\qquad E[\te
 2. primary cluster가 자기 강화되는 이유는?
 3. unsuccessful search는 언제 종료하는가?
 
-**답**: 1. $12,0,1,2,3,4,5,6$에서 6. 2. run에 닿은 key가 끝에 붙어 run을 키우기 때문이다. 3. EMPTY를 만나거나 $m$번 probe 후.
+**답**: 
+
+1. $12,0,1,2,3,4,5,6$에서 6. 
+2. run에 닿은 key가 끝에 붙어 run을 키우기 때문이다. 
+3. EMPTY를 만나거나 $m$번 probe 후.
 :::
 
 ## Part I. Quadratic Probing
@@ -532,7 +558,11 @@ $(h'+i^2)\bmod13$에서 $i=0,\ldots,7$의 $i^2\bmod13$은 $0,1,4,9,3,12,10,10$�
 2. quadratic probing이 모든 slot을 방문한다고 말할 수 있는가?
 3. secondary clustering의 정확한 정의는?
 
-**답**: 1. $4,5,8$. 2. parameter/capacity policy 없이는 아니다. 3. 같은 home key들이 같은 quadratic sequence를 공유하는 현상.
+**답**: 
+
+1. $4,5,8$. 
+2. parameter/capacity policy 없이는 아니다. 
+3. 같은 home key들이 같은 quadratic sequence를 공유하는 현상.
 :::
 
 ## Part J. Double Hashing
@@ -593,7 +623,11 @@ Double hashing도 collision을 제거하지 않는다. probe sequence를 다양�
 2. $\gcd(h_2,m)=1$이 필요한 이유는?
 3. double hashing에도 collision이 가능한가?
 
-**답**: 1. $2,2$, final 4. 2. 모든 slot을 순환하기 위해서다. 3. 가능하다.
+**답**: 
+
+1. $2,2$, final 4. 
+2. 모든 slot을 순환하기 위해서다. 
+3. 가능하다.
 :::
 
 ## Part K. 삭제와 구현
@@ -713,7 +747,11 @@ active 9개/capacity 20의 logical load(0.45)와, tombstone 5개를 더한 probi
 2. DELETED의 search와 insert 의미는?
 3. 어떤 load가 probe 길이에 더 직접적인가?
 
-**답**: 1. 검색이 slot 1에서 조기 종료되기 때문이다. 2. search는 통과, insert는 후보로 기억한다. 3. active+tombstone 기반 probing load.
+**답**: 
+
+1. 검색이 slot 1에서 조기 종료되기 때문이다. 
+2. search는 통과, insert는 후보로 기억한다. 
+3. active+tombstone 기반 probing load.
 :::
 
 ## Part L. Load Factor와 Expected Cost
@@ -747,7 +785,11 @@ Chaining은 $\alpha>1$도 허용하며 chain representation과 workload에 따�
 2. OA에서 $\alpha=1$이면 새 insert가 가능한가?
 3. expected와 worst bound를 함께 말하라.
 
-**답**: 1. 가능하다. 2. EMPTY가 없어 불가능하다. 3. resize 없는 연산은 suitable hashing/controlled load에서 expected $\Theta(1)$, resize 포함 PUT은 amortized expected $\Theta(1)$, individual resize와 worst case는 $\Theta(n)$.
+**답**: 
+
+1. 가능하다. 
+2. EMPTY가 없어 불가능하다. 
+3. resize 없는 연산은 suitable hashing/controlled load에서 expected $\Theta(1)$, resize 포함 PUT은 amortized expected $\Theta(1)$, individual resize와 worst case는 $\Theta(n)$.
 :::
 
 ## Part M. Resize, Rehashing, Amortized Analysis
@@ -799,7 +841,11 @@ Stop-the-world resize는 한 operation이 전체 table을 옮겨 latency spike�
 2. $1+2+\cdots+n$의 geometric sum bound는?
 3. 한 번의 resize 비용과 amortized insertion 비용은?
 
-**답**: 1. index가 capacity에 의존하기 때문이다. 2. $<2n$. 3. resizing PUT은 $\Theta(n)$, 전체 sequence에서는 PUT당 추가 amortized $O(1)$이고 기본 hashing까지 포함하면 amortized expected $\Theta(1)$.
+**답**: 
+
+1. index가 capacity에 의존하기 때문이다. 
+2. $<2n$. 
+3. resizing PUT은 $\Theta(n)$, 전체 sequence에서는 PUT당 추가 amortized $O(1)$이고 기본 hashing까지 포함하면 amortized expected $\Theta(1)$.
 :::
 
 ## Part N. 구현과 API Contract

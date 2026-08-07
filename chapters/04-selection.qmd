@@ -210,7 +210,11 @@ $A[p..r]=[2,5,7,\boxed{9},12,18]$, $p=1$, $q=4$라 하자($k=q-p+1=4$).
 2. $i=4$이면?
 3. $i=6$이면 어디서 무엇을 찾는가?
 
-**답**: 1. $A[p..q-1]$에서 rank 2. 2. pivot 9를 반환. 3. $A[q+1..r]$에서 rank $6-4=2$. ($p\ne1$인 경우에도 full-array 시작점이 아니라 반드시 $q-p+1$로 $k$를 계산한다.)
+**답**: 
+
+1. $A[p..q-1]$에서 rank 2. 
+2. pivot 9를 반환. 
+3. $A[q+1..r]$에서 rank $6-4=2$. ($p\ne1$인 경우에도 full-array 시작점이 아니라 반드시 $q-p+1$로 $k$를 계산한다.)
 :::
 
 ### 왜 맞는가 (proof-sketch)
@@ -429,7 +433,11 @@ $$\text{largest retained side}\le n-\left(\frac{3n}{10}-O(1)\right)=\frac{7n}{10
 2. 한 qualifying group에서 왜 3개인가?
 3. 다음 selection 문제의 최대 크기 비율은?
 
-**답**: 1. $M$의 한쪽에 있는 median만 확실히 셀 수 있다(반대쪽 median은 $M$보다 작을 수도 커질 수도 있다). 2. 5개 group의 median과, 정렬된 group에서 그 median보다 큰 두 값. 3. $7/10+O(1/n)$.
+**답**: 
+
+1. $M$의 한쪽에 있는 median만 확실히 셀 수 있다(반대쪽 median은 $M$보다 작을 수도 커질 수도 있다). 
+2. 5개 group의 median과, 정렬된 group에서 그 median보다 큰 두 값. 
+3. $7/10+O(1/n)$.
 :::
 
 ### 왜 여기엔 Master Theorem을 못 쓰나

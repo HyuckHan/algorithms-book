@@ -113,7 +113,11 @@ pruning이 전혀 작동하지 않으면 원래 exponential tree를 탐색한다
 2. BFS의 frontier가 DFS보다 커질 수 있는 이유는?
 3. best-first가 항상 polynomial인가?
 
-**답**: 1. 아니다. 2. 한 level의 많은 live node를 보관하기 때문이다. 3. 아니다, 최악에는 exponential이다.
+**답**: 
+
+1. 아니다. 
+2. 한 level의 많은 live node를 보관하기 때문이다. 
+3. 아니다, 최악에는 exponential이다.
 :::
 
 ### 순열과 조합 생성
@@ -183,7 +187,10 @@ $$P(5,4)=120,\qquad\binom54=5$$
 1. `used`와 choice prefix의 invariant는?
 2. combination에서 `start`가 필요한 이유는?
 
-**답**: 1. `used[v]`가 참 iff $v$가 prefix에 정확히 한 번 존재한다. 2. 같은 집합의 다른 순서를 생성하지 않기 위해서다.
+**답**: 
+
+1. `used[v]`가 참 iff $v$가 prefix에 정확히 한 번 존재한다. 
+2. 같은 집합의 다른 순서를 생성하지 않기 위해서다.
 :::
 
 ## Part B. Backtracking
@@ -352,7 +359,10 @@ Apply/Undo 뒤 두 식이 항상 성립해야 한다.
 1. target 0은 어떤 정책인가?
 2. $currentSum+remainingSum<W$가 안전한 이유는?
 
-**답**: 1. empty subset을 한 해로 즉시 보고한다. 2. 남은 양수를 모두 포함해도 target에 못 미치기 때문이다.
+**답**: 
+
+1. empty subset을 한 해로 즉시 보고한다. 
+2. 남은 양수를 모두 포함해도 target에 못 미치기 때문이다.
 :::
 
 **구현**: $[3,4,5,6]$, $W=9$ 고정 예제(solution 2개)로 검증한다.
@@ -526,7 +536,10 @@ $dp[i][d]=$ index $i$에서 끝나고 difference $d$인 최대 길이로 정의�
 1. $[1,3,4]$는 어느 pruning인가?
 2. $INC=4$, selected 2개, remaining 2개이면?
 
-**답**: 1. feasibility pruning. 2. upper bound $2+2=4$라 개선 불가, objective-bound pruning.
+**답**: 
+
+1. feasibility pruning. 
+2. upper bound $2+2=4$라 개선 불가, objective-bound pruning.
 :::
 
 **참고 구현** (Java만 — 선택 심화 예제라 3언어 포팅은 하지 않는다):
@@ -749,7 +762,10 @@ complete expansion, sound feasibility pruning, safe objective bound, 올바른 �
 1. memory가 가장 커질 가능성이 높은 정책은?
 2. maximization best-bound의 PQ key는?
 
-**답**: 1. FIFO 또는 넓은 best-first frontier. 2. upper bound가 큰 순서.
+**답**: 
+
+1. FIFO 또는 넓은 best-first frontier. 
+2. upper bound가 큰 순서.
 :::
 
 ## Part E. A\* Search
@@ -896,7 +912,11 @@ sound pruning은 correctness를 희생하지 않는 논리적 제거다. heurist
 2. $h=0$인 A*는?
 3. pruning이 polynomial을 보장하는가?
 
-**답**: 1. 해가 가능한가 / incumbent 개선 가능한가. 2. Dijkstra priority. 3. 아니다.
+**답**: 
+
+1. 해가 가능한가 / incumbent 개선 가능한가. 
+2. Dijkstra priority. 
+3. 아니다.
 :::
 
 ### 구현·테스트·성능 측정
@@ -922,7 +942,10 @@ Java 구현은 `PermutationGenerator`, `NQueensSolver`, `SubsetSumSolver`, `Grap
 1. built-in library 탐색/정렬 함수를 구현에 사용했는가?
 2. Java와 C 중 어느 쪽이 실제 solution을 반환하는가?
 
-**답**: 1. 아니다, 직접 backtracking/branch-and-bound 재귀로 구현했다. 2. Java는 실제 solution(순열, queen 위치, subset, color, 선택 item, path)을, C는 개수·metrics·최적값을 반환한다 — 이 장의 데모는 두 언어가 공통으로 낼 수 있는 값(개수, 최적 profit/weight, cost, graph-coloring의 실제 color 배열)만 비교한다.
+**답**: 
+
+1. 아니다, 직접 backtracking/branch-and-bound 재귀로 구현했다. 
+2. Java는 실제 solution(순열, queen 위치, subset, color, 선택 item, path)을, C는 개수·metrics·최적값을 반환한다 — 이 장의 데모는 두 언어가 공통으로 낼 수 있는 값(개수, 최적 profit/weight, cost, graph-coloring의 실제 color 배열)만 비교한다.
 :::
 
 ## 💡 배움 포인트

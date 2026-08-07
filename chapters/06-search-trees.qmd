@@ -94,7 +94,9 @@ node가 $n\ge1$개인 tree는 다음을 만족한다: (1) connected이며 cycle�
 3. leaf와 internal node의 차이는?
 4. 두 node 사이의 path가 유일하다는 말에서 필요한 정확한 용어는?
 
-**답**: 1. 11개. 
+**답**: 
+
+1. 11개. 
 2. level 4. 
 3. child가 0인지 아닌지. 
 4. unique simple path.
@@ -296,7 +298,9 @@ Prefix(preorder) `* + x y / + a b c`, infix(inorder) `(x + y) * ((a + b) / c)`, 
 3. recursive DFS와 BFS의 auxiliary space는?
 4. expression tree의 postfix는?
 
-**답**: 1. E. 
+**답**: 
+
+1. E. 
 2. root A. 
 3. $O(h)$와 $O(w)$. 
 4. `x y + a b + c / *`.
@@ -338,7 +342,9 @@ balanced height는 $\Theta(\log n)$, degenerate height는 $\Theta(n)$이다. B-T
 2. sorted array insert가 느린 이유는?
 3. key 변경 시 언제 재삽입이 필요한가?
 
-**답**: 1. order가 없다. 
+**답**: 
+
+1. order가 없다. 
 2. 원소 shift가 필요하다. 
 3. ordering key가 바뀔 때.
 :::
@@ -413,7 +419,9 @@ parent pointer가 있으면 upward walk가 직접 가능하고, 없으면 root�
 3. predecessor(15)는?
 4. successor(20)는?
 
-**답**: 1. $15\to6\to7\to13\to14$. 
+**답**: 
+
+1. $15\to6\to7\to13\to14$. 
 2. 2와 20. 
 3. 14. 
 4. NIL.
@@ -488,7 +496,9 @@ Transplant sequence: $y=17$, $y.right=18$이므로 `TRANSPLANT`$(17,18)$로 $20.
 2. successor가 left child를 가질 수 없는 이유는?
 3. 두 operation의 시간은?
 
-**답**: 1. Transplant의 root branch. 
+**답**: 
+
+1. Transplant의 root branch. 
 2. right subtree minimum이므로. 
 3. $\Theta(h)$.
 :::
@@ -649,7 +659,9 @@ ordinary BST delete 후 upward height update를 하는 것은 같지만, subtree
 2. 30,10,20 삽입은 무슨 case인가?
 3. rotation 전후 반드시 같은 traversal은?
 
-**답**: 1. right-heavy. 
+**답**: 
+
+1. right-heavy. 
 2. LR. 
 3. inorder.
 :::
@@ -873,7 +885,9 @@ merge 뒤 root가 key 0개이고 child 1개면 그 child가 새 root다.
 3. borrow에서 parent separator는 어떻게 움직이는가?
 4. merge 후 root가 비면?
 
-**답**: 1. 2–5. 
+**답**: 
+
+1. 2–5. 
 2. worst-case $\Theta(\log_t n)$ page I/O. 
 3. parent key는 child로 내려가고 sibling key는 올라온다. 
 4. 유일한 child가 새 root가 된다.
@@ -952,7 +966,9 @@ AVL/RB는 pointer와 CPU/cache locality가, B-Tree는 page와 I/O 수가 핵심 
 3. database page index?
 4. adversarial input 가능 plain BST?
 
-**답**: 1. AVL. 
+**답**: 
+
+1. AVL. 
 2. RB Tree. 
 3. B-Tree. 
 4. balance guarantee가 없으므로 피하거나 self-balancing tree를 쓴다.

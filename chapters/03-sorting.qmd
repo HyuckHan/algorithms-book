@@ -81,7 +81,11 @@ $$\langle a_1,\dots,a_n\rangle \longmapsto \langle a'_1,\dots,a'_n\rangle,\qquad
 2. $O(1)$ auxiliary space가 필수라면 무엇을 확인해야 하는가?
 3. 이미 거의 정렬된 입력이라면 어떤 성질이 중요한가?
 
-**답**: 1. stable, 2. in-place, 3. adaptive
+**답**: 
+
+1. stable, 
+2. in-place, 
+3. adaptive
 :::
 
 ## Part B. 기본 Comparison Sort
@@ -311,7 +315,11 @@ $A=[5,2_a,4,2_b]$에 대해 답하라.
 2. Bubble의 왼쪽→오른쪽 첫 pass 결과는?
 3. Insertion에서 두 번째 2를 삽입할 때 어떤 원소가 shift되는가?
 
-**답**: 1. $[2_b,2_a,4,5]$ — equal record가 역전될 수 있다(unstable). 2. $[2_a,4,2_b,5]$. 3. 5와 4만 shift하고 $2_a$는 움직이지 않는다.
+**답**: 
+
+1. $[2_b,2_a,4,5]$ — equal record가 역전될 수 있다(unstable). 
+2. $[2_a,4,2_b,5]$. 
+3. 5와 4만 shift하고 $2_a$는 움직이지 않는다.
 :::
 
 | | Selection | Bubble | Insertion |
