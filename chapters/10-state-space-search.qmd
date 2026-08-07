@@ -469,7 +469,7 @@ Graph Coloring도 같은 Backtracking skeleton을 사용한다. 달라지는 것
 ```
 :::
 
-### 등차수열 찾기 {#sec-ap .unnumbered}
+### 등차수열 찾기 {#sec-ap}
 
 ::: {.callout-note title="선택 심화"}
 정렬 후 index가 증가하는 subset에서 가장 긴 등차수열(arithmetic progression)을 찾는 예제다. 입력 값은 distinct라고 가정하고, 길이 1과 2도 등차수열로 인정한다.
@@ -721,7 +721,7 @@ Fractional knapsack은 0/1 feasible set을 완화하므로 maximization의 safe 
 ```
 :::
 
-### FIFO·LIFO·Least-Cost 탐색 순서 {.unnumbered}
+### FIFO·LIFO·Least-Cost 탐색 순서
 
 ::: {.callout-note title="선택 심화"}
 Branch-and-Bound는 어느 frontier 정책을 써도 optimum이 바뀌지 않는다 — 성능과 memory만 달라진다.
