@@ -85,11 +85,11 @@ $$\text{binary depth }n:\ 2^n\text{ leaves},\quad 2^{n+1}-1\text{ nodes}\qquad\t
 
 ## 3단계
 
-![L을 확장해 LL·LR이 생성된다.](../figures/10-state-space-search/02-state-space-expansion-step3.svg){fig-alt="L 노드 아래에 LL, LR 두 자식이 추가된 상태" width="46%"}
+![L을 확장해 LL·LR이 생성된다. LR은 dead — 어떤 후손도 feasible일 수 없어 더 내려가지 않는다.](../figures/10-state-space-search/02-state-space-expansion-step3.svg){fig-alt="L 노드 아래에 valid 상태 LL과 dead 상태 LR 두 자식이 추가된 상태" width="46%"}
 
 ## 4단계
 
-![R을 확장해 RL·RR이 생성되고, RR은 bound에 걸려 그 후손은 아예 만들어지지 않는다.](../figures/10-state-space-search/02-state-space-expansion-step4.svg){fig-alt="R 노드 아래에 RL, RR 두 자식이 추가되고 RR이 bounded 표시로 강조된 상태" width="53%"}
+![R을 확장해 RL·RR이 생성된다. RR은 bound에 걸려 후손이 아예 만들어지지 않는다. LR(dead)과 RR(bound)이 가지치기의 두 유형이다.](../figures/10-state-space-search/02-state-space-expansion-step4.svg){fig-alt="R 노드 아래에 valid 상태 RL과 bound 상태 RR 두 자식이 추가되고, 왼쪽의 dead 상태 LR도 함께 표시된 상태" width="53%"}
 :::
 
 | Order | Container | 장점 | 위험 |
