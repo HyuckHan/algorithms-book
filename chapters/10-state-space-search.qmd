@@ -131,7 +131,7 @@ pruning이 전혀 작동하지 않으면 원래 exponential tree를 탐색한다
 
 {{< include ../figures/10-state-space-search/pseudocode-choose-permutation.qmd >}}
 
-![Permutation state tree: state=선택한 prefix → decision=unused value → used가 duplicate branch를 차단 → leaf마다 길이 k output.](../figures/10-state-space-search/04-permutation-state-tree-step4.svg){fig-alt="n=5 permutation state tree. 대표 경로 []→[0]→[0,1]→[0,1,2]가 [0,1,2,3]으로 길이 4 output을 완성하고, [0,1]의 다른 후보 중 이미 사용된 0과 1로의 가지는 회색 취소선으로 차단되며, 나머지 미탐색 가지는 점선과 생략 부호로 표시된다" width="55%"}
+![P(5,4) state tree의 일부: state는 선택한 prefix, decision은 아직 쓰지 않은 value다. [0,1]에서 0과 1은 이미 used라 막히고 2·3·4로만 뻗는다. 점선과 ⋯은 생략된 subtree이며, 길이 4에 도달한 [0,1,2,3]이 순열 하나에 대응한다.](../figures/10-state-space-search/04-permutation-state-tree-step4.svg){fig-alt="root에서 [0], [0,1]로 이어지는 트리. [0,1]의 자식인 [0,1,0]과 [0,1,1]에는 used 라벨이 붙어 막혀 있고, [0,1,2]가 [0,1,2,3]까지 뻗어 길이 4 output을 완성한다. 나머지 후보와 하위 가지는 점선과 ⋯으로 생략되어 있다" width="55%"}
 
 $$P(n,k)=\frac{n!}{(n-k)!},\qquad P(5,4)=120$$
 
