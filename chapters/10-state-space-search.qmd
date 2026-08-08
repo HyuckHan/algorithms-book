@@ -58,7 +58,7 @@ $$\text{model state}\ \longrightarrow\ \text{choose order}\ \longrightarrow\ \te
 
 **State**는 지금까지 내린 결정이 만든 partial solution과 앞으로 필요한 정보다. **Decision**은 현재 state에서 child state로 가는 한 번의 선택이다. 예를 들어 binary selection에서 state $=(i,\text{selected},\text{sum})$, decision $=$ $w[i]$의 include/exclude다.
 
-![State-space tree의 구조: root(결정 0개)에서 두 child A, B로, 각각 다시 두 child로 확장되며 valid/dead/bounded 상태가 갈린다.](../figures/10-state-space-search/01-state-space-tree-structure.svg){fig-alt="빈 상태를 root로 A, B 두 child가 갈라지고 다시 각각 두 child로 확장되며 valid, dead, bound 상태가 표시된 트리 다이어그램" width="65%"}
+![State-space tree의 구조: root(결정 0개)에서 A·B를 고르고 다시 C·D를 골라 leaf 넷에 도달한다. {A,C}는 valid, {A,D}는 dead, {B,D}는 bounded다.](../figures/10-state-space-search/01-state-space-tree-structure.svg){fig-alt="빈 상태를 root로 A, B 두 child로 갈라지고 다시 각각 C, D로 확장되어 leaf 넷에 도달하는 트리. {A,C}는 valid, {A,D}는 dead, {B,D}는 bounded로 표시된다" width="65%"}
 
 level/depth는 내린 결정 수이고, leaf는 complete 또는 더 확장할 수 없는 state다.
 
