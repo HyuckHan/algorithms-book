@@ -248,7 +248,7 @@ $$c_1=c_2\quad\text{or}\quad|r_1-r_2|=|c_1-c_2|\quad\Longrightarrow\quad conflic
 
 ![4-Queens의 해 [1,3,0,2]: 네 퀸이 서로 열도 대각선도 공유하지 않는 배치.](../figures/10-state-space-search/06-four-queens-board-trace-step5.svg){fig-alt="4x4 체스판에 네 퀸이 row 0 col 1, row 1 col 3, row 2 col 0, row 3 col 2에 놓여 서로 충돌하지 않는 완성된 배치" width="45%"}
 
-![4-Queens partial state tree: col 0 서브트리는 두 candidate가 모두 소진돼 통째로 실패하고, col 1 쪽은 [1,3,0]을 거쳐 [1,3,0,2]를 찾으며, col 2 쪽에 두 번째 해 [2,0,3,1]이 있다.](../figures/10-state-space-search/07-four-queens-partial-tree.svg?v=20260808){fig-alt="빈 상태에서 col 0, col 1, col 2, col 3 네 자식으로 확장되는 부분 상태 트리. col 0 서브트리는 [0,2]와 [0,3,1] 두 후보가 모두 소진돼 dead로 표시되고, col 1 서브트리는 [1,3]과 [1,3,0]을 거쳐 [1,3,0,2]가 valid solution으로 표시된다. col 2 서브트리는 생략 표기 뒤에 두 번째 valid solution [2,0,3,1]이 있고, col 3 서브트리는 생략 표기만 있다." width="65%"}
+![4-Queens partial state tree: col 0 서브트리는 두 candidate가 모두 소진돼 통째로 실패하고, col 1 쪽은 [1,3,0]을 거쳐 [1,3,0,2]를 찾으며, col 2 쪽에 두 번째 해 [2,0,3,1]이 있다.](../figures/10-state-space-search/07-four-queens-partial-tree.svg){fig-alt="빈 상태에서 col 0, col 1, col 2, col 3 네 자식으로 확장되는 부분 상태 트리. col 0 서브트리는 [0,2]와 [0,3,1] 두 후보가 모두 소진돼 dead로 표시되고, col 1 서브트리는 [1,3]과 [1,3,0]을 거쳐 [1,3,0,2]가 valid solution으로 표시된다. col 2 서브트리는 생략 표기 뒤에 두 번째 valid solution [2,0,3,1]이 있고, col 3 서브트리는 생략 표기만 있다." width="65%"}
 
 {{< include ../figures/10-state-space-search/pseudocode-place-n-queens.qmd >}}
 
@@ -690,7 +690,7 @@ weight/profit 합은 넓은 정수형과 덧셈 guard를 사용하고, ratio 비
 ![PQ가 비었다 — optimum은 weight 12, profit 90.](../figures/10-state-space-search/13-knapsack-best-first-trace-step8.svg){fig-alt="state box에 PQ empty: optimum 90이, note에 optimal weight 12, profit 90이 표시된 화면" width="30%"}
 :::
 
-![핵심 state tree(node label: weight/profit/UB): root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라진다. A 포함 쪽은 다시 B 포함 7/70/115와 B 제외 2/40/98로 나뉜다. B 포함 쪽은 C를 포함하면 weight 17로 용량을 초과해 폐기(w>W)되고, C를 제외하면 12/80/80으로 남지만 UB 80이 incumbent 90을 넘지 못해 prune된다. B 제외 쪽은 C를 포함해 12/90/90에 도달한다. A 제외 쪽은 UB 82가 incumbent 90을 넘지 못해 prune(P)된다.](../figures/10-state-space-search/14-knapsack-state-tree.svg?v=20260808){fig-alt="root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라지고, A 포함 쪽이 다시 7/70/115와 2/40/98 두 형제로 나뉜다. 7/70/115 아래에는 용량 초과로 폐기된 17/-와 UB80으로 prune된 12/80/80 두 자식이 있고, 2/40/98 아래에는 완성된 해 12/90/90이 있다. A 제외 쪽 아래에는 prune을 뜻하는 P 노드가 있다." width="65%"}
+![핵심 state tree(node label: weight/profit/UB): root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라진다. A 포함 쪽은 다시 B 포함 7/70/115와 B 제외 2/40/98로 나뉜다. B 포함 쪽은 C를 포함하면 weight 17로 용량을 초과해 폐기(w>W)되고, C를 제외하면 12/80/80으로 남지만 UB 80이 incumbent 90을 넘지 못해 prune된다. B 제외 쪽은 C를 포함해 12/90/90에 도달한다. A 제외 쪽은 UB 82가 incumbent 90을 넘지 못해 prune(P)된다.](../figures/10-state-space-search/14-knapsack-state-tree.svg){fig-alt="root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라지고, A 포함 쪽이 다시 7/70/115와 2/40/98 두 형제로 나뉜다. 7/70/115 아래에는 용량 초과로 폐기된 17/-와 UB80으로 prune된 12/80/80 두 자식이 있고, 2/40/98 아래에는 완성된 해 12/90/90이 있다. A 제외 쪽 아래에는 prune을 뜻하는 P 노드가 있다." width="65%"}
 
 $$currentWeight=\sum_{i\in selected}w_i,\qquad currentProfit=\sum_{i\in selected}p_i,\qquad UB(node)\ge\text{true best feasible descendant profit}$$
 
