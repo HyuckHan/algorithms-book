@@ -692,7 +692,9 @@ weight/profit 합은 넓은 정수형과 덧셈 guard를 사용하고, ratio 비
 
 ![핵심 state tree(node label: weight/profit/UB): root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라진다. A 포함 쪽은 다시 B 포함 7/70/115와 B 제외 2/40/98로 나뉜다. B 포함 쪽은 C를 포함하면 weight 17로 용량을 초과해 폐기(w>W)되고, C를 제외하면 12/80/80으로 남지만 UB 80이 incumbent 90을 넘지 못해 prune된다. B 제외 쪽은 C를 포함해 12/90/90에 도달한다. A 제외 쪽은 UB 82가 incumbent 90을 넘지 못해 prune(P)된다.](../figures/10-state-space-search/14-knapsack-state-tree.svg){fig-alt="root 0/0/115에서 A 포함 2/40/115와 A 제외 0/0/82로 갈라지고, A 포함 쪽이 다시 7/70/115와 2/40/98 두 형제로 나뉜다. 7/70/115 아래에는 용량 초과로 폐기된 17/-와 UB80으로 prune된 12/80/80 두 자식이 있고, 2/40/98 아래에는 완성된 해 12/90/90이 있다. A 제외 쪽 아래에는 prune을 뜻하는 P 노드가 있다." width="65%"}
 
-$$currentWeight=\sum_{i\in selected}w_i,\qquad currentProfit=\sum_{i\in selected}p_i,\qquad UB(node)\ge\text{true best feasible descendant profit}$$
+$$currentWeight=\sum_{i\in selected}w_i,$$
+$$currentProfit=\sum_{i\in selected}p_i,$$
+$$UB(node)\ge\text{true best feasible descendant profit}$$
 
 작은 instance에서는 각 node의 descendant를 brute force로 열거해 모든 displayed bound를 검사한다.
 
